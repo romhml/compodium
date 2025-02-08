@@ -2,14 +2,9 @@
 import { useClipboard } from '@vueuse/core'
 import { kebabCase } from 'scule'
 import { escapeString } from 'knitwork'
+import type { Component } from '../../../src/types'
 
-const props = defineProps<{ component?: any, props?: Record<string, any> }>()
-
-const { data: componentExample } = useAsyncData('__compodium_component-source', async () => {
-  const example = props.component?.meta?.devtools?.example
-  if (!example) return false
-  return await $fetch<{ source: string }>(`/api/component-example`, { params: { component: example } })
-}, { watch: [() => props.component?.slug] })
+const props = defineProps<{ component?: Component, props?: Record<string, any> }>()
 
 function genPropValue(value: any): string {
   if (typeof value === 'string') {
@@ -35,7 +30,6 @@ const code = computed(() => {
     if (value === true) return kebabCase(key)
     if (value === false && defaultValue === true) return `:${kebabCase(key)}="false"`
     if (!value) return
-    if (props.component?.defaultVariants?.[key] === value) return
     if (typeof value === 'string') return `${kebabCase(key)}=${genPropValue(value)}`
     return `:${kebabCase(key)}="${genPropValue(value)}"`
   }).filter(Boolean).join('\n')
@@ -44,15 +38,7 @@ const code = computed(() => {
     propsTemplate,
   ].filter(Boolean).join(' ')
 
-  if (componentExample.value) {
-    const componentRegexp = new RegExp(`<${props.component.label}(\\s|\\r|>)`)
-
-    return componentExample.value?.source
-      .replace(/import .* from ['"]#.*['"];?\n+/, '')
-      .replace(componentRegexp, `<${props.component.label} ${extraTemplate}$1`)
-      .replace('v-bind="$attrs"', '')
-  }
-  return `<${props.component.label} ${extraTemplate} />`
+  return `<${props.component.pascalName} ${extraTemplate} />`
 })
 
 const { $prettier } = useNuxtApp()
@@ -74,8 +60,6 @@ const { data: highlightedCode } = useAsyncData('__compodium-component-highlighte
 
 const { copy, copied } = useClipboard()
 
-const renderer = ref()
-
 const previewUrl = computed(() => {
   if (!props.component) return
   const baseUrl = `/__compodium__/renderer`
@@ -90,7 +74,6 @@ const previewUrl = computed(() => {
   <div class="flex flex-col bg-grid">
     <iframe
       v-if="component"
-      ref="renderer"
       class="grow w-full"
       :src="previewUrl"
     />

@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { watchDebounced, useStorage, StorageSerializers, useColorMode } from '@vueuse/core'
+import { useStorage, StorageSerializers, useColorMode, useDebounceFn } from '@vueuse/core'
+import type { Component } from '../../src/types'
 
 // Disable devtools in component renderer iframe
 // @ts-expect-error - Nuxt Devtools internal value
@@ -7,25 +8,15 @@ window.__NUXT_DEVTOOLS_DISABLE__ = true
 
 const currentComponent = useStorage<string>('__compodium-component', 'base-button')
 const state = useStorage<Record<string, any>>('__compodium-state', {})
-const components = useStorage<Array<any>>('__compodium-components', [], undefined, { serializer: StorageSerializers.object })
+const components = useStorage<Array<Component>>('__compodium-components', [], undefined, { serializer: StorageSerializers.object })
 
-const component = computed({
-  get() {
-    return components.value?.find(c => c.slug === currentComponent.value) ?? components.value?.find(c => c.slug === 'base-button')
-  },
-  set(component: any) {
-    currentComponent.value = component.slug
-  },
-})
+const component = computed<Component | undefined>(() =>
+  components.value?.find(c => c.kebabName === currentComponent.value)
+  ?? components.value?.find(c => c.kebabName === 'base-button'),
+)
 
-function updateMeta(meta: any) {
-  const componentMeta = Object.entries(meta).reduce((acc, [key, value]: [string, any]) => {
-    const slug = value.kebabName
-    acc[slug] = { ...value, label: key, slug }
-    return acc
-  }, {} as Record<string, any>)
-
-  components.value = Object.values(componentMeta)
+function updateMeta(meta: Record<string, Component>) {
+  components.value = Object.values(meta)
 }
 
 const { status } = useAsyncData('__compodium-components', async () => {
@@ -37,7 +28,7 @@ const { status } = useAsyncData('__compodium-components', async () => {
 
 const componentProps = computed(() => {
   if (!component.value) return
-  return state.value.props[component.value?.slug]
+  return state.value.props[component.value?.kebabName]
 })
 
 const componentPropsMeta = computed(() => {
@@ -49,10 +40,12 @@ function updateRenderer() {
   if (!component.value) return
   const event: Event & { data?: any } = new Event('compodium:update-renderer')
   event.data = {
-    props: state.value.props?.[component.value.slug],
+    props: state.value.props?.[component.value.kebabName],
   }
   window.dispatchEvent(event)
 }
+
+const updateRendererDebounced = useDebounceFn(updateRenderer, 100, { maxWait: 300 })
 
 function onComponentLoaded() {
   if (!component.value) return
@@ -67,8 +60,6 @@ async function onMetaReload(event: any) {
 
   updateMeta({ BaseButton: meta })
 }
-
-watchDebounced(state, updateRenderer, { deep: true, debounce: 200, maxWait: 500 })
 
 onMounted(() => {
   window.addEventListener('compodium:component-loaded', onComponentLoaded)
@@ -110,9 +101,11 @@ const isDark = computed({
       class="top-0 h-[49px] border-b border-[var(--ui-border)] flex justify-center"
     >
       <UInputMenu
-        v-model="component"
+        v-model="currentComponent"
         variant="none"
         :items="components"
+        value-key="kebabName"
+        label-key="pascalName"
         placeholder="Search component..."
         class="top-0 translate-y-0 w-full mx-2"
         icon="i-lucide-search"
@@ -121,8 +114,9 @@ const isDark = computed({
       <div class="absolute top-[49px] bottom-0 inset-x-0 grid xl:grid-cols-8 grid-cols-4 bg-[var(--ui-bg)]">
         <div class="col-span-1 border-r border-[var(--ui-border)] hidden xl:block overflow-y-auto">
           <UNavigationMenu
-            :items="components.map((c) => ({ ...c, active: c.slug === component?.slug, onSelect: () => component = c }))"
+            :items="components.map((c) => ({ ...c, active: c.kebabName === component?.kebabName, onSelect: () => component = c }))"
             orientation="vertical"
+            label-key="pascalName"
             :ui="{ link: 'before:rounded-none' }"
           />
         </div>
@@ -160,7 +154,7 @@ const isDark = computed({
                 <ComponentPropInput
                   v-model="componentProps[prop.name]"
                   :meta="prop"
-                  :ignore="component.meta?.devtools?.ignoreProps?.includes(prop.name)"
+                  @update:model-value="updateRendererDebounced"
                 />
               </div>
             </template>
