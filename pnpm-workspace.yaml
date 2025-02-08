@@ -1,0 +1,6 @@
+packages:
+  - "./"
+  - "devtools"
+  - "playground"
+  # TODO: Remove
+  - "../nuxt-component-meta"

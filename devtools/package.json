@@ -1,0 +1,21 @@
+{
+  "name": "@nuxt/ui-devtools",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "@nuxt/ui": "3.0.0-alpha.12",
+    "@vueuse/core": "^12.5.0",
+    "knitwork": "^1.1.0",
+    "nuxt": "^3.14.159",
+    "prettier": "^3.3.3",
+    "shiki": "^1.22.2",
+    "zod": "^3.23.8"
+  }
+}
