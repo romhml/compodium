@@ -2,7 +2,7 @@
 defineProps<{
   label: string
   variant: string
-  variant2: string
+  foo: boolean
 }>()
 
 defineEmits([])

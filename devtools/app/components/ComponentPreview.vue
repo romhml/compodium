@@ -6,6 +6,8 @@ import type { Component } from '../../../src/types'
 
 const props = defineProps<{ component?: Component, props?: Record<string, any> }>()
 
+const componentProps = computed(() => new Set(props.component?.meta?.props.map(prop => prop.name)))
+
 function genPropValue(value: any): string {
   if (typeof value === 'string') {
     return `'${escapeString(value).replace(/'/g, '&apos;').replace(/"/g, '&quot;')}'`
@@ -25,7 +27,10 @@ const code = computed(() => {
   if (!props.component) return
 
   const propsTemplate = Object.entries(props.props ?? {})?.map(([key, value]: [string, any]) => {
+    if (!componentProps.value.has(key)) return
+
     const defaultValue: any = props.component?.meta?.props.find((prop: any) => prop.name === key)?.default
+
     if (defaultValue === value) return
     if (value === true) return kebabCase(key)
     if (value === false && defaultValue === true) return `:${kebabCase(key)}="false"`

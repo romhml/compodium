@@ -6,30 +6,23 @@ import type { Component } from '../../src/types'
 // @ts-expect-error - Nuxt Devtools internal value
 window.__NUXT_DEVTOOLS_DISABLE__ = true
 
-const currentComponent = useStorage<string>('__compodium-component', 'base-button')
-const state = useStorage<Record<string, any>>('__compodium-state', {})
-const components = useStorage<Array<Component>>('__compodium-components', [], undefined, { serializer: StorageSerializers.object })
+const componentMeta = useStorage<Record<string, Component>>('__compodium-components', {}, undefined, { serializer: StorageSerializers.object })
 
-const component = computed<Component | undefined>(() =>
-  components.value?.find(c => c.kebabName === currentComponent.value)
-  ?? components.value?.find(c => c.kebabName === 'base-button'),
-)
-
-function updateMeta(meta: Record<string, Component>) {
-  components.value = Object.values(meta)
-}
-
-const { status } = useAsyncData('__compodium-components', async () => {
+const { status } = useAsyncData('__compodium-fetch-meta', async () => {
   const resp = await fetch('/api/component-meta')
-  const meta = await resp.json()
-  updateMeta(meta)
+  componentMeta.value = await resp.json()
   return true
 })
 
-const componentProps = computed(() => {
-  if (!component.value) return
-  return state.value.props[component.value?.kebabName]
-})
+const componentName = useStorage<string>('__compodium-component', 'BaseButton')
+const componentProps = useStorage<Record<string, any>>(`__compodium-props-${componentName.value}`, {}, undefined, { serializer: StorageSerializers.object })
+
+const component = computed<Component | undefined>(() =>
+  componentMeta.value?.[componentName.value]
+  ?? componentMeta.value?.['BaseButton'],
+)
+
+const components = computed(() => Object.values(componentMeta.value))
 
 const componentPropsMeta = computed(() => {
   const props = component.value?.meta?.props
@@ -40,7 +33,7 @@ function updateRenderer() {
   if (!component.value) return
   const event: Event & { data?: any } = new Event('compodium:update-renderer')
   event.data = {
-    props: state.value.props?.[component.value.kebabName],
+    props: componentProps.value[componentName.value],
   }
   window.dispatchEvent(event)
 }
@@ -57,8 +50,7 @@ async function onMetaReload(event: any) {
   const resp = await fetch('/api/component-meta/BaseButton')
   const meta = await resp.json()
   console.log('meta', meta.meta.props)
-
-  updateMeta({ BaseButton: meta })
+  componentMeta.value[meta.pascalName] = meta as Component
 }
 
 onMounted(() => {
@@ -88,7 +80,7 @@ const isDark = computed({
 
     const event: Event & { data?: string } = new Event('compodium:update-color-mode')
     event.data = colorMode.value
-    console.log(event)
+
     window.dispatchEvent(event)
   },
 })
@@ -101,7 +93,7 @@ const isDark = computed({
       class="top-0 h-[49px] border-b border-[var(--ui-border)] flex justify-center"
     >
       <UInputMenu
-        v-model="currentComponent"
+        v-model="componentName"
         variant="none"
         :items="components"
         value-key="kebabName"
@@ -114,7 +106,7 @@ const isDark = computed({
       <div class="absolute top-[49px] bottom-0 inset-x-0 grid xl:grid-cols-8 grid-cols-4 bg-[var(--ui-bg)]">
         <div class="col-span-1 border-r border-[var(--ui-border)] hidden xl:block overflow-y-auto">
           <UNavigationMenu
-            :items="components.map((c) => ({ ...c, active: c.kebabName === component?.kebabName, onSelect: () => component = c }))"
+            :items="components.map((c) => ({ ...c, active: c.kebabName === component?.kebabName, onSelect: () => componentName = c.pascalName }))"
             orientation="vertical"
             label-key="pascalName"
             :ui="{ link: 'before:rounded-none' }"

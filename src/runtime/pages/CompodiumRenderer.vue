@@ -27,7 +27,6 @@ function onUpdateRenderer(event: Event & { data?: any }) {
 
 const colorMode = useColorMode()
 function onUpdateColorMode(event: Event & { data?: typeof colorMode.value }) {
-  console.log('colorMode', event.data)
   if (event.data) colorMode.value = event.data
 }
 
