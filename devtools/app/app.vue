@@ -32,8 +32,9 @@ const componentPropsMeta = computed(() => {
 function updateRenderer() {
   if (!component.value) return
   const event: Event & { data?: any } = new Event('compodium:update-renderer')
+
   event.data = {
-    props: componentProps.value[componentName.value],
+    props: componentProps.value,
   }
   window.dispatchEvent(event)
 }

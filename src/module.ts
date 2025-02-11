@@ -1,5 +1,5 @@
-import { addCustomTab, startSubprocess } from '@nuxt/devtools-kit'
-import { defineNuxtModule, createResolver, extendPages, installModule, addImportsDir } from '@nuxt/kit'
+import { startSubprocess } from '@nuxt/devtools-kit'
+import { defineNuxtModule, createResolver, installModule, addImportsDir, addTemplate } from '@nuxt/kit'
 import defu from 'defu'
 import { getPort } from 'get-port-please'
 import sirv from 'sirv'
@@ -21,11 +21,21 @@ export default defineNuxtModule<ModuleOptions>({
     addImportsDir(resolve('./runtime/composables'))
 
     if (nuxt.options.dev && nuxt.options.devtools.enabled) {
-      // TODO: Change me
       await installModule('../../nuxt-component-meta/src/module')
 
       const appResolver = createResolver(nuxt.options.rootDir)
       nuxt.options.vite = defu(nuxt.options?.vite, { plugins: [compodiumMetaPlugin({ resolve: appResolver.resolve, options })] })
+
+      nuxt.hook('app:resolve', (app) => {
+        const root = app.rootComponent
+        addTemplate({
+          filename: 'compodium-root.mjs',
+          getContents: () => `
+            export { default } from "${root}"
+          `,
+        })
+        app.rootComponent = resolve('./runtime/custom-root.vue')
+      })
 
       if (process.env.COMPODIUM_LOCAL) {
         const PORT = await getPort({ port: 42124 })
@@ -71,29 +81,6 @@ export default defineNuxtModule<ModuleOptions>({
       }
 
       nuxt.options.routeRules = defu(nuxt.options.routeRules, { '/__compodium__/**': { ssr: false } })
-
-      extendPages((pages) => {
-        if (pages.length) {
-          pages.unshift({
-            name: 'compodium',
-            path: '/__compodium__/renderer',
-            file: resolve('./runtime/pages/CompodiumRenderer.vue'),
-            meta: {
-              layout: false,
-            },
-          })
-        }
-      })
-
-      addCustomTab({
-        name: 'compodium',
-        title: 'Compodium',
-        icon: '/__compodium__/devtools/favicon.svg',
-        view: {
-          type: 'iframe',
-          src: '/__compodium__/devtools',
-        },
-      })
     }
   },
 })

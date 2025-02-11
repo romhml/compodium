@@ -1,13 +1,13 @@
 <script setup lang="ts">
-defineProps<{
+withDefaults(defineProps<{
   label: string
   variant: string
   foo: boolean
-}>()
+}>(), { label: 'Click me!' })
 
 defineEmits([])
 </script>
 
 <template>
-  <button> {{ label }} false </button>
+  <button> {{ label }} </button>
 </template>
