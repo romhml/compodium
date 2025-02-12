@@ -1,15 +1,16 @@
 <script setup lang="ts">
 import { onUnmounted, onMounted, reactive } from 'vue'
 import { useColorMode } from '@vueuse/core'
-import { defineAsyncComponent, useRoute, computed } from '#imports'
+import { defineAsyncComponent, useRoute } from '#imports'
+// @ts-expect-error virtual file
+import { buildAssetsURL } from '#internal/nuxt/paths'
+// @ts-expect-error virtual file
+import components from '#build/compodium/components.json'
 
 const route = useRoute()
 
-// TODO: Replace me with something generic
-const componentPath = '../../../playground/' + route.query.path
-const component = computed(() => {
-  return defineAsyncComponent(() => import(/* @vite-ignore */ componentPath))
-})
+const componentPath = components[route.query.name as string]
+const component = defineAsyncComponent(() => import(/* @vite-ignore */ buildAssetsURL(componentPath)))
 
 if (import.meta.hot) {
   import.meta.hot.on('vite:afterUpdate', async () => {

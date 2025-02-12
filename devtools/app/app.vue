@@ -19,7 +19,7 @@ const componentProps = useStorage<Record<string, any>>(`__compodium-props-${comp
 
 const component = computed<Component | undefined>(() =>
   componentMeta.value?.[componentName.value]
-  ?? componentMeta.value?.['BaseButton'],
+  ?? Object.values(componentMeta.value)?.[0],
 )
 
 const components = computed(() => Object.values(componentMeta.value))
