@@ -5,7 +5,7 @@ import CompodiumRenderer from './pages/CompodiumRenderer.vue'
 import { useNuxtApp } from '#imports'
 
 // @ts-expect-error virtual file
-const NuxtRoot = defineAsyncComponent(() => import('#build/compodium-root.mjs').then(c => c.default))
+const NuxtRoot = defineAsyncComponent(() => import('#build/compodium/root.mjs').then(c => c.default))
 
 const nuxtApp = useNuxtApp()
 const url = import.meta.server ? nuxtApp.ssrContext?.url : window.location.pathname

@@ -12,7 +12,7 @@ export interface ModuleOptions {
 export default defineNuxtModule<ModuleOptions>({
   meta: {
     name: 'compodium',
-    configKey: 'compodium',
+    configKey: 'compodium'
   },
   defaults: {},
   async setup(options, nuxt) {
@@ -23,8 +23,7 @@ export default defineNuxtModule<ModuleOptions>({
     async function registerModule(name: string, options?: Record<string, any>) {
       if (!hasNuxtModule(name)) {
         await installModule(name, options)
-      }
-      else {
+      } else {
         (nuxt.options as any)[name] = defu((nuxt.options as any)[name], options)
       }
     }
@@ -37,11 +36,12 @@ export default defineNuxtModule<ModuleOptions>({
     nuxt.hook('app:resolve', (app) => {
       const root = app.rootComponent
       addTemplate({
-        filename: 'compodium-root.mjs',
+        filename: 'compodium/root.mjs',
         getContents: () => `
             export { default } from "${root}"
-          `,
+          `
       })
+
       app.rootComponent = resolve('./runtime/custom-root.vue')
     })
 
@@ -52,7 +52,7 @@ export default defineNuxtModule<ModuleOptions>({
       getContents: ({ app }) => JSON.stringify(app.components.reduce((acc, c) => {
         acc[c.pascalName] = c.filePath
         return acc
-      }, {} as Record<string, any>), null, 2),
+      }, {} as Record<string, any>), null, 2)
     })
 
     if (process.env.COMPODIUM_LOCAL) {
@@ -66,14 +66,14 @@ export default defineNuxtModule<ModuleOptions>({
             cwd: './devtools',
             stdio: 'pipe',
             env: {
-              PORT: PORT.toString(),
-            },
+              PORT: PORT.toString()
+            }
           },
           {
             id: 'compodium:devtools',
-            name: 'Compodium Devtools',
+            name: 'Compodium Devtools'
           },
-          nuxt,
+          nuxt
         )
       })
 
@@ -85,19 +85,18 @@ export default defineNuxtModule<ModuleOptions>({
           changeOrigin: true,
           followRedirects: true,
           ws: true,
-          rewriteWsOrigin: true,
+          rewriteWsOrigin: true
         }
       })
-    }
-    else {
+    } else {
       nuxt.hook('vite:serverCreated', async (server) => {
         server.middlewares.use('/__compodium__/devtools', sirv(resolve('../dist/client/devtools'), {
           single: true,
-          dev: true,
+          dev: true
         }))
       })
     }
 
     nuxt.options.routeRules = defu(nuxt.options.routeRules, { '/__compodium__/**': { ssr: false } })
-  },
+  }
 })

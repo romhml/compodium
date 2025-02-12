@@ -1,48 +1,66 @@
 <script setup lang="ts">
 import { useStorage, StorageSerializers, useColorMode, useDebounceFn } from '@vueuse/core'
 import type { Component } from '../../src/types'
+import type { PropertyMeta } from 'vue-component-meta'
 
 // Disable devtools in component renderer iframe
 // @ts-expect-error - Nuxt Devtools internal value
 window.__NUXT_DEVTOOLS_DISABLE__ = true
 
-const componentMeta = useStorage<Record<string, Component>>('__compodium-components', {}, undefined, { serializer: StorageSerializers.object })
+function parseComponentMeta(component: Component): Component {
+  return {
+    ...component,
+    meta: {
+      ...component.meta,
+      props: component.meta?.props.map((prop: any) => ({
+        ...prop,
+        default: getDefaultPropValue(prop)
+      }))
+    }
+  }
+}
 
+function getDefaultPropValue(meta: Partial<PropertyMeta>) {
+  if (!meta.default) return
+  try {
+    return new Function(`return ${meta.default}`)()
+  } catch {
+    console.warn(`[Compodium] Could not evaluate default value for property ${meta.name}`)
+  }
+}
+
+const componentMeta = useStorage<Record<string, Component>>('__compodium-components', {}, undefined, { serializer: StorageSerializers.object })
 const { status } = useAsyncData('__compodium-fetch-meta', async () => {
   const resp = await fetch('/api/component-meta')
-  componentMeta.value = await resp.json()
+  const meta = await resp.json() as Record<string, Component>
+  componentMeta.value = Object.fromEntries(
+    Object.entries(meta).map(([key, value]: [string, Component]) => [key, parseComponentMeta(value)])
+  )
   return true
 })
 
-const componentName = useStorage<string>('__compodium-component', 'BaseButton')
+const componentName = useStorage<string>('__compodium-component', null)
 const componentProps = useStorage<Record<string, any>>(`__compodium-props-${componentName.value}`, {}, undefined, { serializer: StorageSerializers.object })
 
 const component = computed<Component | undefined>(() =>
   componentMeta.value?.[componentName.value]
-  ?? Object.values(componentMeta.value)?.[0],
+  ?? Object.values(componentMeta.value)?.[0]
 )
 
 const components = computed(() => Object.values(componentMeta.value))
-
-const componentPropsMeta = computed(() => {
-  const props = component.value?.meta?.props
-  return props ? [...props].sort((a, b) => a.name.localeCompare(b.name)) : null
-})
 
 function updateRenderer() {
   if (!component.value) return
   const event: Event & { data?: any } = new Event('compodium:update-renderer')
 
   event.data = {
-    props: componentProps.value,
+    props: componentProps.value
   }
   window.dispatchEvent(event)
 }
 
 const updateRendererDebounced = useDebounceFn(updateRenderer, 100, { maxWait: 300 })
-
 function onComponentLoaded() {
-  if (!component.value) return
   updateRenderer()
 }
 
@@ -51,7 +69,7 @@ async function onMetaReload(event: any) {
   const resp = await fetch('/api/component-meta/BaseButton')
   const meta = await resp.json()
   console.log('meta', meta.meta.props)
-  componentMeta.value[meta.pascalName] = meta as Component
+  componentMeta.value[meta.pascalName] = parseComponentMeta(meta as Component)
 }
 
 onMounted(() => {
@@ -67,7 +85,7 @@ onUnmounted(() => {
 const tabs = computed(() => {
   if (!component.value) return
   return [
-    { label: 'Props', slot: 'props', icon: 'i-lucide-settings', disabled: !component.value.meta?.props?.length },
+    { label: 'Props', slot: 'props', icon: 'i-lucide-settings', disabled: !component.value.meta?.props?.length }
   ]
 })
 
@@ -78,19 +96,18 @@ const isDark = computed({
   },
   set(value) {
     colorMode.value = value ? 'dark' : 'light'
-
     const event: Event & { data?: string } = new Event('compodium:update-color-mode')
     event.data = colorMode.value
 
     window.dispatchEvent(event)
-  },
+  }
 })
 </script>
 
 <template>
   <UApp class="flex justify-center items-center h-screen w-full relative font-sans">
     <div
-      v-if="status === 'success'"
+      v-if="status === 'success' && component"
       class="top-0 h-[49px] border-b border-[var(--ui-border)] flex justify-center"
     >
       <UInputMenu
@@ -115,11 +132,17 @@ const isDark = computed({
         </div>
 
         <div class="xl:col-span-5 col-span-2 relative">
-          <ComponentPreview
-            :component="component"
-            :props="componentProps"
-            class="h-full"
-          />
+          <div class="flex flex-col h-full bg-grid rounded-md">
+            <ComponentPreview
+              :component="component"
+              :props="componentProps"
+              class="grow h-full"
+            />
+            <ComponentCode
+              :component="component"
+              :props="componentProps"
+            />
+          </div>
           <div class="flex gap-2 absolute top-1 right-2">
             <UButton
               :icon="isDark ? 'i-lucide-moon' : 'i-lucide-sun'"
@@ -140,7 +163,7 @@ const isDark = computed({
           >
             <template #props>
               <div
-                v-for="prop in componentPropsMeta"
+                v-for="prop in component.meta.props"
                 :key="'prop-' + prop.name"
                 class="px-3 py-5 border-b border-[var(--ui-border)]"
               >
@@ -176,6 +199,16 @@ const isDark = computed({
   --color-green-800: #016538;
   --color-green-900: #0A5331;
   --color-green-950: #052E16;
+}
+
+.bg-grid {
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' transform='scale(3)'%3E%3Crect width='100%25' height='100%25' fill='%23fff'/%3E%3Cpath fill='none' stroke='hsla(0, 0%25, 98%25, 1)' stroke-width='.2' d='M10 0v20ZM0 10h20Z'/%3E%3C/svg%3E");
+  background-size: 40px 40px;
+}
+
+.dark .bg-grid {
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' transform='scale(3)'%3E%3Crect width='100%25' height='100%25' fill='hsl(0, 0%25, 8.5%25)'/%3E%3Cpath fill='none' stroke='hsl(0, 0%25, 11.0%25)' stroke-width='.2' d='M10 0v20ZM0 10h20Z'/%3E%3C/svg%3E");
+  background-size: 40px 40px;
 }
 
 .shiki

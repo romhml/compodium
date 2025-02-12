@@ -7,7 +7,7 @@ export const arrayInputSchema = z.object({
     .or(z.record(z.number(), z.any({})).transform(t => Object.values(t)))
     .transform((t) => {
       return t.filter(s => s !== 'undefined')
-    }).pipe(z.array(z.any()).max(1)),
+    }).pipe(z.array(z.any()).max(1))
 })
 
 export type ArrayInputSchema = z.infer<typeof arrayInputSchema>
@@ -31,11 +31,16 @@ function removeArrayItem(index: number) {
 
 function addArrayItem() {
   if (!modelValue.value) {
-    modelValue.value = [{}]
+    modelValue.value = [null]
+  } else {
+    modelValue.value.push(null)
   }
-  else {
-    modelValue.value.push({})
-  }
+}
+
+function updateValue(index: number, value: any) {
+  if (!modelValue.value) return
+  modelValue.value[index] = value
+  modelValue.value = [...modelValue.value]
 }
 </script>
 
@@ -49,6 +54,7 @@ function addArrayItem() {
       <ComponentPropInput
         :model-value="value"
         :meta="{ schema: itemSchema }"
+        @update:model-value="(val) => updateValue(index, val)"
       />
 
       <UPopover>

@@ -3,16 +3,14 @@ import { z } from 'zod'
 
 export const objectInputSchema = z.object({
   kind: z.literal('object'),
-  schema: z.record(z.string(), z.any()),
+  schema: z.record(z.string(), z.any())
 })
 
 export type ObjectInputSchema = z.infer<typeof objectInputSchema>
 </script>
 
 <script setup lang="ts">
-const props = defineProps<{
-  schema: ObjectInputSchema
-}>()
+const props = defineProps<{ schema: ObjectInputSchema }>()
 
 const modelValue = defineModel<Record<string, any>>({})
 

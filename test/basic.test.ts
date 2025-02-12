@@ -6,7 +6,7 @@ describe('ssr', async () => {
   await setup({
     // FIXME: TypeError: The URL must be of scheme file
     // rootDir: fileURLToPath(new URL('./fixtures/basic', import.meta.url)),
-    rootDir: resolve('./test/fixtures/basic'),
+    rootDir: resolve('./test/fixtures/basic')
   })
 
   it('renders the index page', async () => {

@@ -6,16 +6,14 @@ export const stringEnumInputSchema = z.object({
   schema: z.array(z.string())
     .or(z.record(z.any(), z.string()).transform<string[]>(t => Object.values(t)))
     .transform<string[]>(t => t.filter(s => s.trim().match(/^["'`]/)).map(s => s.trim().replaceAll(/["'`]/g, '')))
-    .pipe(z.array(z.string()).min(1)),
+    .pipe(z.array(z.string()).min(1))
 })
 
 export type StringEnumInputSchema = z.infer<typeof stringEnumInputSchema>
 </script>
 
 <script setup lang="ts">
-const props = defineProps<{
-  schema: StringEnumInputSchema
-}>()
+const props = defineProps<{ schema: StringEnumInputSchema }>()
 
 const sizes = ['xs', 'sm', 'md', 'lg', 'xl']
 function parseSize(size: string) {
@@ -45,8 +43,7 @@ const options = computed(() => {
       if (suffixAIndex !== suffixBIndex) {
         return suffixAIndex - suffixBIndex
       }
-    }
-    else if (suffixAIndex === -1 || suffixBIndex === -1) {
+    } else if (suffixAIndex === -1 || suffixBIndex === -1) {
       if (sizeA.suffix !== sizeB.suffix) {
         return sizeA.suffix.localeCompare(sizeB.suffix)
       }

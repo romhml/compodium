@@ -5,8 +5,8 @@ export const optionalStringSchema = {
   type: 'string | undefined',
   schema: {
     0: 'undefined',
-    1: 'string',
-  },
+    1: 'string'
+  }
 }
 
 export const numberSchema = 'number' as const
@@ -15,8 +15,8 @@ export const optionalNumberSchema = {
   type: 'number | undefined',
   schema: {
     0: 'undefined',
-    1: 'number',
-  },
+    1: 'number'
+  }
 }
 
 export const booleanSchema = 'boolean' as const
@@ -25,8 +25,8 @@ export const optionalBooleanSchema = {
   type: 'boolean | undefined',
   schema: {
     0: 'undefined',
-    1: 'boolean',
-  },
+    1: 'boolean'
+  }
 }
 
 export const objectSchema = {
@@ -45,11 +45,11 @@ export const objectSchema = {
         type: 'string | undefined',
         schema: {
           0: 'undefined',
-          1: 'string',
-        },
-      },
-    },
-  },
+          1: 'string'
+        }
+      }
+    }
+  }
 }
 
 export const arraySchema = {
@@ -72,13 +72,13 @@ export const arraySchema = {
             type: 'string | undefined',
             schema: {
               0: 'undefined',
-              1: 'string',
-            },
-          },
-        },
-      },
-    },
-  ],
+              1: 'string'
+            }
+          }
+        }
+      }
+    }
+  ]
 }
 
 export const arrayOptionalSchema = {
@@ -106,15 +106,15 @@ export const arrayOptionalSchema = {
                 type: 'string | undefined',
                 schema: {
                   0: 'undefined',
-                  1: 'string',
-                },
-              },
-            },
-          },
-        },
-      ],
-    },
-  },
+                  1: 'string'
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
 }
 
 export const stringEnumSchema = {
@@ -128,6 +128,6 @@ export const stringEnumSchema = {
     4: '"step"',
     5: '"location"',
     6: '"date"',
-    7: '"time"',
-  },
+    7: '"time"'
+  }
 }

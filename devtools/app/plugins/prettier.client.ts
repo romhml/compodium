@@ -22,8 +22,7 @@ function createPrettierWorkerApi(worker: Worker): SimplePrettier {
 
     if (error) {
       reject(error)
-    }
-    else {
+    } else {
       resolve(message)
     }
   })
@@ -39,7 +38,7 @@ function createPrettierWorkerApi(worker: Worker): SimplePrettier {
   return {
     format(source: string, options?: Options) {
       return postMessage({ type: 'format', source, options })
-    },
+    }
   }
 }
 
@@ -49,7 +48,7 @@ export default defineNuxtPlugin(async () => {
 
   return {
     provide: {
-      prettier,
-    },
+      prettier
+    }
   }
 })

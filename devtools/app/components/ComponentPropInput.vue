@@ -1,13 +1,23 @@
 <script setup lang="ts">
 import type { PropertyMeta } from 'vue-component-meta'
 
-const props = defineProps<{ meta: Partial<PropertyMeta>, ignore?: boolean }>()
+const props = defineProps<{ meta: Partial<PropertyMeta>, disabled?: boolean }>()
+
 const modelValue = defineModel<any>()
 
 const matchedInput = shallowRef()
 const parsedSchema = shallowRef()
 
 const { resolveInputSchema } = usePropSchema()
+
+function resetEmptyValue() {
+  if (!props.meta.default) return
+  if (!modelValue.value || modelValue.value === '') modelValue.value = props.meta.default
+}
+
+onMounted(() => {
+  resetEmptyValue()
+})
 
 watchEffect(() => {
   if (!props.meta?.schema) return
@@ -26,7 +36,7 @@ const description = computed(() => {
     :name="meta?.name"
     class=""
     :ui="{ wrapper: 'mb-2' }"
-    :class="{ 'opacity-70 cursor-not-allowed': !matchedInput || ignore }"
+    :class="{ 'opacity-70 cursor-not-allowed': !matchedInput || disabled }"
   >
     <template #label>
       <p
@@ -45,12 +55,13 @@ const description = computed(() => {
         v-html="description"
       />
     </template>
-
     <component
       :is="matchedInput.component"
-      v-if="!ignore && matchedInput"
+      v-if="!disabled && matchedInput"
       v-model="modelValue"
+      :default-value="meta.default"
       :schema="parsedSchema"
+      @blur="resetEmptyValue()"
     />
   </UFormField>
 </template>

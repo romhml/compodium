@@ -16,7 +16,7 @@ export function useShiki() {
       highlighter.value = await createHighlighterCore({
         themes: [MaterialThemeLighter, MaterialThemePalenight],
         langs: [VueLang, MarkdownLang],
-        loadWasm,
+        loadWasm
       })
     }
 
@@ -25,8 +25,8 @@ export function useShiki() {
       themes: {
         dark: 'material-theme-palenight',
         default: 'material-theme-lighter',
-        light: 'material-theme-lighter',
-      },
+        light: 'material-theme-lighter'
+      }
     })
   }
 

@@ -16,7 +16,7 @@ describe('usePropSchema', () => {
     ['object', { schema: objectSchema, inputId: 'object' }],
     ['optional boolean', { schema: optionalBooleanSchema, inputId: 'boolean' }],
     ['array', { schema: arraySchema, inputId: 'array' }],
-    ['optional array', { schema: arrayOptionalSchema, inputId: 'array' }],
+    ['optional array', { schema: arrayOptionalSchema, inputId: 'array' }]
   ])('resolveInputSchema should resolve %s schema', async (_: string, options) => {
     const result = resolveInputSchema(options.schema as any)
     expect(result?.input.id).toBe(options.inputId)

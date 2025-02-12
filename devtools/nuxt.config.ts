@@ -9,11 +9,11 @@ export default defineNuxtConfig({
   devtools: { enabled: false },
 
   app: {
-    baseURL: '/__compodium__/devtools',
+    baseURL: '/__compodium__/devtools'
   },
 
   future: {
-    compatibilityVersion: 4,
+    compatibilityVersion: 4
   },
   compatibilityDate: '2024-04-03',
 
@@ -21,18 +21,18 @@ export default defineNuxtConfig({
     hooks: {
       'prerender:routes': function (routes) {
         routes.clear()
-      },
+      }
     },
     output: {
-      publicDir: resolve(__dirname, '../dist/client/devtools'),
-    },
+      publicDir: resolve(__dirname, '../dist/client/devtools')
+    }
   },
 
   vite: {
     server: {
       hmr: {
-        clientPort: process.env.PORT ? +process.env.PORT : undefined,
-      },
-    },
-  },
+        clientPort: process.env.PORT ? +process.env.PORT : undefined
+      }
+    }
+  }
 })

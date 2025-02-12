@@ -13,7 +13,7 @@ const availableInputs = [
   { id: 'boolean', schema: booleanInputSchema, component: BooleanInput },
   { id: 'stringEnum', schema: stringEnumInputSchema, component: StringEnumInput },
   { id: 'object', schema: objectInputSchema, component: ObjectInput },
-  { id: 'array', schema: arrayInputSchema, component: ArrayInput },
+  { id: 'array', schema: arrayInputSchema, component: ArrayInput }
 ]
 
 export function usePropSchema() {
