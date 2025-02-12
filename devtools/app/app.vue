@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { useStorage, StorageSerializers, useColorMode, useDebounceFn } from '@vueuse/core'
-import type { Component } from '../../src/types'
+import { useColorMode, useDebounceFn } from '@vueuse/core'
+import type { Component, ComponentCollection } from '../../src/types'
 import type { PropertyMeta } from 'vue-component-meta'
 
 // Disable devtools in component renderer iframe
 // @ts-expect-error - Nuxt Devtools internal value
 window.__NUXT_DEVTOOLS_DISABLE__ = true
+const fetch = $fetch.create({ baseURL: '/__compodium__/api' })
 
 function parseComponentMeta(component: Component): Component {
   return {
@@ -29,18 +30,24 @@ function getDefaultPropValue(meta: Partial<PropertyMeta>) {
   }
 }
 
-const componentMeta = useStorage<Record<string, Component>>('__compodium-components', {}, undefined, { serializer: StorageSerializers.object })
+const collections = useState<Record<string, ComponentCollection>>('__compodium-collections', () => ({}))
+
+const componentMeta = computed(() => Object.values(collections.value).reduce((acc, c) => ({ ...acc, ...Object.fromEntries(
+  Object.entries(c).map(([key, value]: [string, Component]) => [key, parseComponentMeta(value)])
+) }), {}))
+
 const { status } = useAsyncData('__compodium-fetch-meta', async () => {
-  const resp = await fetch('/api/component-meta')
-  const meta = await resp.json() as Record<string, Component>
-  componentMeta.value = Object.fromEntries(
-    Object.entries(meta).map(([key, value]: [string, Component]) => [key, parseComponentMeta(value)])
-  )
+  collections.value = await fetch('/collections')
   return true
 })
 
-const componentName = useStorage<string>('__compodium-component', null)
-const componentProps = useStorage<Record<string, any>>(`__compodium-props-${componentName.value}`, {}, undefined, { serializer: StorageSerializers.object })
+const componentName = useState<string>('__compodium-component')
+const componentsState = useState<Record<string, Record<string, any>>>('__component_state', () => ({}))
+
+const componentProps = ref<Record<string, any>>({})
+watch(componentName, () => {
+  componentProps.value = componentsState.value[componentName.value] ??= {}
+}, { immediate: true })
 
 const component = computed<Component | undefined>(() =>
   componentMeta.value?.[componentName.value]
@@ -66,10 +73,10 @@ function onComponentLoaded() {
 
 async function onMetaReload(event: any) {
   console.log('received: compodium:meta-reload', event.data)
-  const resp = await fetch('/api/component-meta/BaseButton')
-  const meta = await resp.json()
-  console.log('meta', meta.meta.props)
-  componentMeta.value[meta.pascalName] = parseComponentMeta(meta as Component)
+  // const resp = await fetch('/api/component-meta/BaseButton')
+  // const meta = await resp.json()
+  // console.log('meta', meta.meta.props)
+  // componentMeta.value[meta.pascalName] = parseComponentMeta(meta as Component)
 }
 
 onMounted(() => {

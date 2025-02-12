@@ -1,6 +1,14 @@
-import type { Component as _Component } from '@nuxt/schema'
-import type { ComponentMeta } from 'vue-component-meta'
+import type { ComponentData as NuxtComponentData } from 'nuxt-component-meta'
 
-export type Component = _Component & {
-  meta: ComponentMeta
+export type Component = NuxtComponentData & {
+
 }
+
+export interface Collection {
+  name: string
+  wrapperComponent?: string
+  match: string | RegExp
+  external?: boolean
+}
+
+export type ComponentCollection = Record<string, Component>

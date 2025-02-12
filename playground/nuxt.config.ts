@@ -1,5 +1,10 @@
 export default defineNuxtConfig({
-  modules: ['../src/module'],
+  modules: ['@nuxt/ui', '../src/module'],
   devtools: { enabled: true },
-  compatibilityDate: '2025-02-07'
+  css: ['~/assets/css/main.css'],
+  compatibilityDate: '2025-02-12',
+
+  compodium: {
+    rootComponent: 'compodium/root-component.vue'
+  }
 })

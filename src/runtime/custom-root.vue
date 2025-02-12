@@ -5,7 +5,13 @@ import CompodiumRenderer from './pages/CompodiumRenderer.vue'
 import { useNuxtApp } from '#imports'
 
 // @ts-expect-error virtual file
-const NuxtRoot = defineAsyncComponent(() => import('#build/compodium/root.mjs').then(c => c.default))
+import { buildAssetsURL } from '#internal/nuxt/paths'
+
+const appConfig = useAppConfig()
+const options = appConfig._compodium as any
+
+const NuxtRoot = defineAsyncComponent(() => import(/* @vite-ignore */ options.appRootComponent).then(c => c.default))
+const RootComponent = options.rootComponent && defineAsyncComponent(() => import(/* @vite-ignore */ buildAssetsURL(options.rootComponent)).then(c => c.default))
 
 const nuxtApp = useNuxtApp()
 const url = import.meta.server ? nuxtApp.ssrContext?.url : window.location.pathname
@@ -13,7 +19,12 @@ const url = import.meta.server ? nuxtApp.ssrContext?.url : window.location.pathn
 
 <template>
   <Suspense>
-    <CompodiumRenderer v-if="url?.startsWith('/__compodium__/renderer')" />
+    <template v-if="url?.startsWith('/__compodium__/renderer')">
+      <RootComponent v-if="RootComponent">
+        <CompodiumRenderer />
+      </RootComponent>
+      <CompodiumRenderer v-else />
+    </template>
     <NuxtRoot v-else />
   </Suspense>
 </template>
