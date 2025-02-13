@@ -15,5 +15,7 @@ defineEmits([])
 </script>
 
 <template>
-  <button> {{ label }} </button>
+  <button :class="{ border: variant === 'outline' }">
+    <slot> {{ label }} </slot>
+  </button>
 </template>

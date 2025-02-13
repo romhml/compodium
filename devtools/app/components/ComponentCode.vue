@@ -2,11 +2,20 @@
 import { useClipboard } from '@vueuse/core'
 import { kebabCase } from 'scule'
 import { escapeString } from 'knitwork'
-import type { Component } from '../../../src/types'
+import type { Component, ComponentExample } from '../../../src/types'
 
-const props = defineProps<{ component?: Component, props?: Record<string, any> }>()
+const props = defineProps<{ component?: Component | ComponentExample, props?: Record<string, any> }>()
 
 const componentProps = computed(() => new Set(props.component?.meta?.props.map(prop => prop.name)))
+
+const fetch = $fetch.create({ baseURL: '/__compodium__/api' })
+const { data: exampleCode } = useAsyncData<string | null>('__compodium-component-example-code', async () => {
+  console.log(props.component)
+  if (props.component?.isExample) {
+    return await fetch(`/__compodium__/api/example/${props.component.pascalName}`)
+  }
+  return null
+}, { watch: [() => props.component?.pascalName] })
 
 function genPropValue(value: any): string {
   if (typeof value === 'string') {
@@ -42,6 +51,13 @@ const code = computed(() => {
   const extraTemplate = [
     propsTemplate
   ].filter(Boolean).join(' ')
+
+  if (props.component.isExample && exampleCode.value) {
+    const componentRegexp = new RegExp(`<${props.component.componentName}(\\s|\\r|>)`)
+    return exampleCode.value.replace(/import .* from ['"]#.*['"];?\n+/, '')
+      .replace(componentRegexp, `<${props.component.componentName} ${extraTemplate}$1`)
+      .replace('v-bind="$attrs"', '')
+  }
 
   return `<${props.component.pascalName} ${extraTemplate} />`
 })

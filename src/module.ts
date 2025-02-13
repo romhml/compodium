@@ -6,9 +6,11 @@ import sirv from 'sirv'
 import { compodiumMetaPlugin } from './meta'
 import type { Collection } from './types'
 import type { ComponentData } from 'nuxt-component-meta'
+import { scanComponents } from './utils'
 
 export interface ModuleOptions {
   rootComponent?: string
+  examples?: string
   collections: Collection[]
 }
 
@@ -18,6 +20,7 @@ export default defineNuxtModule<ModuleOptions>({
     configKey: 'compodium'
   },
   defaults: {
+    examples: 'compodium/examples',
     collections: [
       { name: 'Components', match: 'components/' },
       { name: 'Nuxt UI', match: '@nuxt/ui', external: true, icon: 'lineicons:nuxt' }
@@ -31,7 +34,6 @@ export default defineNuxtModule<ModuleOptions>({
 
     nuxt.options.appConfig._compodium = {
       ...options,
-      // @ts-expect-error unresolved internal type
       rootComponent: options.rootComponent ? appResolver.resolve(options.rootComponent) : undefined
     }
 
@@ -65,16 +67,27 @@ export default defineNuxtModule<ModuleOptions>({
       app.rootComponent = resolve('./runtime/custom-root.vue')
     })
 
+    const exampleComponents = options.examples
+      ? await scanComponents([{
+        path: appResolver.resolve(options.examples),
+        pattern: `**/*.{vue,ts,tsx}`
+      }], appResolver.resolve(''))
+      : []
+
+    // @ts-expect-error unresolved internal type
+    nuxt.options.appConfig._compodium.exampleComponents = exampleComponents
+
     // Generate component templates
     addTemplate({
       filename: 'compodium/components.json',
       write: true,
-      getContents: ({ app }) => JSON.stringify(app.components.reduce((acc, c) => {
+      getContents: ({ app }) => JSON.stringify(app.components.concat(exampleComponents).reduce((acc, c) => {
         acc[c.pascalName] = c.filePath
         return acc
       }, {} as Record<string, any>), null, 2)
     })
 
+    // Should scan the example directory, match them to components and integrate them into collections.
     if (process.env.COMPODIUM_LOCAL) {
       const PORT = await getPort({ port: 42124 })
 
@@ -121,6 +134,12 @@ export default defineNuxtModule<ModuleOptions>({
       method: 'get',
       route: '/__compodium__/api/collections',
       handler: resolve('./runtime/server/api/collections.get')
+    })
+
+    addServerHandler({
+      method: 'get',
+      route: '/__compodium__/api/example/:component',
+      handler: resolve('./runtime/server/api/example.get')
     })
 
     nuxt.options.routeRules = defu(nuxt.options.routeRules, { '/__compodium__/**': { ssr: false } })

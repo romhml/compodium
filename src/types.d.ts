@@ -1,7 +1,12 @@
 import type { ComponentData as NuxtComponentData } from 'nuxt-component-meta'
 
 export type Component = NuxtComponentData & {
+  examples?: ComponentExample[]
+}
 
+export type ComponentExample = NuxtComponentData & {
+  componentName: string
+  isExample?: true
 }
 
 export interface Collection {

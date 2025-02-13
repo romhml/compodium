@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useColorMode, useDebounceFn } from '@vueuse/core'
-import type { Component, ComponentCollection } from '../../src/types'
+import type { Component, ComponentCollection, ComponentExample } from '../../src/types'
 import type { PropertyMeta } from 'vue-component-meta'
 
 // Disable devtools in component renderer iframe
@@ -32,9 +32,18 @@ function getDefaultPropValue(meta: Partial<PropertyMeta>) {
 
 const collections = useState<Record<string, ComponentCollection>>('__compodium-collections', () => ({}))
 
-const componentMeta = computed(() => Object.values(collections.value).reduce((acc, c) => ({ ...acc, ...Object.fromEntries(
-  Object.entries(c.components).map(([key, value]: [string, Component]) => [key, parseComponentMeta(value)])
-) }), {}))
+const componentMeta = computed<Record<string, Component | ComponentExample>>(() =>
+  Object.values(collections.value).reduce((acc, c) => ({
+    ...acc,
+    ...Object.fromEntries(
+      Object.entries(c.components).flatMap(([key, value]: [string, Component]) => {
+        const parsedComponent = parseComponentMeta(value)
+        const examples = value.examples.map(e => ([e.pascalName, { ...e, meta: parsedComponent.meta }]))
+        return [[key, parsedComponent], ...examples]
+      })
+    )
+  }), {})
+)
 
 const { status } = useAsyncData('__compodium-fetch-meta', async () => {
   collections.value = await fetch('/collections')
@@ -51,9 +60,29 @@ const componentTree = computed(() => {
       label: key,
       key,
       icon: value.icon,
+      defaultOpen: true,
+      isCollection: true,
       children: value
-        ? Object.entries(value.components).map(([ckey, _]) => {
-            return { label: ckey, key: ckey, selectable: true }
+        ? Object.entries(value.components).map(([ckey, cvalue]) => {
+            let examples = cvalue.examples?.map(example => ({
+              isExample: true,
+              label: example.pascalName.replace(`${key}${ckey}`, ''),
+              key: example.pascalName
+            }))
+            const mainExample = examples.find((c) => {
+              return c.label === '' || c.label === 'Example'
+            })
+
+            if (mainExample) {
+              examples = examples.filter(e => e.key !== mainExample.key)
+            }
+
+            return {
+              label: ckey,
+              key: mainExample?.key ?? ckey,
+              isComponent: true,
+              children: examples?.length ? examples : undefined
+            }
           })
         : undefined
     }
@@ -61,7 +90,7 @@ const componentTree = computed(() => {
 })
 
 watch(treeValue, () => {
-  if (treeValue.value?.selectable) componentName.value = treeValue.value.key
+  if (treeValue.value && !treeValue.value?.isCollection) componentName.value = treeValue.value.key
 })
 
 const componentProps = ref<Record<string, any>>({})
@@ -73,8 +102,6 @@ const component = computed<Component | undefined>(() =>
   componentMeta.value?.[componentName.value]
   ?? Object.values(componentMeta.value)?.[0]
 )
-
-const components = computed(() => Object.values(componentMeta.value))
 
 function updateRenderer() {
   if (!component.value) return
@@ -133,22 +160,8 @@ const isDark = computed({
 
 <template>
   <UApp class="flex justify-center items-center h-screen w-full relative font-sans">
-    <div
-      v-if="status === 'success' && component"
-      class="top-0 h-[49px] border-b border-[var(--ui-border)] flex justify-center"
-    >
-      <UInputMenu
-        v-model="componentName"
-        variant="none"
-        :items="components"
-        value-key="kebabName"
-        label-key="pascalName"
-        placeholder="Search component..."
-        class="top-0 translate-y-0 w-full mx-2"
-        icon="i-lucide-search"
-      />
-
-      <div class="absolute top-[49px] bottom-0 inset-x-0 grid xl:grid-cols-8 grid-cols-4 bg-[var(--ui-bg)]">
+    <template v-if="status === 'success' && component">
+      <div class="absolute top-0 bottom-0 inset-x-0 grid xl:grid-cols-8 grid-cols-4 bg-[var(--ui-bg)]">
         <div class="col-span-1 border-r border-[var(--ui-border)] hidden xl:block overflow-y-auto p-2">
           <UTree
             v-model="treeValue"
@@ -164,12 +177,12 @@ const isDark = computed({
                 size="lg"
               />
               <UIcon
-                v-else-if="hasChildren && expanded"
+                v-else-if="hasChildren && expanded && item.isCollection"
                 name="lucide:folder-open"
                 size="lg"
               />
               <UIcon
-                v-else-if="hasChildren"
+                v-else-if="hasChildren && item.isCollection"
                 name="lucide:folder"
                 size="lg"
               />
@@ -223,7 +236,7 @@ const isDark = computed({
           </UTabs>
         </div>
       </div>
-    </div>
+    </template>
   </UApp>
 </template>
 
