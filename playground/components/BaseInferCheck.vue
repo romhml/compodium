@@ -4,12 +4,13 @@ withDefaults(defineProps<{
    This prop has a description with `backticks`
    */
   label: string
-  variant?: 'outline' | 'solid'
+  withDefault: string
+  variant: 'outline' | 'solid'
   foo: boolean
-  obj?: { foo: string, bar: number }
-  arr?: string[]
-  arrObj?: { baz: string }[]
-}>(), { variant: 'outline', arr: () => ['bar', 'baz'], obj: () => ({ foo: 'bar', bar: 123 }) })
+  obj: { foo: string, bar: number }
+  arr: string[]
+  arrObj: { baz: string }[]
+}>(), { withDefault: 'default' })
 
 defineEmits([])
 </script>

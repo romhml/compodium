@@ -2,6 +2,7 @@
 import { useColorMode, useDebounceFn } from '@vueuse/core'
 import type { Component, ComponentCollection, ComponentExample } from '../../src/types'
 import type { PropertyMeta } from 'vue-component-meta'
+import { inferPropsValues } from './helpers/infer'
 
 // Disable devtools in component renderer iframe
 // @ts-expect-error - Nuxt Devtools internal value
@@ -31,7 +32,6 @@ function getDefaultPropValue(meta: Partial<PropertyMeta>) {
 }
 
 const collections = useState<Record<string, ComponentCollection>>('__compodium-collections', () => ({}))
-
 const componentMeta = computed<Record<string, Component | ComponentExample>>(() =>
   Object.values(collections.value).reduce((acc, c) => ({
     ...acc,
@@ -93,15 +93,16 @@ watch(treeValue, () => {
   if (treeValue.value && !treeValue.value?.isCollection) componentName.value = treeValue.value.key
 })
 
+const component = computed<Component | ComponentExample | undefined>(() =>
+  componentMeta.value?.[componentName.value] ?? Object.values(componentMeta.value)?.[0]
+)
+
 const componentProps = ref<Record<string, any>>({})
 watch(componentName, () => {
+  if (!component.value) return
   componentProps.value = componentsState.value[componentName.value] ??= {}
+  // Infer default values for the component
 }, { immediate: true })
-
-const component = computed<Component | undefined>(() =>
-  componentMeta.value?.[componentName.value]
-  ?? Object.values(componentMeta.value)?.[0]
-)
 
 function updateRenderer() {
   if (!component.value) return
@@ -156,6 +157,11 @@ const isDark = computed({
     window.dispatchEvent(event)
   }
 })
+
+// function openDocs() {
+//   if (!component.value) return
+//   window.parent.open(`https://ui3.nuxt.dev/components/${component.value.slug}`)
+// }
 </script>
 
 <template>
@@ -210,6 +216,16 @@ const isDark = computed({
               @click="isDark = !isDark"
             />
           </div>
+
+          <!-- <UButton -->
+          <!--   v-if="component.docUrl" -->
+          <!--   variant="ghost" -->
+          <!--   color="neutral" -->
+          <!--   icon="i-lucide-external-link" -->
+          <!--   @click="openDocs()" -->
+          <!-- > -->
+          <!--   Open docs -->
+          <!-- </UButton> -->
         </div>
 
         <div class="border-l border-[var(--ui-border)] flex flex-col col-span-2 overflow-y-auto">

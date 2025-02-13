@@ -10,7 +10,6 @@ const componentProps = computed(() => new Set(props.component?.meta?.props.map(p
 
 const fetch = $fetch.create({ baseURL: '/__compodium__/api' })
 const { data: exampleCode } = useAsyncData<string | null>('__compodium-component-example-code', async () => {
-  console.log(props.component)
   if (props.component?.isExample) {
     return await fetch(`/__compodium__/api/example/${props.component.pascalName}`)
   }

@@ -1,29 +1,24 @@
 <script setup lang="ts">
 import type { PropertyMeta } from 'vue-component-meta'
+import { inferPropType, type Resolver } from '../helpers/infer'
 
 const props = defineProps<{ meta: Partial<PropertyMeta>, disabled?: boolean }>()
-
 const modelValue = defineModel<any>()
 
-const matchedInput = shallowRef()
-const parsedSchema = shallowRef()
-
-const { resolveInputSchema } = usePropSchema()
+const propType = shallowRef<Resolver>()
 
 function resetEmptyValue() {
-  if (!props.meta.default) return
-  if (!modelValue.value || modelValue.value === '') modelValue.value = props.meta.default
+  if (!modelValue.value || modelValue.value === '') {
+    if (props.meta.default) {
+      modelValue.value = props.meta.default
+    }
+  }
 }
-
-onMounted(() => {
-  resetEmptyValue()
-})
 
 watchEffect(() => {
   if (!props.meta?.schema) return
-  const result = resolveInputSchema(props.meta.schema)
-  parsedSchema.value = result?.schema
-  matchedInput.value = result?.input
+  propType.value = inferPropType(props.meta.schema)
+  resetEmptyValue()
 })
 
 const description = computed(() => {
@@ -36,7 +31,7 @@ const description = computed(() => {
     :name="meta?.name"
     class=""
     :ui="{ wrapper: 'mb-2' }"
-    :class="{ 'opacity-70 cursor-not-allowed': !matchedInput || disabled }"
+    :class="{ 'opacity-70 cursor-not-allowed': !propType || disabled }"
   >
     <template #label>
       <p
@@ -56,11 +51,10 @@ const description = computed(() => {
       />
     </template>
     <component
-      :is="matchedInput.component"
-      v-if="!disabled && matchedInput"
+      :is="propType.resolver.component"
+      v-if="!disabled && propType"
       v-model="modelValue"
-      :default-value="meta.default"
-      :schema="parsedSchema"
+      :schema="propType.parsedSchema"
       @blur="resetEmptyValue()"
     />
   </UFormField>

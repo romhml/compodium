@@ -1,11 +1,9 @@
 // @vitest-environment node
 import { it, expect, describe } from 'vitest'
-import { usePropSchema } from '../../app/composables/usePropSchema'
+import { inferPropType } from '../../app/helpers/infer'
 import { stringSchema, optionalStringSchema, booleanSchema, numberSchema, optionalNumberSchema, optionalBooleanSchema, objectSchema, arraySchema, arrayOptionalSchema, stringEnumSchema } from '../fixtures/schemas'
 
 describe('usePropSchema', () => {
-  const { resolveInputSchema } = usePropSchema()
-
   it.each([
     ['string', { schema: stringSchema, inputId: 'string' }],
     ['optional string', { schema: optionalStringSchema, inputId: 'string' }],
@@ -18,7 +16,7 @@ describe('usePropSchema', () => {
     ['array', { schema: arraySchema, inputId: 'array' }],
     ['optional array', { schema: arrayOptionalSchema, inputId: 'array' }]
   ])('resolveInputSchema should resolve %s schema', async (_: string, options) => {
-    const result = resolveInputSchema(options.schema as any)
-    expect(result?.input.id).toBe(options.inputId)
+    const result = inferPropType(options.schema as any)
+    expect(result?.resolver.id).toBe(options.inputId)
   })
 })
