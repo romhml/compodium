@@ -4,12 +4,11 @@ import { useColorMode } from '@vueuse/core'
 import { defineAsyncComponent, useRoute } from '#imports'
 // @ts-expect-error virtual file
 import { buildAssetsURL } from '#internal/nuxt/paths'
-// @ts-expect-error virtual file
 import components from '#build/compodium/components.json'
 
 const route = useRoute()
 
-const componentPath = components[route.query.name as string]
+const componentPath = (components as Record<string, string>)[route.query.name as string]
 const component = defineAsyncComponent(() => import(/* @vite-ignore */ buildAssetsURL(componentPath)))
 
 if (import.meta.hot) {

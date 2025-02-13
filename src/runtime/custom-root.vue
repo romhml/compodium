@@ -2,7 +2,7 @@
 <script setup lang="ts">
 import { defineAsyncComponent } from 'vue'
 import CompodiumRenderer from './pages/CompodiumRenderer.vue'
-import { useNuxtApp } from '#imports'
+import { useAppConfig, useNuxtApp } from '#imports'
 
 // @ts-expect-error virtual file
 import { buildAssetsURL } from '#internal/nuxt/paths'

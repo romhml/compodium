@@ -4,6 +4,7 @@ import components from '#nuxt-component-meta/nitro'
 import type { ComponentData as NuxtComponentData } from 'nuxt-component-meta'
 import type { ModuleOptions } from '../../../module'
 import type { ComponentCollection } from '../../../types'
+import { useAppConfig } from '#imports'
 
 export default defineEventHandler(() => {
   const appConfig = useAppConfig()
@@ -14,9 +15,10 @@ export default defineEventHandler(() => {
       if (!c.external && component.filePath?.match('node_modules/')) return false
       return component.filePath?.match(c.match)
     })
+
     if (collection) {
-      acc[collection.name] ??= {}
-      acc[collection.name][component.pascalName] = component
+      acc[collection.name] ??= { name: collection.name, icon: collection.icon, components: {} }
+      acc[collection.name].components[component.pascalName] = component
     }
     return acc
   }, {} as Record<string, ComponentCollection>)

@@ -9,6 +9,11 @@ export interface Collection {
   wrapperComponent?: string
   match: string | RegExp
   external?: boolean
+  icon?: string
 }
 
-export type ComponentCollection = Record<string, Component>
+export type ComponentCollection = {
+  name: string
+  icon?: string
+  components: Record<string, Component>
+}

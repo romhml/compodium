@@ -10,7 +10,7 @@
     "test": "vitest"
   },
   "dependencies": {
-    "@nuxt/ui": "3.0.0-alpha.12",
+    "@nuxt/ui": "https://pkg.pr.new/@nuxt/ui@3a3d3c4",
     "@vueuse/core": "^12.5.0",
     "knitwork": "^1.1.0",
     "nuxt": "^3.14.159",

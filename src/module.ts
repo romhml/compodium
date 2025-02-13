@@ -20,7 +20,7 @@ export default defineNuxtModule<ModuleOptions>({
   defaults: {
     collections: [
       { name: 'Components', match: 'components/' },
-      { name: 'Nuxt UI', match: '@nuxt/ui', external: true }
+      { name: 'Nuxt UI', match: '@nuxt/ui', external: true, icon: 'lineicons:nuxt' }
     ]
   },
   async setup(options, nuxt) {
@@ -31,6 +31,7 @@ export default defineNuxtModule<ModuleOptions>({
 
     nuxt.options.appConfig._compodium = {
       ...options,
+      // @ts-expect-error unresolved internal type
       rootComponent: options.rootComponent ? appResolver.resolve(options.rootComponent) : undefined
     }
 

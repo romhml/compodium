@@ -33,7 +33,7 @@ function getDefaultPropValue(meta: Partial<PropertyMeta>) {
 const collections = useState<Record<string, ComponentCollection>>('__compodium-collections', () => ({}))
 
 const componentMeta = computed(() => Object.values(collections.value).reduce((acc, c) => ({ ...acc, ...Object.fromEntries(
-  Object.entries(c).map(([key, value]: [string, Component]) => [key, parseComponentMeta(value)])
+  Object.entries(c.components).map(([key, value]: [string, Component]) => [key, parseComponentMeta(value)])
 ) }), {}))
 
 const { status } = useAsyncData('__compodium-fetch-meta', async () => {
@@ -43,6 +43,26 @@ const { status } = useAsyncData('__compodium-fetch-meta', async () => {
 
 const componentName = useState<string>('__compodium-component')
 const componentsState = useState<Record<string, Record<string, any>>>('__component_state', () => ({}))
+
+const treeValue = ref()
+const componentTree = computed(() => {
+  return Object.entries(collections.value).map(([key, value]) => {
+    return {
+      label: key,
+      key,
+      icon: value.icon,
+      children: value
+        ? Object.entries(value.components).map(([ckey, _]) => {
+            return { label: ckey, key: ckey, selectable: true }
+          })
+        : undefined
+    }
+  })
+})
+
+watch(treeValue, () => {
+  if (treeValue.value?.selectable) componentName.value = treeValue.value.key
+})
 
 const componentProps = ref<Record<string, any>>({})
 watch(componentName, () => {
@@ -129,13 +149,32 @@ const isDark = computed({
       />
 
       <div class="absolute top-[49px] bottom-0 inset-x-0 grid xl:grid-cols-8 grid-cols-4 bg-[var(--ui-bg)]">
-        <div class="col-span-1 border-r border-[var(--ui-border)] hidden xl:block overflow-y-auto">
-          <UNavigationMenu
-            :items="components.map((c) => ({ ...c, active: c.kebabName === component?.kebabName, onSelect: () => componentName = c.pascalName }))"
-            orientation="vertical"
-            label-key="pascalName"
-            :ui="{ link: 'before:rounded-none' }"
-          />
+        <div class="col-span-1 border-r border-[var(--ui-border)] hidden xl:block overflow-y-auto p-2">
+          <UTree
+            v-model="treeValue"
+            :items="componentTree"
+            size="xl"
+            parent-trailing-icon="lucide:chevron-down"
+            :ui="{ itemTrailingIcon: 'group-data-[expanded]:rotate-180 transition-transform duration-200 ml-auto' }"
+          >
+            <template #item-leading="{ hasChildren, expanded, item }">
+              <UIcon
+                v-if="item.icon"
+                :name="item.icon"
+                size="lg"
+              />
+              <UIcon
+                v-else-if="hasChildren && expanded"
+                name="lucide:folder-open"
+                size="lg"
+              />
+              <UIcon
+                v-else-if="hasChildren"
+                name="lucide:folder"
+                size="lg"
+              />
+            </template>
+          </UTree>
         </div>
 
         <div class="xl:col-span-5 col-span-2 relative">
