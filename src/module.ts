@@ -1,4 +1,4 @@
-import { startSubprocess } from '@nuxt/devtools-kit'
+import { addCustomTab, startSubprocess } from '@nuxt/devtools-kit'
 import { defineNuxtModule, createResolver, addImportsDir, addTemplate, addServerHandler } from '@nuxt/kit'
 import defu from 'defu'
 import { getPort } from 'get-port-please'
@@ -145,6 +145,16 @@ export default defineNuxtModule<ModuleOptions>({
       method: 'get',
       route: '/__compodium__/api/example/:component',
       handler: resolve('./runtime/server/api/example.get')
+    })
+
+    addCustomTab({
+      name: 'compodium',
+      title: 'Compodium',
+      icon: '/__compodium__/devtools/favicon.svg',
+      view: {
+        type: 'iframe',
+        src: '/__compodium__/devtools'
+      }
     })
   }
 })
