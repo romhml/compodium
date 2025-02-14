@@ -3,6 +3,7 @@ import type { Component } from '@nuxt/schema'
 import type { ModuleOptions } from '../../../module'
 import type { ComponentCollection, ComponentExample } from '../../../types'
 import { useAppConfig } from '#imports'
+// @ts-expect-error virtual file
 import components from '#compodium/nitro/components'
 
 export default defineEventHandler(() => {

@@ -68,7 +68,7 @@ export function inferPropType<T extends ZodSchema>(schema: PropertyMeta['schema'
   if (schema.kind === 'enum' && schema.schema) {
     const enumSchemas = typeof schema.schema === 'object' ? Object.values(schema.schema) : schema.schema
     for (const enumSchema of enumSchemas) {
-      const result = inferPropType(enumSchema)
+      const result = inferPropType<T>(enumSchema)
       if (result) return result
     }
   }

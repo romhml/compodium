@@ -36,7 +36,7 @@ export default defineNuxtModule<ModuleOptions>({
     nuxt.options.appConfig._compodium = {
       ...options,
       rootComponent: options.rootComponent ? appResolver.resolve(options.rootComponent) : undefined
-    }
+    } as any
 
     nuxt.options.vite = defu(nuxt.options?.vite, { plugins: [compodiumMetaPlugin({ resolve: appResolver.resolve, options })] })
     nuxt.hook('app:resolve', (app) => {

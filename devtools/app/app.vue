@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useColorMode, useDebounceFn } from '@vueuse/core'
-import type { Component, ComponentCollection } from '../../src/types'
+import type { Component, ComponentCollection, ComponentExample } from '../../src/types'
 import type { PropertyMeta } from 'vue-component-meta'
 
 // Disable devtools in component renderer iframe
@@ -48,25 +48,22 @@ const componentTree = computed(() => {
       isCollection: true,
       children: value
         ? Object.entries(value.components).map(([ckey, cvalue]) => {
-            let examples = cvalue.examples?.map(example => ({
+            const examples = cvalue.examples?.map((example: ComponentExample) => ({
               label: example.pascalName.replace(`${key}${ckey}`, ''),
               metaId: ckey,
               key: example.pascalName,
               isExample: true
             }))
 
-            const mainExample = examples?.find((c) => {
+            const mainExample = examples?.find((c: any) => {
               return c.label === '' || c.label === 'Example'
             })
 
-            if (mainExample) {
-              examples = examples?.filter(e => e.key !== mainExample.key)
-            }
-
+            const children = examples?.filter((e: any) => e.key !== mainExample?.key)
             return {
               label: ckey,
               key: mainExample?.key ?? ckey,
-              children: examples?.length ? examples : undefined,
+              children: children?.length ? children : undefined,
               metaId: ckey,
               isExample: !!mainExample
             }
@@ -122,13 +119,8 @@ function onComponentLoaded() {
 }
 
 const refreshMetaDebounced = useDebounceFn(refreshMeta, 300)
-async function onMetaReload(event: any) {
-  console.log('received: compodium:meta-reload', event.data)
+async function onMetaReload() {
   await refreshMetaDebounced()
-  // const resp = await fetch('/api/component-meta/BaseButton')
-  // const meta = await resp.json()
-  // console.log('meta', meta.meta.props)
-  // componentMeta.value[meta.pascalName] = parseComponentMeta(meta as Component)
 }
 
 onMounted(() => {

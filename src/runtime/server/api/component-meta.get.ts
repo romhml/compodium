@@ -1,8 +1,9 @@
 import fs from 'node:fs/promises'
 import { defineEventHandler, createError, appendHeader } from 'h3'
 import type { Component as NuxtComponent } from '@nuxt/schema'
-
+// @ts-expect-error virtual file
 import components from '#compodium/nitro/components'
+// @ts-expect-error virtual file
 import dirs from '#compodium/nitro/dirs'
 
 import { createChecker } from '../../../checker'

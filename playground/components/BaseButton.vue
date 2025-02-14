@@ -3,7 +3,7 @@ withDefaults(defineProps<{
   /**
    This prop has a description with `backticks`
    */
-  label: string
+  label?: string
   variant?: 'outline' | 'solid'
   obj?: { foo: string, bar: number }
   arr?: string[]

@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import type { PropertyMeta } from 'vue-component-meta'
-import { inferPropType, type Resolver } from '../helpers/infer'
+import { inferPropType } from '../helpers/infer'
 
 const props = defineProps<{ meta: Partial<PropertyMeta>, disabled?: boolean }>()
 const modelValue = defineModel<any>()
 
-const propType = shallowRef<Resolver>()
+const propType = shallowRef()
 
 function resetEmptyValue() {
   if (!modelValue.value || modelValue.value === '') {

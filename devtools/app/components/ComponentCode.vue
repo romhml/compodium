@@ -6,7 +6,7 @@ import type { Component, ComponentExample } from '../../../src/types'
 
 const props = defineProps<{ example?: string, component?: Component | ComponentExample, props?: Record<string, any> }>()
 
-const componentProps = computed(() => new Set(props.component?.meta?.props.map(prop => prop.name)))
+const componentProps = computed(() => new Set(props.component?.meta?.props.map((prop: any) => prop.name)))
 
 const fetch = $fetch.create({ baseURL: '/__compodium__/api' })
 const { data: exampleCode } = useAsyncData<string | null>('__compodium-component-example-code', async () => {
@@ -27,7 +27,6 @@ function genPropValue(value: any): string {
     const entries = Object.entries(value).map(([key, val]) => `${key}: ${genPropValue(val)}`)
     return `{ ${entries.join(`,`)} }`
   }
-
   return value
 }
 
