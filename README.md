@@ -9,8 +9,6 @@
 
 A plug and play interactive component playground for your Nuxt projects.
 
-
-- [✨ &nbsp;Release Notes](/CHANGELOG.md)
 <!-- - [🏀 Online playground](https://stackblitz.com/github/your-org/compodium?file=playground%2Fapp.vue) -->
 <!-- - [📖 &nbsp;Documentation](https://example.com) -->
 
