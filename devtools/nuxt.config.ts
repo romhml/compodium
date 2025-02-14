@@ -1,17 +1,16 @@
 import { resolve } from 'pathe'
 
 export default defineNuxtConfig({
-
   modules: ['@nuxt/ui', '@nuxt/test-utils/module'],
 
   ssr: false,
-
   devtools: { enabled: false },
 
   app: {
     baseURL: '/__compodium__/devtools'
   },
-
+  css: ['~/assets/css/main.css'],
+  spaLoadingTemplate: true,
   future: {
     compatibilityVersion: 4
   },

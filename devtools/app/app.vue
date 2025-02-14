@@ -30,8 +30,25 @@ function getDefaultPropValue(meta: Partial<PropertyMeta>) {
   }
 }
 
-const { data: collections, status } = useAsyncData('__compodium-fetch-collection', async () => {
-  return await fetch<Record<string, ComponentCollection>>('/collections')
+const componentName = useState<string>('__compodium-component-name')
+const componentMetaId = useState<string>('__compodium-meta-id')
+
+const { data: collections, status, error } = useAsyncData('__compodium-fetch-collection', async () => {
+  const collections = await fetch<Record<string, ComponentCollection>>('/collections')
+
+  if (!collections || typeof collections !== 'object') {
+    createError('Could not load collections')
+    return null
+  }
+
+  if (collections && !componentName.value) {
+    const fallbackCollection = Object.values(collections).find(c => c.components && Object.values(c.components).length > 0)
+    const fallbackComponent = fallbackCollection ? Object.values(fallbackCollection.components)[0] : undefined
+
+    componentName.value = fallbackComponent?.pascalName
+    componentMetaId.value = fallbackComponent?.pascalName
+  }
+  return collections
 })
 
 const componentsState = useState<Record<string, Record<string, any>>>('__component_state', () => ({}))
@@ -39,6 +56,7 @@ const componentsState = useState<Record<string, Record<string, any>>>('__compone
 const treeValue = ref()
 const componentTree = computed(() => {
   if (!collections.value) return
+
   return Object.entries(collections.value).map(([key, value]) => {
     return {
       label: key,
@@ -73,8 +91,6 @@ const componentTree = computed(() => {
   })
 })
 
-const componentName = useState<string>('__compodium-component-name')
-const componentMetaId = useState<string>('__compodium-meta-id')
 watch(treeValue, () => {
   if (!treeValue.value) return
   if (!treeValue.value?.isCollection) {
@@ -87,9 +103,10 @@ const { data: componentMeta, refresh: refreshMeta } = useAsyncData(`__compodium-
   if (!componentMetaId.value) return
   const meta = await fetch<Component>(`/component-meta/${componentMetaId.value}`)
   return parseComponentMeta(meta)
-}, { watch: [componentMetaId], immediate: false })
+}, { watch: [componentMetaId] })
 
 const componentProps = ref<Record<string, any>>({})
+
 watch(componentName, () => {
   if (!componentMeta.value) return
   componentProps.value = componentsState.value[componentName.value] ??= {}
@@ -102,6 +119,13 @@ function updateRendererComponent() {
   event.data = { component: componentName.value, props: componentProps.value }
   window.dispatchEvent(event)
 }
+
+const rendererLoaded = new Promise((res) => {
+  window.addEventListener('compodium:renderer-mounted', res)
+  setTimeout(res, 5000)
+})
+
+await rendererLoaded
 
 function updateRenderer() {
   if (!componentMeta.value) return
@@ -164,6 +188,7 @@ const isDark = computed({
 
 <template>
   <UApp class="flex justify-center items-center h-screen w-full relative font-sans">
+    {{ error }}
     <template v-if="status === 'success'">
       <div class="absolute top-0 bottom-0 inset-x-0 grid xl:grid-cols-8 grid-cols-4 bg-[var(--ui-bg)]">
         <div class="col-span-1 border-r border-[var(--ui-border)] hidden xl:block overflow-y-auto p-2">
@@ -254,49 +279,3 @@ const isDark = computed({
     </template>
   </UApp>
 </template>
-
-<style>
-@import 'tailwindcss';
-@import '@nuxt/ui';
-
-@theme {
-  --font-sans: 'DM Sans', sans-serif;
-
-  --color-green-50: #EFFDF5;
-  --color-green-100: #D9FBE8;
-  --color-green-200: #B3F5D1;
-  --color-green-300: #75EDAE;
-  --color-green-400: #00DC82;
-  --color-green-500: #00C16A;
-  --color-green-600: #00A155;
-  --color-green-700: #007F45;
-  --color-green-800: #016538;
-  --color-green-900: #0A5331;
-  --color-green-950: #052E16;
-}
-
-.bg-grid {
-  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' transform='scale(3)'%3E%3Crect width='100%25' height='100%25' fill='%23fff'/%3E%3Cpath fill='none' stroke='hsla(0, 0%25, 98%25, 1)' stroke-width='.2' d='M10 0v20ZM0 10h20Z'/%3E%3C/svg%3E");
-  background-size: 40px 40px;
-}
-
-.dark .bg-grid {
-  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' transform='scale(3)'%3E%3Crect width='100%25' height='100%25' fill='hsl(0, 0%25, 8.5%25)'/%3E%3Cpath fill='none' stroke='hsl(0, 0%25, 11.0%25)' stroke-width='.2' d='M10 0v20ZM0 10h20Z'/%3E%3C/svg%3E");
-  background-size: 40px 40px;
-}
-
-.shiki
-.shiki span {
-  background-color: transparent !important;
-}
-
-html.dark .shiki,
-html.dark .shiki span {
-  color: var(--shiki-dark) !important;
-  background-color: transparent !important;
-  /* Optional, if you also want font styles */
-  font-style: var(--shiki-dark-font-style) !important;
-  font-weight: var(--shiki-dark-font-weight) !important;
-  text-decoration: var(--shiki-dark-text-decoration) !important;
-}
-</style>

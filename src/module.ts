@@ -1,9 +1,7 @@
 import { addCustomTab, startSubprocess } from '@nuxt/devtools-kit'
 import { defineNuxtModule, createResolver, addImportsDir, addTemplate, addServerHandler } from '@nuxt/kit'
-import defu from 'defu'
 import { getPort } from 'get-port-please'
 import sirv from 'sirv'
-import { compodiumMetaPlugin } from './meta'
 import type { Collection } from './types'
 import { scanComponents } from './utils'
 import { readFileSync } from 'node:fs'
@@ -40,7 +38,6 @@ export default defineNuxtModule<ModuleOptions>({
       rootComponent: options.rootComponent ? appResolver.resolve(options.rootComponent) : undefined
     } as any
 
-    nuxt.options.vite = defu(nuxt.options?.vite, { plugins: [compodiumMetaPlugin({ resolve: appResolver.resolve, options })] })
     nuxt.hook('app:resolve', (app) => {
       (nuxt.options.appConfig._compodium as any).appRootComponent = app.rootComponent
       app.rootComponent = resolve('./runtime/custom-root.vue')

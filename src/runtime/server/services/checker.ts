@@ -1,6 +1,10 @@
 import { createCheckerByJson } from 'vue-component-meta'
+// @ts-expect-error virtual file
+import dirs from '#compodium/nitro/dirs'
 
-export function createChecker(dirs?: any[]): ReturnType<typeof createCheckerByJson> {
+let checker
+
+export function createChecker(): ReturnType<typeof createCheckerByJson> {
   const rootDir = process.cwd()
 
   return createCheckerByJson(
@@ -32,4 +36,8 @@ export function createChecker(dirs?: any[]): ReturnType<typeof createCheckerByJs
       }
     }
   )
+}
+
+export function getChecker(): ReturnType<typeof createCheckerByJson> {
+  return checker ??= createChecker()
 }
