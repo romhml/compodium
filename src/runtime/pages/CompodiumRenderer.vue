@@ -1,16 +1,13 @@
 <script setup lang="ts">
 import { onUnmounted, onMounted } from 'vue'
 import { useColorMode } from '@vueuse/core'
-import { useRoute } from '#imports'
 // @ts-expect-error virtual file
 import { buildAssetsURL } from '#internal/nuxt/paths'
 // @ts-expect-error virtual file
 import components from '#build/compodium/components.mjs'
 
-const route = useRoute()
-
-const component = shallowRef(null)
 const props = shallowRef({})
+const component = shallowRef()
 const componentName = shallowRef()
 const componentPath = shallowRef()
 
@@ -50,10 +47,6 @@ onUnmounted(() => {
   window.parent.removeEventListener('compodium:update-component', onUpdateComponent)
   window.parent.removeEventListener('compodium:update-props', onUpdateRenderer)
   window.parent.removeEventListener('compodium:update-color-mode', onUpdateColorMode)
-})
-
-onMounted(() => {
-  if (!route.query?.example) return
 })
 </script>
 

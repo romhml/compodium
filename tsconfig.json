@@ -5,6 +5,7 @@
     "node_modules",
     "playground",
     "devtools",
+    "test/fixtures/",
   ],
   "compilerOptions": {
     "types": ["vite/client"],

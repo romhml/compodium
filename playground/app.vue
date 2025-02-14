@@ -1,3 +1,3 @@
 <template>
-  <span> Hello there! </span>
+  <span data-testId="hello"> Hello there! </span>
 </template>

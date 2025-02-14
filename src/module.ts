@@ -28,6 +28,8 @@ export default defineNuxtModule<ModuleOptions>({
     ]
   },
   async setup(options, nuxt) {
+    if (!nuxt.options.dev) return
+
     const { resolve } = createResolver(import.meta.url)
     const appResolver = createResolver(nuxt.options.rootDir)
 
@@ -144,7 +146,5 @@ export default defineNuxtModule<ModuleOptions>({
       route: '/__compodium__/api/example/:component',
       handler: resolve('./runtime/server/api/example.get')
     })
-
-    // nuxt.options.routeRules = defu(nuxt.options.routeRules, { '/__compodium__/**': { ssr: false } })
   }
 })

@@ -1,12 +1,13 @@
 import { resolve } from 'pathe'
 import { describe, it, expect } from 'vitest'
-import { setup, $fetch, createPage } from '@nuxt/test-utils/e2e'
+import { setup, $fetch } from '@nuxt/test-utils/e2e'
 
-describe('ssr', async () => {
+describe('basic', async () => {
   await setup({
     // FIXME: TypeError: The URL must be of scheme file
     // rootDir: fileURLToPath(new URL('./fixtures/basic', import.meta.url)),
-    rootDir: resolve('./test/fixtures/basic')
+    rootDir: resolve('./test/fixtures/basic'),
+    dev: true
   })
 
   it('renders the index page', async () => {
@@ -15,11 +16,10 @@ describe('ssr', async () => {
     expect(html).toContain('<div>basic</div>')
   })
 
-  // FIXME: Allow the renderer to render correctly in tests
-  describe.skip('renderer', () => {
-    it('renders basic component', async () => {
-      const page = await createPage('/__compodium__/renderer?name=BasicTest')
-      expect(await page.getByTestId('basic').isVisible()).toBe(true)
+  describe('renderer', () => {
+    it('is mounted in development', async () => {
+      const html = await $fetch('/__compodium__/renderer')
+      expect(html).toContain('<div id="compodium-renderer" class="compodium-component-renderer"><!----></div>')
     })
   })
 })
