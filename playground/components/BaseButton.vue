@@ -5,7 +5,6 @@ withDefaults(defineProps<{
    */
   label: string
   variant?: 'outline' | 'solid'
-  foo: boolean
   obj?: { foo: string, bar: number }
   arr?: string[]
   arrObj?: { baz: string }[]
@@ -15,7 +14,10 @@ defineEmits([])
 </script>
 
 <template>
-  <button :class="{ border: variant === 'outline' }">
+  <button
+    :class="{ border: variant === 'outline' }"
+    class="px-4 py-2 bg-blue-600 rounded"
+  >
     <slot> {{ label }} </slot>
   </button>
 </template>

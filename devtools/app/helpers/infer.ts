@@ -74,7 +74,7 @@ export function inferPropType<T extends ZodSchema>(schema: PropertyMeta['schema'
   }
 }
 
-function hash(str: string): number {
+export function hash(str: string): number {
   let hash = 0
   for (let i = 0; i < str.length; i++) {
     const charCode = str.charCodeAt(i)

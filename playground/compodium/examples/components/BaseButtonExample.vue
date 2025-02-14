@@ -2,7 +2,5 @@
 </script>
 
 <template>
-  <BaseButton>
-    Hello world!
-  </BaseButton>
+  <BaseButton />
 </template>

@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { useColorMode, useDebounceFn } from '@vueuse/core'
-import type { Component, ComponentCollection, ComponentExample } from '../../src/types'
+import type { Component, ComponentCollection } from '../../src/types'
 import type { PropertyMeta } from 'vue-component-meta'
-import { inferPropsValues } from './helpers/infer'
 
 // Disable devtools in component renderer iframe
 // @ts-expect-error - Nuxt Devtools internal value
@@ -31,30 +30,15 @@ function getDefaultPropValue(meta: Partial<PropertyMeta>) {
   }
 }
 
-const collections = useState<Record<string, ComponentCollection>>('__compodium-collections', () => ({}))
-const componentMeta = computed<Record<string, Component | ComponentExample>>(() =>
-  Object.values(collections.value).reduce((acc, c) => ({
-    ...acc,
-    ...Object.fromEntries(
-      Object.entries(c.components).flatMap(([key, value]: [string, Component]) => {
-        const parsedComponent = parseComponentMeta(value)
-        const examples = value.examples.map(e => ([e.pascalName, { ...e, meta: parsedComponent.meta }]))
-        return [[key, parsedComponent], ...examples]
-      })
-    )
-  }), {})
-)
-
-const { status } = useAsyncData('__compodium-fetch-meta', async () => {
-  collections.value = await fetch('/collections')
-  return true
+const { data: collections, status } = useAsyncData('__compodium-fetch-collection', async () => {
+  return await fetch<Record<string, ComponentCollection>>('/collections')
 })
 
-const componentName = useState<string>('__compodium-component')
 const componentsState = useState<Record<string, Record<string, any>>>('__component_state', () => ({}))
 
 const treeValue = ref()
 const componentTree = computed(() => {
+  if (!collections.value) return
   return Object.entries(collections.value).map(([key, value]) => {
     return {
       label: key,
@@ -65,23 +49,26 @@ const componentTree = computed(() => {
       children: value
         ? Object.entries(value.components).map(([ckey, cvalue]) => {
             let examples = cvalue.examples?.map(example => ({
-              isExample: true,
               label: example.pascalName.replace(`${key}${ckey}`, ''),
-              key: example.pascalName
+              metaId: ckey,
+              key: example.pascalName,
+              isExample: true
             }))
-            const mainExample = examples.find((c) => {
+
+            const mainExample = examples?.find((c) => {
               return c.label === '' || c.label === 'Example'
             })
 
             if (mainExample) {
-              examples = examples.filter(e => e.key !== mainExample.key)
+              examples = examples?.filter(e => e.key !== mainExample.key)
             }
 
             return {
               label: ckey,
               key: mainExample?.key ?? ckey,
-              isComponent: true,
-              children: examples?.length ? examples : undefined
+              children: examples?.length ? examples : undefined,
+              metaId: ckey,
+              isExample: !!mainExample
             }
           })
         : undefined
@@ -89,24 +76,39 @@ const componentTree = computed(() => {
   })
 })
 
+const componentName = useState<string>('__compodium-component-name')
+const componentMetaId = useState<string>('__compodium-meta-id')
 watch(treeValue, () => {
-  if (treeValue.value && !treeValue.value?.isCollection) componentName.value = treeValue.value.key
+  if (!treeValue.value) return
+  if (!treeValue.value?.isCollection) {
+    componentName.value = treeValue.value.key
+    componentMetaId.value = treeValue.value.metaId
+  }
 })
 
-const component = computed<Component | ComponentExample | undefined>(() =>
-  componentMeta.value?.[componentName.value] ?? Object.values(componentMeta.value)?.[0]
-)
+const { data: componentMeta, refresh: refreshMeta } = useAsyncData(`__compodium-fetch-meta-${componentMetaId.value}`, async () => {
+  if (!componentMetaId.value) return
+  const meta = await fetch<Component>(`/component-meta/${componentMetaId.value}`)
+  return parseComponentMeta(meta)
+}, { watch: [componentMetaId], immediate: false })
 
 const componentProps = ref<Record<string, any>>({})
 watch(componentName, () => {
-  if (!component.value) return
+  if (!componentMeta.value) return
   componentProps.value = componentsState.value[componentName.value] ??= {}
-  // Infer default values for the component
+  updateRendererComponent()
 }, { immediate: true })
 
+function updateRendererComponent() {
+  if (!componentMeta.value) return
+  const event: Event & { data?: { component?: string, props?: any } } = new Event('compodium:update-component')
+  event.data = { component: componentName.value, props: componentProps.value }
+  window.dispatchEvent(event)
+}
+
 function updateRenderer() {
-  if (!component.value) return
-  const event: Event & { data?: any } = new Event('compodium:update-renderer')
+  if (!componentMeta.value) return
+  const event: Event & { data?: any } = new Event('compodium:update-props')
 
   event.data = {
     props: componentProps.value
@@ -119,8 +121,10 @@ function onComponentLoaded() {
   updateRenderer()
 }
 
+const refreshMetaDebounced = useDebounceFn(refreshMeta, 300)
 async function onMetaReload(event: any) {
   console.log('received: compodium:meta-reload', event.data)
+  await refreshMetaDebounced()
   // const resp = await fetch('/api/component-meta/BaseButton')
   // const meta = await resp.json()
   // console.log('meta', meta.meta.props)
@@ -128,19 +132,21 @@ async function onMetaReload(event: any) {
 }
 
 onMounted(() => {
+  window.addEventListener('compodium:renderer-mounted', updateRendererComponent)
   window.addEventListener('compodium:component-loaded', onComponentLoaded)
   window.addEventListener('compodium:meta-reload', onMetaReload)
 })
 
 onUnmounted(() => {
+  window.removeEventListener('compodium:renderer-mounted', updateRendererComponent)
   window.removeEventListener('compodium:component-loaded', onComponentLoaded)
   window.removeEventListener('compodium:meta-reload', onMetaReload)
 })
 
 const tabs = computed(() => {
-  if (!component.value) return
+  if (!componentMeta.value) return
   return [
-    { label: 'Props', slot: 'props', icon: 'i-lucide-settings', disabled: !component.value.meta?.props?.length }
+    { label: 'Props', slot: 'props', icon: 'i-lucide-settings', disabled: !componentMeta.value.meta?.props?.length }
   ]
 })
 
@@ -166,7 +172,7 @@ const isDark = computed({
 
 <template>
   <UApp class="flex justify-center items-center h-screen w-full relative font-sans">
-    <template v-if="status === 'success' && component">
+    <template v-if="status === 'success'">
       <div class="absolute top-0 bottom-0 inset-x-0 grid xl:grid-cols-8 grid-cols-4 bg-[var(--ui-bg)]">
         <div class="col-span-1 border-r border-[var(--ui-border)] hidden xl:block overflow-y-auto p-2">
           <UTree
@@ -199,12 +205,13 @@ const isDark = computed({
         <div class="xl:col-span-5 col-span-2 relative">
           <div class="flex flex-col h-full bg-grid rounded-md">
             <ComponentPreview
-              :component="component"
+              :component="componentMeta"
               :props="componentProps"
               class="grow h-full"
             />
             <ComponentCode
-              :component="component"
+              :component="componentMeta"
+              :example="componentName !== componentMetaId ? componentName : undefined"
               :props="componentProps"
             />
           </div>
@@ -238,7 +245,7 @@ const isDark = computed({
           >
             <template #props>
               <div
-                v-for="prop in component.meta.props"
+                v-for="prop in componentMeta?.meta.props"
                 :key="'prop-' + prop.name"
                 class="px-3 py-5 border-b border-[var(--ui-border)]"
               >

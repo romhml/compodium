@@ -1,12 +1,13 @@
 import { startSubprocess } from '@nuxt/devtools-kit'
-import { defineNuxtModule, createResolver, installModule, addImportsDir, addTemplate, hasNuxtModule, addServerHandler } from '@nuxt/kit'
+import { defineNuxtModule, createResolver, addImportsDir, addTemplate, addServerHandler } from '@nuxt/kit'
 import defu from 'defu'
 import { getPort } from 'get-port-please'
 import sirv from 'sirv'
 import { compodiumMetaPlugin } from './meta'
 import type { Collection } from './types'
-import type { ComponentData } from 'nuxt-component-meta'
 import { scanComponents } from './utils'
+import { readFileSync } from 'node:fs'
+import { join } from 'node:path'
 
 export interface ModuleOptions {
   rootComponent?: string
@@ -37,41 +38,27 @@ export default defineNuxtModule<ModuleOptions>({
       rootComponent: options.rootComponent ? appResolver.resolve(options.rootComponent) : undefined
     }
 
-    async function registerModule(name: string, options?: Record<string, any>, optionKey?: string) {
-      if (!hasNuxtModule(name)) {
-        await installModule(name, options)
-      } else {
-        (nuxt.options as any)[optionKey ?? name] = defu((nuxt.options as any)[optionKey ?? name], options)
-      }
-    }
-
-    registerModule('nuxt-component-meta', {
-      include: [
-        (component: ComponentData) => options.collections.find((c) => {
-          if (!c.external && component.filePath?.match('node_modules/')) return false
-          return component.filePath?.match(c.match)
-        })
-      ],
-      metaFields: {
-        type: false,
-        props: true,
-        slots: true,
-        events: false,
-        exposed: false
-      }
-    }, 'componentMeta')
-
     nuxt.options.vite = defu(nuxt.options?.vite, { plugins: [compodiumMetaPlugin({ resolve: appResolver.resolve, options })] })
     nuxt.hook('app:resolve', (app) => {
       (nuxt.options.appConfig._compodium as any).appRootComponent = app.rootComponent
       app.rootComponent = resolve('./runtime/custom-root.vue')
     })
 
+    nuxt.hook('components:dirs', (dirs) => {
+      addTemplate({
+        filename: 'compodium/dirs.mjs',
+        write: true,
+        getContents: () => {
+          return `export default ${JSON.stringify(dirs)}`
+        }
+      })
+    })
+
     const exampleComponents = options.examples
-      ? await scanComponents([{
-        path: appResolver.resolve(options.examples),
-        pattern: `**/*.{vue,ts,tsx}`
-      }], appResolver.resolve(''))
+      ? (await scanComponents([{
+          path: appResolver.resolve(options.examples),
+          pattern: `**/*.{vue,ts,tsx}`
+        }], appResolver.resolve(''))).map(c => ({ ...c, isExample: true }))
       : []
 
     // @ts-expect-error unresolved internal type
@@ -79,12 +66,22 @@ export default defineNuxtModule<ModuleOptions>({
 
     // Generate component templates
     addTemplate({
-      filename: 'compodium/components.json',
+      filename: 'compodium/components.mjs',
       write: true,
-      getContents: ({ app }) => JSON.stringify(app.components.concat(exampleComponents).reduce((acc, c) => {
-        acc[c.pascalName] = c.filePath
-        return acc
-      }, {} as Record<string, any>), null, 2)
+      getContents: ({ app }) => {
+        return `export default ${JSON.stringify(app.components.concat(exampleComponents).reduce((acc, c) => {
+          acc[c.pascalName] = c
+          return acc
+        }, {} as Record<string, any>), null, 2)}`
+      }
+    })
+
+    // Nitro setup
+    nuxt.hook('nitro:config', (nitroConfig) => {
+      nitroConfig.handlers = nitroConfig.handlers || []
+      nitroConfig.virtual = nitroConfig.virtual || {}
+      nitroConfig.virtual['#compodium/nitro/components'] = () => readFileSync(join(nuxt.options.buildDir, '/compodium/components.mjs'), 'utf-8')
+      nitroConfig.virtual['#compodium/nitro/dirs'] = () => readFileSync(join(nuxt.options.buildDir, '/compodium/dirs.mjs'), 'utf-8')
     })
 
     // Should scan the example directory, match them to components and integrate them into collections.
@@ -138,10 +135,16 @@ export default defineNuxtModule<ModuleOptions>({
 
     addServerHandler({
       method: 'get',
+      route: '/__compodium__/api/component-meta/:component',
+      handler: resolve('./runtime/server/api/component-meta.get')
+    })
+
+    addServerHandler({
+      method: 'get',
       route: '/__compodium__/api/example/:component',
       handler: resolve('./runtime/server/api/example.get')
     })
 
-    nuxt.options.routeRules = defu(nuxt.options.routeRules, { '/__compodium__/**': { ssr: false } })
+    // nuxt.options.routeRules = defu(nuxt.options.routeRules, { '/__compodium__/**': { ssr: false } })
   }
 })

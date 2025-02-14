@@ -1,12 +1,12 @@
-import type { ComponentData as NuxtComponentData } from 'nuxt-component-meta'
-import type { ComponentMeta, PropertyMeta } from 'vue-component-meta'
+import type { Component as NuxtComponent } from 'nuxt'
+import type { ComponentMeta } from 'vue-component-meta'
 
-export type Component = NuxtComponentData & {
+export type Component = NuxtComponent & {
+  meta: ComponentMeta
   examples?: ComponentExample[]
 }
 
-export type ComponentExample = NuxtComponentData & {
-  componentName: string
+export type ComponentExample = NuxtComponent & {
   isExample?: true
 }
 

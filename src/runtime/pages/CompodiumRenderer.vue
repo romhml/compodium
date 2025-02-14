@@ -1,28 +1,35 @@
 <script setup lang="ts">
-import { onUnmounted, onMounted, reactive } from 'vue'
+import { onUnmounted, onMounted } from 'vue'
 import { useColorMode } from '@vueuse/core'
-import { defineAsyncComponent, useRoute } from '#imports'
+import { useRoute } from '#imports'
 // @ts-expect-error virtual file
 import { buildAssetsURL } from '#internal/nuxt/paths'
-import components from '#build/compodium/components.json'
+// @ts-expect-error virtual file
+import components from '#build/compodium/components.mjs'
 
 const route = useRoute()
 
-const componentPath = (components as Record<string, string>)[route.query.name as string]
-const component = defineAsyncComponent(() => import(/* @vite-ignore */ buildAssetsURL(componentPath)))
+const component = shallowRef(null)
+const props = shallowRef({})
+const componentName = shallowRef()
+const componentPath = shallowRef()
+
+async function onUpdateComponent(event: Event & { data?: { component: string, props: any } }) {
+  const path = components[event.data?.component]?.filePath
+  component.value = await import(/* @vite-ignore */ buildAssetsURL(path)).then(c => c.default)
+  componentName.value = event.data?.component
+  componentPath.value = path
+  props.value = { ...event.data?.props }
+}
 
 if (import.meta.hot) {
-  import.meta.hot.on('vite:afterUpdate', async () => {
-    // TODO: Find a way to fetch updated component meta after HMR.
-    const event = new Event('compodium:meta-reload')
-    window.parent.dispatchEvent(event)
+  import.meta.hot.on('vite:afterUpdate', () => {
+    window.parent.dispatchEvent(new Event ('compodium:meta-reload'))
   })
 }
 
-const state = reactive<{ props?: object }>({})
-
 function onUpdateRenderer(event: Event & { data?: any }) {
-  state.props = { ...event.data.props }
+  props.value = { ...event.data.props }
 }
 
 const colorMode = useColorMode()
@@ -31,18 +38,18 @@ function onUpdateColorMode(event: Event & { data?: typeof colorMode.value }) {
 }
 
 onMounted(() => {
-  window.parent.addEventListener('compodium:update-renderer', onUpdateRenderer)
+  window.parent.addEventListener('compodium:update-component', onUpdateComponent)
+  window.parent.addEventListener('compodium:update-props', onUpdateRenderer)
   window.parent.addEventListener('compodium:update-color-mode', onUpdateColorMode)
+
+  const event: Event = new Event('compodium:renderer-mounted')
+  window.parent.dispatchEvent(event)
 })
 
 onUnmounted(() => {
-  window.parent.removeEventListener('compodium:update-renderer', onUpdateRenderer)
+  window.parent.removeEventListener('compodium:update-component', onUpdateComponent)
+  window.parent.removeEventListener('compodium:update-props', onUpdateRenderer)
   window.parent.removeEventListener('compodium:update-color-mode', onUpdateColorMode)
-})
-
-onMounted(async () => {
-  const event: Event = new Event('compodium:component-loaded')
-  window.parent.dispatchEvent(event)
 })
 
 onMounted(() => {
@@ -58,7 +65,7 @@ onMounted(() => {
     <component
       :is="component"
       v-if="component"
-      v-bind="state.props"
+      v-bind="props"
     />
   </div>
 </template>
