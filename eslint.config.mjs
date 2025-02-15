@@ -16,6 +16,7 @@ export default createConfigForNuxt({
 }).overrideRules({
   'import/first': 'off',
   'import/order': 'off',
+  'vue/multi-word-component-names': 'off',
   '@typescript-eslint/no-explicit-any': 'off'
 }).prepend({
   ignores: ['src/devtools/.component-meta']

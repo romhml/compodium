@@ -1,5 +1,5 @@
 <template>
-  <div id="custom-root">
+  <div id="custom-preview">
     <slot />
   </div>
 </template>

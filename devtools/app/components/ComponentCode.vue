@@ -2,7 +2,7 @@
 import { useClipboard } from '@vueuse/core'
 import { kebabCase } from 'scule'
 import { escapeString } from 'knitwork'
-import type { Component, ComponentExample } from '../../../src/types'
+import type { Component, ComponentExample } from '../../../src'
 
 const props = defineProps<{ example?: string, component?: Component | ComponentExample, props?: Record<string, any> }>()
 
@@ -92,7 +92,7 @@ const { copy, copied } = useClipboard()
   <div class="relative w-full p-3">
     <!-- eslint-disable vue/no-v-html -->
     <pre
-      class="p-4 min-h-40 max-h-72 text-sm overflow-y-auto rounded-lg border border-[var(--ui-border)] bg-neutral-50 dark:bg-neutral-800"
+      class="p-4 min-h-40 max-h-72 text-sm overflow-y-auto rounded-lg border border-[var(--ui-border)] bg-(--ui-bg-muted)"
       v-html="highlightedCode"
     />
     <UButton

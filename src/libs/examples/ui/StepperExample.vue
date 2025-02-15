@@ -28,9 +28,9 @@ const stepper = ref()
     :items="items"
   >
     <template #content="{ item }">
-      <Placeholder class="size-full min-h-60 min-w-60">
+      <div class="size-full min-h-60 min-w-60 flex items-center justify-center">
         {{ item.title }}
-      </Placeholder>
+      </div>
       <div class="flex gap-2 justify-between mt-2">
         <UButton
           variant="outline"

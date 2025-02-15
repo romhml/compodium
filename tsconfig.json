@@ -6,6 +6,7 @@
     "playground",
     "devtools",
     "test/fixtures/",
+    "src/libs",
   ],
   "compilerOptions": {
     "types": ["vite/client"],

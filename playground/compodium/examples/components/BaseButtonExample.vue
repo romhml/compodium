@@ -2,5 +2,5 @@
 </script>
 
 <template>
-  <BaseButton />
+  <BaseButton> Click! </BaseButton>
 </template>

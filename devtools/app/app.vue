@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useColorMode, useDebounceFn, watchDebounced } from '@vueuse/core'
-import type { Component, ComponentCollection, ComponentExample } from '../../src/types'
+import type { Component, ComponentCollection, ComponentExample } from '../../src'
 import type { PropertyMeta } from 'vue-component-meta'
 import Fuse from 'fuse.js'
 
@@ -35,6 +35,13 @@ function getDefaultPropValue(meta: Partial<PropertyMeta>) {
 const componentKey = useState<string>('__compodium-component-name')
 const componentMetaId = useState<string>('__compodium-meta-id')
 
+useAsyncData('__compodium-fetch-colors', async () => {
+  const colors = await fetch<Record<string, ComponentCollection>>('/colors')
+  const appConfig = useAppConfig()
+  if (colors) appConfig.ui.colors = colors
+  return true
+})
+
 const { data: collections, status } = useAsyncData('__compodium-fetch-collection', async () => {
   const collections = await fetch<Record<string, ComponentCollection>>('/collections')
 
@@ -53,11 +60,12 @@ const { data: collections, status } = useAsyncData('__compodium-fetch-collection
   return collections
 })
 
-const componentsState = useState<Record<string, Record<string, any>>>('__component_state', () => ({}))
+const propsState = useState<Record<string, Record<string, any>>>('__component_state', () => ({}))
 
 const treeItems = computed(() => {
   if (!collections.value) return
   return Object.entries(collections.value).map(([key, value]) => {
+    console.log(value)
     return {
       label: key,
       key,
@@ -105,29 +113,31 @@ const treeValue = computed({
   }
 })
 
-const { data: componentMeta, refresh: refreshMeta } = useAsyncData(`__compodium-fetch-meta-${componentMetaId.value}`, async () => {
+const { data: componentMeta, refresh: refreshMeta, status: metaStatus } = useAsyncData(`__compodium-fetch-meta-${componentMetaId.value}`, async () => {
   if (!componentMetaId.value) return
   const meta = await fetch<Component>(`/component-meta/${componentMetaId.value}`)
+  componentProps.value = { ...componentProps.value, ...meta.defaultProps }
   return parseComponentMeta(meta)
 }, { watch: [componentMetaId] })
 
-const componentProps = ref<Record<string, any>>({})
+const componentProps = computed<Record<string, any>>({
+  // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+  get: () => propsState.value[componentKey.value] ??= {},
+  set: value => propsState.value[componentKey.value] = value
+})
 
-watch(componentKey, () => {
-  if (!componentMeta.value) return
-  componentProps.value = componentsState.value[componentKey.value] ??= {}
+watch([componentKey, metaStatus], () => {
+  if (metaStatus.value === 'pending') return
   updateRendererComponent()
 }, { immediate: true })
 
 function updateRendererComponent() {
-  if (!componentMeta.value) return
   const event: Event & { data?: { component?: string, props?: any } } = new Event('compodium:update-component')
   event.data = { component: componentKey.value, props: componentProps.value }
   window.dispatchEvent(event)
 }
 
 function updateRenderer() {
-  if (!componentMeta.value) return
   const event: Event & { data?: any } = new Event('compodium:update-props')
 
   event.data = {
@@ -159,9 +169,8 @@ onUnmounted(() => {
 })
 
 const tabs = computed(() => {
-  if (!componentMeta.value) return
   return [
-    { label: 'Props', slot: 'props', icon: 'i-lucide-settings', disabled: !componentMeta.value.meta?.props?.length }
+    { label: 'Props', slot: 'props', icon: 'i-lucide-settings', disabled: !componentMeta.value?.meta?.props?.length }
   ]
 })
 
@@ -228,7 +237,7 @@ function selectFirstResult() {
           <UInput
             ref="search"
             v-model.trim="searchTerm"
-            class="w-full mb-4"
+            class="w-full"
             type="search"
             variant="none"
             leading-icon="lucide:search"
@@ -248,10 +257,11 @@ function selectFirstResult() {
               />
             </template>
           </UInput>
+          <USeparator class="my-2" />
           <UTree
             v-model="treeValue"
             :items="treeItems"
-            size="xl"
+            size="lg"
             parent-trailing-icon="lucide:chevron-down"
             :ui="{ itemTrailingIcon: 'group-data-[expanded]:rotate-180 transition-transform duration-200 ml-auto' }"
             :get-children="filterTreeItems"
@@ -277,7 +287,7 @@ function selectFirstResult() {
         </div>
 
         <div class="xl:col-span-5 col-span-2 relative">
-          <div class="flex flex-col h-full bg-grid rounded-md">
+          <div class="flex flex-col h-full rounded-md">
             <ComponentPreview
               :component="componentMeta"
               :props="componentProps"

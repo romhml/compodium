@@ -1,16 +1,25 @@
 import { addCustomTab, startSubprocess } from '@nuxt/devtools-kit'
 import { defineNuxtModule, createResolver, addTemplate, addServerHandler } from '@nuxt/kit'
 import { getPort } from 'get-port-please'
+import { camelCase } from 'scule'
 import sirv from 'sirv'
-import type { Collection } from './types'
+import type { CollectionConfig } from '.'
 import { scanComponents } from './utils'
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 
+import { defu } from 'defu'
+import { defaultProps } from './libs/defaults'
+
 export interface ModuleOptions {
-  rootComponent?: string
+  /* Customize the preview component path. Defaults to compodium/preview.vue */
+  previewComponent: string
+  /* Customize the directory for preview examples */
   examples?: string
-  collections: Collection[]
+  /*  */
+  collections: CollectionConfig[]
+  /* Whether or not to include default collections for third party libraries. */
+  includeDefaultCollections?: boolean
 }
 
 export default defineNuxtModule<ModuleOptions>({
@@ -19,26 +28,39 @@ export default defineNuxtModule<ModuleOptions>({
     configKey: 'compodium'
   },
   defaults: {
+    previewComponent: 'compodium/preview.vue',
     examples: 'compodium/examples',
     collections: [
-      { name: 'Components', match: 'components/' },
-      { name: 'Nuxt UI', match: '@nuxt/ui', external: true, icon: 'lineicons:nuxt' }
+      { name: 'Components', match: 'components/' }
     ]
   },
+
   async setup(options, nuxt) {
     if (!nuxt.options.dev) return
 
     const { resolve } = createResolver(import.meta.url)
     const appResolver = createResolver(nuxt.options.rootDir)
 
-    nuxt.options.appConfig._compodium = {
-      ...options,
-      rootComponent: options.rootComponent ? appResolver.resolve(options.rootComponent) : undefined
-    } as any
+    nuxt.options.appConfig.compodium = {}
+
+    const libraryCollections = [
+      { id: 'ui', name: 'Nuxt UI', match: '@nuxt/ui', external: true, icon: 'lineicons:nuxt', prefix: (nuxt.options as any).ui?.prefix, examplePath: 'libs/examples/ui' }
+    ]
+
+    const previewComponent = appResolver.resolve(options.previewComponent)
+    const defaultPreviewComponent = resolve('./runtime/preview.vue')
+
+    nuxt.options.appConfig.compodium = {
+      collections: options.collections.map(c => ({ ...c, id: camelCase(c.name) })).concat(libraryCollections),
+      previewComponent,
+      defaultPreviewComponent
+    }
+
+    nuxt.options.appConfig.compodium = defu(nuxt.options.appConfig.compodium, { defaultProps })
 
     nuxt.hook('app:resolve', (app) => {
-      (nuxt.options.appConfig._compodium as any).appRootComponent = app.rootComponent
-      app.rootComponent = resolve('./runtime/custom-root.vue')
+      nuxt.options.appConfig.compodium.rootComponent = app.rootComponent
+      app.rootComponent = resolve('./runtime/root.vue')
     })
 
     nuxt.hook('components:dirs', (dirs) => {
@@ -50,9 +72,6 @@ export default defineNuxtModule<ModuleOptions>({
         }
       })
     })
-    const libraryCollections = [
-      { name: 'Nuxt UI', match: '@nuxt/ui', external: true, icon: 'lineicons:nuxt', prefix: (nuxt.options as any).ui?.prefix, examplePath: 'examples/ui' }
-    ]
 
     const exampleComponents = options.examples
       ? (await scanComponents([{
@@ -61,8 +80,7 @@ export default defineNuxtModule<ModuleOptions>({
         }, ...libraryCollections.map(c => ({ path: resolve(c.examplePath), pattern: '**/*.{vue,ts,tsx}', prefix: c.prefix }))], appResolver.resolve(''))).map(c => ({ ...c, isExample: true }))
       : []
 
-    // @ts-expect-error unresolved internal type
-    nuxt.options.appConfig._compodium.exampleComponents = exampleComponents
+    nuxt.options.appConfig.compodium.exampleComponents = exampleComponents
 
     // Generate component templates
     addTemplate({
@@ -142,6 +160,12 @@ export default defineNuxtModule<ModuleOptions>({
       method: 'get',
       route: '/__compodium__/api/example/:component',
       handler: resolve('./runtime/server/api/example.get')
+    })
+
+    addServerHandler({
+      method: 'get',
+      route: '/__compodium__/api/colors',
+      handler: resolve('./runtime/server/api/colors.get')
     })
 
     addCustomTab({
