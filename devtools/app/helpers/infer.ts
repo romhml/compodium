@@ -7,6 +7,7 @@ import ObjectInput, { objectInputSchema } from '../components/inputs/ObjectInput
 import ArrayInput, { arrayInputSchema } from '../components/inputs/ArrayInput.vue'
 import type { ZodSchema } from 'zod'
 import type { Component as VueComponent } from 'vue'
+import DateInput, { dateInputSchema } from '../components/inputs/DateInput.vue'
 
 export type PropResolver<T extends ZodSchema> = {
   id: string
@@ -33,6 +34,11 @@ const propResolvers: PropResolver<any>[] = [
     id: 'boolean',
     schema: booleanInputSchema,
     component: BooleanInput
+  },
+  {
+    id: 'date',
+    schema: dateInputSchema,
+    component: DateInput
   },
   {
     id: 'stringEnum',

@@ -1,0 +1,51 @@
+<script lang="ts">
+import { z } from 'zod'
+
+export const dateInputSchema = z.object({
+  kind: z.literal('object'),
+  type: z.literal('Date')
+})
+
+export type DateInputSchema = z.infer<typeof dateInputSchema>
+</script>
+
+<script setup lang="ts">
+import { CalendarDate, DateFormatter, getLocalTimeZone } from '@internationalized/date'
+
+defineProps<{ schema: DateInputSchema }>()
+
+const df = new DateFormatter('en-US', {
+  dateStyle: 'medium'
+})
+
+const modelValue = defineModel<Date>()
+const calendarDate = computed({
+  get() {
+    const date = modelValue.value ?? new Date()
+    return new CalendarDate(date.getFullYear(), date.getMonth() + 1, date.getDate())
+  },
+  set(value) {
+    modelValue.value = value.toDate(getLocalTimeZone())
+  }
+})
+</script>
+
+<template>
+  <UPopover>
+    <UButton
+      color="neutral"
+      variant="subtle"
+      icon="i-lucide-calendar"
+    >
+      {{ modelValue ? df.format(modelValue) : 'Select a date' }}
+    </UButton>
+
+    <template #content>
+      <UCalendar
+        v-model="calendarDate"
+        color="neutral"
+        class="p-2"
+      />
+    </template>
+  </UPopover>
+</template>

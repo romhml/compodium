@@ -6,7 +6,6 @@ const props = defineProps<{ meta: Partial<PropertyMeta>, disabled?: boolean }>()
 const modelValue = defineModel<any>()
 
 const propType = shallowRef()
-
 function resetEmptyValue() {
   if (!modelValue.value || modelValue.value === '') {
     if (props.meta.default) {

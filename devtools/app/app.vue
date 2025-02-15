@@ -7,6 +7,7 @@ import Fuse from 'fuse.js'
 // Disable devtools in component renderer iframe
 // @ts-expect-error - Nuxt Devtools internal value
 window.__NUXT_DEVTOOLS_DISABLE__ = true
+
 const fetch = $fetch.create({ baseURL: '/__compodium__/api' })
 
 function parseComponentMeta(component: Component): Component {
@@ -95,7 +96,7 @@ function flattenTreeItems(item: Record<string, any>): Record<string, any>[] {
 }
 
 const flattenedTreeItems = computed(() => Object.values(treeItems.value ?? {}).flatMap(flattenTreeItems))
-const treeValue = computed<Record<string, any>>({
+const treeValue = computed({
   get: () => flattenedTreeItems.value.find(i => i.key === componentKey.value),
   set(value: Record<string, any>) {
     if (!value || value.isCollection) return
