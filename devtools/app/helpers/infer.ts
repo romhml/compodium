@@ -5,9 +5,10 @@ import NumberInput, { numberInputSchema } from '../components/inputs/NumberInput
 import StringEnumInput, { stringEnumInputSchema } from '../components/inputs/StringEnumInput.vue'
 import ObjectInput, { objectInputSchema } from '../components/inputs/ObjectInput.vue'
 import ArrayInput, { arrayInputSchema } from '../components/inputs/ArrayInput.vue'
+import PrimitiveArrayInput, { primitiveArrayInputSchema } from '../components/inputs/PrimitiveArrayInput.vue'
+import DateInput, { dateInputSchema } from '../components/inputs/DateInput.vue'
 import type { ZodSchema } from 'zod'
 import type { Component as VueComponent } from 'vue'
-import DateInput, { dateInputSchema } from '../components/inputs/DateInput.vue'
 
 export type PropResolver<T extends ZodSchema> = {
   id: string
@@ -51,6 +52,11 @@ const propResolvers: PropResolver<any>[] = [
     component: ObjectInput
   },
   {
+    id: 'primitiveArray',
+    schema: primitiveArrayInputSchema,
+    component: PrimitiveArrayInput
+  },
+  {
     id: 'array',
     schema: arrayInputSchema,
     component: ArrayInput
@@ -59,8 +65,10 @@ const propResolvers: PropResolver<any>[] = [
 
 export function inferPropType<T extends ZodSchema>(schema: PropertyMeta['schema']): { parsedSchema: PropertyMeta['schema'], resolver: PropResolver<T> } | undefined {
   // Return the first input in the list of available inputs that matches the schema.
+  console.log(schema)
   for (const resolver of propResolvers) {
     const result = resolver.schema.safeParse(schema)
+    if (resolver.id === 'primitiveArray') console.log(result.error)
     if (result.success) {
       // Returns the output from zod to get the transformed output.
       // It only includes attributes defined in the zod schema.

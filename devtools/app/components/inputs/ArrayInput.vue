@@ -4,7 +4,7 @@ import { z } from 'zod'
 export const arrayInputSchema = z.object({
   kind: z.literal('array'),
   schema: z.array(z.any({}))
-    .or(z.record(z.number(), z.any({})).transform(t => Object.values(t)))
+    .or(z.record(z.any(), z.any({})).transform(t => Object.values(t)))
     .transform((t) => {
       return t.filter(s => s !== 'undefined')
     }).pipe(z.array(z.any()).max(1))
