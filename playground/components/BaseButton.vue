@@ -10,6 +10,10 @@ withDefaults(defineProps<{
   arrObj?: { baz: string }[]
 }>(), { variant: 'outline', arr: () => ['bar', 'baz'], obj: () => ({ foo: 'bar', bar: 123 }) })
 
+defineComponentMeta({
+  toto: 'string'
+})
+
 defineEmits([])
 </script>
 

@@ -24,5 +24,6 @@ export default defineEventHandler(async (event) => {
   checker.updateFile(component.filePath, code.toString())
 
   const meta = checker.getComponentMeta(component.filePath)
+
   return { ...component, meta }
 })

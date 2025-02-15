@@ -67,7 +67,7 @@ const treeItems = computed(() => {
       children: value
         ? Object.entries(value.components).map(([ckey, cvalue]) => {
             const examples = cvalue.examples?.map((example: ComponentExample) => ({
-              label: example.pascalName.replace(`${key}${ckey}`, ''),
+              label: value.external ? example.pascalName.replace(`${key}${ckey}`, '') : example.pascalName.replace(`${ckey}`, ''),
               metaId: ckey,
               key: example.pascalName,
               isExample: true

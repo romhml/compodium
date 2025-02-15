@@ -1,5 +1,5 @@
 import { addCustomTab, startSubprocess } from '@nuxt/devtools-kit'
-import { defineNuxtModule, createResolver, addImportsDir, addTemplate, addServerHandler } from '@nuxt/kit'
+import { defineNuxtModule, createResolver, addTemplate, addServerHandler } from '@nuxt/kit'
 import { getPort } from 'get-port-please'
 import sirv from 'sirv'
 import type { Collection } from './types'
@@ -31,8 +31,6 @@ export default defineNuxtModule<ModuleOptions>({
     const { resolve } = createResolver(import.meta.url)
     const appResolver = createResolver(nuxt.options.rootDir)
 
-    addImportsDir(resolve('./runtime/composables'))
-
     nuxt.options.appConfig._compodium = {
       ...options,
       rootComponent: options.rootComponent ? appResolver.resolve(options.rootComponent) : undefined
@@ -52,12 +50,15 @@ export default defineNuxtModule<ModuleOptions>({
         }
       })
     })
+    const libraryCollections = [
+      { name: 'Nuxt UI', match: '@nuxt/ui', external: true, icon: 'lineicons:nuxt', prefix: (nuxt.options as any).ui?.prefix, examplePath: 'examples/ui' }
+    ]
 
     const exampleComponents = options.examples
       ? (await scanComponents([{
           path: appResolver.resolve(options.examples),
-          pattern: `**/*.{vue,ts,tsx}`
-        }], appResolver.resolve(''))).map(c => ({ ...c, isExample: true }))
+          pattern: '**/*.{vue,ts,tsx}'
+        }, ...libraryCollections.map(c => ({ path: resolve(c.examplePath), pattern: '**/*.{vue,ts,tsx}', prefix: c.prefix }))], appResolver.resolve(''))).map(c => ({ ...c, isExample: true }))
       : []
 
     // @ts-expect-error unresolved internal type
@@ -83,7 +84,6 @@ export default defineNuxtModule<ModuleOptions>({
       nitroConfig.virtual['#compodium/nitro/dirs'] = () => readFileSync(join(nuxt.options.buildDir, '/compodium/dirs.mjs'), 'utf-8')
     })
 
-    // Should scan the example directory, match them to components and integrate them into collections.
     if (process.env.COMPODIUM_LOCAL) {
       const PORT = await getPort({ port: 42124 })
 

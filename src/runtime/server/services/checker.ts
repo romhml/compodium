@@ -1,6 +1,8 @@
 import { createCheckerByJson, type ComponentMeta } from 'vue-component-meta'
+
 // @ts-expect-error virtual file
 import dirs from '#compodium/nitro/dirs'
+// import * as ts from 'typescript'
 
 let checker
 
@@ -54,7 +56,6 @@ export function createChecker(): ReturnType<typeof createCheckerByJson> {
       }
     }
   }
-
   return checker
 }
 
