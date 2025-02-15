@@ -15,8 +15,8 @@ A plug and play interactive component playground for your Nuxt projects.
 ## Features
 
 <!-- Highlight some of the features your module provide here -->
-- ⛰  &nbsp; Automatically discovers your components (including libraries). 
-- ⚡ &nbsp; HMR support.
+- ⛰  &nbsp; Automatically discovers your components
+- ⚡ &nbsp; HMR support
 
 ## Quick Setup
 
