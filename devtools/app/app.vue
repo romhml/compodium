@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { useColorMode, useDebounceFn } from '@vueuse/core'
+import { useColorMode, useDebounceFn, watchDebounced } from '@vueuse/core'
 import type { Component, ComponentCollection, ComponentExample } from '../../src/types'
 import type { PropertyMeta } from 'vue-component-meta'
+import Fuse from 'fuse.js'
 
 // Disable devtools in component renderer iframe
 // @ts-expect-error - Nuxt Devtools internal value
@@ -30,10 +31,10 @@ function getDefaultPropValue(meta: Partial<PropertyMeta>) {
   }
 }
 
-const componentName = useState<string>('__compodium-component-name')
+const componentKey = useState<string>('__compodium-component-name')
 const componentMetaId = useState<string>('__compodium-meta-id')
 
-const { data: collections, status, error } = useAsyncData('__compodium-fetch-collection', async () => {
+const { data: collections, status } = useAsyncData('__compodium-fetch-collection', async () => {
   const collections = await fetch<Record<string, ComponentCollection>>('/collections')
 
   if (!collections || typeof collections !== 'object') {
@@ -41,11 +42,11 @@ const { data: collections, status, error } = useAsyncData('__compodium-fetch-col
     return null
   }
 
-  if (collections && !componentName.value) {
+  if (collections && !componentKey.value) {
     const fallbackCollection = Object.values(collections).find(c => c.components && Object.values(c.components).length > 0)
     const fallbackComponent = fallbackCollection ? Object.values(fallbackCollection.components)[0] : undefined
 
-    componentName.value = fallbackComponent?.pascalName
+    componentKey.value = fallbackComponent?.pascalName
     componentMetaId.value = fallbackComponent?.pascalName
   }
   return collections
@@ -53,10 +54,8 @@ const { data: collections, status, error } = useAsyncData('__compodium-fetch-col
 
 const componentsState = useState<Record<string, Record<string, any>>>('__component_state', () => ({}))
 
-const treeValue = ref()
-const componentTree = computed(() => {
+const treeItems = computed(() => {
   if (!collections.value) return
-
   return Object.entries(collections.value).map(([key, value]) => {
     return {
       label: key,
@@ -82,8 +81,7 @@ const componentTree = computed(() => {
               label: ckey,
               key: mainExample?.key ?? ckey,
               children: children?.length ? children : undefined,
-              metaId: ckey,
-              isExample: !!mainExample
+              metaId: ckey
             }
           })
         : undefined
@@ -91,11 +89,18 @@ const componentTree = computed(() => {
   })
 })
 
-watch(treeValue, () => {
-  if (!treeValue.value) return
-  if (!treeValue.value?.isCollection) {
-    componentName.value = treeValue.value.key
-    componentMetaId.value = treeValue.value.metaId
+function flattenTreeItems(item: Record<string, any>): Record<string, any>[] {
+  if (!item) return []
+  return [item, ...(item.children?.flatMap(flattenTreeItems) ?? [])]
+}
+
+const flattenedTreeItems = computed(() => Object.values(treeItems.value ?? {}).flatMap(flattenTreeItems))
+const treeValue = computed<Record<string, any>>({
+  get: () => flattenedTreeItems.value.find(i => i.key === componentKey.value),
+  set(value: Record<string, any>) {
+    if (!value || value.isCollection) return
+    componentKey.value = value.key
+    componentMetaId.value = value.metaId
   }
 })
 
@@ -107,25 +112,18 @@ const { data: componentMeta, refresh: refreshMeta } = useAsyncData(`__compodium-
 
 const componentProps = ref<Record<string, any>>({})
 
-watch(componentName, () => {
+watch(componentKey, () => {
   if (!componentMeta.value) return
-  componentProps.value = componentsState.value[componentName.value] ??= {}
+  componentProps.value = componentsState.value[componentKey.value] ??= {}
   updateRendererComponent()
 }, { immediate: true })
 
 function updateRendererComponent() {
   if (!componentMeta.value) return
   const event: Event & { data?: { component?: string, props?: any } } = new Event('compodium:update-component')
-  event.data = { component: componentName.value, props: componentProps.value }
+  event.data = { component: componentKey.value, props: componentProps.value }
   window.dispatchEvent(event)
 }
-
-const rendererLoaded = new Promise((res) => {
-  window.addEventListener('compodium:renderer-mounted', res)
-  setTimeout(res, 5000)
-})
-
-await rendererLoaded
 
 function updateRenderer() {
   if (!componentMeta.value) return
@@ -184,20 +182,78 @@ const isDark = computed({
 //   if (!component.value) return
 //   window.parent.open(`https://ui3.nuxt.dev/components/${component.value.slug}`)
 // }
+
+const searchInput = useTemplateRef('search')
+const componentNames = computed(() => flattenedTreeItems.value.filter(c => !c.isCollection && !c.isExample).map(c => c.label))
+const fuse = computed(() => new Fuse(componentNames.value ?? [], { threshold: 0.4, shouldSort: true }))
+const searchTerm = ref()
+
+const filteredComponents = shallowRef()
+const filteredComponentsSet = computed(() => new Set(filteredComponents.value))
+
+watchDebounced(searchTerm, () => {
+  filteredComponents.value = fuse.value?.search(searchTerm.value).map(i => i.item)
+}, { debounce: 400 })
+
+defineShortcuts({
+  ctrl_f: {
+    usingInput: true,
+    handler: () => {
+      searchInput.value?.inputRef?.focus()
+    }
+  }
+})
+
+function filterTreeItems(item: Record<string, any>) {
+  if (!filteredComponents.value || searchTerm.value === '' || !item.isCollection) return item.children
+  return item.children?.filter((c: any) => filteredComponentsSet.value.has(c.label))
+}
+
+function selectFirstResult() {
+  const result = filteredComponents.value?.[0]
+  const component = flattenedTreeItems.value?.find(c => c.label === result)
+  if (result && component) {
+    componentKey.value = component?.key
+    componentMetaId.value = component.metaId
+  }
+}
 </script>
 
 <template>
   <UApp class="flex justify-center items-center h-screen w-full relative font-sans">
-    {{ error }}
     <template v-if="status === 'success'">
       <div class="absolute top-0 bottom-0 inset-x-0 grid xl:grid-cols-8 grid-cols-4 bg-[var(--ui-bg)]">
         <div class="col-span-1 border-r border-[var(--ui-border)] hidden xl:block overflow-y-auto p-2">
+          <UInput
+            ref="search"
+            v-model.trim="searchTerm"
+            class="w-full mb-4"
+            type="search"
+            variant="none"
+            leading-icon="lucide:search"
+            size="md"
+            placeholder="Search"
+            aria-keyshortcuts="Meta+F"
+            @keydown.enter="selectFirstResult"
+          >
+            <template #trailing>
+              <UKbd
+                variant="subtle"
+                value="meta"
+              />
+              <UKbd
+                variant="subtle"
+                value="F"
+              />
+            </template>
+          </UInput>
           <UTree
             v-model="treeValue"
-            :items="componentTree"
+            :items="treeItems"
             size="xl"
             parent-trailing-icon="lucide:chevron-down"
             :ui="{ itemTrailingIcon: 'group-data-[expanded]:rotate-180 transition-transform duration-200 ml-auto' }"
+            :get-children="filterTreeItems"
           >
             <template #item-leading="{ hasChildren, expanded, item }">
               <UIcon
@@ -228,7 +284,7 @@ const isDark = computed({
             />
             <ComponentCode
               :component="componentMeta"
-              :example="componentName !== componentMetaId ? componentName : undefined"
+              :example="componentKey !== componentMetaId ? componentKey : undefined"
               :props="componentProps"
             />
           </div>
