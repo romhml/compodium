@@ -1,3 +1,7 @@
+<script setup lang="ts">
+navigateTo('/__compodium__/devtools')
+</script>
+
 <template>
-  <span data-testId="hello"> Hello there! </span>
+  <span />
 </template>
