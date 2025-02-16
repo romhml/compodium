@@ -9,6 +9,6 @@
     "src/libs",
   ],
   "compilerOptions": {
-    "types": ["vite/client"],
+    "types": ["vite/client"]
   }
 }

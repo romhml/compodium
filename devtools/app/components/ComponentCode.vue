@@ -11,7 +11,7 @@ const componentProps = computed(() => new Set(props.component?.meta?.props.map((
 const fetch = $fetch.create({ baseURL: '/__compodium__/api' })
 const { data: exampleCode } = useAsyncData<string | null>('__compodium-component-example-code', async () => {
   if (props.example) {
-    return await fetch(`/__compodium__/api/example/${props.example}`)
+    return await fetch<string>(`/__compodium__/api/example/${props.example}`)
   }
   return null
 }, { watch: [() => props.example] })
@@ -74,7 +74,7 @@ const { data: formattedCode } = useAsyncData('__compodium-component-formatted-co
   return await $prettier.format(code.value, {
     semi: false,
     singleQuote: true,
-    printWidth: 80
+    printWidth: 50
   })
 }, { watch: [code] })
 
@@ -89,10 +89,10 @@ const { copy, copied } = useClipboard()
 </script>
 
 <template>
-  <div class="relative w-full p-3">
+  <div class="relative text-wrap overflow-x-wrap bg-(--ui-bg-muted)">
     <!-- eslint-disable vue/no-v-html -->
     <pre
-      class="p-4 min-h-40 max-h-72 text-sm overflow-y-auto rounded-lg border border-[var(--ui-border)] bg-(--ui-bg-muted)"
+      class="p-4 text-sm overflow-y-auto rounded-lg"
       v-html="highlightedCode"
     />
     <UButton
@@ -100,7 +100,7 @@ const { copy, copied } = useClipboard()
       size="sm"
       variant="link"
       :icon="copied ? 'i-lucide-clipboard-check' : 'i-lucide-clipboard'"
-      class="absolute top-6 right-6"
+      class="absolute top-2 right-2"
       @click="copy(formattedCode ?? '')"
     />
   </div>

@@ -30,6 +30,7 @@ export type ComponentCollection = {
   name: string
   icon?: string
   components: Record<string, Component>
+  external?: boolean
 }
 
 declare module 'nuxt/schema' {
@@ -45,10 +46,7 @@ declare module 'nuxt/schema' {
     }
 
     compodium: {
-      previewComponent?: string
-      defaultPreviewComponent: string
       componentsPath: string
-      rootComponent: string
       collections: Collection[]
       defaultProps?: Record<string, any>
     }

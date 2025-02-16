@@ -1,9 +1,9 @@
+import type { CollectionConfig } from '.'
 import { addCustomTab, startSubprocess } from '@nuxt/devtools-kit'
 import { defineNuxtModule, createResolver, addTemplate, addServerHandler, addVitePlugin, updateTemplates } from '@nuxt/kit'
 import { getPort } from 'get-port-please'
 import { camelCase } from 'scule'
 import sirv from 'sirv'
-import type { CollectionConfig } from '.'
 import { scanComponents } from './utils'
 import { readFileSync } from 'node:fs'
 import { join } from 'pathe'
@@ -53,17 +53,34 @@ export default defineNuxtModule<ModuleOptions>({
     const defaultPreviewComponent = resolve('./runtime/preview.vue')
 
     nuxt.options.appConfig.compodium = {
-      collections: options.collections.map(c => ({ ...c, id: camelCase(c.name) })).concat(libraryCollections),
-      previewComponent,
-      defaultPreviewComponent
+      collections: options.collections.map(c => ({ ...c, id: camelCase(c.name) })).concat(libraryCollections)
     }
 
     const appConfig = nuxt.options.appConfig
     appConfig.compodium = defu(nuxt.options.appConfig.compodium as any, { defaultProps })
 
     nuxt.hook('app:resolve', (app) => {
-      (appConfig.compodium as any).rootComponent = app.rootComponent
-      app.rootComponent = resolve('./runtime/root.vue')
+      const rootComponent = app.rootComponent
+      const compodiumRoot = resolve('./runtime/root.vue')
+
+      if (rootComponent !== compodiumRoot) {
+        app.rootComponent = compodiumRoot
+
+        addTemplate({
+          filename: 'compodium/root.mjs',
+          getContents: () => `export { default } from '${rootComponent}'`
+        })
+      }
+    })
+
+    addTemplate({
+      filename: 'compodium/preview.mjs',
+      getContents: () => `export { default } from '${previewComponent}'`
+    })
+
+    addTemplate({
+      filename: 'compodium/default-preview.mjs',
+      getContents: () => `export { default } from '${defaultPreviewComponent}'`
     })
 
     // Watch for changes in example directory

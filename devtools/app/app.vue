@@ -38,7 +38,7 @@ const componentMetaId = useState<string>('__compodium-meta-id')
 useAsyncData('__compodium-fetch-colors', async () => {
   const colors = await fetch<Record<string, ComponentCollection>>('/colors')
   const appConfig = useAppConfig()
-  if (colors) appConfig.ui.colors = colors
+  if (colors) appConfig.ui.colors = { ...appConfig.ui.colors, ...colors as any }
   return true
 })
 
@@ -48,14 +48,6 @@ const { data: collections, refresh: refreshCollections } = useAsyncData('__compo
   if (!collections || typeof collections !== 'object') {
     createError('Could not load collections')
     return null
-  }
-
-  if (collections && !componentKey.value) {
-    const fallbackCollection = Object.values(collections).find(c => c.components && Object.values(c.components).length > 0)
-    const fallbackComponent = fallbackCollection ? Object.values(fallbackCollection.components)[0] : undefined
-
-    componentKey.value = fallbackComponent?.pascalName
-    componentMetaId.value = fallbackComponent?.pascalName
   }
 
   return collections
@@ -154,7 +146,7 @@ function onComponentLoaded() {
 }
 
 const refreshMetaDebounced = useDebounceFn(refreshMeta, 300)
-const refreshCollectionsDebounced = useDebounceFn(refreshCollections, 300)
+const refreshCollectionsDebounced = useDebounceFn(() => refreshCollections, 300)
 async function onMetaReload() {
   await refreshMetaDebounced()
 }
@@ -179,7 +171,8 @@ onUnmounted(() => {
 
 const tabs = computed(() => {
   return [
-    { label: 'Props', slot: 'props', icon: 'i-lucide-settings', disabled: !componentMeta.value?.meta?.props?.length }
+    { label: 'Props', slot: 'props', icon: 'lucide:settings', disabled: !componentMeta.value?.meta?.props?.length },
+    { label: 'Code', slot: 'code', icon: 'lucide:code' }
   ]
 })
 
@@ -215,7 +208,7 @@ watchDebounced(searchTerm, () => {
 }, { debounce: 400 })
 
 defineShortcuts({
-  ctrl_f: {
+  ctrl_p: {
     usingInput: true,
     handler: () => {
       searchInput.value?.inputRef?.focus()
@@ -240,38 +233,39 @@ function selectFirstResult() {
 
 <template>
   <UApp class="flex justify-center items-center h-screen w-full relative font-sans">
-    <div class="absolute top-0 bottom-0 inset-x-0 grid xl:grid-cols-8 grid-cols-4 bg-[var(--ui-bg)]">
-      <div class="col-span-1 border-r border-[var(--ui-border)] hidden xl:block overflow-y-auto p-2">
-        <UInput
-          ref="search"
-          v-model.trim="searchTerm"
-          class="w-full"
-          type="search"
-          variant="none"
-          leading-icon="lucide:search"
-          size="md"
-          placeholder="Search"
-          aria-keyshortcuts="Meta+F"
-          @keydown.enter="selectFirstResult"
-        >
-          <template #trailing>
-            <UKbd
-              variant="subtle"
-              value="meta"
-            />
-            <UKbd
-              variant="subtle"
-              value="F"
-            />
-          </template>
-        </UInput>
-        <USeparator class="my-2" />
+    <div class="absolute top-0 bottom-0 inset-x-0 grid xl:grid-cols-8 grid-cols-4 bg-(--ui-bg-muted)">
+      <div class="relative col-span-1 border-r border-(--ui-border) hidden xl:block overflow-y-auto pb-2">
+        <div class="w-full sticky top-0 bg-(--ui-bg-muted) z-50 border-b border-(--ui-border-accented) py-2">
+          <UInput
+            ref="search"
+            v-model.trim="searchTerm"
+            type="search"
+            variant="none"
+            leading-icon="lucide:search"
+            size="md"
+            placeholder="Search"
+            aria-keyshortcuts="Meta+F"
+            @keydown.enter="selectFirstResult"
+          >
+            <template #trailing>
+              <UKbd
+                variant="subtle"
+                value="meta"
+              />
+              <UKbd
+                variant="subtle"
+                value="p"
+              />
+            </template>
+          </UInput>
+        </div>
         <UTree
           v-model="treeValue"
           :items="treeItems"
           size="lg"
+          class="mt-2 px-1"
           parent-trailing-icon="lucide:chevron-down"
-          :ui="{ itemTrailingIcon: 'group-data-[expanded]:rotate-180 transition-transform duration-200 ml-auto' }"
+          :ui="{ itemTrailingIcon: 'group-data-expanded:rotate-180 transition-transform duration-200 ml-auto' }"
           :get-children="filterTreeItems"
         >
           <template #item-leading="{ hasChildren, expanded, item }">
@@ -294,24 +288,18 @@ function selectFirstResult() {
         </UTree>
       </div>
 
-      <div class="xl:col-span-5 col-span-2 relative">
-        <div class="flex flex-col h-full rounded-md">
-          <ComponentPreview
-            :component="componentMeta"
-            :props="componentProps"
-            class="grow h-full"
-          />
-          <ComponentCode
-            :component="componentMeta"
-            :example="componentKey !== componentMetaId ? componentKey : undefined"
-            :props="componentProps"
-          />
-        </div>
+      <div class="xl:col-span-5 col-span-2 relative shadow">
+        <ComponentPreview
+          :component="componentMeta"
+          :props="componentProps"
+          class="grow h-full"
+        />
         <div class="flex gap-2 absolute top-1 right-2">
           <UButton
             :icon="isDark ? 'i-lucide-moon' : 'i-lucide-sun'"
             variant="ghost"
             color="neutral"
+            class="z-1"
             @click="isDark = !isDark"
           />
         </div>
@@ -327,26 +315,35 @@ function selectFirstResult() {
         <!-- </UButton> -->
       </div>
 
-      <div class="border-l border-[var(--ui-border)] flex flex-col col-span-2 overflow-y-auto">
+      <div class="border-l border-(--ui-border) bg-(--ui-bg-muted) flex flex-col col-span-2 overflow-y-auto shadow-lg">
         <UTabs
-          color="neutral"
           variant="link"
           :items="tabs"
-          class="relative"
-          :ui="{ list: 'sticky top-0 bg-[var(--ui-bg)] z-50' }"
+          class="relative h-screen"
+          :ui="{ list: 'sticky top-0 bg-(--ui-bg-muted) border-b border-(--ui-border-accented) z-50', content: 'h-full' }"
         >
           <template #props>
             <div
               v-for="prop in componentMeta?.meta.props"
               :key="'prop-' + prop.name"
-              class="px-3 py-5 border-b border-[var(--ui-border)]"
+              class="px-3 py-2"
             >
               <ComponentPropInput
                 v-model="componentProps[prop.name]"
                 :meta="prop"
+                class="bg-(--ui-bg) border border-(--ui-border-muted) p-4 rounded-lg"
                 @update:model-value="updateRendererDebounced"
               />
             </div>
+          </template>
+
+          <template #code>
+            <ComponentCode
+              class="h-full"
+              :component="componentMeta"
+              :example="componentKey !== componentMetaId ? componentKey : undefined"
+              :props="componentProps"
+            />
           </template>
         </UTabs>
       </div>

@@ -57,25 +57,14 @@ function updateValue(index: number, value: any) {
         @update:model-value="(val) => updateValue(index, val)"
       />
 
-      <UPopover>
-        <UButton
-          variant="ghost"
-          color="neutral"
-          icon="i-lucide-ellipsis-vertical"
-          class="absolute top-4 right-1"
-        />
-        <template #content>
-          <UButton
-            variant="ghost"
-            color="error"
-            icon="i-lucide-trash"
-            block
-            @click="removeArrayItem(index)"
-          >
-            Remove
-          </UButton>
-        </template>
-      </UPopover>
+      <UButton
+        variant="link"
+        color="neutral"
+        size="sm"
+        icon="lucide:x"
+        class="absolute top-3 right-1"
+        @click="removeArrayItem(index)"
+      />
     </div>
 
     <UButton
