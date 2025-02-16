@@ -9,37 +9,30 @@ on:
       - main
 
 jobs:
-  lint:
+  checks:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
-      - run: corepack enable
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: 22
 
+      # - run: corepack enable
+
       - name: Install dependencies
-        run: npx nypm@latest i
+        run: pnpm i
+
+      - run: pnpm dev:prepare
 
       - name: Lint
-        run: npm run lint
+        run: pnpm lint
 
-  test:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-      - run: corepack enable
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-
-      - name: Install dependencies
-        run: npx nypm@latest i
-
-      - name: Playground prepare
-        run: npm run dev:prepare
+      - name: Typecheck
+        run: pnpm typecheck
 
       - name: Test
-        run: npm run test
+        run: pnpm test
