@@ -7,8 +7,5 @@ export default defineNuxtConfig({
     prefix: 'U'
   },
 
-  compatibilityDate: '2025-02-12',
-  compodium: {
-    rootComponent: 'compodium/root-component.vue'
-  }
+  compatibilityDate: '2025-02-12'
 })

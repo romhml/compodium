@@ -42,7 +42,7 @@ useAsyncData('__compodium-fetch-colors', async () => {
   return true
 })
 
-const { data: collections, status } = useAsyncData('__compodium-fetch-collection', async () => {
+const { data: collections, refresh: refreshCollections } = useAsyncData('__compodium-fetch-collection', async () => {
   const collections = await fetch<Record<string, ComponentCollection>>('/collections')
 
   if (!collections || typeof collections !== 'object') {
@@ -57,6 +57,7 @@ const { data: collections, status } = useAsyncData('__compodium-fetch-collection
     componentKey.value = fallbackComponent?.pascalName
     componentMetaId.value = fallbackComponent?.pascalName
   }
+
   return collections
 })
 
@@ -65,7 +66,6 @@ const propsState = useState<Record<string, Record<string, any>>>('__component_st
 const treeItems = computed(() => {
   if (!collections.value) return
   return Object.entries(collections.value).map(([key, value]) => {
-    console.log(value)
     return {
       label: key,
       key,
@@ -75,9 +75,10 @@ const treeItems = computed(() => {
       children: value
         ? Object.entries(value.components).map(([ckey, cvalue]) => {
             const examples = cvalue.examples?.map((example: ComponentExample) => ({
-              label: value.external ? example.pascalName.replace(`${key}${ckey}`, '') : example.pascalName.replace(`${ckey}`, ''),
+              label: value.external ? example.pascalName.replace(`${ckey}`, '') : example.pascalName.replace(`${key}${ckey}`, ''),
               metaId: ckey,
               key: example.pascalName,
+              filePath: example.filePath,
               isExample: true
             }))
 
@@ -89,8 +90,10 @@ const treeItems = computed(() => {
             return {
               label: ckey,
               key: mainExample?.key ?? ckey,
+              defaultOpen: true,
               children: children?.length ? children : undefined,
-              metaId: ckey
+              metaId: ckey,
+              filePath: mainExample?.filePath ?? cvalue.filePath
             }
           })
         : undefined
@@ -132,14 +135,13 @@ watch([componentKey, metaStatus], () => {
 }, { immediate: true })
 
 function updateRendererComponent() {
-  const event: Event & { data?: { component?: string, props?: any } } = new Event('compodium:update-component')
-  event.data = { component: componentKey.value, props: componentProps.value }
+  const event: Event & { data?: { component?: string, props?: any, path?: string } } = new Event('compodium:update-component')
+  event.data = { component: componentKey.value, props: componentProps.value, path: treeValue.value?.filePath }
   window.dispatchEvent(event)
 }
 
 function updateRenderer() {
   const event: Event & { data?: any } = new Event('compodium:update-props')
-
   event.data = {
     props: componentProps.value
   }
@@ -152,6 +154,7 @@ function onComponentLoaded() {
 }
 
 const refreshMetaDebounced = useDebounceFn(refreshMeta, 300)
+const refreshCollectionsDebounced = useDebounceFn(refreshCollections, 300)
 async function onMetaReload() {
   await refreshMetaDebounced()
 }
@@ -159,13 +162,19 @@ async function onMetaReload() {
 onMounted(() => {
   window.addEventListener('compodium:renderer-mounted', updateRendererComponent)
   window.addEventListener('compodium:component-loaded', onComponentLoaded)
-  window.addEventListener('compodium:meta-reload', onMetaReload)
+
+  // TODO: These watchers should be optimized
+  window.addEventListener('compodium:component-added', refreshCollectionsDebounced)
+  window.addEventListener('compodium:component-changed', onMetaReload)
+  window.addEventListener('compodium:component-removed', refreshCollectionsDebounced)
 })
 
 onUnmounted(() => {
   window.removeEventListener('compodium:renderer-mounted', updateRendererComponent)
   window.removeEventListener('compodium:component-loaded', onComponentLoaded)
-  window.removeEventListener('compodium:meta-reload', onMetaReload)
+  window.removeEventListener('compodium:meta-added', refreshCollectionsDebounced)
+  window.removeEventListener('compodium:meta-changed', onMetaReload)
+  window.removeEventListener('compodium:meta-removed', refreshCollectionsDebounced)
 })
 
 const tabs = computed(() => {
@@ -231,118 +240,116 @@ function selectFirstResult() {
 
 <template>
   <UApp class="flex justify-center items-center h-screen w-full relative font-sans">
-    <template v-if="status === 'success'">
-      <div class="absolute top-0 bottom-0 inset-x-0 grid xl:grid-cols-8 grid-cols-4 bg-[var(--ui-bg)]">
-        <div class="col-span-1 border-r border-[var(--ui-border)] hidden xl:block overflow-y-auto p-2">
-          <UInput
-            ref="search"
-            v-model.trim="searchTerm"
-            class="w-full"
-            type="search"
-            variant="none"
-            leading-icon="lucide:search"
-            size="md"
-            placeholder="Search"
-            aria-keyshortcuts="Meta+F"
-            @keydown.enter="selectFirstResult"
-          >
-            <template #trailing>
-              <UKbd
-                variant="subtle"
-                value="meta"
-              />
-              <UKbd
-                variant="subtle"
-                value="F"
-              />
-            </template>
-          </UInput>
-          <USeparator class="my-2" />
-          <UTree
-            v-model="treeValue"
-            :items="treeItems"
-            size="lg"
-            parent-trailing-icon="lucide:chevron-down"
-            :ui="{ itemTrailingIcon: 'group-data-[expanded]:rotate-180 transition-transform duration-200 ml-auto' }"
-            :get-children="filterTreeItems"
-          >
-            <template #item-leading="{ hasChildren, expanded, item }">
-              <UIcon
-                v-if="item.icon"
-                :name="item.icon"
-                size="lg"
-              />
-              <UIcon
-                v-else-if="hasChildren && expanded && item.isCollection"
-                name="lucide:folder-open"
-                size="lg"
-              />
-              <UIcon
-                v-else-if="hasChildren && item.isCollection"
-                name="lucide:folder"
-                size="lg"
-              />
-            </template>
-          </UTree>
-        </div>
-
-        <div class="xl:col-span-5 col-span-2 relative">
-          <div class="flex flex-col h-full rounded-md">
-            <ComponentPreview
-              :component="componentMeta"
-              :props="componentProps"
-              class="grow h-full"
+    <div class="absolute top-0 bottom-0 inset-x-0 grid xl:grid-cols-8 grid-cols-4 bg-[var(--ui-bg)]">
+      <div class="col-span-1 border-r border-[var(--ui-border)] hidden xl:block overflow-y-auto p-2">
+        <UInput
+          ref="search"
+          v-model.trim="searchTerm"
+          class="w-full"
+          type="search"
+          variant="none"
+          leading-icon="lucide:search"
+          size="md"
+          placeholder="Search"
+          aria-keyshortcuts="Meta+F"
+          @keydown.enter="selectFirstResult"
+        >
+          <template #trailing>
+            <UKbd
+              variant="subtle"
+              value="meta"
             />
-            <ComponentCode
-              :component="componentMeta"
-              :example="componentKey !== componentMetaId ? componentKey : undefined"
-              :props="componentProps"
+            <UKbd
+              variant="subtle"
+              value="F"
             />
-          </div>
-          <div class="flex gap-2 absolute top-1 right-2">
-            <UButton
-              :icon="isDark ? 'i-lucide-moon' : 'i-lucide-sun'"
-              variant="ghost"
-              color="neutral"
-              @click="isDark = !isDark"
+          </template>
+        </UInput>
+        <USeparator class="my-2" />
+        <UTree
+          v-model="treeValue"
+          :items="treeItems"
+          size="lg"
+          parent-trailing-icon="lucide:chevron-down"
+          :ui="{ itemTrailingIcon: 'group-data-[expanded]:rotate-180 transition-transform duration-200 ml-auto' }"
+          :get-children="filterTreeItems"
+        >
+          <template #item-leading="{ hasChildren, expanded, item }">
+            <UIcon
+              v-if="item.icon"
+              :name="item.icon"
+              size="lg"
             />
-          </div>
-
-          <!-- <UButton -->
-          <!--   v-if="component.docUrl" -->
-          <!--   variant="ghost" -->
-          <!--   color="neutral" -->
-          <!--   icon="i-lucide-external-link" -->
-          <!--   @click="openDocs()" -->
-          <!-- > -->
-          <!--   Open docs -->
-          <!-- </UButton> -->
-        </div>
-
-        <div class="border-l border-[var(--ui-border)] flex flex-col col-span-2 overflow-y-auto">
-          <UTabs
-            color="neutral"
-            variant="link"
-            :items="tabs"
-            class="relative"
-            :ui="{ list: 'sticky top-0 bg-[var(--ui-bg)] z-50' }"
-          >
-            <template #props>
-              <div
-                v-for="prop in componentMeta?.meta.props"
-                :key="'prop-' + prop.name"
-                class="px-3 py-5 border-b border-[var(--ui-border)]"
-              >
-                <ComponentPropInput
-                  v-model="componentProps[prop.name]"
-                  :meta="prop"
-                  @update:model-value="updateRendererDebounced"
-                />
-              </div>
-            </template>
-          </UTabs>
-        </div>
+            <UIcon
+              v-else-if="hasChildren && expanded && item.isCollection"
+              name="lucide:folder-open"
+              size="lg"
+            />
+            <UIcon
+              v-else-if="hasChildren && item.isCollection"
+              name="lucide:folder"
+              size="lg"
+            />
+          </template>
+        </UTree>
       </div>
-    </template>
+
+      <div class="xl:col-span-5 col-span-2 relative">
+        <div class="flex flex-col h-full rounded-md">
+          <ComponentPreview
+            :component="componentMeta"
+            :props="componentProps"
+            class="grow h-full"
+          />
+          <ComponentCode
+            :component="componentMeta"
+            :example="componentKey !== componentMetaId ? componentKey : undefined"
+            :props="componentProps"
+          />
+        </div>
+        <div class="flex gap-2 absolute top-1 right-2">
+          <UButton
+            :icon="isDark ? 'i-lucide-moon' : 'i-lucide-sun'"
+            variant="ghost"
+            color="neutral"
+            @click="isDark = !isDark"
+          />
+        </div>
+
+        <!-- <UButton -->
+        <!--   v-if="component.docUrl" -->
+        <!--   variant="ghost" -->
+        <!--   color="neutral" -->
+        <!--   icon="i-lucide-external-link" -->
+        <!--   @click="openDocs()" -->
+        <!-- > -->
+        <!--   Open docs -->
+        <!-- </UButton> -->
+      </div>
+
+      <div class="border-l border-[var(--ui-border)] flex flex-col col-span-2 overflow-y-auto">
+        <UTabs
+          color="neutral"
+          variant="link"
+          :items="tabs"
+          class="relative"
+          :ui="{ list: 'sticky top-0 bg-[var(--ui-bg)] z-50' }"
+        >
+          <template #props>
+            <div
+              v-for="prop in componentMeta?.meta.props"
+              :key="'prop-' + prop.name"
+              class="px-3 py-5 border-b border-[var(--ui-border)]"
+            >
+              <ComponentPropInput
+                v-model="componentProps[prop.name]"
+                :meta="prop"
+                @update:model-value="updateRendererDebounced"
+              />
+            </div>
+          </template>
+        </UTabs>
+      </div>
+    </div>
   </UApp>
 </template>

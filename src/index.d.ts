@@ -7,7 +7,7 @@ export type Component = NuxtComponent & {
 }
 
 export type ComponentExample = NuxtComponent & {
-  isExample?: true
+  isExample: true
 }
 
 export type CollectionConfig = {
@@ -46,11 +46,11 @@ declare module 'nuxt/schema' {
 
     compodium: {
       previewComponent?: string
-      defaultPreviewComponent?: string
-      rootComponent?: string
+      defaultPreviewComponent: string
+      componentsPath: string
+      rootComponent: string
       collections: Collection[]
-      exampleComponents: Record<string, NuxtComponent>
-      defaultProps: Record<string, any>
+      defaultProps?: Record<string, any>
     }
   }
 }

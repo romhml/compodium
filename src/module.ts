@@ -1,5 +1,5 @@
 import { addCustomTab, startSubprocess } from '@nuxt/devtools-kit'
-import { defineNuxtModule, createResolver, addTemplate, addServerHandler } from '@nuxt/kit'
+import { defineNuxtModule, createResolver, addTemplate, addServerHandler, addVitePlugin, updateTemplates } from '@nuxt/kit'
 import { getPort } from 'get-port-please'
 import { camelCase } from 'scule'
 import sirv from 'sirv'
@@ -7,19 +7,20 @@ import type { CollectionConfig } from '.'
 import { scanComponents } from './utils'
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
-
 import { defu } from 'defu'
 import { defaultProps } from './libs/defaults'
+import { watch } from 'chokidar'
+import { compodiumVite } from './vite'
 
 export interface ModuleOptions {
   /* Customize the preview component path. Defaults to compodium/preview.vue */
   previewComponent: string
   /* Customize the directory for preview examples */
-  examples?: string
+  examples: string
   /*  */
   collections: CollectionConfig[]
   /* Whether or not to include default collections for third party libraries. */
-  includeDefaultCollections?: boolean
+  includeDefaultCollections: boolean
 }
 
 export default defineNuxtModule<ModuleOptions>({
@@ -32,7 +33,8 @@ export default defineNuxtModule<ModuleOptions>({
     examples: 'compodium/examples',
     collections: [
       { name: 'Components', match: 'components/' }
-    ]
+    ],
+    includeDefaultCollections: true
   },
 
   async setup(options, nuxt) {
@@ -43,9 +45,9 @@ export default defineNuxtModule<ModuleOptions>({
 
     nuxt.options.appConfig.compodium = {}
 
-    const libraryCollections = [
-      { id: 'ui', name: 'Nuxt UI', match: '@nuxt/ui', external: true, icon: 'lineicons:nuxt', prefix: (nuxt.options as any).ui?.prefix, examplePath: 'libs/examples/ui' }
-    ]
+    const libraryCollections = options.includeDefaultCollections
+      ? [{ id: 'ui', name: 'Nuxt UI', match: '@nuxt/ui', external: true, icon: 'lineicons:nuxt', prefix: (nuxt.options as any).ui?.prefix, examplePath: 'libs/examples/ui' }]
+      : []
 
     const previewComponent = appResolver.resolve(options.previewComponent)
     const defaultPreviewComponent = resolve('./runtime/preview.vue')
@@ -56,11 +58,61 @@ export default defineNuxtModule<ModuleOptions>({
       defaultPreviewComponent
     }
 
-    nuxt.options.appConfig.compodium = defu(nuxt.options.appConfig.compodium, { defaultProps })
+    const appConfig = nuxt.options.appConfig
+    appConfig.compodium = defu(nuxt.options.appConfig.compodium as any, { defaultProps })
 
     nuxt.hook('app:resolve', (app) => {
-      nuxt.options.appConfig.compodium.rootComponent = app.rootComponent
+      (appConfig.compodium as any).rootComponent = app.rootComponent
       app.rootComponent = resolve('./runtime/root.vue')
+    })
+
+    // Watch for changes in example directory
+    const examplesDir = appResolver.resolve(options.examples)
+    const examplesWatcher = watch(examplesDir, {
+      persistent: true,
+      awaitWriteFinish: {
+        stabilityThreshold: 2000,
+        pollInterval: 100
+      }
+    })
+
+    const libraryExampleDirs = libraryCollections.map(c => ({ path: resolve(c.examplePath), pattern: '**/*.{vue,ts,tsx}', prefix: c.prefix }))
+    const exampleComponents = options.examples
+      ? (await scanComponents([{
+          path: examplesDir,
+          pattern: '**/*.{vue,ts,tsx}'
+        }, ...libraryExampleDirs], nuxt.options.rootDir)).map(c => ({ ...c, isExample: true }))
+      : []
+
+    // FIXME: This might cause a race condition with the vite plugin.
+    examplesWatcher.on('add', async (path) => {
+      const comps = await scanComponents([{ path: examplesDir, pattern: '**/*.{vue,ts,tsx}' }], nuxt.options.rootDir)
+      const newExample = comps.find(c => c.filePath === path)
+      if (newExample) {
+        exampleComponents.push({ ...newExample, isExample: true })
+        await updateTemplates({
+          filter: template => template.filename === 'compodium/components.json'
+        })
+      }
+    })
+
+    examplesWatcher.on('unlink', async (path) => {
+      const index = exampleComponents.findIndex(c => c.filePath === path)
+      if (index !== -1) exampleComponents.splice(index, 1)
+      await updateTemplates({
+        filter: template => template.filename === 'compodium/components.json'
+      })
+    })
+
+    addTemplate({
+      filename: 'compodium/components.json',
+      write: true,
+      getContents: ({ app }) => {
+        return JSON.stringify([...app.components, ...exampleComponents].reduce((acc, c) => {
+          acc[c.pascalName] = c
+          return acc
+        }, {} as Record<string, any>), null, 2)
+      }
     })
 
     nuxt.hook('components:dirs', (dirs) => {
@@ -71,35 +123,7 @@ export default defineNuxtModule<ModuleOptions>({
           return `export default ${JSON.stringify(dirs)}`
         }
       })
-    })
-
-    const exampleComponents = options.examples
-      ? (await scanComponents([{
-          path: appResolver.resolve(options.examples),
-          pattern: '**/*.{vue,ts,tsx}'
-        }, ...libraryCollections.map(c => ({ path: resolve(c.examplePath), pattern: '**/*.{vue,ts,tsx}', prefix: c.prefix }))], appResolver.resolve(''))).map(c => ({ ...c, isExample: true }))
-      : []
-
-    nuxt.options.appConfig.compodium.exampleComponents = exampleComponents
-
-    // Generate component templates
-    addTemplate({
-      filename: 'compodium/components.mjs',
-      write: true,
-      getContents: ({ app }) => {
-        return `export default ${JSON.stringify(app.components.concat(exampleComponents).reduce((acc, c) => {
-          acc[c.pascalName] = c
-          return acc
-        }, {} as Record<string, any>), null, 2)}`
-      }
-    })
-
-    // Nitro setup
-    nuxt.hook('nitro:config', (nitroConfig) => {
-      nitroConfig.handlers = nitroConfig.handlers || []
-      nitroConfig.virtual = nitroConfig.virtual || {}
-      nitroConfig.virtual['#compodium/nitro/components'] = () => readFileSync(join(nuxt.options.buildDir, '/compodium/components.mjs'), 'utf-8')
-      nitroConfig.virtual['#compodium/nitro/dirs'] = () => readFileSync(join(nuxt.options.buildDir, '/compodium/dirs.mjs'), 'utf-8')
+      addVitePlugin(compodiumVite({ dirs: [...dirs, examplesDir] }))
     })
 
     if (process.env.COMPODIUM_LOCAL) {
@@ -143,6 +167,13 @@ export default defineNuxtModule<ModuleOptions>({
         }))
       })
     }
+
+    // This file will be read directly server side. This is a hack after realising that virtual module didn't work with HMR server side.
+    nuxt.options.nitro.virtual = nuxt.options.nitro.virtual || {}
+    nuxt.options.nitro.virtual['#compodium/nitro/dirs'] = () => {
+      return readFileSync(join(nuxt.options.buildDir, '/compodium/dirs.mjs'), 'utf-8')
+    }
+    (appConfig.compodium as any).componentsPath = join(nuxt.options.buildDir, '/compodium/components.json')
 
     addServerHandler({
       method: 'get',

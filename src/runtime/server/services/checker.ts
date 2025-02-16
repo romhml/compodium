@@ -2,7 +2,6 @@ import { createCheckerByJson, type ComponentMeta } from 'vue-component-meta'
 
 // @ts-expect-error virtual file
 import dirs from '#compodium/nitro/dirs'
-// import * as ts from 'typescript'
 
 let checker
 
@@ -38,10 +37,6 @@ export function createChecker(): ReturnType<typeof createCheckerByJson> {
       }
     }
   )
-
-  // metaChecker.getComponentMeta = (componentPath: string, exportName?: string): ComponentMeta => {
-  //   return metaChecker.getComponentMeta(componentPath, exportName)
-  // }
 
   const checker = {
     ...metaChecker,
