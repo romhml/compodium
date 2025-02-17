@@ -44,12 +44,10 @@ useAsyncData('__compodium-fetch-colors', async () => {
 
 const { data: collections, refresh: refreshCollections } = useAsyncData('__compodium-fetch-collection', async () => {
   const collections = await fetch<Record<string, ComponentCollection>>('/collections')
-
   if (!collections || typeof collections !== 'object') {
     createError('Could not load collections')
     return null
   }
-
   return collections
 })
 
@@ -69,7 +67,8 @@ const treeItems = computed(() => {
               metaId: ckey,
               key: example.pascalName,
               filePath: example.filePath,
-              isExample: true
+              isExample: true,
+              docUrl: cvalue.docUrl
             }))
 
             const mainExample = examples?.find((c: any) => {
@@ -83,7 +82,8 @@ const treeItems = computed(() => {
               defaultOpen: true,
               children: children?.length ? children : undefined,
               metaId: ckey,
-              filePath: mainExample?.filePath ?? cvalue.filePath
+              filePath: mainExample?.filePath ?? cvalue.filePath,
+              docUrl: cvalue.docUrl
             }
           })
         : undefined
@@ -183,11 +183,6 @@ const isDark = computed({
     window.dispatchEvent(event)
   }
 })
-
-// function openDocs() {
-//   if (!component.value) return
-//   window.parent.open(`https://ui3.nuxt.dev/components/${component.value.slug}`)
-// }
 
 const searchInput = useTemplateRef('search')
 const componentNames = computed(() => flattenedTreeItems.value.filter(c => !c.isCollection && !c.isExample).map(c => c.label))
@@ -299,6 +294,15 @@ function onResetState() {
         />
         <div class="flex gap-2 absolute top-1 right-2">
           <UButton
+            v-if="treeValue?.docUrl"
+            icon="lucide:book-open"
+            variant="ghost"
+            class="rounded-full"
+            color="neutral"
+            :href="treeValue?.docUrl"
+            target="_blank"
+          />
+          <UButton
             icon="lucide:rotate-cw"
             variant="link"
             color="neutral"
@@ -315,16 +319,6 @@ function onResetState() {
             @click="isDark = !isDark"
           />
         </div>
-
-        <!-- <UButton -->
-        <!--   v-if="component.docUrl" -->
-        <!--   variant="ghost" -->
-        <!--   color="neutral" -->
-        <!--   icon="i-lucide-external-link" -->
-        <!--   @click="openDocs()" -->
-        <!-- > -->
-        <!--   Open docs -->
-        <!-- </UButton> -->
       </div>
 
       <div class="border-l border-(--ui-border) bg-(--ui-bg-muted) flex flex-col col-span-2 overflow-y-auto shadow-lg">

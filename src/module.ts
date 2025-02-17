@@ -2,7 +2,7 @@ import type { CollectionConfig } from './types'
 import { addCustomTab, startSubprocess } from '@nuxt/devtools-kit'
 import { defineNuxtModule, createResolver, addTemplate, addServerHandler, addVitePlugin, updateTemplates } from '@nuxt/kit'
 import { getPort } from 'get-port-please'
-import { camelCase } from 'scule'
+import { camelCase, kebabCase } from 'scule'
 import sirv from 'sirv'
 import { scanComponents } from './utils'
 import { readFileSync } from 'node:fs'
@@ -11,6 +11,7 @@ import { defu } from 'defu'
 import { defaultProps } from './libs/defaults'
 import { watch } from 'chokidar'
 import { compodiumVite } from './vite'
+import micromatch from 'micromatch'
 
 export interface ModuleOptions {
   /* Customize the preview component path. Defaults to compodium/preview.vue */
@@ -55,7 +56,11 @@ export default defineNuxtModule<ModuleOptions>({
           icon: 'lineicons:nuxt',
           prefix: (nuxt.options as any).ui?.prefix,
           examplePath: 'libs/examples/ui',
-          ignore: ['App.vue', 'Toast.vue', '*Provider.vue', '*Base.vue', '*Content.vue']
+          ignore: ['App.vue', 'Toast.vue', '*Provider.vue', '*Base.vue', '*Content.vue'],
+          getDocUrl(componentName: string) {
+            const prefix = (nuxt.options as any).ui?.prefix ?? 'U'
+            return `https://ui3.nuxt.dev/components/${kebabCase(componentName.replace(new RegExp(`^${prefix}`), ''))}`
+          }
         }]
       : []
 
@@ -134,9 +139,19 @@ export default defineNuxtModule<ModuleOptions>({
     addTemplate({
       filename: 'compodium/components.json',
       write: true,
-      getContents: ({ app }) => {
-        return JSON.stringify([...app.components, ...exampleComponents].reduce((acc, c) => {
-          acc[c.pascalName] = c
+      getContents: ({ nuxt, app }) => {
+        const collections = (nuxt.options.appConfig.compodium as any).collections
+        const components = [...app.components, ...exampleComponents]
+        return JSON.stringify(components.reduce((acc, component) => {
+          const collection = collections.find((c: any) => {
+            if (!c.external && component.filePath?.match('node_modules/')) return false
+            return micromatch.isMatch(component.filePath, [c.path], { ignore: c.ignore, contains: true })
+          })
+
+          acc[component.pascalName] = {
+            ...component,
+            docUrl: collection?.getDocUrl?.(component.pascalName)
+          }
           return acc
         }, {} as Record<string, any>), null, 2)
       }

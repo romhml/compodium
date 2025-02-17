@@ -16,6 +16,7 @@ export type CollectionConfig = {
   icon?: string
   prefix?: string
   ignore?: string[]
+  docUrl?: (componentName: string) => string
 }
 
 export type Collection = {
@@ -28,11 +29,8 @@ export type Collection = {
   ignore?: string[]
 }
 
-export type ComponentCollection = {
-  name: string
-  icon?: string
+export type ComponentCollection = Collection & {
   components: Record<string, Component>
-  external?: boolean
 }
 
 declare module 'nuxt/schema' {

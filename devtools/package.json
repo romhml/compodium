@@ -1,5 +1,5 @@
 {
-  "name": "@nuxt/ui-devtools",
+  "name": "@compodium/devtools",
   "private": true,
   "type": "module",
   "scripts": {
