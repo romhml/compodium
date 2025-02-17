@@ -2,7 +2,7 @@ import fs from 'node:fs/promises'
 import { defineEventHandler, createError, appendHeader } from 'h3'
 import type { Component as NuxtComponent } from '@nuxt/schema'
 import { useAppConfig } from '#imports'
-import type { ComponentExample } from '../../..'
+import type { ComponentExample } from '../../../types'
 
 export default defineEventHandler(async (event) => {
   appendHeader(event, 'Access-Control-Allow-Origin', '*')

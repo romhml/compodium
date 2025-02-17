@@ -17,5 +17,6 @@ body {
   width: 100vw;
   padding: 20px;
   background-color: transparent;
+
 }
 </style>

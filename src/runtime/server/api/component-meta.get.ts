@@ -4,6 +4,7 @@ import type { Component as NuxtComponent } from '@nuxt/schema'
 import { useAppConfig } from '#imports'
 import { camelCase } from 'scule'
 import { getChecker } from '../services/checker'
+import micromatch from 'micromatch'
 
 export default defineEventHandler(async (event) => {
   appendHeader(event, 'Access-Control-Allow-Origin', '*')
@@ -34,7 +35,9 @@ export default defineEventHandler(async (event) => {
 
   const collection = collections.find((c) => {
     if (!c.external && component.filePath?.match('node_modules/')) return false
-    return component.filePath?.match(c.match)
+    return micromatch.isMatch(component.filePath, [
+      `${c.path}`
+    ], { ignore: c.ignore, contains: true })
   })
 
   if (collection) {

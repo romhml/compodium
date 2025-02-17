@@ -1,4 +1,4 @@
-import type { CollectionConfig } from '.'
+import type { CollectionConfig } from './types'
 import { addCustomTab, startSubprocess } from '@nuxt/devtools-kit'
 import { defineNuxtModule, createResolver, addTemplate, addServerHandler, addVitePlugin, updateTemplates } from '@nuxt/kit'
 import { getPort } from 'get-port-please'
@@ -18,7 +18,7 @@ export interface ModuleOptions {
   /* Customize the directory for preview examples */
   examples: string
   /*  */
-  collections: CollectionConfig[]
+  collections?: CollectionConfig[]
   /* Whether or not to include default collections for third party libraries. */
   includeDefaultCollections: boolean
 }
@@ -31,9 +31,6 @@ export default defineNuxtModule<ModuleOptions>({
   defaults: {
     previewComponent: 'compodium/preview.vue',
     examples: 'compodium/examples',
-    collections: [
-      { name: 'Components', match: 'components/' }
-    ],
     includeDefaultCollections: true
   },
 
@@ -43,17 +40,30 @@ export default defineNuxtModule<ModuleOptions>({
     const { resolve } = createResolver(import.meta.url)
     const appResolver = createResolver(nuxt.options.rootDir)
 
+    options.collections ??= [
+      { name: 'Components', path: 'components/' }
+    ]
+
     nuxt.options.appConfig.compodium = {}
 
     const libraryCollections = options.includeDefaultCollections
-      ? [{ id: 'ui', name: 'Nuxt UI', match: '@nuxt/ui', external: true, icon: 'lineicons:nuxt', prefix: (nuxt.options as any).ui?.prefix, examplePath: 'libs/examples/ui' }]
+      ? [{
+          id: 'ui',
+          name: 'Nuxt UI',
+          path: '@nuxt/ui',
+          external: true,
+          icon: 'lineicons:nuxt',
+          prefix: (nuxt.options as any).ui?.prefix,
+          examplePath: 'libs/examples/ui',
+          ignore: ['App.vue', 'Toast.vue', '*Provider.vue', '*Base.vue', '*Content.vue']
+        }]
       : []
 
     const previewComponent = appResolver.resolve(options.previewComponent)
     const defaultPreviewComponent = resolve('./runtime/preview.vue')
 
     nuxt.options.appConfig.compodium = {
-      collections: options.collections.map(c => ({ ...c, id: camelCase(c.name) })).concat(libraryCollections)
+      collections: options.collections.map(c => ({ ...c, id: camelCase(c.name), path: appResolver.resolve(c.path) })).concat(libraryCollections)
     }
 
     const appConfig = nuxt.options.appConfig

@@ -7,5 +7,11 @@ export default defineNuxtConfig({
     prefix: 'U'
   },
 
-  compatibilityDate: '2025-02-12'
+  compatibilityDate: '2025-02-12',
+
+  compodium: {
+    collections: [
+      { name: 'Components', path: 'components/', ignore: ['IgnoredComponent.vue'] }
+    ]
+  }
 })

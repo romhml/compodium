@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useColorMode, useDebounceFn, watchDebounced } from '@vueuse/core'
-import type { Component, ComponentCollection, ComponentExample } from '../../src'
+import type { Component, ComponentCollection, ComponentExample } from '../../src/types'
 import type { PropertyMeta } from 'vue-component-meta'
 import Fuse from 'fuse.js'
 
@@ -53,7 +53,7 @@ const { data: collections, refresh: refreshCollections } = useAsyncData('__compo
   return collections
 })
 
-const propsState = useState<Record<string, Record<string, any>>>('__component_state', () => ({}))
+const propsState = useState<Record<string, Record<string, any> | undefined>>('__component_state', () => ({}))
 
 const treeItems = computed(() => {
   if (!collections.value) return
@@ -111,18 +111,17 @@ const treeValue = computed({
 const { data: componentMeta, refresh: refreshMeta, status: metaStatus } = useAsyncData(`__compodium-fetch-meta-${componentMetaId.value}`, async () => {
   if (!componentMetaId.value) return
   const meta = await fetch<Component>(`/component-meta/${componentMetaId.value}`)
-  componentProps.value = { ...componentProps.value, ...meta.defaultProps }
   return parseComponentMeta(meta)
 }, { watch: [componentMetaId] })
 
-const componentProps = computed<Record<string, any>>({
-  // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-  get: () => propsState.value[componentKey.value] ??= {},
+const componentProps = computed<Record<string, any> | undefined>({
+  get: () => propsState.value[componentKey.value],
   set: value => propsState.value[componentKey.value] = value
 })
 
 watch([componentKey, metaStatus], () => {
   if (metaStatus.value === 'pending') return
+  componentProps.value = { ...componentProps.value, ...componentMeta.value?.defaultProps }
   updateRendererComponent()
 }, { immediate: true })
 
@@ -171,7 +170,7 @@ onUnmounted(() => {
 
 const tabs = computed(() => {
   return [
-    { label: 'Props', slot: 'props', icon: 'lucide:settings', disabled: !componentMeta.value?.meta?.props?.length },
+    { label: 'Props', slot: 'props', icon: 'lucide:settings' },
     { label: 'Code', slot: 'code', icon: 'lucide:code' }
   ]
 })

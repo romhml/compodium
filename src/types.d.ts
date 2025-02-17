@@ -12,18 +12,20 @@ export type ComponentExample = NuxtComponent & {
 
 export type CollectionConfig = {
   name: string
-  match: string | RegExp
+  path: string
   icon?: string
   prefix?: string
+  ignore?: string[]
 }
 
 export type Collection = {
   id: string
   name: string
-  match: string | RegExp
+  path: string
   external?: boolean
   icon?: string
   prefix?: string
+  ignore?: string[]
 }
 
 export type ComponentCollection = {

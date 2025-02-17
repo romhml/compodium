@@ -1,8 +1,9 @@
 import fs from 'node:fs/promises'
 import { defineEventHandler } from 'h3'
 import type { Component as NuxtComponent } from '@nuxt/schema'
-import type { ComponentCollection, Collection, ComponentExample } from '../../..'
+import type { ComponentCollection, Collection, ComponentExample } from '../../../types'
 import { useAppConfig } from '#imports'
+import micromatch from 'micromatch'
 
 export default defineEventHandler(async () => {
   const appConfig = useAppConfig()
@@ -15,7 +16,7 @@ export default defineEventHandler(async () => {
   return components.reduce((acc, component) => {
     const collection = collections.find((c) => {
       if (!c.external && component.filePath?.match('node_modules/')) return false
-      return component.filePath?.match(c.match)
+      return micromatch.isMatch(component.filePath, [c.path], { ignore: c.ignore, contains: true })
     })
 
     if (!collection || component.isExample) return acc

@@ -143,7 +143,7 @@ export const defaultProps = {
         }]
       ]
     },
-    icons: { name: 'lucide:rocket' },
+    icon: { name: 'lucide:rocket' },
     formField: { label: 'Label' },
     inputMenu: { items: ['Option 1', 'Option 2', 'Option 3'] },
     kbd: { value: 'K' },

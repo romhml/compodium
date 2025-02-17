@@ -2,7 +2,7 @@
 import { useClipboard } from '@vueuse/core'
 import { kebabCase } from 'scule'
 import { escapeString } from 'knitwork'
-import type { Component, ComponentExample } from '../../../src'
+import type { Component, ComponentExample } from '../../../src/types'
 
 const props = defineProps<{ example?: string, component?: Component | ComponentExample, props?: Record<string, any> }>()
 
