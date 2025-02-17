@@ -15,6 +15,13 @@
   --color-green-800: #016538;
   --color-green-900: #0A5331;
   --color-green-950: #052E16;
+
+  --animate-rotate: rotate 0.5s linear infinite;
+  @keyframes rotate {
+    to {
+      transform: rotate(360deg);
+    }
+  }
 }
 
 .shiki

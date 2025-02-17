@@ -228,6 +228,15 @@ function selectFirstResult() {
     componentMetaId.value = component.metaId
   }
 }
+
+const isRotated = ref(false)
+function onResetState() {
+  if (isRotated.value) return
+  setTimeout(() => isRotated.value = false, 500)
+  isRotated.value = true
+  propsState.value[componentKey.value] = { ...componentMeta.value?.defaultProps }
+  updateRendererDebounced()
+}
 </script>
 
 <template>
@@ -295,10 +304,19 @@ function selectFirstResult() {
         />
         <div class="flex gap-2 absolute top-1 right-2">
           <UButton
-            :icon="isDark ? 'i-lucide-moon' : 'i-lucide-sun'"
-            variant="ghost"
+            icon="lucide:rotate-cw"
+            variant="link"
             color="neutral"
-            class="z-1"
+            class="rounded-full"
+            :class="{ 'animate-rotate': isRotated }"
+            :enabled="componentKey"
+            @click="onResetState"
+          />
+          <UButton
+            :icon="isDark ? 'lucide:moon' : 'lucide:sun'"
+            variant="ghost"
+            class="rounded-full"
+            color="neutral"
             @click="isDark = !isDark"
           />
         </div>
