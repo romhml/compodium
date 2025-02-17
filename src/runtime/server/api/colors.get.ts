@@ -3,5 +3,5 @@ import { useAppConfig } from '#imports'
 
 export default defineEventHandler(() => {
   const appConfig = useAppConfig()
-  return appConfig.ui?.colors
+  return (appConfig.ui as any)?.colors
 })

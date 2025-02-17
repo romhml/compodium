@@ -7,16 +7,13 @@ import ObjectInput, { objectInputSchema } from '../components/inputs/ObjectInput
 import ArrayInput, { arrayInputSchema } from '../components/inputs/ArrayInput.vue'
 import PrimitiveArrayInput, { primitiveArrayInputSchema } from '../components/inputs/PrimitiveArrayInput.vue'
 import DateInput, { dateInputSchema } from '../components/inputs/DateInput.vue'
-import type { ZodSchema } from 'zod'
+import type { ZodSchema, z } from 'zod'
 import type { Component as VueComponent } from 'vue'
 
 export type PropResolver<T extends ZodSchema> = {
   id: string
   schema: T
   component: VueComponent
-  // TODO: Integrate default value generator from app config.
-  // Also allow users to configure which inputs to use for a prop.
-  // fake?: (prop: PropertyMeta, parsedSchema: z.output<T>) => any
 }
 
 // List of available inputs.
@@ -63,35 +60,44 @@ const propResolvers: PropResolver<any>[] = [
   }
 ]
 
-export function inferPropType<T extends ZodSchema>(schema: PropertyMeta['schema']): { parsedSchema: PropertyMeta['schema'], resolver: PropResolver<T> } | undefined {
-  // Return the first input in the list of available inputs that matches the schema.
-  for (const resolver of propResolvers) {
-    const result = resolver.schema.safeParse(schema)
-    if (result.success) {
-      // Returns the output from zod to get the transformed output.
-      // It only includes attributes defined in the zod schema.
-      return { parsedSchema: result.data as PropertyMeta['schema'], resolver: resolver }
-    }
-  }
-
-  if (typeof schema === 'string') return
-
-  // If the schema is a complex enum or array return the first nested schema that matches an input.
-  if (schema.kind === 'enum' && schema.schema) {
-    const enumSchemas = typeof schema.schema === 'object' ? Object.values(schema.schema) : schema.schema
-    for (const enumSchema of enumSchemas) {
-      const result = inferPropType<T>(enumSchema)
-      if (result) return result
-    }
-  }
+export type InferPropTypeResult<T extends ZodSchema> = PropResolver<T> & {
+  type: string
+  parsedSchema: z.output<T>
 }
 
-export function hash(str: string): number {
-  let hash = 0
-  for (let i = 0; i < str.length; i++) {
-    const charCode = str.charCodeAt(i)
-    hash = (hash << 5) - hash + charCode
-    hash |= 0
-  }
-  return hash
+export function inferPropTypes<T extends ZodSchema>(schema: PropertyMeta['schema'] | PropertyMeta['schema'][]): InferPropTypeResult<T>[] {
+  // Return the first input in the list of available inputs that matches the schema.
+
+  const schemas = Array.isArray(schema) ? schema : [schema]
+
+  return schemas.flatMap((schema) => {
+    for (const resolver of propResolvers) {
+      const result = resolver.schema.safeParse(schema)
+      if (result.success) {
+      // Returns the output from zod to get the transformed output.
+      // It only includes attributes defined in the zod schema.
+        return [{ parsedSchema: result.data, ...resolver, type: result.data?.type ?? result.data }]
+      }
+    }
+
+    if (typeof schema === 'string') return []
+
+    // If the schema is a complex enum or array return the first nested schema that matches an input.
+    if (schema.kind === 'enum' && schema.schema) {
+      const enumSchemas = typeof schema.schema === 'object' ? Object.values(schema.schema) : schema.schema
+      return enumSchemas.flatMap(inferPropTypes<T>)
+    }
+    return []
+  })
+}
+
+export function inferDefaultInput<T extends ZodSchema>(value: any, types: InferPropTypeResult<T>[]): InferPropTypeResult<T> | undefined {
+  if (!value) return
+  const valueType = typeof value
+  return types.find((t) => {
+    if (valueType === t.parsedSchema) return t
+    if (typeof t.parsedSchema?.schema === 'object' && typeof value === 'object') {
+      return Object.keys(value).every(k => !!t.parsedSchema.schema[k])
+    }
+  })
 }

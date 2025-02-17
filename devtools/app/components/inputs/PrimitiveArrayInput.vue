@@ -1,20 +1,22 @@
 <script lang="ts">
 import { z } from 'zod'
 
-const primitiveSchema = z.enum(['number', 'string']).or(
-  z.object({
-    kind: z.literal('enum'),
-    schema: z.array(z.string())
-      .or(z.record(z.any(), z.string()).transform<string[]>(t => Object.values(t)))
-      .transform<string[]>(t => t.filter(s => s !== 'undefined').map(s => s.trim().replaceAll(/["'`]/g, '')))
-      .pipe(z.array(z.string()).min(1))
-  }))
+const primitiveSchema = z.enum(['number', 'string'])
+  .or(
+    z.object({
+      kind: z.literal('enum'),
+      schema: z.array(z.string())
+        .or(z.record(z.any(), z.string()).transform<string[]>(t => Object.values(t)))
+        .transform<string[]>(t => t.filter(s => s.trim().match(/^["'`]/)).map(s => s.trim().replaceAll(/["'`]/g, '')))
+        .pipe(z.array(z.string()).min(1))
+    }))
 
 export const primitiveArrayInputSchema = z.object({
   kind: z.literal('array'),
   schema: z.array(z.any())
     .or(z.record(z.any(), primitiveSchema).transform(t => Object.values(t)))
-    .transform(t => t.filter(s => s !== 'undefined')).pipe(z.array(primitiveSchema))
+    .transform(t => t.filter(s => s !== 'undefined')).pipe(z.array(primitiveSchema).max(1)),
+  type: z.string()
 })
 
 export type PrimitiveArrayInputSchema = z.infer<typeof primitiveArrayInputSchema>

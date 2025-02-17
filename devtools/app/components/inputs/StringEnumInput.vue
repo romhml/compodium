@@ -6,7 +6,8 @@ export const stringEnumInputSchema = z.object({
   schema: z.array(z.string())
     .or(z.record(z.any(), z.string()).transform<string[]>(t => Object.values(t)))
     .transform<string[]>(t => t.filter(s => s.trim().match(/^["'`]/)).map(s => s.trim().replaceAll(/["'`]/g, '')))
-    .pipe(z.array(z.string()).min(1))
+    .pipe(z.array(z.string()).min(1)),
+  type: z.string()
 })
 
 export type StringEnumInputSchema = z.infer<typeof stringEnumInputSchema>

@@ -131,3 +131,81 @@ export const stringEnumSchema = {
     7: '"time"'
   }
 }
+
+export const complexEnumSchema = {
+  kind: 'enum',
+  type: 'boolean | SelectItem | AcceptableValue',
+  schema: [
+    'null',
+    'string',
+    'number',
+    {
+      kind: 'object',
+      type: 'AccordionItem',
+      schema: {
+        label: {
+          name: 'label',
+          global: false,
+          description: '',
+          tags: [],
+          required: false,
+          type: 'string | undefined',
+          schema: {
+            kind: 'enum',
+            type: 'string | undefined',
+            schema: {
+              0: 'undefined',
+              1: 'string'
+            }
+          }
+        }
+      }
+    }
+  ]
+}
+
+export const complexArraySchema = {
+  kind: 'enum',
+  type: 'MaybeArrayOfArray<boolean | SelectItem | AcceptableValue> | undefined',
+  schema: {
+    0: 'undefined',
+    1: {
+      kind: 'array',
+      type: '(boolean | SelectItem | AcceptableValue)[]',
+      schema: [{
+        kind: 'enum',
+        type: 'boolean | SelectItem | AcceptableValue',
+        schema: [
+          'null',
+          'string',
+          'number',
+          'false',
+          'true',
+          'Record<string, any>',
+          {
+            kind: 'object',
+            type: 'AccordionItem',
+            schema: {
+              label: {
+                name: 'label',
+                global: false,
+                description: '',
+                tags: [],
+                required: false,
+                type: 'string | undefined',
+                schema: {
+                  kind: 'enum',
+                  type: 'string | undefined',
+                  schema: {
+                    0: 'undefined',
+                    1: 'string'
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }]
+    }
+  }
+}

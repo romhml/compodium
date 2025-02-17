@@ -5,18 +5,19 @@ import { useAppConfig } from '#imports'
 import { camelCase } from 'scule'
 import { getChecker } from '../services/checker'
 import micromatch from 'micromatch'
+import type { Collection } from '~/src/types'
 
 export default defineEventHandler(async (event) => {
   appendHeader(event, 'Access-Control-Allow-Origin', '*')
+  const config = useAppConfig().compodium as any
 
-  const appConfig = useAppConfig()
-  const componentsRaw = await fs.readFile(appConfig.compodium.componentsPath, 'utf-8')
+  const componentsRaw = await fs.readFile(config.componentsPath, 'utf-8')
   const components = JSON.parse(componentsRaw)
   const componentName = getRouterParam(event, 'component')
   const component: NuxtComponent = componentName && components[componentName]
 
-  const collections = useAppConfig().compodium.collections
-  const defaultComponentProps = useAppConfig().compodium.defaultProps
+  const collections = config.collections as Collection[]
+  const defaultComponentProps = config.defaultProps
 
   if (!component || !component.filePath) {
     throw createError({

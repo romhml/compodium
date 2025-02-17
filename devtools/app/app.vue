@@ -53,8 +53,6 @@ const { data: collections, refresh: refreshCollections } = useAsyncData('__compo
   return collections
 })
 
-const propsState = useState<Record<string, Record<string, any> | undefined>>('__component_state', () => ({}))
-
 const treeItems = computed(() => {
   if (!collections.value) return
   return Object.entries(collections.value).map(([key, value]) => {
@@ -114,10 +112,7 @@ const { data: componentMeta, refresh: refreshMeta, status: metaStatus } = useAsy
   return parseComponentMeta(meta)
 }, { watch: [componentMetaId] })
 
-const componentProps = computed<Record<string, any> | undefined>({
-  get: () => propsState.value[componentKey.value],
-  set: value => propsState.value[componentKey.value] = value
-})
+const componentProps = useState<Record<string, any>>('__component_state', () => ({}))
 
 watch([componentKey, metaStatus], () => {
   if (metaStatus.value === 'pending') return
@@ -234,7 +229,7 @@ function onResetState() {
   if (isRotated.value) return
   setTimeout(() => isRotated.value = false, 500)
   isRotated.value = true
-  propsState.value[componentKey.value] = { ...componentMeta.value?.defaultProps }
+  componentProps.value = { ...componentMeta.value?.defaultProps }
   updateRendererDebounced()
 }
 </script>
@@ -347,7 +342,10 @@ function onResetState() {
             >
               <ComponentPropInput
                 v-model="componentProps[prop.name]"
-                :meta="prop"
+                :schema="prop.schema"
+                :name="prop.name"
+                :description="prop.description"
+                :default-value="prop.default"
                 class="bg-(--ui-bg) border border-(--ui-border-muted) p-4 rounded-lg"
                 @update:model-value="updateRendererDebounced"
               />

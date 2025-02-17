@@ -1,6 +1,22 @@
 <script setup lang="ts">
+type TotoName = {
+  tutu: string
+}
+
+type OtherType = {
+  tata: string
+}
+
+type AcceptableValue = string | number | boolean
+
 defineProps<{
-  label?: string
+  label?: string | number
+  other?: TotoName | OtherType | { inline: string }
+  array?: Array<string | number>
+  arraymult?: AcceptableValue[]
+  arraymultEnu?: ('toto' | 'titi' | 'tutut')[]
+  arraymultStr?: string[]
+  arraymultNum?: number[]
 }>()
 </script>
 

@@ -7,22 +7,19 @@ export const arrayInputSchema = z.object({
     .or(z.record(z.any(), z.any({})).transform(t => Object.values(t)))
     .transform((t) => {
       return t.filter(s => s !== 'undefined')
-    }).pipe(z.array(z.any()).max(1))
+    }).pipe(z.array(z.any()).min(1)),
+  type: z.string()
 })
 
 export type ArrayInputSchema = z.infer<typeof arrayInputSchema>
 </script>
 
 <script setup lang="ts">
-const props = defineProps<{
+defineProps<{
   schema: ArrayInputSchema
 }>()
 
 const modelValue = defineModel<Array<any>>({})
-
-const itemSchema = computed(() => {
-  return props.schema?.schema[0]
-})
 
 function removeArrayItem(index: number) {
   if (!modelValue.value) return
@@ -53,7 +50,7 @@ function updateValue(index: number, value: any) {
     >
       <ComponentPropInput
         :model-value="value"
-        :meta="{ schema: itemSchema }"
+        :schema="schema.schema"
         @update:model-value="(val) => updateValue(index, val)"
       />
 
@@ -62,7 +59,7 @@ function updateValue(index: number, value: any) {
         color="neutral"
         size="sm"
         icon="lucide:x"
-        class="absolute top-3 right-1"
+        class="absolute top-2.5 right-1"
         @click="removeArrayItem(index)"
       />
     </div>

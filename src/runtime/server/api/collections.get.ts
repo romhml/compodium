@@ -6,10 +6,10 @@ import { useAppConfig } from '#imports'
 import micromatch from 'micromatch'
 
 export default defineEventHandler(async () => {
-  const appConfig = useAppConfig()
-  const collections = appConfig.compodium.collections as Collection[]
+  const config = useAppConfig().compodium as any
+  const collections = config.collections as Collection[]
 
-  const componentsRaw = await fs.readFile(appConfig.compodium.componentsPath, 'utf-8')
+  const componentsRaw = await fs.readFile(config.componentsPath, 'utf-8')
   const components = Object.values(JSON.parse(componentsRaw)) as (NuxtComponent | ComponentExample)[]
   const examples = components.filter(c => c.isExample)
 

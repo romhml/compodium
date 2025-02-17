@@ -3,7 +3,8 @@ import { z } from 'zod'
 
 export const objectInputSchema = z.object({
   kind: z.literal('object'),
-  schema: z.record(z.string(), z.any())
+  schema: z.record(z.string(), z.any()),
+  type: z.string()
 })
 
 export type ObjectInputSchema = z.infer<typeof objectInputSchema>
@@ -14,7 +15,7 @@ const props = defineProps<{ schema: ObjectInputSchema }>()
 
 const modelValue = defineModel<Record<string, any>>({})
 
-const attributesSchemas = computed(() => {
+const attrs = computed(() => {
   return Object.values(props.schema.schema)
 })
 </script>
@@ -22,14 +23,17 @@ const attributesSchemas = computed(() => {
 <template>
   <CollapseContainer>
     <ComponentPropInput
-      v-for="attributeSchema in attributesSchemas"
-      :key="attributeSchema.name"
+      v-for="attr in attrs"
+      :key="attr.name"
       class="border-b last:border-b-0 border-[var(--ui-border)] p-4"
-      :model-value="modelValue?.[attributeSchema.name]"
-      :meta="attributeSchema"
+      :model-value="modelValue?.[attr.name]"
+      :schema="attr.schema"
+      :name="attr.name"
+      :description="attr.description"
+      :default-value="attr.default"
       @update:model-value="(value: any) => {
         if (!modelValue) modelValue ||= {}
-        else modelValue[attributeSchema.name] = value
+        else modelValue[attr.name] = value
       }"
     />
   </CollapseContainer>
