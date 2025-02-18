@@ -27,7 +27,7 @@ const modelValue = defineModel<any>()
 
 const currentType = ref()
 const currentInput = computed<PropSchema & { component: Component } | null>(() => {
-  const type = props.schema?.find(p => p.inputType === currentType.value)
+  const type = props.schema?.find(p => p.type === currentType.value)
   if (type) return {
     ...type, component: (inputTypes as any)[type.inputType]
   }
@@ -58,7 +58,7 @@ function inferDefaultInput(value?: any, types?: PropSchema[]): PropSchema | unde
 // TODO: Move this part server side to improve performances
 watch(() => props.schema, () => {
   if (!props.schema) return
-  currentType.value = inferDefaultInput(modelValue.value, props.schema)?.inputType ?? props.schema?.[0]?.inputType
+  currentType.value = inferDefaultInput(modelValue.value, props.schema)?.type ?? props.schema?.[0]?.type
   resetEmptyValue()
 }, { immediate: true })
 
@@ -109,7 +109,7 @@ const description = computed(() => {
       :items="schema"
       label-key="type"
       value-key="type"
-      class="absolute top-2 right-5 max-w-xs"
+      class="absolute top-2 right-5 max-w-xs font-mono font-medium"
       @update:model-value="modelValue = undefined"
     />
   </div>
