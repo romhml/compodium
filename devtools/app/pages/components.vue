@@ -36,7 +36,7 @@ async function onSelect(node: ComponentCollection | Component | ComponentExample
       v-model="currentComponent"
       :items="Object.values(collections ?? {})"
       size="lg"
-      class="mt-2 px-1 overflow-y-scroll border-r border-(--ui-border)"
+      class="mt-2 px-1 overflow-y-scroll border-r border-(--ui-border) hidden xl:block xl:col-span-1"
       label-key="name"
       parent-trailing-icon="lucide:chevron-down"
       :ui="{ itemTrailingIcon: 'group-data-expanded:rotate-180 transition-transform duration-200 ml-auto' }"

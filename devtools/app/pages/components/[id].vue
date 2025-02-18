@@ -122,7 +122,7 @@ function onResetState() {
       <UButton
         v-if="component?.docUrl"
         icon="lucide:book-open"
-        variant="ghost"
+        variant="link"
         class="rounded-full"
         color="neutral"
         :href="component?.docUrl"
@@ -138,7 +138,7 @@ function onResetState() {
       />
       <UButton
         :icon="isDark ? 'lucide:moon' : 'lucide:sun'"
-        variant="ghost"
+        variant="link"
         class="rounded-full"
         color="neutral"
         @click="isDark = !isDark"
