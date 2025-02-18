@@ -3,8 +3,8 @@ import { defineEventHandler } from 'h3'
 import type { Component as NuxtComponent } from '@nuxt/schema'
 import type { ComponentCollection, Collection, ComponentExample } from '../../../types'
 import { useAppConfig } from '#imports'
-import micromatch from 'micromatch'
 import { pascalCase } from 'scule'
+import { getComponentCollection } from '../../utils'
 
 export default defineEventHandler(async () => {
   const config = useAppConfig().compodium as any
@@ -15,22 +15,21 @@ export default defineEventHandler(async () => {
   const examples = components.filter(c => c.isExample)
 
   return components.reduce((acc, component) => {
-    const collection = collections.find((c) => {
-      if (!c.external && component.filePath?.match('node_modules/')) return false
-      return micromatch.isMatch(component.filePath, [c.path], { ignore: c.ignore, contains: true })
-    })
-
+    const collection = getComponentCollection(component, collections)
     if (!collection || component.isExample) return acc
 
-    const componentExamples = collection.external
-      ? examples?.filter(e => e.pascalName.match(`${component.pascalName}Example`))
-      : examples?.filter(e => e.pascalName.match(`${collection.name}${component.pascalName}`))
+    const collectionPrefix = collection.external ? '' : pascalCase(collection.name)
+
+    const componentExamples = examples?.filter(e => e.pascalName.match(`${collectionPrefix}${component.pascalName}Example`))
+
+    const mainExample = componentExamples.find(e => e.pascalName === `${collectionPrefix}${component.pascalName}Example`)
 
     acc[collection.name] ??= { ...collection, pascalName: pascalCase(collection.name), components: {} }
     acc[collection.name].components[component.pascalName] = {
       ...component,
+      ...mainExample,
       metaId: component.pascalName,
-      examples: componentExamples.map(e => ({ metaId: component.pascalName, ...e }))
+      examples: componentExamples.filter(e => e.pascalName !== mainExample?.pascalName).map(e => ({ metaId: component.pascalName, ...e }))
     }
 
     return acc

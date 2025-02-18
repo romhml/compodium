@@ -4,14 +4,14 @@ import { defineNuxtModule, createResolver, addTemplate, addServerHandler, addVit
 import { getPort } from 'get-port-please'
 import { camelCase, kebabCase } from 'scule'
 import sirv from 'sirv'
-import { scanComponents } from './utils'
+import { scanComponents } from './nuxt'
+import { getComponentCollection } from './runtime/utils'
 import { readFileSync } from 'node:fs'
 import { join } from 'pathe'
 import { defu } from 'defu'
 import { defaultProps } from './libs/defaults'
 import { watch } from 'chokidar'
 import { compodiumVite } from './vite'
-import micromatch from 'micromatch'
 
 export interface ModuleOptions {
   /* Customize the preview component path. Defaults to compodium/preview.vue */
@@ -143,11 +143,7 @@ export default defineNuxtModule<ModuleOptions>({
         const collections = (nuxt.options.appConfig.compodium as any).collections
         const components = [...app.components, ...exampleComponents]
         return JSON.stringify(components.reduce((acc, component) => {
-          const collection = collections.find((c: any) => {
-            if (!c.external && component.filePath?.match('node_modules/')) return false
-            return micromatch.isMatch(component.filePath, [c.path], { ignore: c.ignore, contains: true })
-          })
-
+          const collection = getComponentCollection<CollectionConfig>(component, collections)
           acc[component.pascalName] = {
             ...component,
             docUrl: collection?.getDocUrl?.(component.pascalName)

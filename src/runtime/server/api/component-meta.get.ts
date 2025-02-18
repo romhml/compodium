@@ -4,9 +4,9 @@ import type { Component as NuxtComponent } from '@nuxt/schema'
 import { useAppConfig } from '#imports'
 import { camelCase } from 'scule'
 import { getChecker } from '../services/checker'
-import micromatch from 'micromatch'
 import type { Collection } from '../../../types'
 import { inferPropTypes } from '../services/infer'
+import { getComponentCollection } from '../../utils'
 
 export default defineEventHandler(async (event) => {
   appendHeader(event, 'Access-Control-Allow-Origin', '*')
@@ -32,25 +32,15 @@ export default defineEventHandler(async (event) => {
 
   const meta = checker.getComponentMeta(component.filePath)
 
-  // Look for default prop values.
   let defaultProps = {}
 
-  const collection = collections.find((c) => {
-    if (!c.external && component.filePath?.match('node_modules/')) return false
-    return micromatch.isMatch(component.filePath, [
-      `${c.path}`
-    ], { ignore: c.ignore, contains: true })
-  })
-
+  const collection = getComponentCollection(component, collections)
   if (collection) {
-    // Convert pascalName to camelCase
     let componentId = camelCase(component.pascalName)
-    // Remove the prefix if it exists
     if (collection.prefix) {
       componentId = camelCase(componentId.replace(new RegExp(`^${camelCase(collection.prefix)}`), ''))
     }
 
-    // Retrieve default props based on collection type
     if (collection.external) {
       defaultProps = defaultComponentProps?.[collection.id]?.[componentId] || {}
     } else {

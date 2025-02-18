@@ -6,16 +6,6 @@ import { isIgnored, useNuxt } from '@nuxt/kit'
 import { withTrailingSlash } from 'ufo'
 import type { Component, ComponentsDir } from 'nuxt/schema'
 
-import type { Collection, CollectionConfig } from './types'
-import micromatch from 'micromatch'
-
-export function getComponentCollection<T = Collection | CollectionConfig>(component: Component, collections: T[]) {
-  return collections.find((c: any) => {
-    if (!c.external && component.filePath?.match('node_modules/')) return false
-    return micromatch.isMatch(component.filePath, [c.path], { ignore: c.ignore, contains: true })
-  })
-}
-
 /* Nuxt internal functions used to scan example components without adding them to the application */
 
 const ISLAND_RE = /\.island(?:\.global)?$/

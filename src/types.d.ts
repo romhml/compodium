@@ -32,7 +32,7 @@ export type CollectionConfig = {
   icon?: string
   prefix?: string
   ignore?: string[]
-  docUrl?: (componentName: string) => string
+  getDocUrl?: (componentName: string) => string
 }
 
 export type Collection = {
