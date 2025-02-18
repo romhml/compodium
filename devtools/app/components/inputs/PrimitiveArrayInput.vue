@@ -1,31 +1,7 @@
-<script lang="ts">
-import { z } from 'zod'
-
-const primitiveSchema = z.enum(['number', 'string'])
-  .or(
-    z.object({
-      kind: z.literal('enum'),
-      schema: z.array(z.string())
-        .or(z.record(z.any(), z.string()).transform<string[]>(t => Object.values(t)))
-        .transform<string[]>(t => t.filter(s => s.trim().match(/^["'`]/)).map(s => s.trim().replaceAll(/["'`]/g, '')))
-        .pipe(z.array(z.string()).min(1))
-    }))
-
-export const primitiveArrayInputSchema = z.object({
-  kind: z.literal('array'),
-  schema: z.array(z.any())
-    .or(z.record(z.any(), primitiveSchema).transform(t => Object.values(t)))
-    .transform(t => t.filter(s => s !== 'undefined')).pipe(z.array(primitiveSchema).max(1)),
-  type: z.string()
-})
-
-export type PrimitiveArrayInputSchema = z.infer<typeof primitiveArrayInputSchema>
-</script>
-
 <script setup lang="ts">
-const props = defineProps<{
-  schema: PrimitiveArrayInputSchema
-}>()
+import type { PrimitiveArrayInputSchema } from '#module/runtime/server/services/infer'
+
+const props = defineProps<{ schema: PrimitiveArrayInputSchema }>()
 
 const searchTerm = ref('')
 const items = ref<string[]>([])
@@ -36,7 +12,7 @@ const inputValue = computed({
     return modelValue.value.map(v => v.toString())
   },
   set(value: string[]) {
-    modelValue.value = props.schema?.schema[0] === 'number' ? value.map(Number) : value
+    modelValue.value = (props.schema as any).schema[0] === 'number' ? value.map(Number) : value
   }
 })
 
@@ -49,10 +25,10 @@ function onCreate(item: string) {
 
 <template>
   <StringEnumInput
-    v-if="typeof schema.schema[0] === 'object' && schema?.schema?.[0]?.kind === 'enum'"
+    v-if="typeof (schema.schema as any)?.[0] === 'object' && (schema?.schema as any)?.[0]?.kind === 'enum'"
     v-model="modelValue"
     multiple
-    :schema="props.schema.schema[0] as any"
+    :schema="(props.schema as any)?.schema[0]"
   />
   <UInputMenu
     v-else

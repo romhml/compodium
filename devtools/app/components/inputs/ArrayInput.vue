@@ -1,23 +1,7 @@
-<script lang="ts">
-import { z } from 'zod'
-
-export const arrayInputSchema = z.object({
-  kind: z.literal('array'),
-  schema: z.array(z.any({}))
-    .or(z.record(z.any(), z.any({})).transform(t => Object.values(t)))
-    .transform((t) => {
-      return t.filter(s => s !== 'undefined')
-    }).pipe(z.array(z.any()).min(1)),
-  type: z.string()
-})
-
-export type ArrayInputSchema = z.infer<typeof arrayInputSchema>
-</script>
-
 <script setup lang="ts">
-defineProps<{
-  schema: ArrayInputSchema
-}>()
+import type { ArrayInputSchema } from '#module/runtime/server/services/infer'
+
+defineProps<{ schema: ArrayInputSchema }>()
 
 const modelValue = defineModel<Array<any>>({})
 

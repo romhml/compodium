@@ -1,11 +1,6 @@
-<script lang="ts">
-import { z } from 'zod'
-
-export const numberInputSchema = z.literal('number')
-export type NumberInputSchema = z.infer<typeof numberInputSchema>
-</script>
-
 <script setup lang="ts">
+import type { NumberInputSchema } from '#module/runtime/server/services/infer'
+
 defineProps<{ schema: NumberInputSchema }>()
 const modelValue = defineModel<number>()
 </script>

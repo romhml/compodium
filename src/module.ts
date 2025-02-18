@@ -103,7 +103,7 @@ export default defineNuxtModule<ModuleOptions>({
     const examplesWatcher = watch(examplesDir, {
       persistent: true,
       awaitWriteFinish: {
-        stabilityThreshold: 2000,
+        stabilityThreshold: 100,
         pollInterval: 100
       }
     })
@@ -247,7 +247,7 @@ export default defineNuxtModule<ModuleOptions>({
       icon: '/__compodium__/devtools/favicon.svg',
       view: {
         type: 'iframe',
-        src: '/__compodium__/devtools'
+        src: '/__compodium__/devtools/components'
       }
     })
   }

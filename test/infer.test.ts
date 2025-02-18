@@ -1,7 +1,7 @@
 // @vitest-environment node
 import { it, expect, describe } from 'vitest'
-import { inferPropTypes } from '../../app/helpers/infer'
-import { stringSchema, optionalStringSchema, booleanSchema, numberSchema, optionalNumberSchema, optionalBooleanSchema, objectSchema, arraySchema, arrayOptionalSchema, stringEnumSchema, complexEnumSchema, complexArraySchema } from '../fixtures/schemas'
+import { inferSchemaType } from '../src/runtime/server/services/infer'
+import { stringSchema, optionalStringSchema, booleanSchema, numberSchema, optionalNumberSchema, optionalBooleanSchema, objectSchema, arraySchema, arrayOptionalSchema, stringEnumSchema, complexEnumSchema, complexArraySchema } from './fixtures/schemas'
 
 describe('inferPropTypes', () => {
   it.each([
@@ -18,7 +18,7 @@ describe('inferPropTypes', () => {
     ['complex enum schema', { schema: complexEnumSchema, inputIds: ['string', 'number', 'object'] }],
     ['complex array schema', { schema: complexArraySchema, inputIds: ['array'] }]
   ])('resolveInputSchema should resolve %s schema', async (_: string, options) => {
-    const result = inferPropTypes(options.schema as any)
-    expect(result?.map(r => r.id)).toMatchObject(options.inputIds)
+    const result = inferSchemaType(options.schema as any)
+    expect(result?.map(r => r.inputType)).toMatchObject(options.inputIds)
   })
 })

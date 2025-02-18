@@ -9,7 +9,7 @@ export function compodiumVite({ dirs }: { dirs: (ComponentsDir | string)[] }) {
       const watcher = watch(dirs.map(d => typeof d === 'string' ? d : d.path), {
         persistent: true,
         awaitWriteFinish: {
-          stabilityThreshold: 2000,
+          stabilityThreshold: 100,
           pollInterval: 100
         }
       })

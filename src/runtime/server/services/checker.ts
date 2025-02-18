@@ -1,11 +1,12 @@
-import { createCheckerByJson, type ComponentMeta } from 'vue-component-meta'
+import { createCheckerByJson } from 'vue-component-meta'
+import type { ComponentMeta } from '../../../types'
 
 // @ts-expect-error virtual file
 import dirs from '#compodium/nitro/dirs'
 
 let checker
 
-export function createChecker(): ReturnType<typeof createCheckerByJson> {
+export function createChecker() {
   const rootDir = process.cwd()
 
   const metaChecker = createCheckerByJson(
@@ -43,18 +44,18 @@ export function createChecker(): ReturnType<typeof createCheckerByJson> {
     getComponentMeta: (componentPath: string): ComponentMeta => {
       const meta = metaChecker.getComponentMeta(componentPath)
       return {
-        ...meta,
-        props: meta.props.filter(sch => !sch.global).map(sch => stripeTypeScriptInternalTypesSchema(sch, true)),
-        events: meta.events.map(sch => stripeTypeScriptInternalTypesSchema(sch, true)),
-        exposed: meta.exposed.map(sch => stripeTypeScriptInternalTypesSchema(sch, true)),
-        slots: meta.slots.map(sch => stripeTypeScriptInternalTypesSchema(sch, true))
+        // ...meta,
+        props: meta.props.filter(sch => !sch.global).map(sch => stripeTypeScriptInternalTypesSchema(sch, true))
+        // events: meta.events.map(sch => stripeTypeScriptInternalTypesSchema(sch, true)),
+        // exposed: meta.exposed.map(sch => stripeTypeScriptInternalTypesSchema(sch, true)),
+        // slots: meta.slots.map(sch => stripeTypeScriptInternalTypesSchema(sch, true))
       }
     }
   }
   return checker
 }
 
-export function getChecker(): ReturnType<typeof createCheckerByJson> {
+export function getChecker(): ReturnType<typeof createChecker> {
   return checker ??= createChecker()
 }
 

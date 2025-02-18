@@ -1,16 +1,6 @@
-<script lang="ts">
-import { z } from 'zod'
-
-export const objectInputSchema = z.object({
-  kind: z.literal('object'),
-  schema: z.record(z.string(), z.any()),
-  type: z.string()
-})
-
-export type ObjectInputSchema = z.infer<typeof objectInputSchema>
-</script>
-
 <script setup lang="ts">
+import type { ObjectInputSchema } from '#module/runtime/server/services/infer'
+
 const props = defineProps<{ schema: ObjectInputSchema }>()
 
 const modelValue = defineModel<Record<string, any>>({})

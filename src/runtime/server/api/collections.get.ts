@@ -4,6 +4,7 @@ import type { Component as NuxtComponent } from '@nuxt/schema'
 import type { ComponentCollection, Collection, ComponentExample } from '../../../types'
 import { useAppConfig } from '#imports'
 import micromatch from 'micromatch'
+import { pascalCase } from 'scule'
 
 export default defineEventHandler(async () => {
   const config = useAppConfig().compodium as any
@@ -25,8 +26,12 @@ export default defineEventHandler(async () => {
       ? examples?.filter(e => e.pascalName.match(`${component.pascalName}Example`))
       : examples?.filter(e => e.pascalName.match(`${collection.name}${component.pascalName}`))
 
-    acc[collection.name] ??= { ...collection, components: {} }
-    acc[collection.name].components[component.pascalName] = { ...component, examples: componentExamples }
+    acc[collection.name] ??= { ...collection, pascalName: pascalCase(collection.name), components: {} }
+    acc[collection.name].components[component.pascalName] = {
+      ...component,
+      metaId: component.pascalName,
+      examples: componentExamples.map(e => ({ metaId: component.pascalName, ...e }))
+    }
 
     return acc
   }, {} as Record<string, ComponentCollection>)

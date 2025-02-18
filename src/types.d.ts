@@ -1,8 +1,24 @@
 import type { Component as NuxtComponent } from 'nuxt'
-import type { ComponentMeta } from 'vue-component-meta'
+import type { InputSchema } from './runtime/server/services/infer'
 
-export type Component = NuxtComponent & {
-  meta: ComponentMeta
+export type PropInputType = 'string' | 'number' | 'array' | 'object' | 'stringEnum' | 'primitiveArray' | 'array' | 'boolean' | 'date'
+
+export type PropSchema = {
+  inputType: PropInputType
+  description?: string
+  default?: string
+  type: string
+  schema: InputSchema
+}
+
+export type PropertyType = Omit<PropertyMeta, 'schema'> & {
+  schema: PropSchema[]
+}
+
+export type ComponentMeta = NuxtComponent & {
+  meta: {
+    props: PropSchema
+  }
   examples?: ComponentExample[]
 }
 
@@ -30,7 +46,7 @@ export type Collection = {
 }
 
 export type ComponentCollection = Collection & {
-  components: Record<string, Component>
+  components: Record<string, ComponentMeta>
 }
 
 declare module 'nuxt/schema' {
@@ -41,10 +57,6 @@ declare module 'nuxt/schema' {
   }
 
   interface AppConfig {
-    ui?: {
-      colors: any
-    }
-
     compodium: {
       componentsPath: string
       collections: Collection[]

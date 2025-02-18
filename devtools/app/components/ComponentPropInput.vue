@@ -1,13 +1,38 @@
-<script setup lang="ts">
-import type { PropertyMeta } from 'vue-component-meta'
-import { inferPropTypes, inferDefaultInput, type InferPropTypeResult } from '../helpers/infer'
+<script lang="ts">
+import type { PropInputType, PropSchema } from '#module/types'
+import BooleanInput from '../components/inputs/BooleanInput.vue'
+import StringInput from '../components/inputs/StringInput.vue'
+import NumberInput from '../components/inputs/NumberInput.vue'
+import StringEnumInput from '../components/inputs/StringEnumInput.vue'
+import ObjectInput from '../components/inputs/ObjectInput.vue'
+import ArrayInput from '../components/inputs/ArrayInput.vue'
+import PrimitiveArrayInput from '../components/inputs/PrimitiveArrayInput.vue'
+import DateInput from '../components/inputs/DateInput.vue'
 
-const props = defineProps<{ name?: string, schema: PropertyMeta['schema'] | PropertyMeta['schema'][], defaultValue?: any, description?: string, disabled?: boolean }>()
+const inputTypes: Record<PropInputType, Component> = {
+  array: ArrayInput,
+  object: ObjectInput,
+  boolean: BooleanInput,
+  string: StringInput,
+  number: NumberInput,
+  primitiveArray: PrimitiveArrayInput,
+  date: DateInput,
+  stringEnum: StringEnumInput
+}
+</script>
+
+<script setup lang="ts">
+const props = defineProps<{ name?: string, schema: PropSchema[], defaultValue?: any, description?: string, disabled?: boolean }>()
 const modelValue = defineModel<any>()
 
 const currentType = ref()
-const propTypes = shallowRef<InferPropTypeResult<any>[]>()
-const propType = computed(() => propTypes.value?.find(p => p.type === currentType.value))
+const currentInput = computed<PropSchema & { component: Component } | null>(() => {
+  const type = props.schema?.find(p => p.inputType === currentType.value)
+  if (type) return {
+    ...type, component: (inputTypes as any)[type.inputType]
+  }
+  return null
+})
 
 function resetEmptyValue() {
   if (!modelValue.value || modelValue.value === '') {
@@ -17,10 +42,23 @@ function resetEmptyValue() {
   }
 }
 
+function inferDefaultInput(value?: any, types?: PropSchema[]): PropSchema | undefined {
+  if (!value) return
+  const valueType = typeof value
+  return types?.find((t) => {
+    if (valueType === t.schema) return t
+
+    const nestedSchema = (t.schema as any).schema
+    if (typeof nestedSchema === 'object' && typeof value === 'object') {
+      return Object.keys(value).every(k => !!nestedSchema[k])
+    }
+  })
+}
+
+// TODO: Move this part server side to improve performances
 watch(() => props.schema, () => {
   if (!props.schema) return
-  propTypes.value = inferPropTypes(props.schema)
-  currentType.value = inferDefaultInput(modelValue.value, propTypes.value)?.type ?? propTypes.value?.[0]?.type
+  currentType.value = inferDefaultInput(modelValue.value, props.schema)?.inputType ?? props.schema?.[0]?.inputType
   resetEmptyValue()
 }, { immediate: true })
 
@@ -35,7 +73,7 @@ const description = computed(() => {
       :name="name"
       class="w-full"
       :ui="{ wrapper: 'mb-2' }"
-      :class="{ 'opacity-70 cursor-not-allowed': disabled }"
+      :class="{ 'opacity-70 cursor-not-allowed': disabled || !currentInput }"
     >
       <template #label>
         <div>
@@ -57,18 +95,18 @@ const description = computed(() => {
         />
       </template>
       <component
-        :is="propType.component"
-        v-if="!disabled && propType"
+        :is="currentInput.component"
+        v-if="!disabled && currentInput"
         v-model="modelValue"
-        :schema="propType.parsedSchema"
+        :schema="currentInput.schema"
       />
     </UFormField>
 
     <USelect
-      v-if="propTypes && propTypes.length > 1"
+      v-if="schema?.length > 1"
       v-model="currentType"
       variant="none"
-      :items="propTypes"
+      :items="schema"
       label-key="type"
       value-key="type"
       class="absolute top-2 right-5 max-w-xs"

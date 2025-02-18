@@ -5,7 +5,8 @@ import { useAppConfig } from '#imports'
 import { camelCase } from 'scule'
 import { getChecker } from '../services/checker'
 import micromatch from 'micromatch'
-import type { Collection } from '~/src/types'
+import type { Collection } from '../../../types'
+import { inferPropTypes } from '../services/infer'
 
 export default defineEventHandler(async (event) => {
   appendHeader(event, 'Access-Control-Allow-Origin', '*')
@@ -58,5 +59,13 @@ export default defineEventHandler(async (event) => {
     }
   }
 
-  return { ...component, meta, defaultProps }
+  const parsed = meta.props.map(inferPropTypes)
+
+  return {
+    ...component,
+    meta: {
+      props: parsed
+    },
+    defaultProps
+  }
 })

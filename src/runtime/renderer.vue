@@ -4,18 +4,19 @@ import { useColorMode } from '@vueuse/core'
 // @ts-expect-error virtual file
 import { buildAssetsURL } from '#internal/nuxt/paths'
 
+// @ts-expect-error virtual file
+import components from '#build/compodium/components.json'
+
 const props = shallowRef({})
 const component = shallowRef()
-const componentName = shallowRef()
-const componentPath = shallowRef()
 
-async function onUpdateComponent(event: Event & { data?: { path: string, component: string, props: any } }) {
-  const path = event.data?.path
+async function onUpdateComponent(event: Event & { data?: { component: string, props: any, path: string } }) {
   // FIXME: This might not be very secure...
   // It's required because imports to virtual templates don't update properly on HMR.
+  // component.value = await import(/* @vite-ignore */ buildAssetsURL(event.data?.path)).then(c => c.default)
+
+  const path = components[event.data?.component].filePath
   component.value = await import(/* @vite-ignore */ buildAssetsURL(path)).then(c => c.default)
-  componentName.value = event.data?.component
-  componentPath.value = path
   props.value = { ...event.data?.props }
 }
 

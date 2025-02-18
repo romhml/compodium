@@ -1,15 +1,5 @@
-<script lang="ts">
-import { z } from 'zod'
-
-export const dateInputSchema = z.object({
-  kind: z.literal('object'),
-  type: z.literal('Date')
-})
-
-export type DateInputSchema = z.infer<typeof dateInputSchema>
-</script>
-
 <script setup lang="ts">
+import type { DateInputSchema } from '#module/runtime/server/services/infer'
 import { CalendarDate, DateFormatter, getLocalTimeZone } from '@internationalized/date'
 
 defineProps<{ schema: DateInputSchema }>()

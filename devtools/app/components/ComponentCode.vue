@@ -2,9 +2,9 @@
 import { useClipboard } from '@vueuse/core'
 import { kebabCase } from 'scule'
 import { escapeString } from 'knitwork'
-import type { Component, ComponentExample } from '../../../src/types'
+import type { ComponentMeta, ComponentExample } from '#module/types'
 
-const props = defineProps<{ example?: string, component?: Component | ComponentExample, props?: Record<string, any> }>()
+const props = defineProps<{ example?: string, component?: ComponentMeta | ComponentExample, props?: Record<string, any> }>()
 
 const componentProps = computed(() => new Set(props.component?.meta?.props.map((prop: any) => prop.name)))
 

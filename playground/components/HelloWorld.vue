@@ -15,8 +15,6 @@ defineProps<{
   array?: Array<string | number>
   arraymult?: AcceptableValue[]
   arraymultEnu?: ('toto' | 'titi' | 'tutut')[]
-  arraymultStr?: string[]
-  arraymultNum?: number[]
 }>()
 </script>
 
