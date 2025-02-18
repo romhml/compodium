@@ -70,13 +70,10 @@ export type ObjectInputSchema = z.infer<typeof objectInputSchema>
 
 const primitiveArrayInputSchema = z.object({
   kind: z.literal('array'),
-  schema: z.object({
-    kind: z.literal('array'),
-    schema: z.array(z.any())
-      .or(z.record(z.any(), primitiveSchema).transform(t => Object.values(t)))
-      .transform(t => t.filter(s => s !== 'undefined')).pipe(z.array(primitiveSchema).max(1)),
-    type: z.string()
-  })
+  schema: z.array(z.any())
+    .or(z.record(z.any(), primitiveSchema).transform(t => Object.values(t)))
+    .transform(t => t.filter(s => s !== 'undefined')).pipe(z.array(primitiveSchema).max(1)),
+  type: z.string()
 })
 export type PrimitiveArrayInputSchema = z.infer<typeof primitiveArrayInputSchema>
 
