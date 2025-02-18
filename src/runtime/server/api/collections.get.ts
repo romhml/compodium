@@ -19,17 +19,20 @@ export default defineEventHandler(async () => {
     if (!collection || component.isExample) return acc
 
     const collectionPrefix = collection.external ? '' : pascalCase(collection.name)
-
     const componentExamples = examples?.filter(e => e.pascalName.match(`${collectionPrefix}${component.pascalName}Example`))
-
     const mainExample = componentExamples.find(e => e.pascalName === `${collectionPrefix}${component.pascalName}Example`)
 
-    acc[collection.name] ??= { ...collection, pascalName: pascalCase(collection.name), components: {} }
+    acc[collection.name] ??= { ...collection, components: {} }
     acc[collection.name].components[component.pascalName] = {
       ...component,
       ...mainExample,
+      name: component.pascalName,
       metaId: component.pascalName,
-      examples: componentExamples.filter(e => e.pascalName !== mainExample?.pascalName).map(e => ({ metaId: component.pascalName, ...e }))
+      examples: componentExamples.filter(e => e.pascalName !== mainExample?.pascalName).map(e => ({
+        name: e.name.replace(`${collectionPrefix}${component.pascalName}Example`, ''),
+        metaId: component.pascalName,
+        ...e
+      }))
     }
 
     return acc

@@ -54,9 +54,7 @@ watch([exampleId], () => {
 
 function updateRenderer() {
   const event: Event & { data?: any } = new Event('compodium:update-props')
-  event.data = {
-    props: props.value
-  }
+  event.data = { props: props.value }
   window.dispatchEvent(event)
 }
 

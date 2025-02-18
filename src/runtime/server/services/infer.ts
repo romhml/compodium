@@ -23,8 +23,8 @@ const stringInputSchema = z.literal('string').or(
     kind: z.literal('enum'),
     schema: z.record(z.string(), z.enum(['string', 'null', 'undefined'])),
     type: z.string()
-  })
-)
+  })).or(z.string().transform(t => t.split('|').find(s => s.trim() === 'string')).pipe(z.string()))
+
 export type StringInputSchema = z.infer<typeof stringInputSchema>
 
 const numberInputSchema = z.literal('number').or(
@@ -32,23 +32,24 @@ const numberInputSchema = z.literal('number').or(
     kind: z.literal('enum'),
     schema: z.record(z.string(), z.enum(['number', 'null', 'undefined'])),
     type: z.string()
-  })
-)
+  })).or(z.string().transform(t => t.split('|').find(s => s.trim() === 'number')).pipe(z.string()))
+
 export type NumberInputSchema = z.infer<typeof numberInputSchema>
 
 const booleanInputSchema = z.literal('boolean').or(
   z.object({
     kind: z.literal('enum'),
-    schema: z.record(z.string(), z.enum(['boolean', '"indeterminate"', 'false', 'true', 'null', 'undefined'])),
+    schema: z.record(z.any(), z.enum(['boolean', '"indeterminate"', 'false', 'true', 'null', 'undefined'])),
     type: z.string()
-  })
-)
+  })).or(z.string().refine(type => type.split('|').every(t => ['boolean', 'true', 'false', 'undefined'].includes(t))).pipe(z.array(z.string()).min(1)))
+
 export type BooleanInputSchema = z.infer<typeof booleanInputSchema>
 
 const dateInputSchema = z.object({
   kind: z.literal('object'),
   type: z.literal('Date')
 })
+
 export type DateInputSchema = z.infer<typeof dateInputSchema>
 
 const stringEnumInputSchema = z.object({
@@ -59,6 +60,7 @@ const stringEnumInputSchema = z.object({
     .pipe(z.array(z.string()).min(1)),
   type: z.string()
 })
+
 export type StringEnumInputSchema = z.infer<typeof stringEnumInputSchema>
 
 const objectInputSchema = z.object({
@@ -66,6 +68,7 @@ const objectInputSchema = z.object({
   schema: z.record(z.string(), z.any()),
   type: z.string()
 })
+
 export type ObjectInputSchema = z.infer<typeof objectInputSchema>
 
 const primitiveArrayInputSchema = z.object({
@@ -75,6 +78,7 @@ const primitiveArrayInputSchema = z.object({
     .transform(t => t.filter(s => s !== 'undefined')).pipe(z.array(primitiveSchema).max(1)),
   type: z.string()
 })
+
 export type PrimitiveArrayInputSchema = z.infer<typeof primitiveArrayInputSchema>
 
 const arrayInputSchema = z.object({
@@ -124,10 +128,14 @@ export function inferSchemaType(schema: string | VuePropertyMeta['schema'] | Vue
             return acc
           }, {} as Record<string, PropertyType>)
         }
+
         if (propType.inputType === 'array') {
           const nestedSchema: VuePropertyMeta['schema'][] = propType.schema.schema
           propType.schema.schema = nestedSchema.flatMap(sch => inferSchemaType(sch), {} as any)
+          // Ignore the array if the item schema cannot be resolved
+          if (!propType.schema.schema?.length) return []
         }
+
         return propType
       }
     }

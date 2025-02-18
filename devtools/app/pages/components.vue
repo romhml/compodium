@@ -11,7 +11,6 @@ await useAsyncData('__compodium-fetch-collection', async () => {
     const fallbackComponent = Object.values(fallbackCollection?.components ?? {})[0]
     await navigateTo(`/components/${fallbackComponent.metaId}`)
   }
-
   return true
 })
 
@@ -38,7 +37,7 @@ async function onSelect(node: ComponentCollection | Component | ComponentExample
       :items="Object.values(collections ?? {})"
       size="lg"
       class="mt-2 px-1 overflow-y-scroll border-r border-(--ui-border)"
-      label-key="pascalName"
+      label-key="name"
       parent-trailing-icon="lucide:chevron-down"
       :ui="{ itemTrailingIcon: 'group-data-expanded:rotate-180 transition-transform duration-200 ml-auto' }"
       :get-children="getTreeChildren"

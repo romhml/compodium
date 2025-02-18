@@ -53,9 +53,8 @@ export default defineEventHandler(async (event) => {
 
   return {
     ...component,
-    meta: {
-      props: parsed
-    },
+    meta: { props: parsed },
+    srcMeta: meta,
     defaultProps
   }
 })

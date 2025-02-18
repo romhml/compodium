@@ -26,6 +26,7 @@ const props = defineProps<{ name?: string, schema: PropSchema[], defaultValue?: 
 const modelValue = defineModel<any>()
 
 const currentType = ref()
+
 const currentInput = computed<PropSchema & { component: Component } | null>(() => {
   const type = props.schema?.find(p => p.type === currentType.value)
   if (type) return {
@@ -63,7 +64,7 @@ watch(() => props.schema, () => {
 }, { immediate: true })
 
 const description = computed(() => {
-  return props.description?.replace(/`([^`]+)`/g, '<code class="font-medium bg-[var(--ui-bg-elevated)] px-1 py-0.5 rounded">$1</code>')
+  return props.description?.replace(/`([^`]+)`/g, '<code class="text-xs font-medium bg-[var(--ui-bg-elevated)] px-1 py-0.5 rounded">$1</code>')
 })
 </script>
 
@@ -109,7 +110,7 @@ const description = computed(() => {
       :items="schema"
       label-key="type"
       value-key="type"
-      class="absolute top-2 right-5 max-w-xs font-mono font-medium"
+      class="absolute top-2 right-5 max-w-xs font-mono"
       @update:model-value="modelValue = undefined"
     />
   </div>

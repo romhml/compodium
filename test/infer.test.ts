@@ -3,7 +3,7 @@ import { it, expect, describe } from 'vitest'
 import { inferSchemaType } from '../src/runtime/server/services/infer'
 import { stringSchema, optionalStringSchema, booleanSchema, numberSchema, optionalNumberSchema, optionalBooleanSchema, objectSchema, arraySchema, arrayOptionalSchema, stringEnumSchema, complexEnumSchema, complexArraySchema } from './fixtures/schemas'
 
-describe('inferPropTypes', () => {
+describe('inferSchemaTypes', () => {
   it.each([
     ['string', { schema: stringSchema, inputIds: ['string'] }],
     ['optional string', { schema: optionalStringSchema, inputIds: ['string'] }],
