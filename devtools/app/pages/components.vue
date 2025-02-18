@@ -1,9 +1,17 @@
 <script setup lang="ts">
-const { collections, fetchCollections } = useCollections()
 import type { ComponentCollection, ComponentExample } from '#module/types'
 
-useAsyncData('__compodium-fetch-collection', async () => {
+const route = useRoute()
+
+const { collections, fetchCollections } = useCollections()
+await useAsyncData('__compodium-fetch-collection', async () => {
   await fetchCollections()
+  if (route.name === 'components') {
+    const fallbackCollection = Object.values(collections.value)[0]
+    const fallbackComponent = Object.values(fallbackCollection?.components ?? {})[0]
+    await navigateTo(`/components/${fallbackComponent.metaId}`)
+  }
+
   return true
 })
 
