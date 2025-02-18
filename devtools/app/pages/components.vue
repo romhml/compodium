@@ -24,7 +24,7 @@ function getTreeChildren(node: ComponentCollection | Component | ComponentExampl
 }
 
 async function onSelect(node: ComponentCollection | Component | ComponentExample) {
-  if (node.components) return
+  if (!node || node.components) return
   const example = node.metaId !== node.pascalName ? node.pascalName : undefined
   await navigateTo({ path: `/components/${node.metaId}`, query: { example } })
 }
