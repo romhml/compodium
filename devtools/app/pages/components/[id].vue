@@ -35,7 +35,11 @@ const componentId = computed(() => route.params.id as string)
 const exampleId = computed(() => route.query.example as string)
 const props = useState<Record<string, any>>('__component_state', () => ({}))
 
-const { data: component, refresh: refreshComponent } = useAsyncData('__compodium-fetch-meta', async () => {
+const { fetchCollections, getComponent, getExampleComponent } = useCollections()
+
+const component = computed(() => exampleId.value ? getExampleComponent(exampleId.value) : getComponent(componentId.value))
+
+const { data: componentMeta, refresh: refreshComponent } = useAsyncData('__compodium-fetch-meta', async () => {
   const meta = await $fetch<ComponentMeta>(`/api/component-meta/${componentId.value}`, { baseURL: '/__compodium__' })
   props.value = meta.defaultProps
   updateRendererComponent()
@@ -44,7 +48,7 @@ const { data: component, refresh: refreshComponent } = useAsyncData('__compodium
 
 function updateRendererComponent() {
   const event: Event & { data?: { component?: string, props?: any, path?: string } } = new Event('compodium:update-component')
-  event.data = { component: exampleId.value ?? componentId.value, props: props.value }
+  event.data = { component: component.value?.pascalName, props: props.value, path: component.value?.filePath }
   window.dispatchEvent(event)
 }
 
@@ -64,7 +68,6 @@ function onComponentLoaded() {
   updateRenderer()
 }
 
-const { fetchCollections } = useCollections()
 const fetchCollectionsDebounced = useDebounceFn(fetchCollections, 300)
 const refreshComponentDebounced = useDebounceFn(() => refreshComponent(), 300)
 
@@ -110,7 +113,7 @@ function onResetState() {
   if (isRotated.value) return
   setTimeout(() => isRotated.value = false, 500)
   isRotated.value = true
-  props.value = { ...component.value?.defaultProps }
+  props.value = { ...componentMeta.value?.defaultProps }
   updateRendererDebounced()
 }
 </script>
@@ -120,12 +123,12 @@ function onResetState() {
     <ComponentPreview class="grow h-full" />
     <div class="flex gap-2 absolute top-1 right-2">
       <UButton
-        v-if="component?.docUrl"
+        v-if="componentMeta?.docUrl"
         icon="lucide:book-open"
         variant="link"
         class="rounded-full"
         color="neutral"
-        :href="component?.docUrl"
+        :href="componentMeta?.docUrl"
         target="_blank"
       />
       <UButton
@@ -155,7 +158,7 @@ function onResetState() {
     >
       <template #props>
         <div
-          v-for="prop in component?.meta.props"
+          v-for="prop in componentMeta?.meta.props"
           :key="'prop-' + prop.name"
           class="px-3 py-2 border-b border-(--ui-border)"
         >
@@ -174,7 +177,7 @@ function onResetState() {
       <template #code>
         <ComponentCode
           class="h-full -mt-2"
-          :component="component"
+          :component="componentMeta"
           :example="exampleId"
           :props="props"
         />
