@@ -171,7 +171,7 @@ function onResetState() {
             :name="prop.name"
             :description="prop.description"
             :default="prop.default"
-            class="bg-(--ui-bg) p-4"
+            class="p-4 rounded"
             @update:model-value="updateRendererDebounced"
           />
         </div>

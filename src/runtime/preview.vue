@@ -25,5 +25,6 @@ body {
   height: 100vh;
   width: 100vw;
   background-color: transparent;
+  padding: 20px;
 }
 </style>

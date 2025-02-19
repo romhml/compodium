@@ -36,7 +36,7 @@ async function onSelect(node: ComponentCollection | Component | ComponentExample
 </script>
 
 <template>
-  <div class="absolute top-0 bottom-0 inset-x-0 grid xl:grid-cols-8 grid-cols-4 bg-(--ui-bg-muted)">
+  <div class="absolute top-0 bottom-0 inset-x-0 grid xl:grid-cols-8 grid-cols-4 bg-(--ui-bg-elevated)/50">
     <UTree
       v-model="currentComponent"
       :items="Object.values(collections ?? {})"
