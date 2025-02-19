@@ -7,9 +7,8 @@ const rendererLoaded = ref(false)
     <iframe
       v-show="rendererLoaded"
       ref="renderer"
-      class="grow w-full"
+      class="grow w-full bg-transparent"
       src="/__compodium__/renderer"
-      allowtransparency="true"
       @load="rendererLoaded = true"
     />
   </div>

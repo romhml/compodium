@@ -9,7 +9,12 @@ await useAsyncData('__compodium-fetch-collection', async () => {
   if (route.name === 'components') {
     const fallbackCollection = Object.values(collections.value)[0]
     const fallbackComponent = Object.values(fallbackCollection?.components ?? {})[0]
-    await navigateTo(`/components/${fallbackComponent.metaId}`)
+
+    if (fallbackComponent) {
+      await navigateTo(`/components/${fallbackComponent.metaId}`)
+    } else {
+      await navigateTo(`/welcome`)
+    }
   }
   return true
 })
