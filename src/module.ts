@@ -103,7 +103,7 @@ export default defineNuxtModule<ModuleOptions>({
     const examplesWatcher = watch(examplesDir, {
       persistent: true,
       awaitWriteFinish: {
-        stabilityThreshold: 100,
+        stabilityThreshold: 200,
         pollInterval: 100
       }
     })

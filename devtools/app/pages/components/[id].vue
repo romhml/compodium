@@ -41,8 +41,11 @@ const component = computed(() => exampleId.value ? getExampleComponent(exampleId
 
 const { data: componentMeta, refresh: refreshComponent } = useAsyncData('__compodium-fetch-meta', async () => {
   const meta = await $fetch<ComponentMeta>(`/api/component-meta/${componentId.value}`, { baseURL: '/__compodium__' })
-  props.value = meta.defaultProps
-  updateRendererComponent()
+  // Don't update props or renderer if the component has not changed (e.g. after HMR)
+  if (!componentMeta.value || componentMeta.value?.pascalName !== componentId.value) {
+    props.value = { ...meta.defaultProps }
+    updateRendererComponent()
+  }
   return parseComponentMeta(meta)
 }, { watch: [componentId] })
 
