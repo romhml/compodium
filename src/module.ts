@@ -55,7 +55,7 @@ export default defineNuxtModule<ModuleOptions>({
           external: true,
           icon: 'lineicons:nuxt',
           prefix: (nuxt.options as any).ui?.prefix,
-          examplePath: 'libs/examples/ui',
+          examplePath: 'runtime/libs/examples/ui',
           ignore: ['App.vue', 'Toast.vue', '*Provider.vue', '*Base.vue', '*Content.vue'],
           getDocUrl(componentName: string) {
             const prefix = (nuxt.options as any).ui?.prefix ?? 'U'

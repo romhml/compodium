@@ -11,7 +11,8 @@ await useAsyncData('__compodium-fetch-collection', async () => {
     const fallbackComponent = Object.values(fallbackCollection?.components ?? {})[0]
 
     if (fallbackComponent) {
-      await navigateTo(`/components/${fallbackComponent.metaId}`)
+      const example = fallbackComponent.metaId !== fallbackComponent.pascalName ? fallbackComponent.pascalName : undefined
+      await navigateTo({ path: `/components/${fallbackComponent.metaId}`, query: { example } })
     } else {
       await navigateTo(`/welcome`)
     }
