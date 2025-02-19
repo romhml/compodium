@@ -1,5 +1,18 @@
 # Changelog
 
+## v0.0.1-alpha.3
+
+[compare changes](https://github.com/romhml/compodium/compare/v0.0.1-alpha.2...v0.0.1-alpha.3)
+
+### 🩹 Fixes
+
+- Ui tweaks ([b4b8f2c](https://github.com/romhml/compodium/commit/b4b8f2c))
+- Ui example discovery ([65f47fd](https://github.com/romhml/compodium/commit/65f47fd))
+
+### ❤️ Contributors
+
+- Romhml ([@romhml](http://github.com/romhml))
+
 ## v0.0.1-alpha.2
 
 
