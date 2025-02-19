@@ -10,13 +10,8 @@ const nuxtApp = useNuxtApp()
 const url = import.meta.server ? nuxtApp.ssrContext?.url : window.location.pathname
 
 const PreviewComponent = url?.startsWith('/__compodium__/renderer') && defineAsyncComponent(async () => {
-  try {
-    // @ts-expect-error virtual file
-    return await import('#build/compodium/preview.mjs').then(c => c.default)
-  } catch {
-    // @ts-expect-error virtual file
-    return await import('#build/compodium/default-preview.mjs').then(c => c.default)
-  }
+  // @ts-expect-error virtual file
+  return await import('#build/compodium/preview.mjs').then(c => c.default)
 })
 </script>
 

@@ -1,5 +1,5 @@
 export default defineNuxtConfig({
-  modules: ['@nuxt/ui', '../dist/module'],
+  modules: ['@nuxt/ui', '../src/module'],
   devtools: { enabled: true },
   css: ['~/assets/css/main.css'],
 
@@ -7,11 +7,5 @@ export default defineNuxtConfig({
     prefix: 'U'
   },
 
-  compatibilityDate: '2025-02-12',
-
-  compodium: {
-    collections: [
-      { name: 'Components', path: 'components/', ignore: ['IgnoredComponent.vue'] }
-    ]
-  }
+  compatibilityDate: '2025-02-12'
 })
