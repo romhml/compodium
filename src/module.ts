@@ -14,14 +14,24 @@ import { watch } from 'chokidar'
 import { compodiumVite } from './vite'
 
 export interface ModuleOptions {
+  /* Customize your component collections */
+  collections?: CollectionConfig[]
+
+  /* Whether to include default collections for third-party libraries. */
+  includeDefaultCollections: boolean
+
+  /* Customize the directory for preview examples. Defaults to 'compodium/examples' */
+  examples: string
+
   /* Customize the preview component path. Defaults to compodium/preview.vue */
   previewComponent: string
-  /* Customize the directory for preview examples */
-  examples: string
-  /*  */
-  collections?: CollectionConfig[]
-  /* Whether or not to include default collections for third party libraries. */
-  includeDefaultCollections: boolean
+
+  extras: {
+    ui: {
+      /* If true, Compodium's UI will match your Nuxt UI color theme */
+      matchColors: boolean
+    }
+  }
 }
 
 export default defineNuxtModule<ModuleOptions>({
@@ -32,7 +42,12 @@ export default defineNuxtModule<ModuleOptions>({
   defaults: {
     previewComponent: 'compodium/preview.vue',
     examples: 'compodium/examples',
-    includeDefaultCollections: true
+    includeDefaultCollections: true,
+    extras: {
+      ui: {
+        matchColors: true
+      }
+    }
   },
 
   async setup(options, nuxt) {
@@ -45,7 +60,7 @@ export default defineNuxtModule<ModuleOptions>({
       { name: 'Components', path: 'components/' }
     ]
 
-    nuxt.options.appConfig.compodium = {}
+    nuxt.options.appConfig.compodium = { matchUIColors: options.extras?.ui?.matchColors }
 
     const libraryCollections = options.includeDefaultCollections
       ? [{

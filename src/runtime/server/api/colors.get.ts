@@ -3,5 +3,5 @@ import { useAppConfig } from '#imports'
 
 export default defineEventHandler(() => {
   const appConfig = useAppConfig()
-  return (appConfig.ui as any)?.colors
+  return appConfig.compodium.matchUIColors ? (appConfig.ui as any)?.colors : {}
 })
