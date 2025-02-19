@@ -49,6 +49,10 @@ const { data: componentMeta, refresh: refreshComponent } = useAsyncData('__compo
   return parseComponentMeta(meta)
 }, { watch: [componentId] })
 
+watch(componentMeta, () => {
+  updateRenderer()
+})
+
 function updateRendererComponent() {
   const event: Event & { data?: { component?: string, props?: any, path?: string } } = new Event('compodium:update-component')
   event.data = { component: component.value?.pascalName, props: props.value, path: component.value?.filePath }

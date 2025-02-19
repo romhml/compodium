@@ -6,14 +6,17 @@ import { buildAssetsURL } from '#internal/nuxt/paths'
 // // @ts-expect-error virtual file
 // import components from '#build/compodium/components.json'
 
-const props = shallowRef({})
+const props = ref()
 const component = shallowRef()
 
+const isUpdating = ref(false)
 async function onUpdateComponent(event: Event & { data?: { component: string, props: any, path: string } }) {
   // FIXME: This might not be very secure...
   // It's required because imports to virtual templates don't update properly on HMR.
+  isUpdating.value = true
   component.value = await import(/* @vite-ignore */ buildAssetsURL(event.data?.path)).then(c => c.default)
   props.value = { ...event.data?.props }
+  isUpdating.value = false
 }
 
 if (import.meta.hot) {
@@ -51,6 +54,7 @@ onUnmounted(() => {
 <template>
   <component
     :is="component"
+    v-show="!isUpdating"
     v-if="component"
     v-bind="props"
   />
