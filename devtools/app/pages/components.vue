@@ -22,31 +22,52 @@ await useAsyncData('__compodium-fetch-collection', async () => {
 
 const currentComponent = ref()
 
-function getTreeChildren(node: ComponentCollection | Component | ComponentExample) {
-  const components = Object.values(node.components ?? {})
-  const examples = Object.values(node.examples ?? {})
-  if (components?.length) return components
-  if (examples?.length) return examples
-}
+const modalState = ref(false)
 
 async function onSelect(node: ComponentCollection | Component | ComponentExample) {
   if (!node || node.components) return
   const example = node.metaId !== node.pascalName ? node.pascalName : undefined
   await navigateTo({ path: `/components/${node.metaId}`, query: { example } })
+  modalState.value = false
+  scrollToSelected()
 }
+
+const tree = ref()
+async function scrollToSelected() {
+  tree.value.$el.querySelector('[data-selected=""]').scrollIntoView({ behavior: 'smooth', block: 'center' })
+}
+
+const collectionItems = computed(() =>
+  Object.values(collections.value ?? {}).map(col => ({
+    ...col,
+    items: Object.values(col.components).map(comp => ({
+      ...comp,
+      id: comp.pascalName,
+      items: Object.values(comp.examples ?? {}).map((ex: any) => ({ ...ex, id: ex.pascalName }))
+    }))
+  }))
+)
+
+defineShortcuts({
+  meta_shift_k: () => {
+    modalState.value = !modalState.value
+  }
+})
 </script>
 
 <template>
-  <div class="absolute top-0 bottom-0 inset-x-0 grid xl:grid-cols-8 grid-cols-4 bg-(--ui-bg-elevated)/50">
+  <div class="relative flex w-screen h-screen overflow-y-scroll bg-(--ui-bg-elevated)/50">
     <UTree
+      ref="tree"
       v-model="currentComponent"
-      :items="Object.values(collections ?? {})"
+      :items="collectionItems"
       size="lg"
-      class="mt-2 px-1 overflow-y-scroll border-r border-(--ui-border) hidden xl:block xl:col-span-1"
+      class="mt-2 px-1 overflow-y-scroll border-r border-(--ui-border) hidden xl:block xl:w-xs"
       label-key="name"
+      :default-expanded="collectionItems.map((c) => c.name)"
       parent-trailing-icon="lucide:chevron-down"
       :ui="{ itemTrailingIcon: 'group-data-expanded:rotate-180 transition-transform duration-200 ml-auto' }"
-      :get-children="getTreeChildren"
+      :get-children="(node) => node?.items?.length ? node?.items : undefined"
       @update:model-value="onSelect"
     >
       <template #item-leading="{ hasChildren, expanded, item }">
@@ -67,6 +88,34 @@ async function onSelect(node: ComponentCollection | Component | ComponentExample
         />
       </template>
     </UTree>
-    <NuxtPage page-key="static" />
+
+    <div class="flex relative w-full grow">
+      <NuxtPage page-key="static" />
+      <UModal v-model:open="modalState">
+        <div class="absolute flex items-center top-2 left-2">
+          <UTooltip
+            text="Search"
+            :kbds="['shift', 'meta', 'k']"
+            :content="{ side: 'right' }"
+          >
+            <UButton
+              icon="lucide:search"
+              color="neutral"
+              variant="link"
+            />
+          </UTooltip>
+        </div>
+        <template #content>
+          <UCommandPalette
+            v-model="currentComponent"
+            :groups="collectionItems"
+            placeholder="Search component..."
+            label-key="name"
+            class="h-80"
+            @update:model-value="onSelect"
+          />
+        </template>
+      </UModal>
+    </div>
   </div>
 </template>

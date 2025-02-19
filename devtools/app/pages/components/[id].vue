@@ -122,9 +122,9 @@ function onResetState() {
 </script>
 
 <template>
-  <div class="xl:col-span-5 col-span-2 relative">
+  <div class="relative flex grow">
     <ComponentPreview class="grow h-full" />
-    <div class="flex gap-2 absolute top-1 right-2">
+    <div class="flex gap-2 absolute top-2 right-2">
       <UButton
         v-if="componentMeta?.docUrl"
         icon="lucide:book-open"
@@ -152,7 +152,7 @@ function onResetState() {
     </div>
   </div>
 
-  <div class="bg-(--ui-bg) flex flex-col col-span-2 overflow-y-auto border-l border-(--ui-border)">
+  <div class="bg-(--ui-bg) w-md flex flex-col overflow-y-auto border-l border-(--ui-border)">
     <UTabs
       variant="link"
       :items="tabs"
