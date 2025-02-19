@@ -55,6 +55,9 @@ importers:
       vue-component-meta:
         specifier: ^2.2.2
         version: 2.2.2(typescript@5.6.3)
+      zod:
+        specifier: ^3.23.8
+        version: 3.24.2
     devDependencies:
       '@nuxt/devtools':
         specifier: ^2.1.0

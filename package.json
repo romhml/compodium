@@ -19,7 +19,7 @@
   ],
   "scripts": {
     "prepack": "nuxt-module-build build && nuxi generate devtools",
-    "dev": "COMPODIUM_LOCAL=true nuxi dev playground",
+    "dev": "COMPODIUM_LOCAL=false nuxi dev playground",
     "dev:build": "nuxi build playground",
     "dev:prepare": "nuxt-module-build build --stub && nuxt-module-build prepare && nuxi prepare devtools && nuxi prepare playground",
     "release": "pnpm run lint && pnpm run test && pnpm run prepack && changelogen --release && pnpm publish && git push --follow-tags",
@@ -42,7 +42,8 @@
     "sirv": "^3.0.0",
     "tinyglobby": "^0.2.10",
     "ufo": "^1.5.4",
-    "vue-component-meta": "^2.2.2"
+    "vue-component-meta": "^2.2.2",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@nuxt/devtools": "^2.1.0",

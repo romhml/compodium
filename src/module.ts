@@ -9,7 +9,7 @@ import { getComponentCollection } from './runtime/utils'
 import { readFileSync } from 'node:fs'
 import { join } from 'pathe'
 import { defu } from 'defu'
-import { defaultProps } from './libs/defaults'
+import { defaultProps } from './runtime/libs/defaults'
 import { watch } from 'chokidar'
 import { compodiumVite } from './vite'
 
