@@ -66,7 +66,7 @@ export default defineNuxtModule<ModuleOptions>({
       ? [{
           id: 'ui',
           name: 'Nuxt UI',
-          path: '@nuxt/ui',
+          path: '@nuxt/ui/',
           external: true,
           icon: 'lineicons:nuxt',
           prefix: (nuxt.options as any).ui?.prefix,
