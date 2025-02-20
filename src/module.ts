@@ -60,8 +60,6 @@ export default defineNuxtModule<ModuleOptions>({
       { name: 'Components', path: 'components/' }
     ]
 
-    nuxt.options.appConfig.compodium = { matchUIColors: options.extras?.ui?.matchColors }
-
     const libraryCollections = options.includeDefaultCollections
       ? [{
           id: 'ui',
@@ -90,7 +88,8 @@ export default defineNuxtModule<ModuleOptions>({
     })
 
     nuxt.options.appConfig.compodium = {
-      collections: options.collections.map(c => ({ ...c, id: camelCase(c.name), path: appResolver.resolve(c.path) })).concat(libraryCollections)
+      collections: options.collections.map(c => ({ ...c, id: camelCase(c.name), path: appResolver.resolve(c.path) })).concat(libraryCollections),
+      matchUIColors: options.extras?.ui?.matchColors
     }
 
     const appConfig = nuxt.options.appConfig
