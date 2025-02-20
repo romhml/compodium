@@ -1,5 +1,17 @@
 # Changelog
 
+## v0.0.1-alpha.5
+
+[compare changes](https://github.com/romhml/compodium/compare/v0.0.1-alpha.4...v0.0.1-alpha.5)
+
+### 🩹 Fixes
+
+- Import useNuxtApp in root ([07ab1ad](https://github.com/romhml/compodium/commit/07ab1ad))
+
+### ❤️ Contributors
+
+- Romhml ([@romhml](http://github.com/romhml))
+
 ## v0.0.1-alpha.4
 
 [compare changes](https://github.com/romhml/compodium/compare/v0.0.1-alpha.3...v0.0.1-alpha.4)
