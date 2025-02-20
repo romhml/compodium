@@ -6,6 +6,11 @@ import { buildAssetsURL } from '#internal/nuxt/paths'
 // // @ts-expect-error virtual file
 // import components from '#build/compodium/components.json'
 
+// Silence Nuxt warnings on unused pages / layouts
+const app = useNuxtApp()
+app._isNuxtPageUsed = true
+app._isNuxtLayoutUsed = true
+
 const props = ref()
 const component = shallowRef()
 
@@ -14,8 +19,8 @@ async function onUpdateComponent(event: Event & { data?: { component: string, pr
   // FIXME: This might not be very secure...
   // It's required because imports to virtual templates don't update properly on HMR.
   isUpdating.value = true
-  component.value = await import(/* @vite-ignore */ buildAssetsURL(event.data?.path)).then(c => c.default)
   props.value = { ...event.data?.props }
+  component.value = await import(/* @vite-ignore */ buildAssetsURL(event.data?.path)).then(c => c.default)
   isUpdating.value = false
 }
 

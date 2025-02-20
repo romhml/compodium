@@ -110,6 +110,11 @@ export default defineNuxtModule<ModuleOptions>({
       }
     })
 
+    // Injects a placeholder page for the renderer to silence warnings if the router integration is enabled.
+    nuxt.hook('pages:extend', (pages) => {
+      if (pages.length) pages.push({ path: '/__compodium__/renderer', file: resolve('./runtime/renderer-placeholder.vue') })
+    })
+
     // Watch for changes in example directory
     const examplesDir = appResolver.resolve(options.examples)
     const examplesWatcher = watch(examplesDir, {
