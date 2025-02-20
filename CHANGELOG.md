@@ -1,5 +1,17 @@
 # Changelog
 
+## v0.0.1-alpha.6
+
+[compare changes](https://github.com/romhml/compodium/compare/v0.0.1-alpha.5...v0.0.1-alpha.6)
+
+### 🩹 Fixes
+
+- Import ref in root ([5505278](https://github.com/romhml/compodium/commit/5505278))
+
+### ❤️ Contributors
+
+- Romhml ([@romhml](http://github.com/romhml))
+
 ## v0.0.1-alpha.5
 
 [compare changes](https://github.com/romhml/compodium/compare/v0.0.1-alpha.4...v0.0.1-alpha.5)
