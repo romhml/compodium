@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onUnmounted, onMounted, shallowRef } from 'vue'
+import { onUnmounted, onMounted, shallowRef, ref } from 'vue'
 import { useColorMode } from '@vueuse/core'
 // @ts-expect-error virtual file
 import { buildAssetsURL } from '#internal/nuxt/paths'
