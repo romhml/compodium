@@ -3,6 +3,7 @@ import { onUnmounted, onMounted, shallowRef } from 'vue'
 import { useColorMode } from '@vueuse/core'
 // @ts-expect-error virtual file
 import { buildAssetsURL } from '#internal/nuxt/paths'
+import { useNuxtApp } from '#imports'
 // // @ts-expect-error virtual file
 // import components from '#build/compodium/components.json'
 
