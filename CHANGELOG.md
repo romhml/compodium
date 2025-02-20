@@ -1,5 +1,34 @@
 # Changelog
 
+## v0.0.1-alpha.4
+
+[compare changes](https://github.com/romhml/compodium/compare/v0.0.1-alpha.3...v0.0.1-alpha.4)
+
+### 🚀 Enhancements
+
+- Add component search menu ([42d3665](https://github.com/romhml/compodium/commit/42d3665))
+
+### 🩹 Fixes
+
+- Avoid matching ui-pro components in @nuxt/ui collection ([dab68f2](https://github.com/romhml/compodium/commit/dab68f2))
+- Improve stability when viewing new component ([99092f5](https://github.com/romhml/compodium/commit/99092f5))
+- Filter out private object properties ([00f6bd6](https://github.com/romhml/compodium/commit/00f6bd6))
+- Silence vue router warnings ([5d73471](https://github.com/romhml/compodium/commit/5d73471))
+- Tweak scrollbar styles ([56fc513](https://github.com/romhml/compodium/commit/56fc513))
+- Add runtime/libs to ts ignore ([1885907](https://github.com/romhml/compodium/commit/1885907))
+
+### 📖 Documentation
+
+- Cleanup playground and update readme ([1acd796](https://github.com/romhml/compodium/commit/1acd796))
+
+### 🏡 Chore
+
+- Update lockfile ([e224305](https://github.com/romhml/compodium/commit/e224305))
+
+### ❤️ Contributors
+
+- Romhml ([@romhml](http://github.com/romhml))
+
 ## v0.0.1-alpha.3
 
 [compare changes](https://github.com/romhml/compodium/compare/v0.0.1-alpha.2...v0.0.1-alpha.3)
