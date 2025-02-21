@@ -14,32 +14,9 @@ export function useCollections() {
     }
   }
 
-  function getExampleComponent(exampleId: string) {
-    const regex = /^(.+)Example/
-    const match = exampleId.match(regex)
-    if (!match) return null
-
-    const componentId = match[1] as string
-
-    for (const collection of Object.values(collections.value)) {
-      const component = collection.components[componentId]
-
-      if (!component) continue
-
-      if (!component.examples?.length) return component
-
-      const example = component.examples.find((e: any) => e.pascalName === exampleId)
-
-      if (example) return example
-    }
-
-    return null
-  }
-
   return {
     fetchCollections,
     collections,
-    getComponent,
-    getExampleComponent
+    getComponent
   }
 }

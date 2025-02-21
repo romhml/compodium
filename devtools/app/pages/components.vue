@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { ComponentCollection, ComponentExample } from '#module/types'
+import { kebabCase } from 'scule'
 
 const route = useRoute()
 
@@ -11,8 +12,8 @@ await useAsyncData('__compodium-fetch-collection', async () => {
     const fallbackComponent = Object.values(fallbackCollection?.components ?? {})[0]
 
     if (fallbackComponent) {
-      const example = fallbackComponent.metaId !== fallbackComponent.pascalName ? fallbackComponent.pascalName : undefined
-      await navigateTo({ path: `/components/${fallbackComponent.metaId}`, query: { example } })
+      const example = fallbackComponent.isExample ? fallbackComponent.pascalName : undefined
+      await navigateTo({ path: `/components/${fallbackComponent.componentId}`, query: { example } })
     } else {
       await navigateTo(`/welcome`)
     }
@@ -21,13 +22,12 @@ await useAsyncData('__compodium-fetch-collection', async () => {
 })
 
 const currentComponent = ref()
-
 const modalState = ref(false)
 
 async function onSelect(node: ComponentCollection | Component | ComponentExample) {
   if (!node || node.components) return
-  const example = node.metaId !== node.pascalName ? node.pascalName : undefined
-  await navigateTo({ path: `/components/${node.metaId}`, query: { example } })
+  const example = node.isExample ? node.pascalName : undefined
+  await navigateTo({ path: `/components/${kebabCase(node.componentId)}`, query: { example } })
   modalState.value = false
   scrollToSelected()
 }

@@ -1,7 +1,7 @@
 import type { CollectionConfig } from './types'
 import { existsSync, readFileSync } from 'node:fs'
 import { addCustomTab, startSubprocess } from '@nuxt/devtools-kit'
-import { defineNuxtModule, createResolver, addTemplate, addServerHandler, addVitePlugin, updateTemplates } from '@nuxt/kit'
+import { defineNuxtModule, createResolver, addTemplate, addServerHandler, addVitePlugin, updateTemplates, addImportsDir } from '@nuxt/kit'
 import { getPort } from 'get-port-please'
 import { camelCase, kebabCase } from 'scule'
 import sirv from 'sirv'
@@ -51,9 +51,14 @@ export default defineNuxtModule<ModuleOptions>({
   },
 
   async setup(options, nuxt) {
+    // Only the extendCompodiumMeta composable is injected in production
+    // It won't do anything but this is required to avoid runtime errors.
+    // Might look into removing it completely using vite.
+    const { resolve } = createResolver(import.meta.url)
+    addImportsDir(resolve('./runtime/composables'))
+
     if (!nuxt.options.dev) return
 
-    const { resolve } = createResolver(import.meta.url)
     const appResolver = createResolver(nuxt.options.rootDir)
 
     options.collections ??= [
@@ -160,8 +165,11 @@ export default defineNuxtModule<ModuleOptions>({
         const components = [...app.components, ...exampleComponents]
         return JSON.stringify(components.reduce((acc, component) => {
           const collection = getComponentCollection<CollectionConfig>(component, collections)
-          acc[component.pascalName] = {
+          const componentId = collection?.prefix ? camelCase(component.kebabName.replace(new RegExp(`^${kebabCase(collection?.prefix)}-`), '')) : camelCase(component.kebabName)
+
+          acc[componentId] = {
             ...component,
+            componentId,
             docUrl: collection?.getDocUrl?.(component.pascalName)
           }
           return acc

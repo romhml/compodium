@@ -6,6 +6,8 @@ defineProps<{
   spinIt?: boolean
   bounceIt?: boolean
 }>()
+
+extendCompodiumMeta({ defaultProps: { bounceIt: true } })
 </script>
 
 <template>

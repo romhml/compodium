@@ -22,15 +22,18 @@ export default defineEventHandler(async () => {
     const componentExamples = examples?.filter(e => e.pascalName.match(`${collectionPrefix}${component.pascalName}Example`))
     const mainExample = componentExamples.find(e => e.pascalName === `${collectionPrefix}${component.pascalName}Example`)
 
-    acc[collection.name] ??= { ...collection, components: {} }
-    acc[collection.name].components[component.pascalName] = {
+    acc[collection.id] ??= { ...collection, components: {} }
+    acc[collection.id].components[component.componentId] = {
       ...component,
       ...mainExample,
       name: component.pascalName,
-      metaId: component.pascalName,
+      componentId: component.componentId,
+      collectionId: collection.id,
       examples: componentExamples.filter(e => e.pascalName !== mainExample?.pascalName).map(e => ({
         name: e.name.replace(`${collectionPrefix}${component.pascalName}Example`, ''),
-        metaId: component.pascalName,
+        collectionId: collection.id,
+        componentId: component.componentId,
+        isExample: true,
         ...e
       }))
     }

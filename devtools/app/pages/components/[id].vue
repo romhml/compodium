@@ -2,6 +2,7 @@
 import { useColorMode, useDebounceFn } from '@vueuse/core'
 import type { ComponentMeta } from '#module/types'
 import type { PropertyMeta } from 'vue-component-meta'
+import { camelCase } from 'scule'
 
 // Disable devtools in component renderer iframe
 // @ts-expect-error - Nuxt Devtools internal value
@@ -31,31 +32,33 @@ function getDefaultPropValue(meta: Partial<PropertyMeta>) {
 
 const route = useRoute()
 
-const componentId = computed(() => route.params.id as string)
+const componentId = computed(() => camelCase(route.params.id as string))
 const exampleId = computed(() => route.query.example as string)
 const props = useState<Record<string, any>>('__component_state', () => ({}))
+const defaultProps = shallowRef({})
 
-const { fetchCollections, getComponent, getExampleComponent } = useCollections()
+const { fetchCollections, getComponent } = useCollections()
 
-const component = computed(() => exampleId.value ? getExampleComponent(exampleId.value) : getComponent(componentId.value))
+const component = computed(() => {
+  const baseComponent = getComponent(componentId.value)
+  return baseComponent.examples?.find((e: any) => e.pascalName === exampleId.value) ?? baseComponent
+})
 
 const { data: componentMeta, refresh: refreshComponent } = useAsyncData('__compodium-fetch-meta', async () => {
   const meta = await $fetch<ComponentMeta>(`/api/component-meta/${componentId.value}`, { baseURL: '/__compodium__' })
   // Don't update props or renderer if the component has not changed (e.g. after HMR)
-  if (!componentMeta.value || componentMeta.value?.pascalName !== componentId.value) {
-    props.value = { ...meta.defaultProps }
+  if (!componentMeta.value || componentMeta.value?.componentId !== componentId.value) {
+    props.value = {}
+    defaultProps.value = {}
     updateRendererComponent()
   }
   return parseComponentMeta(meta)
 }, { watch: [componentId] })
 
-watch(componentMeta, () => {
-  updateRenderer()
-})
-
 function updateRendererComponent() {
-  const event: Event & { data?: { component?: string, props?: any, path?: string } } = new Event('compodium:update-component')
-  event.data = { component: component.value?.pascalName, props: props.value, path: component.value?.filePath }
+  const event: Event & { data?: { collectionId: string, componentId: string, path: string } } = new Event('compodium:update-component')
+  if (!component.value) return
+  event.data = { collectionId: component.value.collectionId, componentId: component.value.componentId, path: component.value.filePath }
   window.dispatchEvent(event)
 }
 
@@ -78,11 +81,19 @@ function onComponentLoaded() {
 const fetchCollectionsDebounced = useDebounceFn(fetchCollections, 300)
 const refreshComponentDebounced = useDebounceFn(() => refreshComponent(), 300)
 
+function onComponentDefaultProps(event: Event & { data?: { componentId: string, defaultProps?: any } }) {
+  console.log('event', event, event.data?.componentId)
+  if (event.data?.componentId !== componentId.value) return
+  props.value = { ...props.value, ...event.data?.defaultProps }
+  defaultProps.value = event.data?.defaultProps
+}
+
 onMounted(() => {
   window.addEventListener('compodium:renderer-mounted', updateRendererComponent)
   window.addEventListener('compodium:component-loaded', onComponentLoaded)
   window.addEventListener('compodium:component-added', fetchCollectionsDebounced)
   window.addEventListener('compodium:component-changed', refreshComponentDebounced)
+  window.addEventListener('compodium:component-default-props', onComponentDefaultProps)
   window.addEventListener('compodium:component-removed', fetchCollectionsDebounced)
 })
 
@@ -92,6 +103,7 @@ onUnmounted(() => {
   window.removeEventListener('compodium:component-added', fetchCollectionsDebounced)
   window.removeEventListener('compodium:component-changed', refreshComponentDebounced)
   window.removeEventListener('compodium:component-removed', fetchCollectionsDebounced)
+  window.removeEventListener('compodium:component-default-props', onComponentDefaultProps)
 })
 
 const tabs = computed(() => {
@@ -120,7 +132,7 @@ function onResetState() {
   if (isRotated.value) return
   setTimeout(() => isRotated.value = false, 500)
   isRotated.value = true
-  props.value = { ...componentMeta.value?.defaultProps }
+  props.value = { ...defaultProps.value }
   updateRendererDebounced()
 }
 </script>
@@ -166,7 +178,7 @@ function onResetState() {
       <template #props>
         <div
           v-for="prop in componentMeta?.meta.props"
-          :key="'prop-' + prop.name"
+          :key="componentMeta.componentId + '-prop-' + prop.name"
           class="px-3 py-2 border-b border-(--ui-border)"
         >
           <ComponentPropInput
