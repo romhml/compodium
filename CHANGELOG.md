@@ -1,5 +1,30 @@
 # Changelog
 
+## v0.0.1-alpha.7
+
+[compare changes](https://github.com/romhml/compodium/compare/v0.0.1-alpha.6...v0.0.1-alpha.7)
+
+### 🚀 Enhancements
+
+- Add extendCompodiumMeta composable ([32688c9](https://github.com/romhml/compodium/commit/32688c9))
+
+### 🩹 Fixes
+
+- **devtools:** Ui color match ([4804893](https://github.com/romhml/compodium/commit/4804893))
+- Hooks logic on hmr ([7c30fef](https://github.com/romhml/compodium/commit/7c30fef))
+
+### 💅 Refactors
+
+- Replace window events with hooks ([b02cd7f](https://github.com/romhml/compodium/commit/b02cd7f))
+
+### 📖 Documentation
+
+- ExtendCompodiumMeta ([2150f29](https://github.com/romhml/compodium/commit/2150f29))
+
+### ❤️ Contributors
+
+- Romhml ([@romhml](http://github.com/romhml))
+
 ## v0.0.1-alpha.6
 
 [compare changes](https://github.com/romhml/compodium/compare/v0.0.1-alpha.5...v0.0.1-alpha.6)
