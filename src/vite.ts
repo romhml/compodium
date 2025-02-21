@@ -22,9 +22,9 @@ export function compodiumVite({ dirs }: { dirs: (ComponentsDir | string)[] }) {
         })
       }
 
-      watcher.on('add', path => sendEvent(path, 'compodium:component-added'))
-      watcher.on('change', path => sendEvent(path, 'compodium:component-changed'))
-      watcher.on('unlink', path => sendEvent(path, 'compodium:component-removed'))
+      watcher.on('add', path => sendEvent(path, 'component:added'))
+      watcher.on('change', path => sendEvent(path, 'component:changed'))
+      watcher.on('unlink', path => sendEvent(path, 'component:removed'))
     }
   }
 }

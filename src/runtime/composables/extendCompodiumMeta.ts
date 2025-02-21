@@ -5,7 +5,7 @@ export type ExtendCompodiumMetaOptions<T> = {
 }
 
 export function _useCompodiumMetaState() {
-  const defaultProps = useState<Record<string, any>>('__compodium-meta', () => shallowRef({}))
+  const defaultProps = useState<Record<string, any> | null>('__compodium-meta', () => shallowRef({}))
   return {
     defaultProps
   }

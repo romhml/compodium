@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { useColorMode, useDebounceFn } from '@vueuse/core'
-import type { ComponentMeta } from '#module/types'
+import type { ComponentMeta, CompodiumHooks } from '#module/types'
 import type { PropertyMeta } from 'vue-component-meta'
 import { camelCase } from 'scule'
+import { createHooks } from 'hookable'
 
 // Disable devtools in component renderer iframe
 // @ts-expect-error - Nuxt Devtools internal value
@@ -48,28 +49,23 @@ const { data: componentMeta, refresh: refreshComponent } = useAsyncData('__compo
   const meta = await $fetch<ComponentMeta>(`/api/component-meta/${componentId.value}`, { baseURL: '/__compodium__' })
   // Don't update props or renderer if the component has not changed (e.g. after HMR)
   if (!componentMeta.value || componentMeta.value?.componentId !== componentId.value) {
-    props.value = {}
     defaultProps.value = {}
-    updateRendererComponent()
+    props.value = {}
+    await hooks.callHook('renderer:update-component', { collectionId: component.value.collectionId, componentId: component.value.componentId, path: component.value.filePath })
   }
   return parseComponentMeta(meta)
 }, { watch: [componentId] })
 
-function updateRendererComponent() {
-  const event: Event & { data?: { collectionId: string, componentId: string, path: string } } = new Event('compodium:update-component')
+async function updateRendererComponent() {
   if (!component.value) return
-  event.data = { collectionId: component.value.collectionId, componentId: component.value.componentId, path: component.value.filePath }
-  window.dispatchEvent(event)
 }
 
-watch([exampleId], () => {
-  updateRendererComponent()
+watch([exampleId], async () => {
+  await hooks.callHook('renderer:update-component', { collectionId: component.value.collectionId, componentId: component.value.componentId, path: component.value.filePath })
 })
 
-function updateRenderer() {
-  const event: Event & { data?: any } = new Event('compodium:update-props')
-  event.data = { props: props.value }
-  window.dispatchEvent(event)
+async function updateRenderer() {
+  await hooks.callHook('renderer:update-props', { props: props.value })
 }
 
 const updateRendererDebounced = useDebounceFn(updateRenderer, 100, { maxWait: 300 })
@@ -81,30 +77,23 @@ function onComponentLoaded() {
 const fetchCollectionsDebounced = useDebounceFn(fetchCollections, 300)
 const refreshComponentDebounced = useDebounceFn(() => refreshComponent(), 300)
 
-function onComponentDefaultProps(event: Event & { data?: { componentId: string, defaultProps?: any } }) {
-  console.log('event', event, event.data?.componentId)
-  if (event.data?.componentId !== componentId.value) return
-  props.value = { ...props.value, ...event.data?.defaultProps }
-  defaultProps.value = event.data?.defaultProps
+async function updateProps(payload: { componentId: string, props: any }) {
+  if (componentId.value !== payload.componentId) return
+  props.value = { ...props.value, ...payload.props }
+  defaultProps.value = payload.props
+  await hooks.callHook('renderer:update-props', { props: props.value })
 }
 
-onMounted(() => {
-  window.addEventListener('compodium:renderer-mounted', updateRendererComponent)
-  window.addEventListener('compodium:component-loaded', onComponentLoaded)
-  window.addEventListener('compodium:component-added', fetchCollectionsDebounced)
-  window.addEventListener('compodium:component-changed', refreshComponentDebounced)
-  window.addEventListener('compodium:component-default-props', onComponentDefaultProps)
-  window.addEventListener('compodium:component-removed', fetchCollectionsDebounced)
-})
+const hooks = createHooks<CompodiumHooks>()
 
-onUnmounted(() => {
-  window.removeEventListener('compodium:renderer-mounted', updateRendererComponent)
-  window.removeEventListener('compodium:component-loaded', onComponentLoaded)
-  window.removeEventListener('compodium:component-added', fetchCollectionsDebounced)
-  window.removeEventListener('compodium:component-changed', refreshComponentDebounced)
-  window.removeEventListener('compodium:component-removed', fetchCollectionsDebounced)
-  window.removeEventListener('compodium:component-default-props', onComponentDefaultProps)
-})
+hooks.hook('renderer:mounted', updateRendererComponent)
+hooks.hook('renderer:component-loaded', onComponentLoaded)
+hooks.hook('component:added', fetchCollectionsDebounced)
+hooks.hook('component:removed', fetchCollectionsDebounced)
+hooks.hook('component:updated', refreshComponentDebounced)
+hooks.hook('devtools:update-props', updateProps)
+
+onMounted(() => window.__COMPODIUM_HOOKS__ = hooks)
 
 const tabs = computed(() => {
   return [
@@ -118,11 +107,9 @@ const isDark = computed({
   get() {
     return colorMode.value === 'dark'
   },
-  set(value) {
+  async set(value) {
     colorMode.value = value ? 'dark' : 'light'
-    const event: Event & { data?: string } = new Event('compodium:update-color-mode')
-    event.data = colorMode.value
-    window.dispatchEvent(event)
+    await hooks.callHook('renderer:set-color', colorMode.value)
   }
 })
 
