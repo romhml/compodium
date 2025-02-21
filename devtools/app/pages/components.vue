@@ -34,7 +34,7 @@ async function onSelect(node: ComponentCollection | Component | ComponentExample
 
 const tree = ref()
 async function scrollToSelected() {
-  tree.value.$el.querySelector('[data-selected=""]').scrollIntoView({ behavior: 'smooth', block: 'center' })
+  tree.value?.$el?.querySelector('[data-selected=""]').scrollIntoView({ behavior: 'smooth', block: 'center' })
 }
 
 const collectionItems = computed(() =>

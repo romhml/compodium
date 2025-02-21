@@ -32,6 +32,8 @@ async function onUpdateComponent(payload: { collectionId: string, componentId: s
   // FIXME: This might not be very secure...
   // It's required because imports to virtual templates don't update properly on HMR.
   component.value = await import(/* @vite-ignore */ buildAssetsURL(payload.path)).then(c => c.default)
+  props.value = {}
+
   collectionId.value = payload.collectionId
   componentId.value = payload.componentId
 }
