@@ -68,7 +68,7 @@ declare module 'nuxt/schema' {
 
 export interface CompodiumHooks {
   // Triggered when the components code has been updated
-  'component:updated': () => void
+  'component:changed': () => void
 
   // Triggered when a new component has been added
   'component:added': () => void

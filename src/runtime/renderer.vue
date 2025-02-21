@@ -40,7 +40,7 @@ watch([meta.defaultProps, componentId], async () => {
   // Fetch default props from appConfig and extendCompodiumMeta
   const appConfigDefaultProps = (appConfig.compodium as any).defaultProps?.[collectionId.value]?.[camelCase(componentId.value)]
   const defaultProps = { ...appConfigDefaultProps, ...meta.defaultProps.value }
-  await hooks.value?.callHook('devtools:update-props', { componentId: componentId.value, props: defaultProps })
+  await hooks.value?.callHook('devtools:update-props', { componentId: componentId.value, props: { ...defaultProps, ...props.value } })
 })
 
 if (import.meta.hot) {

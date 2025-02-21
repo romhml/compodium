@@ -56,10 +56,6 @@ const { data: componentMeta, refresh: refreshComponent } = useAsyncData('__compo
   return parseComponentMeta(meta)
 }, { watch: [componentId] })
 
-async function updateRendererComponent() {
-  if (!component.value) return
-}
-
 watch([exampleId], async () => {
   await hooks.callHook('renderer:update-component', { collectionId: component.value.collectionId, componentId: component.value.componentId, path: component.value.filePath })
 })
@@ -86,11 +82,15 @@ async function updateProps(payload: { componentId: string, props: any }) {
 
 const hooks = createHooks<CompodiumHooks>()
 
-hooks.hook('renderer:mounted', updateRendererComponent)
+hooks.hook('renderer:mounted', () => hooks.callHook('renderer:update-component', {
+  collectionId: component.value.collectionId,
+  componentId: component.value.componentId,
+  path: component.value.filePath
+}))
 hooks.hook('renderer:component-loaded', onComponentLoaded)
 hooks.hook('component:added', fetchCollectionsDebounced)
 hooks.hook('component:removed', fetchCollectionsDebounced)
-hooks.hook('component:updated', refreshComponentDebounced)
+hooks.hook('component:changed', refreshComponentDebounced)
 hooks.hook('devtools:update-props', updateProps)
 
 onMounted(() => window.__COMPODIUM_HOOKS__ = hooks)
