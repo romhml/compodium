@@ -138,7 +138,18 @@ compodium
 
 ### Default Props
 
-You can specify default properties for your components in your `app.config.ts` file:
+You can use the `extendCompodiumMeta` in your component to pass default values for required properties:
+```ts
+const props = defineProps<{ label: string }>()
+
+extendCompodiumMeta({
+  defaultProps: {
+    label: 'Click me!'
+  }
+})
+```
+
+Alternatively, you can specify default properties for your components in your `app.config.ts` file:
 
 ```ts
 export default defineAppConfig({
