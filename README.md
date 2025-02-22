@@ -12,17 +12,16 @@ A plug and play interactive component playground for your Nuxt projects.
 
 ## Features
 
-- 🔍 &nbsp; **Automatic Component Discovery:** Automatically detects and previews components without manual setup.
-- 📚 &nbsp; **No Stories Required:** Generates previews without needing additional configuration files.
-- ⚡ &nbsp; **HMR Support:** Enables real-time updates with HMR for faster development.
-- 🎨 &nbsp; **Default UI Collections:** Includes pre-configured collections for existing UI libraries.
+- **Simple Setup:** Easily integrates into your Nuxt app with minimal configuration. Customize only when needed by creating examples or defining default props.
+- **HMR Support:** Enables real-time updates with HMR for faster development.
+- **Default UI Collections:** Includes pre-configured collections for your UI libraries.
 
 ## Quick Setup
 
 Install the module to your Nuxt application with one command:
 
 ```bash
-npx nuxi module add --dev compodium
+npx nuxi module add compodium
 ```
 
 That's it! You can now access Compodium from the nuxt devtools or `/__compodium__/devtools`.

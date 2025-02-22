@@ -208,11 +208,11 @@ export const defaultProps = {
         {
           label: 'app',
           icon: 'i-lucide-folder',
-          defaultOpen: true,
+          defaultExpanded: true,
           children: [{
             label: 'composables',
             icon: 'i-lucide-folder',
-            defaultOpen: true,
+            defaultExpanded: true,
             children: [
               { label: 'useAuth.ts', icon: 'vscode-icons:file-type-typescript' },
               { label: 'useUser.ts', icon: 'vscode-icons:file-type-typescript' }

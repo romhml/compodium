@@ -40,8 +40,10 @@ async function scrollToSelected() {
 const collectionItems = computed(() =>
   Object.values(collections.value ?? {}).map(col => ({
     ...col,
+    defaultExpanded: true,
     items: Object.values(col.components).map(comp => ({
       ...comp,
+      defaultExpanded: true,
       id: comp.pascalName,
       items: Object.values(comp.examples ?? {}).map((ex: any) => ({ ...ex, id: ex.pascalName }))
     }))
@@ -64,7 +66,6 @@ defineShortcuts({
       size="lg"
       class="mt-2 px-1 overflow-y-scroll border-r border-(--ui-border) hidden xl:block xl:w-xs"
       label-key="name"
-      :default-expanded="collectionItems.map((c) => c.name)"
       parent-trailing-icon="lucide:chevron-down"
       :ui="{ itemTrailingIcon: 'group-data-expanded:rotate-180 transition-transform duration-200 ml-auto' }"
       :get-children="(node) => node?.items?.length ? node?.items : undefined"

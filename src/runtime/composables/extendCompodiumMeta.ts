@@ -1,4 +1,5 @@
 import { shallowRef } from 'vue'
+import { useState } from '#imports'
 
 export type ExtendCompodiumMetaOptions<T> = {
   defaultProps: T

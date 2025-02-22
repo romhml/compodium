@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, shallowRef, ref } from 'vue'
+import { onMounted, shallowRef, ref, watch } from 'vue'
 import { useColorMode } from '@vueuse/core'
 import { camelCase } from 'scule'
 // @ts-expect-error virtual file
