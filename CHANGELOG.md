@@ -1,5 +1,32 @@
 # Changelog
 
+## v0.0.1-alpha.8
+
+[compare changes](https://github.com/romhml/compodium/compare/v0.0.1-alpha.7...v0.0.1-alpha.8)
+
+### 🩹 Fixes
+
+- Reset renderer props when changing component ([93c1761](https://github.com/romhml/compodium/commit/93c1761))
+- Conflicts between component collections and unnest default example dir ([8ac7873](https://github.com/romhml/compodium/commit/8ac7873))
+
+### 🏡 Chore
+
+- Tweak readme ([42d183f](https://github.com/romhml/compodium/commit/42d183f))
+- Update lockfile ([9f2af35](https://github.com/romhml/compodium/commit/9f2af35))
+- Add pnpm cache in workflow ([2792264](https://github.com/romhml/compodium/commit/2792264))
+- Remove duplicate install ([fe07ca3](https://github.com/romhml/compodium/commit/fe07ca3))
+
+### ✅ Tests
+
+- Add inference tests and cleanup ([215f12b](https://github.com/romhml/compodium/commit/215f12b))
+- Increase timeout ([14231e0](https://github.com/romhml/compodium/commit/14231e0))
+- Restore nuxt-ui tests ([3192767](https://github.com/romhml/compodium/commit/3192767))
+- Increase timeout ([fbd6388](https://github.com/romhml/compodium/commit/fbd6388))
+
+### ❤️ Contributors
+
+- Romhml ([@romhml](http://github.com/romhml))
+
 ## v0.0.1-alpha.7
 
 [compare changes](https://github.com/romhml/compodium/compare/v0.0.1-alpha.6...v0.0.1-alpha.7)
