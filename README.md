@@ -42,7 +42,7 @@ export default defineNuxtConfig({
     includeDefaultCollections: true,
 
     /* Customize the directory for preview examples */
-    examples: 'compodium/examples/',
+    examples: 'compodium/',
 
     /* Customize the preview component path. */
     previewComponent: 'compodium/preview.vue',
@@ -128,11 +128,10 @@ You can provide examples for your components in the `compodium/examples` folder.
 
 ```bash
 compodium
-└── examples
-    └── components                          # The collection's name
-        ├── BaseInputExampleDisabled.vue    # Will be added to the BaseInput component.
-        ├── BaseButtonExample.vue           # Will be the main example for the BaseButton component.
-        └── BaseButtonExampleWithLabel.vue  # Will be added to the BaseButton component.
+└── components                          # The collection's name
+    ├── BaseInputExampleDisabled.vue    # Will be added to the BaseInput component.
+    ├── BaseButtonExample.vue           # Will be the main example for the BaseButton component.
+    └── BaseButtonExampleWithLabel.vue  # Will be added to the BaseButton component.
 ```
 
 ### Default Props

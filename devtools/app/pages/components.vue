@@ -13,7 +13,7 @@ await useAsyncData('__compodium-fetch-collection', async () => {
 
     if (fallbackComponent) {
       const example = fallbackComponent.isExample ? fallbackComponent.pascalName : undefined
-      await navigateTo({ path: `/components/${fallbackComponent.componentId}`, query: { example } })
+      await navigateTo({ path: `/components/${kebabCase(fallbackComponent.componentId)}`, query: { example } })
     } else {
       await navigateTo(`/welcome`)
     }
@@ -60,6 +60,7 @@ const treeItems = computed(() =>
   }))
 )
 
+// TODO: fix broken import
 // defineShortcuts({
 //   meta_shift_k: () => {
 //     modalState.value = !modalState.value

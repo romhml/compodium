@@ -25,11 +25,11 @@ const component = shallowRef()
 
 const componentId = ref()
 
-async function onUpdateComponent(payload: { collectionId: string, componentId: string, path: string }) {
+async function onUpdateComponent(payload: { collectionId: string, componentId: string, baseName: string, path: string }) {
   componentId.value = payload.componentId
-
   meta.defaultProps.value = null
-  defaultProps.value = (appConfig.compodium as any).defaultProps?.[payload.collectionId]?.[camelCase(payload.componentId)]
+
+  defaultProps.value = (appConfig.compodium as any).defaultProps?.[payload.collectionId]?.[camelCase(payload.baseName)]
   props.value = defaultProps.value
 
   // FIXME: This might not be very secure...

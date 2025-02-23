@@ -3,7 +3,7 @@ import { existsSync, readFileSync } from 'node:fs'
 import { addCustomTab, startSubprocess } from '@nuxt/devtools-kit'
 import { defineNuxtModule, createResolver, addTemplate, addServerHandler, addVitePlugin, updateTemplates, addImportsDir } from '@nuxt/kit'
 import { getPort } from 'get-port-please'
-import { camelCase, kebabCase } from 'scule'
+import { camelCase, kebabCase, pascalCase } from 'scule'
 import sirv from 'sirv'
 import { scanComponents } from './nuxt'
 import { getComponentCollection } from './runtime/utils'
@@ -20,7 +20,7 @@ export interface ModuleOptions {
   /* Whether to include default collections for third-party libraries. */
   includeDefaultCollections: boolean
 
-  /* Customize the directory for preview examples. Defaults to 'compodium/examples' */
+  /* Customize the directory for preview examples. Defaults to 'compodium/' */
   examples: string
 
   /* Customize the preview component path. Defaults to compodium/preview.vue */
@@ -41,7 +41,7 @@ export default defineNuxtModule<ModuleOptions>({
   },
   defaults: {
     previewComponent: 'compodium/preview.vue',
-    examples: 'compodium/examples',
+    examples: 'compodium/',
     includeDefaultCollections: true,
     extras: {
       ui: {
@@ -165,12 +165,15 @@ export default defineNuxtModule<ModuleOptions>({
         const components = [...app.components, ...exampleComponents]
         return JSON.stringify(components.reduce((acc, component) => {
           const collection = getComponentCollection<CollectionConfig>(component, collections)
-          const componentId = collection?.prefix
-            ? camelCase(component.kebabName.replace(new RegExp(`^${kebabCase(collection?.prefix)}-`), ''))
-            : camelCase(component.kebabName)
+
+          const componentId = camelCase(component.kebabName)
+          const baseName = collection?.prefix
+            ? component.pascalName.replace(new RegExp(`^${pascalCase(collection?.prefix)}`), '')
+            : component.pascalName
 
           acc[componentId] = {
             ...component,
+            baseName,
             componentId,
             docUrl: collection?.getDocUrl?.(component.pascalName)
           }

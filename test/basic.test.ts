@@ -37,7 +37,7 @@ describe('basic', async () => {
 
   describe('examples api', () => {
     it('works', async () => {
-      const example = await $fetch('/__compodium__/api/example/basicComponentExample')
+      const example = await $fetch('/__compodium__/api/example/componentsBasicComponentExample')
       expect(example).toMatchInlineSnapshot(`
         "<template>
           <BasicComponent />

@@ -16,7 +16,15 @@ export type PropertyType = Omit<PropertyMeta, 'schema'> & {
   schema: PropSchema[]
 }
 
-export type ComponentMeta = NuxtComponent & {
+export type Component = NuxtComponent & {
+  // Base name of the component without collection prefix.
+  // Mainly to resolve default values in appConfig
+  baseName: string
+  // Unique component identifier (with collection prefix)
+  componentId: string
+}
+
+export type ComponentMeta = Component & {
   meta: {
     props: PropSchema
   }
@@ -86,7 +94,7 @@ export interface CompodiumHooks {
   'renderer:mounted': () => void
 
   // Update the renderer component
-  'renderer:update-component': (payload: { collectionId: string, componentId: string, path: string }) => void
+  'renderer:update-component': (payload: { collectionId: string, componentId: string, baseName: string, path: string }) => void
 
   // Update the renderer props
   'renderer:update-props': (payload: { props: Record<string, any> }) => void

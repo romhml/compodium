@@ -1,6 +1,6 @@
 import fs from 'node:fs/promises'
 import { defineEventHandler, createError, appendHeader, getRouterParam } from 'h3'
-import type { Component as NuxtComponent } from '@nuxt/schema'
+import type { Component } from '../../../types'
 import { useAppConfig } from '#imports'
 import { getChecker } from '../services/checker'
 import { inferPropTypes } from '../services/infer'
@@ -12,7 +12,7 @@ export default defineEventHandler(async (event) => {
   const componentsRaw = await fs.readFile(config.componentsPath, 'utf-8')
   const components = JSON.parse(componentsRaw)
   const componentId = getRouterParam(event, 'component')
-  const component: NuxtComponent = componentId && components[componentId]
+  const component: Component = componentId && components[componentId]
 
   if (!component || !component.filePath) {
     throw createError({

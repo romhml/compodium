@@ -54,7 +54,12 @@ const { data: componentMeta, refresh: refreshComponent } = useAsyncData('__compo
 watch(component, async (oldValue, newValue) => {
   if (oldValue === newValue) return
   props.value = {}
-  await hooks.callHook('renderer:update-component', { collectionId: component.value.collectionId, componentId: component.value.componentId, path: component.value.filePath })
+  await hooks.callHook('renderer:update-component', {
+    collectionId: component.value.collectionId,
+    componentId: component.value.componentId,
+    baseName: component.value.baseName,
+    path: component.value.filePath
+  })
 })
 
 async function updateRenderer() {
@@ -82,6 +87,7 @@ const hooks = createHooks<CompodiumHooks>()
 hooks.hook('renderer:mounted', () => hooks.callHook('renderer:update-component', {
   collectionId: component.value.collectionId,
   componentId: component.value.componentId,
+  baseName: component.value.baseName,
   path: component.value.filePath
 }))
 

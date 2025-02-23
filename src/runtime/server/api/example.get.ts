@@ -1,8 +1,7 @@
 import fs from 'node:fs/promises'
 import { defineEventHandler, createError, appendHeader } from 'h3'
-import type { Component as NuxtComponent } from '@nuxt/schema'
 import { useAppConfig } from '#imports'
-import type { ComponentExample } from '../../../types'
+import type { ComponentExample, Component } from '../../../types'
 
 export default defineEventHandler(async (event) => {
   appendHeader(event, 'Access-Control-Allow-Origin', '*')
@@ -10,7 +9,7 @@ export default defineEventHandler(async (event) => {
   const config = useAppConfig().compodium as any
 
   const componentsRaw = await fs.readFile(config.componentsPath, 'utf-8')
-  const components = JSON.parse(componentsRaw) as Record<string, NuxtComponent | ComponentExample>
+  const components = JSON.parse(componentsRaw) as Record<string, Component | ComponentExample>
 
   const example = components[componentName]
 
