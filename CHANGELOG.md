@@ -1,5 +1,21 @@
 # Changelog
 
+## v0.0.1-alpha.9
+
+[compare changes](https://github.com/romhml/compodium/compare/v0.0.1-alpha.8...v0.0.1-alpha.9)
+
+### 🏡 Chore
+
+- Cleanup playground ([2db92a8](https://github.com/romhml/compodium/commit/2db92a8))
+
+### ✅ Tests
+
+- Example component matching ([bf78fd8](https://github.com/romhml/compodium/commit/bf78fd8))
+
+### ❤️ Contributors
+
+- Romhml ([@romhml](http://github.com/romhml))
+
 ## v0.0.1-alpha.8
 
 [compare changes](https://github.com/romhml/compodium/compare/v0.0.1-alpha.7...v0.0.1-alpha.8)
