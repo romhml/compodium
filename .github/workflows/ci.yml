@@ -28,11 +28,6 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      # - run: corepack enable
-
-      - name: Install dependencies
-        run: pnpm i
-
       - run: pnpm dev:prepare
 
       - name: Lint
