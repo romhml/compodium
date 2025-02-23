@@ -26,43 +26,41 @@ describe('with nuxt ui', async () => {
     })
   })
 
-  // describe('component-meta api', () => {
-  //   it('works for basic component', async () => {
-  //     const component = await $fetch('/__compodium__/api/component-meta/button')
-  //     expect(component).toEqual(expect.objectContaining({
-  //       pascalName: 'UButton',
-  //       meta: {
-  //         props: [
-  //           {
-  //             description: '',
-  //             global: false,
-  //             name: 'foo',
-  //             required: true,
-  //             schema: [
-  //               {
-  //                 inputType: 'string',
-  //                 schema: 'string',
-  //                 type: 'string'
-  //               }
-  //             ],
-  //             tags: [],
-  //             type: 'string'
-  //           }
-  //         ]
-  //       }
-  //     }))
-  //   })
-  // })
+  describe('component-meta api', () => {
+    it('works for basic component', async () => {
+      const component = await $fetch('/__compodium__/api/component-meta/button')
+      expect(component).toEqual(expect.objectContaining({
+        pascalName: 'UButton',
+        meta: {
+          props: expect.arrayContaining([
+            expect.objectContaining({
+              name: 'label',
+              schema: [
+                {
+                  inputType: 'string',
+                  schema: 'string',
+                  type: 'string'
+                }
+              ],
+              type: 'string'
+            })
+          ])
+        }
+      }))
+    })
+  })
 
-  // describe('examples api', () => {
-  //   it('works', async () => {
-  //     const example = await $fetch('/__compodium__/api/example/chipExample')
-  //     expect(example).toMatchInlineSnapshot(`
-  //       "<template>
-  //         <BasicComponent />
-  //       </template>
-  //       "
-  //     `)
-  //   })
-  // })
+  describe('examples api', () => {
+    it('works', async () => {
+      const example = await $fetch('/__compodium__/api/example/uChipExample')
+      expect(example).toMatchInlineSnapshot(`
+        "<template>
+          <UChip>
+            <UAvatar src="https://avatars.githubusercontent.com/u/739984?v=4" />
+          </UChip>
+        </template>
+        "
+      `)
+    })
+  })
 })
