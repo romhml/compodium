@@ -1,5 +1,27 @@
 # Changelog
 
+## v0.0.1-alpha.10
+
+[compare changes](https://github.com/romhml/compodium/compare/v0.0.1-alpha.9...v0.0.1-alpha.10)
+
+### 🩹 Fixes
+
+- Default collection for nuxt 4 ([3a1bbc3](https://github.com/romhml/compodium/commit/3a1bbc3))
+- New component detection in welcome screen ([7eadca2](https://github.com/romhml/compodium/commit/7eadca2))
+- Hide current component when transitioning to a new one ([4409b50](https://github.com/romhml/compodium/commit/4409b50))
+
+### 🏡 Chore
+
+- Update icon ([f1ece1b](https://github.com/romhml/compodium/commit/f1ece1b))
+
+### ✅ Tests
+
+- Remove absolute path from tests ([df84692](https://github.com/romhml/compodium/commit/df84692))
+
+### ❤️ Contributors
+
+- Romhml ([@romhml](http://github.com/romhml))
+
 ## v0.0.1-alpha.9
 
 [compare changes](https://github.com/romhml/compodium/compare/v0.0.1-alpha.8...v0.0.1-alpha.9)
