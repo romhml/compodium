@@ -41,7 +41,7 @@ describe('basic', async () => {
           baseName: 'ComponentsBasicComponentExampleWithSuffix',
           collectionId: 'components',
           componentId: 'basicComponent',
-          filePath: '/home/rohm/Contribs/compodium/test/fixtures/basic/compodium/components/BasicComponentExampleWithSuffix.vue',
+          shortPath: 'compodium/components/BasicComponentExampleWithSuffix.vue',
           isExample: true,
           name: 'WithSuffix',
           pascalName: 'ComponentsBasicComponentExampleWithSuffix'
@@ -53,7 +53,7 @@ describe('basic', async () => {
       const collections = await $fetch<Record<string, ComponentCollection>>('/__compodium__/api/collections')
       expect(collections.components.components.basicComponent).toEqual(expect.objectContaining({
         pascalName: 'ComponentsBasicComponentExample',
-        filePath: '/home/rohm/Contribs/compodium/test/fixtures/basic/compodium/components/BasicComponentExample.vue',
+        shortPath: 'compodium/components/BasicComponentExample.vue',
         collectionId: 'components',
         componentId: 'basicComponent'
       }))
