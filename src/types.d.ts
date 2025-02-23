@@ -80,7 +80,7 @@ export interface CompodiumHooks {
   'renderer:component-loaded': () => void
 
   // Update the devtools props
-  'devtools:update-props': (payload: { componentId: string, props: Record<string, any> }) => void
+  'devtools:update-default-props': (payload: { componentId: string, defaultProps: Record<string, any> }) => void
 
   // Called after the renderer has mounted
   'renderer:mounted': () => void

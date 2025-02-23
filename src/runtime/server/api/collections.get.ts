@@ -14,7 +14,7 @@ export default defineEventHandler(async () => {
   const components = Object.values(JSON.parse(componentsRaw)) as (NuxtComponent | ComponentExample)[]
   const examples = components.filter(c => c.isExample)
 
-  return components.reduce((acc, component) => {
+  return components.filter(e => !e.isExample).reduce((acc, component) => {
     const collection = getComponentCollection(component, collections)
     if (!collection || component.isExample) return acc
 
@@ -24,17 +24,15 @@ export default defineEventHandler(async () => {
 
     acc[collection.id] ??= { ...collection, components: {} }
     acc[collection.id].components[component.componentId] = {
-      ...component,
-      ...mainExample,
+      ...(mainExample ?? component),
       name: component.pascalName,
       componentId: component.componentId,
       collectionId: collection.id,
       examples: componentExamples.filter(e => e.pascalName !== mainExample?.pascalName).map(e => ({
-        name: e.name.replace(`${collectionPrefix}${component.pascalName}Example`, ''),
+        name: e.pascalName.replace(`${collectionPrefix}${component.pascalName}Example`, ''),
+        ...e,
         collectionId: collection.id,
-        componentId: component.componentId,
-        isExample: true,
-        ...e
+        componentId: component.componentId
       }))
     }
 

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+// @ts-expect-error this is auto imported
 const devtoolsClient = useNuxtDevTools()
 
 defineProps<{

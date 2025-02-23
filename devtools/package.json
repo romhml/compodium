@@ -10,7 +10,7 @@
     "test": "vitest"
   },
   "dependencies": {
-    "@nuxt/ui": "https://pkg.pr.new/@nuxt/ui@3a3d3c4",
+    "@nuxt/ui": "https://pkg.pr.new/@nuxt/ui@a8f5da7",
     "@vueuse/core": "^12.5.0",
     "fuse.js": "^7.1.0",
     "knitwork": "^1.1.0",

@@ -1,7 +1,7 @@
 import { resolve } from 'pathe'
 
 export default defineNuxtConfig({
-  modules: ['@nuxt/ui', '@nuxt/test-utils/module'],
+  modules: ['@nuxt/ui'],
   ssr: false,
   components: {
     dirs: [

@@ -165,7 +165,9 @@ export default defineNuxtModule<ModuleOptions>({
         const components = [...app.components, ...exampleComponents]
         return JSON.stringify(components.reduce((acc, component) => {
           const collection = getComponentCollection<CollectionConfig>(component, collections)
-          const componentId = collection?.prefix ? camelCase(component.kebabName.replace(new RegExp(`^${kebabCase(collection?.prefix)}-`), '')) : camelCase(component.kebabName)
+          const componentId = collection?.prefix
+            ? camelCase(component.kebabName.replace(new RegExp(`^${kebabCase(collection?.prefix)}-`), ''))
+            : camelCase(component.kebabName)
 
           acc[componentId] = {
             ...component,

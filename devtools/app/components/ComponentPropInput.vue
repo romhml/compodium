@@ -56,7 +56,6 @@ function inferDefaultInput(value?: any, types?: PropSchema[]): PropSchema | unde
   })
 }
 
-// TODO: Move this part server side to improve performances
 watch(() => props.schema, () => {
   if (!props.schema) return
   currentType.value = inferDefaultInput(modelValue.value, props.schema)?.type ?? props.schema?.[0]?.type

@@ -20,29 +20,36 @@ const appConfig = useAppConfig()
 const meta = _useCompodiumMetaState()
 
 const props = shallowRef()
+const defaultProps = shallowRef()
 const component = shallowRef()
 
-const collectionId = ref()
 const componentId = ref()
 
 async function onUpdateComponent(payload: { collectionId: string, componentId: string, path: string }) {
-  // Reset default props state when changing components. These will be reset by the extendCompodiumMeta call in the setup function if specified.
+  componentId.value = payload.componentId
+
   meta.defaultProps.value = null
+  defaultProps.value = (appConfig.compodium as any).defaultProps?.[payload.collectionId]?.[camelCase(payload.componentId)]
+  props.value = defaultProps.value
 
   // FIXME: This might not be very secure...
   // It's required because imports to virtual templates don't update properly on HMR.
   component.value = await import(/* @vite-ignore */ buildAssetsURL(payload.path)).then(c => c.default)
-  props.value = {}
-
-  collectionId.value = payload.collectionId
-  componentId.value = payload.componentId
 }
 
-watch([meta.defaultProps, componentId], async () => {
-  // Fetch default props from appConfig and extendCompodiumMeta
-  const appConfigDefaultProps = (appConfig.compodium as any).defaultProps?.[collectionId.value]?.[camelCase(componentId.value)]
-  const defaultProps = { ...appConfigDefaultProps, ...meta.defaultProps.value }
-  await hooks.value?.callHook('devtools:update-props', { componentId: componentId.value, props: { ...defaultProps, ...props.value } })
+// There's two sources for default props:
+// - appConfig which is recovered immediatelly when the component changes.
+// - extendCompodiumMeta which is initialized in the component's setup function.
+watch([defaultProps], async () => {
+  await hooks.value?.callHook('devtools:update-default-props', {
+    componentId: componentId.value,
+    defaultProps: defaultProps.value
+  })
+})
+
+watch([meta.defaultProps], async () => {
+  if (meta.defaultProps.value === null) return
+  defaultProps.value = { ...defaultProps.value, ...meta.defaultProps.value }
 })
 
 if (import.meta.hot) {

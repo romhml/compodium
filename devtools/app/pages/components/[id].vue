@@ -2,7 +2,7 @@
 import { useColorMode, useDebounceFn } from '@vueuse/core'
 import type { ComponentMeta, CompodiumHooks } from '#module/types'
 import type { PropertyMeta } from 'vue-component-meta'
-import { camelCase } from 'scule'
+import { camelCase, pascalCase } from 'scule'
 import { createHooks } from 'hookable'
 
 // Disable devtools in component renderer iframe
@@ -34,7 +34,8 @@ function getDefaultPropValue(meta: Partial<PropertyMeta>) {
 const route = useRoute()
 
 const componentId = computed(() => camelCase(route.params.id as string))
-const exampleId = computed(() => route.query.example as string)
+const exampleId = computed(() => camelCase(route.query.example as string))
+
 const props = useState<Record<string, any>>('__component_state', () => ({}))
 const defaultProps = shallowRef({})
 
@@ -42,21 +43,17 @@ const { fetchCollections, getComponent } = useCollections()
 
 const component = computed(() => {
   const baseComponent = getComponent(componentId.value)
-  return baseComponent.examples?.find((e: any) => e.pascalName === exampleId.value) ?? baseComponent
+  return baseComponent.examples?.find((e: any) => e.pascalName === pascalCase(exampleId.value)) ?? baseComponent
 })
 
 const { data: componentMeta, refresh: refreshComponent } = useAsyncData('__compodium-fetch-meta', async () => {
   const meta = await $fetch<ComponentMeta>(`/api/component-meta/${componentId.value}`, { baseURL: '/__compodium__' })
-  // Don't update props or renderer if the component has not changed (e.g. after HMR)
-  if (!componentMeta.value || componentMeta.value?.componentId !== componentId.value) {
-    defaultProps.value = {}
-    props.value = {}
-    await hooks.callHook('renderer:update-component', { collectionId: component.value.collectionId, componentId: component.value.componentId, path: component.value.filePath })
-  }
   return parseComponentMeta(meta)
 }, { watch: [componentId] })
 
-watch([exampleId], async () => {
+watch(component, async (oldValue, newValue) => {
+  if (oldValue === newValue) return
+  props.value = {}
   await hooks.callHook('renderer:update-component', { collectionId: component.value.collectionId, componentId: component.value.componentId, path: component.value.filePath })
 })
 
@@ -73,10 +70,10 @@ function onComponentLoaded() {
 const fetchCollectionsDebounced = useDebounceFn(fetchCollections, 300)
 const refreshComponentDebounced = useDebounceFn(() => refreshComponent(), 300)
 
-async function updateProps(payload: { componentId: string, props: any }) {
+async function updateDefaultProps(payload: { componentId: string, defaultProps: any }) {
   if (componentId.value !== payload.componentId) return
-  props.value = { ...props.value, ...payload.props }
-  defaultProps.value = payload.props
+  props.value = { ...payload.defaultProps, ...props.value }
+  defaultProps.value = payload.defaultProps
   await hooks.callHook('renderer:update-props', { props: props.value })
 }
 
@@ -87,11 +84,12 @@ hooks.hook('renderer:mounted', () => hooks.callHook('renderer:update-component',
   componentId: component.value.componentId,
   path: component.value.filePath
 }))
+
 hooks.hook('renderer:component-loaded', onComponentLoaded)
 hooks.hook('component:added', fetchCollectionsDebounced)
 hooks.hook('component:removed', fetchCollectionsDebounced)
 hooks.hook('component:changed', refreshComponentDebounced)
-hooks.hook('devtools:update-props', updateProps)
+hooks.hook('devtools:update-default-props', updateDefaultProps)
 
 onMounted(() => window.__COMPODIUM_HOOKS__ = hooks)
 

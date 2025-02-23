@@ -34,27 +34,37 @@ async function onSelect(node: ComponentCollection | Component | ComponentExample
 
 const tree = ref()
 async function scrollToSelected() {
-  tree.value?.$el?.querySelector('[data-selected=""]').scrollIntoView({ behavior: 'smooth', block: 'center' })
+  tree.value?.$el?.querySelector?.('[data-active="true"]').scrollIntoView({ behavior: 'smooth', block: 'center' })
 }
 
 const collectionItems = computed(() =>
   Object.values(collections.value ?? {}).map(col => ({
     ...col,
-    defaultExpanded: true,
     items: Object.values(col.components).map(comp => ({
       ...comp,
-      defaultExpanded: true,
-      id: comp.pascalName,
-      items: Object.values(comp.examples ?? {}).map((ex: any) => ({ ...ex, id: ex.pascalName }))
+      id: comp.pascalName
     }))
   }))
 )
 
-defineShortcuts({
-  meta_shift_k: () => {
-    modalState.value = !modalState.value
-  }
-})
+const treeItems = computed(() =>
+  Object.values(collections.value ?? {}).map(col => ({
+    ...col,
+    defaultExpanded: true,
+    children: Object.values(col.components).map(comp => ({
+      ...comp,
+      id: comp.pascalName,
+      defaultExpanded: true,
+      children: Object.values(comp.examples ?? {}).map((ex: any) => ({ ...ex, id: ex.pascalName }))
+    }))
+  }))
+)
+
+// defineShortcuts({
+//   meta_shift_k: () => {
+//     modalState.value = !modalState.value
+//   }
+// })
 </script>
 
 <template>
@@ -62,33 +72,12 @@ defineShortcuts({
     <UTree
       ref="tree"
       v-model="currentComponent"
-      :items="collectionItems"
+      :items="treeItems"
       size="lg"
       class="mt-2 px-1 overflow-y-scroll border-r border-(--ui-border) hidden xl:block xl:w-xs"
       label-key="name"
-      parent-trailing-icon="lucide:chevron-down"
-      :ui="{ itemTrailingIcon: 'group-data-expanded:rotate-180 transition-transform duration-200 ml-auto' }"
-      :get-children="(node) => node?.items?.length ? node?.items : undefined"
       @update:model-value="onSelect"
-    >
-      <template #item-leading="{ hasChildren, expanded, item }">
-        <UIcon
-          v-if="item.icon"
-          :name="item.icon"
-          size="lg"
-        />
-        <UIcon
-          v-else-if="hasChildren && expanded && item.components"
-          name="lucide:folder-open"
-          size="lg"
-        />
-        <UIcon
-          v-else-if="hasChildren && item.components"
-          name="lucide:folder"
-          size="lg"
-        />
-      </template>
-    </UTree>
+    />
 
     <div class="flex relative w-full grow">
       <NuxtPage page-key="static" />
