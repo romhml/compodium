@@ -62,7 +62,7 @@ export default defineNuxtModule<ModuleOptions>({
     const appResolver = createResolver(nuxt.options.rootDir)
 
     options.collections ??= [
-      { name: 'Components', path: 'components/' }
+      { name: 'Components', path: nuxt.options.future?.compatibilityVersion === 4 ? 'app/components/' : 'components/' }
     ]
 
     const libraryCollections = options.includeDefaultCollections
