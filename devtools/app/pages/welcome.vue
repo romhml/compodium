@@ -1,15 +1,11 @@
 <script setup lang="ts">
-async function onComponentAdded() {
-  await navigateTo('/components')
-}
+import type { CompodiumHooks } from '#module/types'
+import { createHooks } from 'hookable'
 
-onMounted(() => {
-  window.addEventListener('compodium:component-added', onComponentAdded)
-})
+const hooks = createHooks<CompodiumHooks>()
+hooks.hook('component:added', () => navigateTo('/components'))
 
-onUnmounted(() => {
-  window.removeEventListener('compodium:component-added', onComponentAdded)
-})
+onMounted(() => window.__COMPODIUM_HOOKS__ = hooks)
 </script>
 
 <template>
