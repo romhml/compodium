@@ -1,7 +1,7 @@
 import { resolve } from 'pathe'
 import { describe, it, expect, beforeEach } from 'vitest'
 import { setup, $fetch } from '@nuxt/test-utils/e2e'
-import type { ComponentMeta } from '~/src/types'
+import type { ComponentCollection, ComponentMeta } from '~/src/types'
 
 describe('basic', async () => {
   await setup({
@@ -24,7 +24,7 @@ describe('basic', async () => {
 
   describe('collections api', () => {
     it('works', async () => {
-      const collections = await $fetch('/__compodium__/api/collections')
+      const collections = await $fetch<Record<string, ComponentCollection>>('/__compodium__/api/collections')
       expect(collections).toEqual({
         components: expect.objectContaining({
           name: 'Components',
@@ -32,6 +32,31 @@ describe('basic', async () => {
           components: expect.objectContaining({ basicComponent: expect.objectContaining({ componentId: 'basicComponent', collectionId: 'components' }) })
         })
       })
+    })
+
+    it('assigns component examples', async () => {
+      const collections = await $fetch<Record<string, ComponentCollection>>('/__compodium__/api/collections')
+      expect(collections.components.components.basicComponent.examples).toEqual([
+        expect.objectContaining({
+          baseName: 'ComponentsBasicComponentExampleWithSuffix',
+          collectionId: 'components',
+          componentId: 'basicComponent',
+          filePath: '/home/rohm/Contribs/compodium/test/fixtures/basic/compodium/components/BasicComponentExampleWithSuffix.vue',
+          isExample: true,
+          name: 'WithSuffix',
+          pascalName: 'ComponentsBasicComponentExampleWithSuffix'
+        })
+      ])
+    })
+
+    it('overrides component with main example', async () => {
+      const collections = await $fetch<Record<string, ComponentCollection>>('/__compodium__/api/collections')
+      expect(collections.components.components.basicComponent).toEqual(expect.objectContaining({
+        pascalName: 'ComponentsBasicComponentExample',
+        filePath: '/home/rohm/Contribs/compodium/test/fixtures/basic/compodium/components/BasicComponentExample.vue',
+        collectionId: 'components',
+        componentId: 'basicComponent'
+      }))
     })
   })
 
