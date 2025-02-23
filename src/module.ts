@@ -100,22 +100,18 @@ export default defineNuxtModule<ModuleOptions>({
     const appConfig = nuxt.options.appConfig
     appConfig.compodium = defu(nuxt.options.appConfig.compodium as any, { defaultProps })
 
-    nuxt.hook('app:resolve', (app) => {
+    nuxt.hooks.hookOnce('app:resolve', (app) => {
       const rootComponent = app.rootComponent
-      const compodiumRoot = resolve('./runtime/root.vue')
+      app.rootComponent = resolve('./runtime/root.vue')
 
-      if (rootComponent !== compodiumRoot) {
-        app.rootComponent = compodiumRoot
-
-        addTemplate({
-          filename: 'compodium/root.mjs',
-          getContents: () => `export { default } from '${rootComponent}'`
-        })
-      }
+      addTemplate({
+        filename: 'compodium/root.mjs',
+        getContents: () => `export { default } from '${rootComponent}'`
+      })
     })
 
     // Injects a placeholder page for the renderer to silence warnings if the router integration is enabled.
-    nuxt.hook('pages:extend', (pages) => {
+    nuxt.hooks.hookOnce('pages:extend', (pages) => {
       if (pages.length) pages.push({ path: '/__compodium__/renderer', file: resolve('./runtime/renderer-placeholder.vue') })
     })
 
@@ -182,7 +178,7 @@ export default defineNuxtModule<ModuleOptions>({
       }
     })
 
-    nuxt.hook('components:dirs', (dirs) => {
+    nuxt.hooks.hookOnce('components:dirs', (dirs) => {
       addTemplate({
         filename: 'compodium/dirs.mjs',
         write: true,
@@ -190,13 +186,14 @@ export default defineNuxtModule<ModuleOptions>({
           return `export default ${JSON.stringify(dirs)}`
         }
       })
+
       addVitePlugin(compodiumVite({ dirs: [...dirs, examplesDir] }))
     })
 
     if (process.env.COMPODIUM_LOCAL) {
       const PORT = await getPort({ port: 42124 })
 
-      nuxt.hook('app:resolve', () => {
+      nuxt.hooks.hookOnce('app:resolve', () => {
         startSubprocess(
           {
             command: 'pnpm',
@@ -228,10 +225,7 @@ export default defineNuxtModule<ModuleOptions>({
       })
     } else {
       nuxt.hook('vite:serverCreated', async (server) => {
-        server.middlewares.use('/__compodium__/devtools', sirv(resolve('../dist/client/devtools'), {
-          single: true,
-          dev: true
-        }))
+        server.middlewares.use('/__compodium__/devtools', sirv(resolve('../dist/client/devtools'), { single: true }))
       })
     }
 
@@ -240,6 +234,7 @@ export default defineNuxtModule<ModuleOptions>({
     nuxt.options.nitro.virtual['#compodium/nitro/dirs'] = () => {
       return readFileSync(join(nuxt.options.buildDir, '/compodium/dirs.mjs'), 'utf-8')
     }
+
     (appConfig.compodium as any).componentsPath = join(nuxt.options.buildDir, '/compodium/components.json')
 
     addServerHandler({
