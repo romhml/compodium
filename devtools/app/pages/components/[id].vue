@@ -52,7 +52,7 @@ const { data: componentMeta, refresh: refreshComponent } = useAsyncData('__compo
 }, { watch: [componentId] })
 
 watch(component, async (oldValue, newValue) => {
-  if (oldValue === newValue) return
+  if (oldValue.componentId === newValue.componentId) return
   props.value = {}
   await hooks.callHook('renderer:update-component', {
     collectionId: component.value.collectionId,
