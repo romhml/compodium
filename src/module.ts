@@ -269,7 +269,7 @@ export default defineNuxtModule<ModuleOptions>({
     addCustomTab({
       name: 'compodium',
       title: 'Compodium',
-      icon: '/__compodium__/devtools/favicon.svg',
+      icon: 'lucide:book-marked',
       view: {
         type: 'iframe',
         src: '/__compodium__/devtools/components'
