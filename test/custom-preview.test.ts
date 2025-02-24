@@ -7,7 +7,10 @@ describe('custom-preview', async () => {
     // FIXME: TypeError: The URL must be of scheme file
     // rootDir: fileURLToPath(new URL('./fixtures/basic', import.meta.url)),
     rootDir: resolve('./test/fixtures/custom-preview'),
-    dev: true
+    dev: true,
+    env: {
+      COMPODIUM_TEST: 'true'
+    }
   })
 
   describe('renderer', () => {

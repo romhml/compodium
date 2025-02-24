@@ -7,7 +7,10 @@ describe('prod', async () => {
     // FIXME: TypeError: The URL must be of scheme file
     // rootDir: fileURLToPath(new URL('./fixtures/basic', import.meta.url)),
     rootDir: resolve('./test/fixtures/basic'),
-    dev: false
+    dev: false,
+    env: {
+      COMPODIUM_TEST: 'true'
+    }
   })
 
   it('renderer is not injected in production', async () => {

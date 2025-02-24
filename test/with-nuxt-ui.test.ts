@@ -6,7 +6,10 @@ import type { ComponentCollection } from '~/src/types'
 describe('with nuxt ui', async () => {
   await setup({
     rootDir: resolve('./test/fixtures/with-nuxt-ui'),
-    dev: true
+    dev: true,
+    env: {
+      COMPODIUM_TEST: 'true'
+    }
   })
 
   describe('collections api', () => {

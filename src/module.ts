@@ -193,7 +193,7 @@ export default defineNuxtModule<ModuleOptions>({
       addVitePlugin(compodiumVite({ dirs: [...dirs, examplesDir] }))
     })
 
-    if (process.env.COMPODIUM_LOCAL) {
+    if (process.env.COMPODIUM_LOCAL === 'true') {
       const PORT = await getPort({ port: 42124 })
 
       nuxt.hooks.hookOnce('app:resolve', () => {
@@ -226,7 +226,7 @@ export default defineNuxtModule<ModuleOptions>({
           rewriteWsOrigin: true
         }
       })
-    } else if (!process.env.COMPODIUM_TEST) {
+    } else if (process.env.COMPODIUM_TEST !== 'true') {
       nuxt.hook('vite:serverCreated', async (server) => {
         server.middlewares.use('/__compodium__/devtools', sirv(resolve('../dist/client/devtools'), { single: true }))
       })

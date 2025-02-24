@@ -6,7 +6,10 @@ import type { ComponentCollection, ComponentMeta } from '~/src/types'
 describe('basic', async () => {
   await setup({
     rootDir: resolve('./test/fixtures/basic'),
-    dev: true
+    dev: true,
+    env: {
+      COMPODIUM_TEST: 'true'
+    }
   })
 
   it('renders the index page', async () => {
