@@ -32,9 +32,9 @@ async function onSelect(node: ComponentCollection | Component | ComponentExample
   scrollToSelected()
 }
 
-const tree = ref()
+const container = ref()
 async function scrollToSelected() {
-  tree.value?.$el?.querySelector?.('[data-active="true"]').scrollIntoView({ behavior: 'smooth', block: 'center' })
+  container.value?.querySelector('[data-selected=""]')?.scrollIntoView({ behavior: 'smooth', block: 'center' })
 }
 
 const collectionItems = computed(() =>
@@ -47,38 +47,39 @@ const collectionItems = computed(() =>
   }))
 )
 
-const treeItems = computed(() =>
-  Object.values(collections.value ?? {}).map(col => ({
-    ...col,
-    defaultExpanded: true,
-    children: Object.values(col.components).map(comp => ({
-      ...comp,
-      id: comp.pascalName,
-      defaultExpanded: true,
-      children: Object.values(comp.examples ?? {}).map((ex: any) => ({ ...ex, id: ex.pascalName }))
-    }))
-  }))
-)
+// const treeItems = computed(() =>
+//   Object.values(collections.value ?? {}).map(col => ({
+//     ...col,
+//     defaultExpanded: true,
+//     children: Object.values(col.components).map(comp => ({
+//       ...comp,
+//       id: comp.pascalName,
+//       defaultExpanded: true,
+//       children: Object.values(comp.examples ?? {}).map((ex: any) => ({ ...ex, id: ex.pascalName }))
+//     }))
+//   }))
+// )
 
-// TODO: fix broken import
-// defineShortcuts({
-//   meta_shift_k: () => {
-//     modalState.value = !modalState.value
-//   }
-// })
+defineShortcuts({
+  meta_shift_k: () => {
+    modalState.value = !modalState.value
+  }
+})
 </script>
 
 <template>
-  <div class="relative flex w-screen h-screen overflow-y-scroll bg-(--ui-bg-elevated)/50">
-    <UTree
-      ref="tree"
-      v-model="currentComponent"
-      :items="treeItems"
-      size="lg"
-      class="mt-2 px-1 overflow-y-scroll border-r border-(--ui-border) hidden xl:block xl:w-xs"
-      label-key="name"
-      @update:model-value="onSelect"
-    />
+  <div
+    ref="container"
+    class="relative flex w-screen h-screen overflow-y-scroll bg-(--ui-bg-elevated)/50"
+  >
+    <!-- <UTree -->
+    <!--   v-model="currentComponent" -->
+    <!--   :items="treeItems" -->
+    <!--   size="lg" -->
+    <!--   class="mt-2 px-1 overflow-y-scroll border-r border-(--ui-border) hidden xl:block xl:w-xs" -->
+    <!--   label-key="name" -->
+    <!--   @update:model-value="onSelect" -->
+    <!-- /> -->
 
     <div class="flex relative w-full grow">
       <NuxtPage page-key="static" />

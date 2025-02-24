@@ -1,6 +1,4 @@
-<script setup>
-import { useToast } from '#imports'
-
+<script setup lang="ts">
 const toast = useToast()
 </script>
 

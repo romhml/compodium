@@ -21,8 +21,6 @@ const code = computed(() => {
     return acc
   }, {} as Record<string, any>)
 
-  console.log(props.component.pascalName)
-
   if (props.example && exampleCode.value) {
     return updateComponentCode(props.component.pascalName, exampleCode.value, props.props, defaultProps)
   }
@@ -51,10 +49,10 @@ const { copy, copied } = useClipboard()
 </script>
 
 <template>
-  <div class="relative text-wrap overflow-x-wrap bg-(--ui-bg-elevated)/50">
+  <div class="relative h-full text-wrap overflow-y-auto bg-(--ui-bg-elevated)/50">
     <!-- eslint-disable vue/no-v-html -->
     <pre
-      class="p-4 text-sm overflow-y-auto rounded-lg"
+      class="p-4 text-sm rounded-lg"
       v-html="highlightedCode"
     />
     <UButton

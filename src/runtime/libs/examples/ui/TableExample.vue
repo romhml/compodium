@@ -1,13 +1,4 @@
 <script setup lang="ts">
-import { h, resolveComponent } from 'vue'
-import { upperFirst } from 'scule'
-import type { TableColumn } from '@nuxt/ui'
-
-const UButton = resolveComponent('UButton')
-const UCheckbox = resolveComponent('UCheckbox')
-const UBadge = resolveComponent('UBadge')
-const UDropdownMenu = resolveComponent('UDropdownMenu')
-
 const toast = useToast()
 
 type Payment = {

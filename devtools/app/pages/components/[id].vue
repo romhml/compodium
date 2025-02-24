@@ -159,12 +159,12 @@ function onResetState() {
     </div>
   </div>
 
-  <div class="bg-(--ui-bg) w-md flex flex-col overflow-y-auto border-l border-(--ui-border)">
+  <div class="bg-(--ui-bg) w-md border-l border-(--ui-border)">
     <UTabs
       variant="link"
       :items="tabs"
-      class="relative h-screen"
-      :ui="{ list: 'sticky top-0 bg-(--ui-bg) border-b border-(--ui-border) z-50', content: 'h-full' }"
+      class="relative h-screen flex flex-col overflow-y-scroll gap-0"
+      :ui="{ list: 'sticky top-0 bg-(--ui-bg) border-b border-(--ui-border) z-50', content: 'grow' }"
     >
       <template #props>
         <div
@@ -186,7 +186,7 @@ function onResetState() {
 
       <template #code>
         <ComponentCode
-          class="h-full -mt-2"
+          class=""
           :component="componentMeta"
           :example="exampleId"
           :props="props"
