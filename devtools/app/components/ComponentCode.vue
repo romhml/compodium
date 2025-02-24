@@ -1,12 +1,9 @@
 <script setup lang="ts">
 import { useClipboard } from '@vueuse/core'
-import { kebabCase } from 'scule'
-import { escapeString } from 'knitwork'
 import type { ComponentMeta, ComponentExample } from '#module/types'
+import { generateComponentCode } from '@/utils/codegen'
 
 const props = defineProps<{ example?: string, component?: ComponentMeta | ComponentExample, props?: Record<string, any> }>()
-
-const componentProps = computed(() => new Set(props.component?.meta?.props.map((prop: any) => prop.name)))
 
 const fetch = $fetch.create({ baseURL: '/__compodium__/api' })
 const { data: exampleCode } = useAsyncData<string | null>('__compodium-component-example-code', async () => {
@@ -16,56 +13,21 @@ const { data: exampleCode } = useAsyncData<string | null>('__compodium-component
   return null
 }, { watch: [() => props.example] })
 
-function genPropValue(value: any): string {
-  if (typeof value === 'string') {
-    return `'${escapeString(value).replace(/'/g, '&apos;').replace(/"/g, '&quot;')}'`
-  }
-  if (value instanceof Date) {
-    const year = value.getFullYear()
-    const month = String(value.getMonth() + 1).padStart(2, '0')
-    const day = String(value.getDate()).padStart(2, '0')
-
-    const dateString = `${year}-${month}-${day}`
-    return `new Date('${dateString}')`
-  }
-  if (Array.isArray(value)) {
-    return `[ ${value.map(item => `${genPropValue(item)}`).join(',')} ]`
-  }
-  if (typeof value === 'object' && value !== null) {
-    const entries = Object.entries(value).map(([key, val]) => `${key}: ${genPropValue(val)}`)
-    return `{ ${entries.join(`,`)} }`
-  }
-  return value
-}
-
 const code = computed(() => {
   if (!props.component) return
 
-  const propsTemplate = Object.entries(props.props ?? {})?.map(([key, value]: [string, any]) => {
-    if (!componentProps.value.has(key)) return
+  const defaultProps = props.component?.meta?.props.reduce((acc: Record<string, any>, prop: any) => {
+    acc[prop.name] = prop.default
+    return acc
+  }, {} as Record<string, any>)
 
-    const defaultValue: any = props.component?.meta?.props.find((prop: any) => prop.name === key)?.default
-
-    if (defaultValue === value) return
-    if (value === true) return kebabCase(key)
-    if (value === false && defaultValue === true) return `:${kebabCase(key)}="false"`
-    if (!value) return
-    if (typeof value === 'string') return `${kebabCase(key)}=${genPropValue(value)}`
-    return `:${kebabCase(key)}="${genPropValue(value)}"`
-  }).filter(Boolean).join('\n')
-
-  const extraTemplate = [
-    propsTemplate
-  ].filter(Boolean).join(' ')
+  console.log(props.component.pascalName)
 
   if (props.example && exampleCode.value) {
-    const componentRegexp = new RegExp(`<${props.component.pascalName}(\\s|\\r|>)`)
-    return exampleCode.value.replace(/import .* from ['"]#.*['"];?\n+/, '')
-      .replace(componentRegexp, `<${props.component.pascalName} ${extraTemplate}$1`)
-      .replace('v-bind="$attrs"', '')
+    return updateComponentCode(props.component.pascalName, exampleCode.value, props.props, defaultProps)
   }
-
-  return `<${props.component.pascalName} ${extraTemplate} />`
+  // Need to filter default values
+  return generateComponentCode(props.component.pascalName, props.props, defaultProps)
 })
 
 const { $prettier } = useNuxtApp()
