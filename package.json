@@ -33,6 +33,7 @@
     "@nuxt/kit": "^3.15.4",
     "@vueuse/core": "^12.7.0",
     "chokidar": "^4.0.3",
+    "consola": "^3.4.0",
     "defu": "^6.1.4",
     "get-port-please": "^3.1.2",
     "hookable": "^5.5.3",

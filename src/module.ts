@@ -1,7 +1,7 @@
 import type { CollectionConfig } from './types'
 import { existsSync, readFileSync } from 'node:fs'
 import { addCustomTab, startSubprocess } from '@nuxt/devtools-kit'
-import { defineNuxtModule, createResolver, addTemplate, addServerHandler, addVitePlugin, updateTemplates, addImportsDir } from '@nuxt/kit'
+import { defineNuxtModule, createResolver, addTemplate, addServerHandler, addVitePlugin, updateTemplates, addImportsDir, logger } from '@nuxt/kit'
 import { getPort } from 'get-port-please'
 import { camelCase, kebabCase, pascalCase } from 'scule'
 import sirv from 'sirv'
@@ -12,6 +12,9 @@ import { defu } from 'defu'
 import { defaultProps } from './runtime/libs/defaults'
 import { watch } from 'chokidar'
 import { compodiumVite } from './vite'
+import { colors } from 'consola/utils'
+import { version } from '../package.json'
+import { joinURL } from 'ufo'
 
 export interface ModuleOptions {
   /* Customize your component collections */
@@ -269,6 +272,20 @@ export default defineNuxtModule<ModuleOptions>({
         type: 'iframe',
         src: '/__compodium__/devtools/components'
       }
+    })
+
+    nuxt.hook('listen', (_, listener) => {
+      const url = joinURL(listener.url, '/__compodium__/devtools')
+      console.log('')
+      logger.log([
+        colors.magenta(`  ➜ Compodium:`),
+        colors.dim(` available in`),
+        colors.yellow(` DevTools`),
+        colors.gray(` (v${version})`),
+        '\n',
+        colors.gray(`               ${url}`),
+        '\n'
+      ].join(''))
     })
   }
 })

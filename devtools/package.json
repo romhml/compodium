@@ -17,5 +17,8 @@
     "nuxt": "^3.14.159",
     "prettier": "^3.3.3",
     "shiki": "^1.22.2"
+  },
+  "devDependencies": {
+    "@iconify-json/lucide": "^1.2.26"
   }
 }
