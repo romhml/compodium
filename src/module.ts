@@ -226,7 +226,7 @@ export default defineNuxtModule<ModuleOptions>({
           rewriteWsOrigin: true
         }
       })
-    } else {
+    } else if (!process.env.COMPODIUM_TEST) {
       nuxt.hook('vite:serverCreated', async (server) => {
         server.middlewares.use('/__compodium__/devtools', sirv(resolve('../dist/client/devtools'), { single: true }))
       })

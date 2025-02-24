@@ -7,6 +7,9 @@ export default defineVitestConfig({
     globals: true,
     silent: true,
     exclude: [...defaultExclude, './test/vue/**.spec.ts'],
-    environment: 'nuxt'
+    environment: 'nuxt',
+    env: {
+      COMPODIUM_TEST: 'true'
+    }
   }
 })
