@@ -22,8 +22,9 @@ export default defineEventHandler(async (event) => {
   }
 
   const checker = getChecker()
-  checker.reload()
 
+  const code = await fs.readFile(component.filePath, 'utf-8')
+  checker.updateFile(component.filePath, code)
   const meta = checker.getComponentMeta(component.filePath)
   const parsed = meta.props.map(inferPropTypes)
 

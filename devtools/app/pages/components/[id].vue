@@ -72,9 +72,6 @@ function onComponentLoaded() {
   updateRenderer()
 }
 
-const fetchCollectionsDebounced = useDebounceFn(fetchCollections, 300)
-const refreshComponentDebounced = useDebounceFn(() => refreshComponent(), 300)
-
 async function updateDefaultProps(payload: { componentId: string, defaultProps: any }) {
   if (componentId.value !== payload.componentId) return
   props.value = { ...payload.defaultProps, ...props.value }
@@ -92,9 +89,16 @@ hooks.hook('renderer:mounted', () => hooks.callHook('renderer:update-component',
 }))
 
 hooks.hook('renderer:component-loaded', onComponentLoaded)
-hooks.hook('component:added', fetchCollectionsDebounced)
-hooks.hook('component:removed', fetchCollectionsDebounced)
-hooks.hook('component:changed', refreshComponentDebounced)
+
+hooks.hook('component:added', useDebounceFn(async () => {
+  await Promise.all([
+    $fetch('/api/reload-meta', { baseURL: '/__compodium__' }),
+    fetchCollections()
+  ])
+}, 300))
+
+hooks.hook('component:removed', useDebounceFn(fetchCollections, 300))
+hooks.hook('component:changed', useDebounceFn(() => refreshComponent(), 300))
 hooks.hook('devtools:update-default-props', updateDefaultProps)
 
 onMounted(() => window.__COMPODIUM_HOOKS__ = hooks)

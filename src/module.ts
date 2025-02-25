@@ -240,6 +240,12 @@ export default defineNuxtModule<ModuleOptions>({
 
     addServerHandler({
       method: 'get',
+      route: '/__compodium__/api/reload-meta',
+      handler: resolve('./runtime/server/api/reload-meta.get')
+    })
+
+    addServerHandler({
+      method: 'get',
       route: '/__compodium__/api/example/:component',
       handler: resolve('./runtime/server/api/example.get')
     })
