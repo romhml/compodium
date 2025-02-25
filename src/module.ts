@@ -15,6 +15,7 @@ import { compodiumVite } from './vite'
 import { colors } from 'consola/utils'
 import { version } from '../package.json'
 import { joinURL } from 'ufo'
+import { getLibraryCollections } from './runtime/libs'
 
 export interface ModuleOptions {
   /* Customize your component collections */
@@ -68,22 +69,7 @@ export default defineNuxtModule<ModuleOptions>({
       { name: 'Components', path: nuxt.options.future?.compatibilityVersion === 4 ? 'app/components/' : 'components/' }
     ]
 
-    const libraryCollections = options.includeDefaultCollections
-      ? [{
-          id: 'ui',
-          name: 'Nuxt UI',
-          path: '@nuxt/ui/',
-          external: true,
-          icon: 'lineicons:nuxt',
-          prefix: (nuxt.options as any).ui?.prefix,
-          examplePath: 'runtime/libs/examples/ui',
-          ignore: ['App.vue', 'Toast.vue', '*Provider.vue', '*Base.vue', '*Content.vue'],
-          getDocUrl(componentName: string) {
-            const prefix = (nuxt.options as any).ui?.prefix ?? 'U'
-            return `https://ui3.nuxt.dev/components/${kebabCase(componentName.replace(new RegExp(`^${prefix}`), ''))}`
-          }
-        }]
-      : []
+    const libraryCollections = options.includeDefaultCollections ? await getLibraryCollections(nuxt.options, appResolver) : []
 
     let previewComponent = appResolver.resolve(options.previewComponent)
     if (!existsSync(previewComponent)) {
