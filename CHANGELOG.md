@@ -1,5 +1,46 @@
 # Changelog
 
+## v0.0.1-alpha.11
+
+[compare changes](https://github.com/romhml/compodium/compare/v0.0.1-alpha.9...v0.0.1-alpha.11)
+
+### 🚀 Enhancements
+
+- Add version check for library collections ([6b1c344](https://github.com/romhml/compodium/commit/6b1c344))
+
+### 🩹 Fixes
+
+- Default collection for nuxt 4 ([3a1bbc3](https://github.com/romhml/compodium/commit/3a1bbc3))
+- New component detection in welcome screen ([7eadca2](https://github.com/romhml/compodium/commit/7eadca2))
+- Hide current component when transitioning to a new one ([4409b50](https://github.com/romhml/compodium/commit/4409b50))
+- Use hookOnce to avoid duplicated calls ([42187cf](https://github.com/romhml/compodium/commit/42187cf))
+- Component reset on collection update ([118244a](https://github.com/romhml/compodium/commit/118244a))
+- Avoid mounting devtools in tests ([33f7da3](https://github.com/romhml/compodium/commit/33f7da3))
+- Test env ([714b360](https://github.com/romhml/compodium/commit/714b360))
+- Remove unused import ([6fdddb5](https://github.com/romhml/compodium/commit/6fdddb5))
+- Library detection in tests ([e89be3e](https://github.com/romhml/compodium/commit/e89be3e))
+- **@nuxt/ui:** Table example ([beb3379](https://github.com/romhml/compodium/commit/beb3379))
+
+### 💅 Refactors
+
+- **devtools:** Component code generation ([47821ab](https://github.com/romhml/compodium/commit/47821ab))
+- Cleanup ([f70a06e](https://github.com/romhml/compodium/commit/f70a06e))
+- Replace tree component by select menu ([a6a60ef](https://github.com/romhml/compodium/commit/a6a60ef))
+
+### 🏡 Chore
+
+- Update icon ([f1ece1b](https://github.com/romhml/compodium/commit/f1ece1b))
+- **release:** V0.0.1-alpha.10 ([b07b1dc](https://github.com/romhml/compodium/commit/b07b1dc))
+- Add log on server listen ([0c96670](https://github.com/romhml/compodium/commit/0c96670))
+
+### ✅ Tests
+
+- Remove absolute path from tests ([df84692](https://github.com/romhml/compodium/commit/df84692))
+
+### ❤️ Contributors
+
+- Romhml ([@romhml](http://github.com/romhml))
+
 ## v0.0.1-alpha.10
 
 [compare changes](https://github.com/romhml/compodium/compare/v0.0.1-alpha.9...v0.0.1-alpha.10)
