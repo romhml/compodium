@@ -9,5 +9,6 @@ const modelValue = defineModel<number>()
   <UInput
     v-model.number="modelValue"
     type="number"
+    class="min-w-56"
   />
 </template>

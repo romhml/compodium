@@ -5,5 +5,5 @@ defineProps<{ schema: StringEnumInputSchema }>()
 </script>
 
 <template>
-  <UInput />
+  <UInput class="min-w-56" />
 </template>
