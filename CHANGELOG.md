@@ -1,5 +1,26 @@
 # Changelog
 
+## v0.0.1-alpha.13
+
+[compare changes](https://github.com/romhml/compodium/compare/v0.0.1-alpha.11...v0.0.1-alpha.13)
+
+### 🔥 Performance
+
+- Reload meta checker on new component only ([b4010f8](https://github.com/romhml/compodium/commit/b4010f8))
+
+### 🩹 Fixes
+
+- Uniformize input min size ([5f3d2db](https://github.com/romhml/compodium/commit/5f3d2db))
+- Component default props ([ad81b06](https://github.com/romhml/compodium/commit/ad81b06))
+
+### 🏡 Chore
+
+- **release:** V0.0.1-alpha.12 ([fc3ad0b](https://github.com/romhml/compodium/commit/fc3ad0b))
+
+### ❤️ Contributors
+
+- Romhml ([@romhml](http://github.com/romhml))
+
 ## v0.0.1-alpha.12
 
 [compare changes](https://github.com/romhml/compodium/compare/v0.0.1-alpha.11...v0.0.1-alpha.12)
