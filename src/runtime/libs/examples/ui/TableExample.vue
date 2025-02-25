@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { upperFirst } from 'scule'
+import type { TableColumn } from '@nuxt/ui'
+
 const toast = useToast()
 
 type Payment = {
@@ -8,6 +11,11 @@ type Payment = {
   email: string
   amount: number
 }
+
+const UButton = resolveComponent('UButton')
+const UCheckbox = resolveComponent('UCheckbox')
+const UBadge = resolveComponent('UBadge')
+const UDropdownMenu = resolveComponent('UDropdownMenu')
 
 const data = ref<Payment[]>([{
   id: '4600',
