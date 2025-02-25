@@ -23,18 +23,22 @@ await useAsyncData('__compodium-fetch-collection', async () => {
 
 const currentComponent = ref()
 const modalState = ref(false)
+const activeComponent = ref()
 
 async function onSelect(node: ComponentCollection | Component | ComponentExample) {
-  if (!node || node.components) return
+  if (!node || node?.components) return
   const example = node.isExample ? node.pascalName : undefined
   await navigateTo({ path: `/components/${kebabCase(node.componentId)}`, query: { example } })
+  activeComponent.value = node.pascalName
   modalState.value = false
-  scrollToSelected()
+  nextTick().then(() => {
+    scrollToSelected()
+  })
 }
 
 const container = ref()
 async function scrollToSelected() {
-  container.value?.querySelector('[data-selected=""]')?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  container.value?.querySelector('[data-active=""]')?.scrollIntoView({ behavior: 'smooth', block: 'center' })
 }
 
 const collectionItems = computed(() =>
@@ -47,18 +51,30 @@ const collectionItems = computed(() =>
   }))
 )
 
-// const treeItems = computed(() =>
-//   Object.values(collections.value ?? {}).map(col => ({
-//     ...col,
-//     defaultExpanded: true,
-//     children: Object.values(col.components).map(comp => ({
-//       ...comp,
-//       id: comp.pascalName,
-//       defaultExpanded: true,
-//       children: Object.values(comp.examples ?? {}).map((ex: any) => ({ ...ex, id: ex.pascalName }))
-//     }))
-//   }))
-// )
+const treeItems = computed(() =>
+  Object.values(collections.value ?? {}).map(col => ({
+    label: col.name,
+    icon: col.icon,
+    defaultOpen: true,
+    children: Object.values(col.components).map(comp => ({
+      label: comp.name,
+      active: activeComponent.value === comp.pascalName,
+      defaultOpen: true,
+      onSelect() {
+        activeComponent.value = comp.pascalName
+        navigateTo({ path: `/components/${kebabCase(comp.componentId)}`, query: { example: comp.isExample ? comp.pascalName : undefined } })
+      },
+      children: Object.values(comp.examples ?? {}).map((ex: any) => ({
+        label: ex.name,
+        active: activeComponent.value === ex.pascalName,
+        onSelect() {
+          activeComponent.value = ex.pascalName
+          navigateTo({ path: `/components/${kebabCase(comp.componentId)}`, query: { example: ex.pascalName } })
+        }
+      }))
+    }))
+  }))
+)
 
 defineShortcuts({
   meta_shift_k: () => {
@@ -72,14 +88,12 @@ defineShortcuts({
     ref="container"
     class="relative flex w-screen h-screen overflow-y-scroll bg-(--ui-bg-elevated)/50"
   >
-    <!-- <UTree -->
-    <!--   v-model="currentComponent" -->
-    <!--   :items="treeItems" -->
-    <!--   size="lg" -->
-    <!--   class="mt-2 px-1 overflow-y-scroll border-r border-(--ui-border) hidden xl:block xl:w-xs" -->
-    <!--   label-key="name" -->
-    <!--   @update:model-value="onSelect" -->
-    <!-- /> -->
+    <UNavigationMenu
+      :items="treeItems"
+      orientation="vertical"
+      size="lg"
+      class="mt-2 px-1 overflow-y-scroll border-r border-(--ui-border) hidden xl:block xl:w-xs"
+    />
 
     <div class="flex relative w-full grow">
       <NuxtPage page-key="static" />
