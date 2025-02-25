@@ -26,6 +26,8 @@ export async function getLibraryCollections(options: NuxtOptions, appResolver: R
   const supportedCollections = buildLibraryCollections(options)
   const result = []
 
+  if (process.env.COMPODIUM_TEST === 'true') return supportedCollections
+
   for (const collection of supportedCollections) {
     const packagePath = appResolver.resolve(`node_modules/${collection.path}/package.json`)
     if (existsSync(packagePath)) {
@@ -36,5 +38,6 @@ export async function getLibraryCollections(options: NuxtOptions, appResolver: R
       }
     }
   }
+
   return result
 }
