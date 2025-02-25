@@ -25,9 +25,8 @@ const component = shallowRef()
 
 const componentId = ref()
 
-const hide = ref(false)
 async function onUpdateComponent(payload: { collectionId: string, componentId: string, baseName: string, path: string }) {
-  hide.value = true
+  component.value = null
   componentId.value = payload.componentId
   meta.defaultProps.value = null
 
@@ -37,7 +36,6 @@ async function onUpdateComponent(payload: { collectionId: string, componentId: s
   // FIXME: This might not be very secure...
   // It's required because imports to virtual templates don't update properly on HMR.
   component.value = await import(/* @vite-ignore */ buildAssetsURL(payload.path)).then(c => c.default)
-  hide.value = false
 }
 
 // There's two sources for default props:
@@ -77,7 +75,6 @@ onMounted(() => {
   <component
     :is="component"
     v-if="component"
-    v-show="!hide"
     v-bind="props"
   />
 </template>

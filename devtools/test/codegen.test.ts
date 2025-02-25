@@ -26,6 +26,16 @@ describe('codegen', () => {
   })
 
   describe('updateComponentCode', () => {
+    it('works', () => {
+      const code = `<BaseButton> </BaseButton>`
+      expect(updateComponentCode('BaseButton', code, { label: 'foo' })).toMatch(`<BaseButton label='foo'> </BaseButton>`)
+    })
+
+    it('works with self closing tags', () => {
+      const code = `<BaseButton />`
+      expect(updateComponentCode('BaseButton', code, { label: 'foo' })).toMatch(`<BaseButton label='foo' />`)
+    })
+
     it('replaces props', () => {
       const code = `<BaseButton label="Click me!" />`
       expect(updateComponentCode('BaseButton', code, { label: 'foo' })).toMatch(`<BaseButton label='foo' />`)

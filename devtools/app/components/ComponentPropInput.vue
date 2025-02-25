@@ -22,10 +22,10 @@ const inputTypes: Record<PropInputType, Component> = {
 </script>
 
 <script setup lang="ts">
-const props = defineProps<{ name?: string, schema: PropSchema[], defaultValue?: any, description?: string, disabled?: boolean }>()
+const props = defineProps<{ name?: string, schema: PropSchema[], description?: string, disabled?: boolean }>()
 const modelValue = defineModel<any>()
 
-const currentType = ref()
+const currentType = ref(inferDefaultInput(modelValue.value, props.schema)?.type ?? props.schema?.[0]?.type)
 
 const currentInput = computed<PropSchema & { component: Component } | null>(() => {
   const type = props.schema?.find(p => p.type === currentType.value)
@@ -34,14 +34,6 @@ const currentInput = computed<PropSchema & { component: Component } | null>(() =
   }
   return null
 })
-
-function resetEmptyValue() {
-  if (!modelValue.value || modelValue.value === '') {
-    if (props.defaultValue) {
-      modelValue.value = props.defaultValue
-    }
-  }
-}
 
 function inferDefaultInput(value?: any, types?: PropSchema[]): PropSchema | undefined {
   if (!value) return
@@ -55,12 +47,6 @@ function inferDefaultInput(value?: any, types?: PropSchema[]): PropSchema | unde
     }
   })
 }
-
-watch(() => props.schema, () => {
-  if (!props.schema) return
-  currentType.value = inferDefaultInput(modelValue.value, props.schema)?.type ?? props.schema?.[0]?.type
-  resetEmptyValue()
-}, { immediate: true })
 
 const description = computed(() => {
   return props.description?.replace(/`([^`]+)`/g, '<code class="text-xs font-medium bg-[var(--ui-bg-elevated)] px-1 py-0.5 rounded">$1</code>')

@@ -12,7 +12,8 @@ const stringInputSchema = z.literal('string').or(
   z.object({
     kind: z.literal('enum'),
     schema: z.record(z.string(), z.enum(['string', 'null', 'undefined'])),
-    type: z.string()
+    type: z.string(),
+    default: z.any()
   })).or(z.string().transform(t => t.split('|').find(s => s.trim() === 'string')).pipe(z.string()))
 
 export type StringInputSchema = z.infer<typeof stringInputSchema>
@@ -21,7 +22,8 @@ const numberInputSchema = z.literal('number').or(
   z.object({
     kind: z.literal('enum'),
     schema: z.record(z.string(), z.enum(['number', 'null', 'undefined'])),
-    type: z.string()
+    type: z.string(),
+    default: z.any()
   })).or(z.string().transform(t => t.split('|').find(s => s.trim() === 'number')).pipe(z.string()))
 
 export type NumberInputSchema = z.infer<typeof numberInputSchema>
@@ -30,7 +32,8 @@ const booleanInputSchema = z.literal('boolean').or(
   z.object({
     kind: z.literal('enum'),
     schema: z.record(z.any(), z.enum(['boolean', '"indeterminate"', 'false', 'true', 'null', 'undefined'])),
-    type: z.string()
+    type: z.string(),
+    default: z.any()
   })).or(z.string().refine(type => type.split('|').every(t => ['boolean', 'true', 'false', 'undefined'].includes(t))).pipe(z.array(z.string()).min(1)))
 
 export type BooleanInputSchema = z.infer<typeof booleanInputSchema>
@@ -48,7 +51,8 @@ const stringEnumInputSchema = z.object({
     .or(z.record(z.any(), z.string()).transform<string[]>(t => Object.values(t)))
     .transform<string[]>(t => t.filter(s => s.trim().match(/^["'`]/)).map(s => s.trim().replaceAll(/["'`]/g, '')))
     .pipe(z.array(z.string()).min(1)),
-  type: z.string()
+  type: z.string(),
+  default: z.any()
 })
 
 export type StringEnumInputSchema = z.infer<typeof stringEnumInputSchema>
@@ -56,7 +60,8 @@ export type StringEnumInputSchema = z.infer<typeof stringEnumInputSchema>
 const objectInputSchema = z.object({
   kind: z.literal('object'),
   schema: z.record(z.string(), z.any()),
-  type: z.string()
+  type: z.string(),
+  default: z.any()
 })
 
 export type ObjectInputSchema = z.infer<typeof objectInputSchema>
@@ -67,7 +72,8 @@ const primitiveArrayInputSchema = z.object({
   kind: z.literal('array'),
   schema: z.array(primitiveSchema)
     .or(z.record(z.any(), primitiveSchema).transform(t => Object.values(t))),
-  type: z.string()
+  type: z.string(),
+  default: z.any()
 })
 
 export type PrimitiveArrayInputSchema = z.infer<typeof primitiveArrayInputSchema>
@@ -77,7 +83,8 @@ const arrayInputSchema = z.object({
   schema: z.array(z.any({}))
     .or(z.record(z.any(), z.any({})).transform(t => Object.values(t)))
     .transform((t) => { return t.filter(s => s !== 'undefined') }).pipe(z.array(z.any()).min(1)),
-  type: z.string()
+  type: z.string(),
+  default: z.any()
 })
 
 export type ArrayInputSchema = z.infer<typeof arrayInputSchema>

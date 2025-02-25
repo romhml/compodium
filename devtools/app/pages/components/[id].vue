@@ -9,17 +9,29 @@ import { createHooks } from 'hookable'
 // @ts-expect-error - Nuxt Devtools internal value
 window.__NUXT_DEVTOOLS_DISABLE__ = true
 
-function parseComponentMeta(component: ComponentMeta): ComponentMeta {
-  return {
-    ...component,
-    meta: {
-      ...component.meta,
-      props: component.meta?.props.map((prop: any) => ({
-        ...prop,
-        default: getDefaultPropValue(prop)
-      }))
-    }
-  }
+const route = useRoute()
+
+const componentId = computed(() => camelCase(route.params.id as string))
+const exampleId = computed(() => camelCase(route.query.example as string))
+
+const props = useState<Record<string, any>>('__component_state', () => ({}))
+
+const defaultProps = shallowRef({})
+const compodiumDefaultProps = shallowRef({})
+
+const { fetchCollections, getComponent } = useCollections()
+
+const component = computed(() => {
+  const baseComponent = getComponent(componentId.value)
+  return baseComponent.examples?.find((e: any) => e.pascalName === pascalCase(exampleId.value)) ?? baseComponent
+})
+
+function getDefaultProps(component: ComponentMeta): Record<string, any> {
+  return component.meta?.props?.reduce((acc: Record<string, any>, prop: any) => {
+    const value = getDefaultPropValue(prop)
+    if (value !== undefined) acc[prop.name] = value
+    return acc
+  }, {})
 }
 
 function getDefaultPropValue(meta: Partial<PropertyMeta>) {
@@ -31,36 +43,23 @@ function getDefaultPropValue(meta: Partial<PropertyMeta>) {
   }
 }
 
-const route = useRoute()
-
-const componentId = computed(() => camelCase(route.params.id as string))
-const exampleId = computed(() => camelCase(route.query.example as string))
-
-const props = useState<Record<string, any>>('__component_state', () => ({}))
-const defaultProps = shallowRef({})
-
-const { fetchCollections, getComponent } = useCollections()
-
-const component = computed(() => {
-  const baseComponent = getComponent(componentId.value)
-  return baseComponent.examples?.find((e: any) => e.pascalName === pascalCase(exampleId.value)) ?? baseComponent
-})
-
 const { data: componentMeta, refresh: refreshComponent } = useAsyncData('__compodium-fetch-meta', async () => {
   const meta = await $fetch<ComponentMeta>(`/api/component-meta/${componentId.value}`, { baseURL: '/__compodium__' })
-  return parseComponentMeta(meta)
-}, { watch: [componentId] })
+  defaultProps.value = getDefaultProps(meta)
 
-watch(component, async (oldValue, newValue) => {
-  if (oldValue.componentId === newValue.componentId) return
-  props.value = {}
+  if (!componentMeta.value || componentMeta.value?.componentId !== componentId.value) {
+    props.value = { ...defaultProps.value }
+  }
+
   await hooks.callHook('renderer:update-component', {
     collectionId: component.value.collectionId,
     componentId: component.value.componentId,
     baseName: component.value.baseName,
     path: component.value.filePath
   })
-})
+
+  return meta
+}, { watch: [componentId] })
 
 async function updateRenderer() {
   await hooks.callHook('renderer:update-props', { props: props.value })
@@ -74,8 +73,8 @@ function onComponentLoaded() {
 
 async function updateDefaultProps(payload: { componentId: string, defaultProps: any }) {
   if (componentId.value !== payload.componentId) return
-  props.value = { ...payload.defaultProps, ...props.value }
-  defaultProps.value = payload.defaultProps
+  props.value = { ...defaultProps.value, ...payload.defaultProps, ...props.value }
+  compodiumDefaultProps.value = { ...payload.defaultProps }
   await hooks.callHook('renderer:update-props', { props: props.value })
 }
 
@@ -127,7 +126,7 @@ function onResetState() {
   if (isRotated.value) return
   setTimeout(() => isRotated.value = false, 500)
   isRotated.value = true
-  props.value = { ...defaultProps.value }
+  props.value = { ...defaultProps.value, ...compodiumDefaultProps.value }
   updateRendererDebounced()
 }
 </script>
@@ -181,7 +180,6 @@ function onResetState() {
             :schema="prop.schema"
             :name="prop.name"
             :description="prop.description"
-            :default="prop.default"
             class="p-4 rounded"
             @update:model-value="updateRendererDebounced"
           />
@@ -194,6 +192,7 @@ function onResetState() {
           :component="componentMeta"
           :example="exampleId"
           :props="props"
+          :default-props="defaultProps"
         />
       </template>
     </UTabs>

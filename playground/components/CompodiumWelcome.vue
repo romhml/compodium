@@ -2,11 +2,11 @@
 // @ts-expect-error this is auto imported
 const devtoolsClient = useNuxtDevTools()
 
-defineProps<{
+withDefaults(defineProps<{
   shakeIt?: boolean
   spinIt?: boolean
   bounceIt?: boolean
-}>()
+}>(), { shakeIt: true })
 
 extendCompodiumMeta({ defaultProps: { bounceIt: true } })
 </script>

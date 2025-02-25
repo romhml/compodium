@@ -3,7 +3,7 @@ import { useClipboard } from '@vueuse/core'
 import type { ComponentMeta, ComponentExample } from '#module/types'
 import { generateComponentCode } from '@/utils/codegen'
 
-const props = defineProps<{ example?: string, component?: ComponentMeta | ComponentExample, props?: Record<string, any> }>()
+const props = defineProps<{ example?: string, component?: ComponentMeta | ComponentExample, props?: Record<string, any>, defaultProps?: Record<string, any> }>()
 
 const fetch = $fetch.create({ baseURL: '/__compodium__/api' })
 const { data: exampleCode } = useAsyncData<string | null>('__compodium-component-example-code', async () => {
@@ -16,16 +16,9 @@ const { data: exampleCode } = useAsyncData<string | null>('__compodium-component
 const code = computed(() => {
   if (!props.component) return
 
-  const defaultProps = props.component?.meta?.props.reduce((acc: Record<string, any>, prop: any) => {
-    acc[prop.name] = prop.default
-    return acc
-  }, {} as Record<string, any>)
-
-  if (props.example && exampleCode.value) {
-    return updateComponentCode(props.component.pascalName, exampleCode.value, props.props, defaultProps)
-  }
-  // Need to filter default values
-  return generateComponentCode(props.component.pascalName, props.props, defaultProps)
+  return props.example && exampleCode.value
+    ? updateComponentCode(props.component.pascalName, exampleCode.value, props.props, props.defaultProps)
+    : generateComponentCode(props.component.pascalName, props.props, props.defaultProps)
 })
 
 const { $prettier } = useNuxtApp()
