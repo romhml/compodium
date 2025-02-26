@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.1.0-beta.2
+
+[compare changes](https://github.com/romhml/compodium/compare/v0.1.0-beta.1...v0.1.0-beta.2)
+
 ## v0.1.0-beta.1
 
 [compare changes](https://github.com/romhml/compodium/compare/v0.0.1-alpha.19...v0.1.0-beta.1)
