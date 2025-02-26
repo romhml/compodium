@@ -1,5 +1,17 @@
 # Changelog
 
+## v0.0.1-alpha.15
+
+[compare changes](https://github.com/romhml/compodium/compare/v0.0.1-alpha.14...v0.0.1-alpha.15)
+
+### 🏡 Chore
+
+- Tweak playground component ([d28ffb2](https://github.com/romhml/compodium/commit/d28ffb2))
+
+### ❤️ Contributors
+
+- Romhml ([@romhml](http://github.com/romhml))
+
 ## v0.0.1-alpha.14
 
 [compare changes](https://github.com/romhml/compodium/compare/v0.0.1-alpha.13...v0.0.1-alpha.14)
