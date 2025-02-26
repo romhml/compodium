@@ -9,6 +9,8 @@
 
 A plug and play interactive component playground for Nuxt.
 
+![image](https://github.com/user-attachments/assets/e743a4c6-4845-4320-9cef-437e3890f05b)
+
 [Try it live!](https://codesandbox.io/p/devbox/compodium-jkxt32)
 </div>
 
