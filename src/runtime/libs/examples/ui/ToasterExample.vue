@@ -7,7 +7,9 @@ const toast = useToast()
 <template>
   <UToaster>
     <UButton
-      label="Open toast"
+      color="neutral"
+      variant="outline"
+      label="Open Toast"
       @click="toast.add({ title: 'Heads up!' })"
     />
   </UToaster>

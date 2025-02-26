@@ -20,11 +20,9 @@ const items = ref([
 <template>
   <UDropdownMenu :items="items">
     <UButton
-      label="Open"
-      icon="i-lucide-menu"
+      label="Open Menu"
       color="neutral"
       variant="outline"
-      trailing-icon
     />
   </UDropdownMenu>
 </template>

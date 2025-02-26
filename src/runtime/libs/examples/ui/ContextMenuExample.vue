@@ -19,8 +19,8 @@ const items = ref([
 
 <template>
   <UContextMenu :items="items">
-    <div class="flex items-center justify-center rounded-md border border-dashed border-(--ui-border-accented) text-sm aspect-video w-72">
+    <Placeholder class="aspect-video w-72">
       Right click here
-    </div>
+    </Placeholder>
   </UContextMenu>
 </template>

@@ -308,6 +308,7 @@ function randomize() {
       :columns="columns"
       sticky
       class="h-96"
+      v-bind="$attrs"
     >
       <template #expanded="{ row }">
         <pre>{{ row.original }}</pre>

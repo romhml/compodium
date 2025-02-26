@@ -1,8 +1,12 @@
 <template>
   <UPopover>
-    <UButton label="Open Collapse" />
+    <UButton
+      label="Open Popover"
+      color="neutral"
+      variant="outline"
+    />
     <template #content>
-      <div class="bg-(--ui-bg-accented)/40 h-24 w-60" />
+      <Placeholder class="aspect-video w-60" />
     </template>
   </UPopover>
 </template>

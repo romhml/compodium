@@ -34,14 +34,12 @@ const stepper = ref()
       <div class="flex gap-2 justify-between mt-2">
         <UButton
           variant="outline"
-          :disabled="!stepper?.hasPrevious"
           leading-icon="i-lucide-arrow-left"
           @click="stepper.previous()"
         >
           Back
         </UButton>
         <UButton
-          :disabled="!stepper?.hasNext"
           trailing-icon="i-lucide-arrow-right"
           @click="stepper.next()"
         >

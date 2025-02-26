@@ -8,7 +8,6 @@ export const defaultProps = {
       }, {
         label: 'Installation',
         icon: 'i-lucide-download',
-        disabled: true,
         content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed neque elit, tristique placerat feugiat ac, facilisis vitae arcu. Proin eget egestas augue. Praesent ut sem nec arcu pellentesque aliquet. Duis dapibus diam vel metus tempus vulputate.'
       }, {
         label: 'Theming',
@@ -89,20 +88,20 @@ export const defaultProps = {
     radioGroup: { items: ['Option 1', 'Option 2', 'Option 3'] },
     tabs: {
       items: [{
-        label: 'Tab1',
+        label: 'Tab 1',
         avatar: { src: 'https://avatars.githubusercontent.com/u/739984?v=4' },
-        content: 'This is the content shown for Tab1'
+        content: 'This is the content shown for Tab 1'
       }, {
-        label: 'Tab2',
+        label: 'Tab 2',
         icon: 'i-lucide-user',
-        content: 'And, this is the content for Tab2'
+        content: 'And, this is the content for Tab 2'
       }, {
-        label: 'Tab3',
+        label: 'Tab 3',
         icon: 'i-lucide-bell',
-        content: 'Finally, this is the content for Tab3'
+        content: 'Finally, this is the content for Tab 3'
       }]
     },
-    tooltip: { text: 'Hello world!' },
+    tooltip: { text: 'Tooltip' },
     tree: {
       items: [
         {

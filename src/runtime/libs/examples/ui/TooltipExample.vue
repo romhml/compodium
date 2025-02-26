@@ -1,8 +1,8 @@
 <template>
   <UApp>
-    <UTooltip text="Open on GitHub">
+    <UTooltip v-bind="$attrs">
       <UButton
-        label="Open"
+        label="Show Tooltip"
         color="neutral"
         variant="subtle"
       />

@@ -1,6 +1,10 @@
 <template>
   <UDrawer>
-    <UButton label="Open Drawer" />
+    <UButton
+      color="neutral"
+      variant="outline"
+      label="Open Drawer"
+    />
     <template #body>
       <div class="size-96" />
     </template>

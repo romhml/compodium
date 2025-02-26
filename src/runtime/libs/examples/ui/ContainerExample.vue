@@ -1,5 +1,7 @@
 <template>
   <UContainer>
-    <div class="bg-(--ui-bg-accented)/40 h-60 aspect-video w-72" />
+    <Placeholder class="w-72 aspect-video">
+      Container
+    </Placeholder>
   </UContainer>
 </template>

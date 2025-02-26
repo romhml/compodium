@@ -26,6 +26,7 @@ export default defineEventHandler(async () => {
     acc[collection.id].components[component.componentId] = {
       ...(mainExample ?? component),
       name: component.pascalName,
+      baseName: component.baseName,
       componentId: component.componentId,
       collectionId: collection.id,
       examples: componentExamples.filter(e => e.pascalName !== mainExample?.pascalName).map(e => ({
