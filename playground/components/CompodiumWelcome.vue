@@ -2,11 +2,12 @@
 // @ts-expect-error this is auto imported
 const devtoolsClient = useNuxtDevTools()
 
-defineProps<{
+withDefaults(defineProps<{
+  title?: string
   shakeIt?: boolean
   spinIt?: boolean
   bounceIt?: boolean
-}>()
+}>(), { title: 'Welcome!' })
 
 extendCompodiumMeta({ defaultProps: { bounceIt: true } })
 </script>
@@ -22,7 +23,7 @@ extendCompodiumMeta({ defaultProps: { bounceIt: true } })
       class="border border-(--ui-border) p-4 rounded-lg w-sm"
     >
       <p class="text-center font-bold mb-4">
-        Welcome!
+        {{ title }}
       </p>
 
       <UButton
