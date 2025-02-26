@@ -31,7 +31,6 @@ async function onUpdateComponent(payload: { collectionId: string, componentId: s
   meta.defaultProps.value = null
 
   defaultProps.value = (appConfig.compodium as any).defaultProps?.[payload.collectionId]?.[camelCase(payload.baseName)]
-  props.value = defaultProps.value
 
   // FIXME: This might not be very secure...
   // It's required because imports to virtual templates don't update properly on HMR.
@@ -42,7 +41,6 @@ async function onUpdateComponent(payload: { collectionId: string, componentId: s
 // - appConfig which is recovered immediatelly when the component changes.
 // - extendCompodiumMeta which is initialized in the component's setup function.
 watch([defaultProps], async () => {
-  if (component.value === null) return
   await hooks.value?.callHook('devtools:update-default-props', {
     componentId: componentId.value,
     defaultProps: defaultProps.value
