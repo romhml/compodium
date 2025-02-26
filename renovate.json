@@ -1,6 +1,14 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:recommended"
-  ]
+    "github>nuxt/renovate-config-nuxt"
+  ],
+  "lockFileMaintenance": {
+    "enabled": true
+  },
+  "ignoreDeps": [
+    "happy-dom",
+    "typescript",
+    "vue-tsc"
+  ],
+  "postUpdateOptions": ["pnpmDedupe"]
 }
