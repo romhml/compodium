@@ -10,6 +10,5 @@
     "typescript",
     "vue-tsc"
   ],
-  "postUpdateOptions": ["pnpmDedupe"],
-  "matchDepTypes": ["resolutions"]
+  "postUpdateOptions": ["pnpmDedupe"]
 }
