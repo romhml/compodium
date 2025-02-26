@@ -67,8 +67,8 @@
     "vue-tsc": "^2.2.2"
   },
   "resolutions": {
-    "tailwindcss": "4.0.9",
-    "@tailwindcss/vite": "4.0.9",
+    "tailwindcss": "4.0.7",
+    "@tailwindcss/vite": "4.0.7",
     "vue-tsc": "^2.2.0"
   },
   "packageManager": "pnpm@10.5.1",
