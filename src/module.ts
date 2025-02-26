@@ -1,7 +1,7 @@
 import type { CollectionConfig } from './types'
 import { existsSync, readFileSync } from 'node:fs'
 import { addCustomTab, startSubprocess } from '@nuxt/devtools-kit'
-import { defineNuxtModule, createResolver, addTemplate, addServerHandler, addVitePlugin, updateTemplates, addImportsDir, logger } from '@nuxt/kit'
+import { defineNuxtModule, createResolver, addTemplate, addServerHandler, addVitePlugin, updateTemplates, addImportsDir, logger, addComponentsDir } from '@nuxt/kit'
 import { getPort } from 'get-port-please'
 import { camelCase, pascalCase } from 'scule'
 import sirv from 'sirv'
@@ -62,6 +62,8 @@ export default defineNuxtModule<ModuleOptions>({
     addImportsDir(resolve('./runtime/composables'))
 
     if (!nuxt.options.dev) return
+
+    addComponentsDir({ path: resolve('./runtime/components') })
 
     const appResolver = createResolver(nuxt.options.rootDir)
 
