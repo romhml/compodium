@@ -1,5 +1,26 @@
 # Changelog
 
+## v0.0.1-alpha.18
+
+[compare changes](https://github.com/romhml/compodium/compare/v0.0.1-alpha.16...v0.0.1-alpha.18)
+
+### 🩹 Fixes
+
+- Ui examples ([9b14a65](https://github.com/romhml/compodium/commit/9b14a65))
+
+### 📖 Documentation
+
+- Add screenshot ([17cfe5d](https://github.com/romhml/compodium/commit/17cfe5d))
+
+### 🏡 Chore
+
+- Update dark mode screenshot ([8c5d1ba](https://github.com/romhml/compodium/commit/8c5d1ba))
+
+### ❤️ Contributors
+
+- Romhml ([@romhml](http://github.com/romhml))
+- Romain Hamel ([@romhml](http://github.com/romhml))
+
 ## v0.0.1-alpha.16
 
 [compare changes](https://github.com/romhml/compodium/compare/v0.0.1-alpha.15...v0.0.1-alpha.16)
