@@ -17,10 +17,9 @@ A plug and play interactive component playground for Nuxt.
 
 ## Features
 
-- **Simple Setup:** Easily integrates into your Nuxt app with minimal configuration. Customize only when needed by creating examples or defining default props.
+- **Easy Setup and Use:** Easily integrates into your Nuxt app with minimal configuration. Customize only when needed by creating examples or defining default props.
 - **HMR Support:** Enables real-time updates with HMR for faster development.
-- **Default UI Collections:** Includes pre-configured collections for your UI libraries.
-
+- **Default UI Collections:** Comes with pre-configured collections for your UI libraries.
 
 ## Quick Setup
 
