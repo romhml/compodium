@@ -1,3 +1,5 @@
+<div align="center">
+  
 # Compodium
 
 [![npm version][npm-version-src]][npm-version-href]
@@ -5,7 +7,10 @@
 [![License][license-src]][license-href]
 [![Nuxt][nuxt-src]][nuxt-href]
 
-A plug and play interactive component playground for your Nuxt projects.
+A plug and play interactive component playground for Nuxt.
+
+[Try it live!](https://codesandbox.io/p/devbox/compodium-jkxt32)
+</div>
 
 > [!WARNING]
 > This project is in its early stages and will evolve. Expect frequent updates and potential changes. Feedback is welcome!
@@ -15,6 +20,7 @@ A plug and play interactive component playground for your Nuxt projects.
 - **Simple Setup:** Easily integrates into your Nuxt app with minimal configuration. Customize only when needed by creating examples or defining default props.
 - **HMR Support:** Enables real-time updates with HMR for faster development.
 - **Default UI Collections:** Includes pre-configured collections for your UI libraries.
+
 
 ## Quick Setup
 
@@ -162,32 +168,32 @@ export default defineAppConfig({
 ```
 
 ## Contribution
+Contributions are welcome! ♥️
 
-<details>
-  <summary>Local development</summary>
-  
-  ```bash
-  # Install dependencies
-  pnpm install
-  
-  # Generate type stubs
-  pnpm dev:prepare
-  
-  # Develop with the playground
-  pnpm dev
-  
-  # Run ESLint
-  pnpm lint
-  
-  # Run typechecks 
-  pnpm typechecks 
+Currently, one way you can contribute is by adding examples for your favorite component library. You can find the Nuxt UI collection and examples [here](https://github.com/romhml/compodium/tree/main/src/runtime/libs).
 
-  # Run Vitest
-  pnpm test
-  pnpm test:watch
-  ```
+**Local development**
 
-</details>
+```bash
+# Install dependencies
+pnpm install
+
+# Generate type stubs
+pnpm dev:prepare
+
+# Develop with the playground
+pnpm dev
+
+# Run ESLint
+pnpm lint
+
+# Run typechecks 
+pnpm typechecks 
+
+# Run Vitest
+pnpm test
+pnpm test:watch
+```
 
 
 <!-- Badges -->
