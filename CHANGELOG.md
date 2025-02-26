@@ -1,5 +1,17 @@
 # Changelog
 
+## v0.0.1-alpha.16
+
+[compare changes](https://github.com/romhml/compodium/compare/v0.0.1-alpha.15...v0.0.1-alpha.16)
+
+### 🩹 Fixes
+
+- AppConfig default not set ([b93ee6a](https://github.com/romhml/compodium/commit/b93ee6a))
+
+### ❤️ Contributors
+
+- Romhml ([@romhml](http://github.com/romhml))
+
 ## v0.0.1-alpha.15
 
 [compare changes](https://github.com/romhml/compodium/compare/v0.0.1-alpha.14...v0.0.1-alpha.15)
