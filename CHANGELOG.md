@@ -1,5 +1,23 @@
 # Changelog
 
+## v0.0.1-alpha.14
+
+[compare changes](https://github.com/romhml/compodium/compare/v0.0.1-alpha.13...v0.0.1-alpha.14)
+
+### 🩹 Fixes
+
+- Inconsistent prop state on hmr ([9aea9bc](https://github.com/romhml/compodium/commit/9aea9bc))
+
+### 📖 Documentation
+
+- Update readme ([4a9dec5](https://github.com/romhml/compodium/commit/4a9dec5))
+- Update readme ([a34937a](https://github.com/romhml/compodium/commit/a34937a))
+
+### ❤️ Contributors
+
+- Romain Hamel ([@romhml](http://github.com/romhml))
+- Romhml ([@romhml](http://github.com/romhml))
+
 ## v0.0.1-alpha.13
 
 [compare changes](https://github.com/romhml/compodium/compare/v0.0.1-alpha.11...v0.0.1-alpha.13)
