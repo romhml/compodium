@@ -91,7 +91,6 @@ defineShortcuts({
     <UNavigationMenu
       :items="treeItems"
       orientation="vertical"
-      size="lg"
       class="mt-2 px-1 overflow-y-scroll border-r border-(--ui-border) hidden xl:block xl:w-xs"
     />
 

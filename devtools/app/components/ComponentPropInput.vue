@@ -25,7 +25,11 @@ const inputTypes: Record<PropInputType, Component> = {
 const props = defineProps<{ name?: string, schema: PropSchema[], description?: string, disabled?: boolean }>()
 const modelValue = defineModel<any>()
 
-const currentType = ref(inferDefaultInput(modelValue.value, props.schema)?.type ?? props.schema?.[0]?.type)
+const currentType = ref()
+watch(() => props.schema, () => {
+  if (!props.schema) return
+  currentType.value = inferDefaultInput(modelValue.value, props.schema)?.type ?? props.schema?.[0]?.type
+}, { immediate: true })
 
 const currentInput = computed<PropSchema & { component: Component } | null>(() => {
   const type = props.schema?.find(p => p.type === currentType.value)

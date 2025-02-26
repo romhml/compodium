@@ -49,17 +49,26 @@ const { data: componentMeta, refresh: refreshComponent } = useAsyncData('__compo
 
   if (!componentMeta.value || componentMeta.value?.componentId !== componentId.value) {
     props.value = { ...defaultProps.value }
+    await hooks.callHook('renderer:update-component', {
+      collectionId: component.value.collectionId,
+      componentId: component.value.componentId,
+      baseName: component.value.baseName,
+      path: component.value.filePath
+    })
   }
 
+  return meta
+}, { watch: [componentId] })
+
+watch(component, async (oldValue, newValue) => {
+  if (oldValue.componentId !== newValue.componentId) return
   await hooks.callHook('renderer:update-component', {
     collectionId: component.value.collectionId,
     componentId: component.value.componentId,
     baseName: component.value.baseName,
     path: component.value.filePath
   })
-
-  return meta
-}, { watch: [componentId] })
+})
 
 async function updateRenderer() {
   await hooks.callHook('renderer:update-props', { props: props.value })

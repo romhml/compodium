@@ -42,6 +42,7 @@ async function onUpdateComponent(payload: { collectionId: string, componentId: s
 // - appConfig which is recovered immediatelly when the component changes.
 // - extendCompodiumMeta which is initialized in the component's setup function.
 watch([defaultProps], async () => {
+  if (component.value === null) return
   await hooks.value?.callHook('devtools:update-default-props', {
     componentId: componentId.value,
     defaultProps: defaultProps.value
@@ -49,7 +50,6 @@ watch([defaultProps], async () => {
 })
 
 watch([meta.defaultProps], async () => {
-  if (meta.defaultProps.value === null) return
   defaultProps.value = { ...defaultProps.value, ...meta.defaultProps.value }
 })
 
