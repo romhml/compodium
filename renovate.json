@@ -1,0 +1,14 @@
+{
+  "extends": [
+    "github>nuxt/renovate-config-nuxt"
+  ],
+  "lockFileMaintenance": {
+    "enabled": true
+  },
+  "ignoreDeps": [
+    "happy-dom",
+    "typescript",
+    "vue-tsc"
+  ],
+  "postUpdateOptions": ["pnpmDedupe"]
+}
