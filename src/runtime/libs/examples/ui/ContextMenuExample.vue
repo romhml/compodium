@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ref } from '#imports'
+
 const items = ref([
   {
     label: 'System',
@@ -16,9 +18,7 @@ const items = ref([
 </script>
 
 <template>
-  <UContextMenu
-    :items="items"
-  >
+  <UContextMenu :items="items">
     <div class="flex items-center justify-center rounded-md border border-dashed border-(--ui-border-accented) text-sm aspect-video w-72">
       Right click here
     </div>
