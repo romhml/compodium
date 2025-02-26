@@ -1,6 +1,6 @@
 {
   "name": "compodium",
-  "version": "0.0.1-alpha.16",
+  "version": "0.1.0-beta.1",
   "description": "A plug an play component playground for Nuxt.",
   "repository": "romhml/compodium",
   "license": "MIT",

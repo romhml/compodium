@@ -1,5 +1,21 @@
 # Changelog
 
+## v0.1.0-beta.1
+
+[compare changes](https://github.com/romhml/compodium/compare/v0.0.1-alpha.16...v0.1.0-beta.1)
+
+### 📖 Documentation
+
+- Add screenshot ([17cfe5d](https://github.com/romhml/compodium/commit/17cfe5d))
+
+### 🏡 Chore
+
+- Update dark mode screenshot ([8c5d1ba](https://github.com/romhml/compodium/commit/8c5d1ba))
+
+### ❤️ Contributors
+
+- Romain Hamel ([@romhml](http://github.com/romhml))
+
 ## v0.0.1-alpha.16
 
 [compare changes](https://github.com/romhml/compodium/compare/v0.0.1-alpha.15...v0.0.1-alpha.16)
