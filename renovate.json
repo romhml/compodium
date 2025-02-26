@@ -8,7 +8,9 @@
   "ignoreDeps": [
     "happy-dom",
     "typescript",
-    "vue-tsc"
+    "vue-tsc",
+    "tailwindcss",
+    "@tailwindcss/vite"
   ],
   "postUpdateOptions": ["pnpmDedupe"]
 }
