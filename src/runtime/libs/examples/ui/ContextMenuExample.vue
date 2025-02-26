@@ -1,5 +1,26 @@
+<script setup lang="ts">
+const items = ref([
+  {
+    label: 'System',
+    icon: 'i-lucide-monitor'
+  },
+  {
+    label: 'Light',
+    icon: 'i-lucide-sun'
+  },
+  {
+    label: 'Dark',
+    icon: 'i-lucide-moon'
+  }
+])
+</script>
+
 <template>
-  <UContextMenu>
-    <div class="bg-(--ui-bg-accented)/40 h-60 w-72" />
+  <UContextMenu
+    :items="items"
+  >
+    <div class="flex items-center justify-center rounded-md border border-dashed border-(--ui-border-accented) text-sm aspect-video w-72">
+      Right click here
+    </div>
   </UContextMenu>
 </template>

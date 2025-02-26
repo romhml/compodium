@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { reactive } from '#imports'
+
 const state = reactive({ email: undefined, password: undefined })
 
 function validate(data: Partial<typeof state>) {

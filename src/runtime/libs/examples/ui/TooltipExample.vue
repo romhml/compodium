@@ -1,5 +1,11 @@
 <template>
-  <UTooltip>
-    <div class="bg-(--ui-bg-accented)/40 size-20" />
-  </UTooltip>
+  <UApp>
+    <UTooltip text="Open on GitHub">
+      <UButton
+        label="Open"
+        color="neutral"
+        variant="subtle"
+      />
+    </UTooltip>
+  </UApp>
 </template>

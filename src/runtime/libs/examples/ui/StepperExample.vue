@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ref } from '#imports'
+
 const items = [
   {
     slot: 'address',
