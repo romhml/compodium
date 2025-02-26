@@ -1,6 +1,5 @@
 import { createHighlighterCore } from 'shiki/core'
-import type { BuiltinLanguage, HighlighterCore } from 'shiki'
-import loadWasm from 'shiki/wasm'
+import { createOnigurumaEngine, type BuiltinLanguage, type HighlighterCore } from 'shiki'
 import MaterialThemeLighter from 'shiki/themes/material-theme-lighter.mjs'
 import MaterialThemePalenight from 'shiki/themes/material-theme-palenight.mjs'
 import VueLang from 'shiki/langs/vue.mjs'
@@ -16,7 +15,7 @@ export function useShiki() {
       highlighter.value = await createHighlighterCore({
         themes: [MaterialThemeLighter, MaterialThemePalenight],
         langs: [VueLang, MarkdownLang],
-        loadWasm
+        engine: createOnigurumaEngine(() => import('shiki/wasm'))
       })
     }
 
