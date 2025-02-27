@@ -156,23 +156,20 @@ const visibleProps = computed(() => new Set(fuseResults.value?.map(result => res
   <div class="relative flex grow">
     <ComponentPreview class="grow h-full" />
     <div class="flex gap-2 absolute top-2 right-2">
-      <UButton
-        v-if="componentMeta?.docUrl"
-        icon="lucide:book-open"
-        variant="link"
-        class="rounded-full"
-        color="neutral"
-        :href="componentMeta?.docUrl"
-        target="_blank"
-      />
-      <UButton
-        icon="lucide:rotate-cw"
-        variant="link"
-        color="neutral"
-        class="rounded-full"
-        :class="{ 'animate-rotate': isRotated }"
-        @click="onResetState"
-      />
+      <UTooltip
+        text="Open docs"
+        :content="{ side: 'left' }"
+      >
+        <UButton
+          v-if="componentMeta?.docUrl"
+          icon="lucide:book-open"
+          variant="link"
+          class="rounded-full"
+          color="neutral"
+          :href="componentMeta?.docUrl"
+          target="_blank"
+        />
+      </UTooltip>
       <UButton
         :icon="isDark ? 'lucide:moon' : 'lucide:sun'"
         variant="link"
@@ -192,14 +189,29 @@ const visibleProps = computed(() => new Set(fuseResults.value?.map(result => res
     >
       <template #props>
         <div class="overflow-y-scroll h-full">
-          <div class="bg-(--ui-bg) p-0.5 border-y border-(--ui-border) sticky top-0 z-1">
+          <div class="bg-(--ui-bg) p-0.5 border-y border-(--ui-border) sticky top-0 z-1 flex gap-2">
             <UInput
               v-model="propsSearchTerm"
               placeholder="Search props..."
-              trailing-icon="lucide:search"
+              icon="lucide:search"
               variant="none"
               class="w-full"
             />
+
+            <UTooltip
+              text="Reset props"
+              :content="{ side: 'left' }"
+            >
+              <UButton
+                icon="lucide:rotate-cw"
+                variant="link"
+                color="neutral"
+                class="rounded-full"
+                size="sm"
+                :class="{ 'animate-rotate': isRotated }"
+                @click="onResetState"
+              />
+            </UTooltip>
           </div>
           <div
             v-for="prop in componentMeta?.meta.props"
