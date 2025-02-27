@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useColorMode, useDebounceFn } from '@vueuse/core'
+import { useFuse } from '@vueuse/integrations/useFuse'
 import type { ComponentMeta, CompodiumHooks } from '#module/types'
 import type { PropertyMeta } from 'vue-component-meta'
 import { camelCase, pascalCase } from 'scule'
@@ -136,6 +137,19 @@ function onResetState() {
   props.value = { ...defaultProps.value, ...compodiumDefaultProps.value }
   updateRendererDebounced()
 }
+
+const componentProps = computed(() => componentMeta.value?.meta?.props ?? [])
+
+const propsSearchTerm = ref()
+const { results: fuseResults } = useFuse<PropertyMeta>(propsSearchTerm, componentProps, {
+  fuseOptions: {
+    ignoreLocation: true,
+    threshold: 0.1,
+    keys: ['name', 'description']
+  },
+  matchAllWhenSearchEmpty: true
+})
+const visibleProps = computed(() => new Set(fuseResults.value?.map(result => result.item.name)))
 </script>
 
 <template>
@@ -173,29 +187,40 @@ function onResetState() {
     <UTabs
       variant="link"
       :items="tabs"
-      class="relative h-screen flex flex-col overflow-y-scroll gap-0"
-      :ui="{ list: 'sticky top-0 bg-(--ui-bg) border-b border-(--ui-border) z-50', content: 'grow' }"
+      class="h-screen flex flex-col gap-0"
+      :ui="{ content: 'grow relative overflow-y-scroll' }"
     >
       <template #props>
-        <div
-          v-for="prop in componentMeta?.meta.props"
-          :key="componentMeta.componentId + '-prop-' + prop.name"
-          class="px-3 py-2 border-b border-(--ui-border)"
-        >
-          <ComponentPropInput
-            v-model="props[prop.name]"
-            :schema="prop.schema"
-            :name="prop.name"
-            :description="prop.description"
-            class="p-4 rounded"
-            @update:model-value="updateRendererDebounced"
-          />
+        <div class="overflow-y-scroll h-full">
+          <div class="bg-(--ui-bg) p-0.5 border-y border-(--ui-border) sticky top-0 z-1">
+            <UInput
+              v-model="propsSearchTerm"
+              placeholder="Search props..."
+              trailing-icon="lucide:search"
+              variant="none"
+              class="w-full"
+            />
+          </div>
+          <div
+            v-for="prop in componentMeta?.meta.props"
+            v-show="visibleProps.has(prop.name)"
+            :key="componentMeta.componentId + '-prop-' + prop.name"
+            class="grow px-3 py-2 border-b border-(--ui-border)"
+          >
+            <ComponentPropInput
+              v-model="props[prop.name]"
+              :schema="prop.schema"
+              :name="prop.name"
+              :description="prop.description"
+              class="p-4 rounded"
+              @update:model-value="updateRendererDebounced"
+            />
+          </div>
         </div>
       </template>
 
       <template #code>
         <ComponentCode
-          class=""
           :component="componentMeta"
           :example="exampleId"
           :props="props"
