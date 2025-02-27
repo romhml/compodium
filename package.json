@@ -71,7 +71,7 @@
     "@tailwindcss/vite": "4.0.7",
     "vue-tsc": "^2.2.0"
   },
-  "packageManager": "pnpm@10.5.1",
+  "packageManager": "pnpm@10.5.2",
   "keywords": [
     "nuxt",
     "components",
