@@ -1,4 +1,4 @@
-import { createCheckerByJson } from 'vue-component-meta'
+import { createCheckerByJson } from '@compodium/meta'
 import type { ComponentMeta } from '../../../types'
 
 // @ts-expect-error virtual file

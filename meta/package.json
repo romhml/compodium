@@ -1,0 +1,28 @@
+{
+  "name": "@compodium/meta",
+  "version": "0.1.0",
+  "license": "MIT",
+  "type": "commonjs",
+  "exports": {
+    ".": "./dist/index.cjs"
+  },
+	"files": [
+		"dist/**/*.cjs",
+		"dist/**/*.d.ts"
+	],
+  "scripts": {
+    "build": "tsc --outDir dist"
+  },
+	"dependencies": {
+		"@vue/language-core": "2.2.4",
+		"path-browserify": "^1.0.1"
+	},
+	"peerDependencies": {
+		"typescript": "*"
+	},
+	"peerDependenciesMeta": {
+		"typescript": {
+			"optional": true
+		}
+	}
+}

@@ -21,7 +21,7 @@
     "prepack": "nuxt-module-build build && nuxi generate devtools",
     "dev": "COMPODIUM_LOCAL=true nuxi dev playground",
     "dev:build": "nuxi build playground",
-    "dev:prepare": "nuxt-module-build build --stub && nuxt-module-build prepare && nuxi prepare devtools && nuxi prepare playground",
+    "dev:prepare": "nuxt-module-build build --stub && nuxt-module-build prepare && nuxi prepare devtools && nuxi prepare playground && pnpm --filter @compodium/meta build",
     "release": "pnpm run lint && pnpm run test && pnpm run prepack && changelogen --release && pnpm publish && git push --follow-tags",
     "lint": "eslint .",
     "test": "vitest run",
@@ -31,6 +31,7 @@
   "dependencies": {
     "@nuxt/devtools-kit": "^2.1.0",
     "@nuxt/kit": "^3.15.4",
+    "@vue/language-core": "^2.2.4",
     "@vueuse/core": "^12.7.0",
     "chokidar": "^4.0.3",
     "consola": "^3.4.0",
