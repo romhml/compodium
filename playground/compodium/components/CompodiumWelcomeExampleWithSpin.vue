@@ -1,3 +1,7 @@
+<script setup lang="ts">
+extendCompodiumMeta({ defaultProps: { spinIt: true } })
+</script>
+
 <template>
-  <CompodiumWelcome spin-it />
+  <CompodiumWelcome />
 </template>

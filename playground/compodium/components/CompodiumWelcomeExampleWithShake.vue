@@ -1,3 +1,7 @@
+<script setup lang="ts">
+extendCompodiumMeta({ defaultProps: { shakeIt: true } })
+</script>
+
 <template>
-  <CompodiumWelcome shake-it />
+  <CompodiumWelcome />
 </template>
