@@ -67,6 +67,12 @@ onMounted(() => {
 
   hooks.value.callHook('renderer:mounted')
 })
+
+onMounted(() => {
+  window.addEventListener('keydown', (e) => {
+    window.parent.dispatchEvent(new KeyboardEvent('keydown', e))
+  })
+})
 </script>
 
 <template>
