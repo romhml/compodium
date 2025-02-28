@@ -1,6 +1,8 @@
-import * as ts from 'typescript'
+import ts from 'typescript'
 import { createCheckerBase, createCheckerByJsonConfigBase } from './base.cjs'
 import type { MetaCheckerOptions } from 'vue-component-meta'
+
+export type * from 'vue-component-meta'
 
 export function createCheckerByJson(
   rootPath: string,

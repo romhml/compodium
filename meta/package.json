@@ -11,7 +11,7 @@
 		"dist/**/*.d.ts"
 	],
   "scripts": {
-    "build": "tsc --outDir dist"
+    "build": "tsc -b"
   },
 	"dependencies": {
 		"@vue/language-core": "2.2.4",

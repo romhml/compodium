@@ -5,6 +5,7 @@
     "node_modules",
     "playground",
     "devtools",
+    "meta",
     "test/fixtures/",
     "src/runtime/libs",
   ],

@@ -2,7 +2,7 @@ import type { TypeScriptProjectHost } from '@volar/typescript'
 import { createLanguageServiceHost, resolveFileLanguageId } from '@volar/typescript'
 import * as vue from '@vue/language-core'
 import path from 'node:path'
-import type * as ts from 'typescript'
+import type ts from 'typescript'
 import { code as typeHelpersCode } from 'vue-component-type-helpers'
 import { code as vue2TypeHelpersCode } from 'vue-component-type-helpers/vue2'
 
@@ -224,11 +224,11 @@ import * as Components from '${fileName.slice(0, -'.meta.ts'.length)}';
 export default {} as { [K in keyof typeof Components]: ComponentMeta<typeof Components[K]>; };
 
 interface ComponentMeta<T> {
-	type: ComponentType<T>;
-	props: ComponentProps<T>;
-	emit: ComponentEmit<T>;
-	slots: ComponentSlots<T>;
-	exposed: ComponentExposed<T>;
+  type: ComponentType<T>;
+  props: ComponentProps<T>;
+  emit: ComponentEmit<T>;
+  slots: ComponentSlots<T>;
+  exposed: ComponentExposed<T>;
 };
 
 ${commandLine.vueOptions.target < 3 ? vue2TypeHelpersCode : typeHelpersCode}
@@ -292,7 +292,7 @@ ${commandLine.vueOptions.target < 3 ? vue2TypeHelpersCode : typeHelpersCode}
 
     function getProps() {
       const $props = symbolProperties.find(prop => prop.escapedName === 'props')
-      const propEventRegex = /^(on[A-Z])/
+      const propEventRegex = /^on[A-Z]/
       let result: PropertyMeta[] = []
 
       if ($props) {
@@ -327,16 +327,18 @@ ${commandLine.vueOptions.target < 3 ? vue2TypeHelpersCode : typeHelpersCode}
       const vueDefaults = vueFile && exportName === 'default'
         ? (vueFile instanceof vue.VueVirtualCode ? readVueComponentDefaultProps(vueFile, printer, ts) : {})
         : {}
-      const tsDefaults = !vueFile ? readTsComponentDefaultProps(
-        ts.createSourceFile(
-          '/tmp.' + componentPath.slice(componentPath.lastIndexOf('.') + 1), // ts | js | tsx | jsx
-          snapshot.getText(0, snapshot.getLength()),
-          ts.ScriptTarget.Latest
-        ),
-        exportName,
-        printer,
-        ts
-      ) : {}
+      const tsDefaults = !vueFile
+        ? readTsComponentDefaultProps(
+            ts.createSourceFile(
+              '/tmp.' + componentPath.slice(componentPath.lastIndexOf('.') + 1), // ts | js | tsx | jsx
+              snapshot.getText(0, snapshot.getLength()),
+              ts.ScriptTarget.Latest
+            ),
+            exportName,
+            printer,
+            ts
+          )
+        : {}
 
       for (const [propName, defaultExp] of Object.entries({
         ...vueDefaults,
@@ -620,10 +622,7 @@ function createSchemaResolvers(
           return schema ??= subtype.types.map(resolveSchema)
         }
       }
-    }
-
-    // @ts-ignore - typescript internal, isArrayLikeType exists
-    else if (typeChecker.isArrayLikeType(subtype)) {
+    } else if (typeChecker.isArrayLikeType(subtype)) {
       let schema: PropertyMetaSchema[]
       return {
         kind: 'array',
@@ -833,9 +832,7 @@ function readTsComponentDefaultProps(
 
     if (component) {
       // export default { ... }
-      if (ts.isObjectLiteralExpression(component)) {
-        return component
-      }
+      if (ts.isObjectLiteralExpression(component)) return component
       // export default defineComponent({ ... })
       // export default Vue.extend({ ... })
       else if (ts.isCallExpression(component)) {
