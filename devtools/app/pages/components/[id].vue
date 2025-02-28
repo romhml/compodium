@@ -139,8 +139,8 @@ function onResetState() {
 }
 
 const componentProps = computed(() => componentMeta.value?.meta?.props ?? [])
-
 const propsSearchTerm = ref()
+
 const { results: fuseResults } = useFuse<PropertyMeta>(propsSearchTerm, componentProps, {
   fuseOptions: {
     ignoreLocation: true,
@@ -149,7 +149,9 @@ const { results: fuseResults } = useFuse<PropertyMeta>(propsSearchTerm, componen
   },
   matchAllWhenSearchEmpty: true
 })
+
 const visibleProps = computed(() => new Set(fuseResults.value?.map(result => result.item.name)))
+watch(component, () => propsSearchTerm.value = '')
 </script>
 
 <template>
