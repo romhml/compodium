@@ -197,7 +197,7 @@ watch(component, () => propsSearchTerm.value = '')
               placeholder="Search props..."
               icon="lucide:search"
               variant="none"
-              class="w-full"
+              class="w-full ml-1"
             />
 
             <UTooltip
