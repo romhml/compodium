@@ -14,6 +14,7 @@ const _props = defineProps<{
   objectMatrix?: (({ foo: string | number } | { fee: string })[] | ({ foo: number } | { fee: string })[])[]
   numberMatrix?: number[][]
   literalMatrix?: (number | string | boolean)[][]
+  aVeryVeryVeryLongPropNameWithLongType: ({ foo: string | number } | { fee: string })[] | ({ foo: number } | { fee: string })[][]
 }>()
 
 extendCompodiumMeta<typeof _props>({

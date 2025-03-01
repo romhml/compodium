@@ -30,29 +30,17 @@ function updateValue(index: number, value: any) {
     <div
       v-for="value, index in modelValue"
       :key="index"
-      class="relative mb-2 w-full flex gap-2"
+      class="relative mb-2 w-full flex gap-1.5"
     >
-      <UCollapsible :ui="{ root: 'border border-(--ui-border) w-full rounded-md' }">
-        <UButton
-          :label="'Value ' + (index + 1)"
-          class="group rounded-b-none border-(--ui-border) font-semibold"
-          color="neutral"
-          variant="ghost"
-          trailing-icon="i-lucide-chevron-down"
-          block
-          :ui="{ trailingIcon: 'group-data-[state=open]:rotate-180 transition duration-200' }"
-        />
-
-        <template #content>
-          <ComponentPropInput
-            :model-value="value"
-            :schema="schema.schema"
-            array-item
-            class="px-4 pb-4 pt-2"
-            @update:model-value="(val) => updateValue(index, val)"
-          />
-        </template>
-      </UCollapsible>
+      <ComponentPropInput
+        :model-value="value"
+        :schema="schema.schema"
+        :name="'Value ' + (index + 1)"
+        array-item
+        collapsible
+        :default-open="true"
+        @update:model-value="(val) => updateValue(index, val)"
+      />
 
       <div>
         <UButton
@@ -61,7 +49,7 @@ function updateValue(index: number, value: any) {
           icon="lucide:x"
           size="sm"
           square
-          class="p-2"
+          class="p-2.5"
           @click="removeArrayItem(index)"
         />
       </div>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { ObjectInputSchema } from '#module/runtime/server/services/infer'
 
-const props = defineProps<{ schema: ObjectInputSchema, arrayItem: boolean }>()
+const props = defineProps<{ schema: ObjectInputSchema, collapsible: boolean }>()
 
 const modelValue = defineModel<Record<string, any>>({})
 
@@ -11,7 +11,10 @@ const attrs = computed(() => {
 </script>
 
 <template>
-  <div :class="{ 'border-none p-0': arrayItem, 'p-4 rounded-md border border-(--ui-border)': !arrayItem }">
+  <div
+    class="border-(--ui-border)"
+    :class="{ 'p-4 rounded-md border': !collapsible }"
+  >
     <ComponentPropInput
       v-for="attr in attrs"
       :key="attr.name"

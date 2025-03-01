@@ -7,11 +7,6 @@ withDefaults(defineProps<{
   shakeIt?: boolean
   spinIt?: boolean
   bounceIt?: boolean | string | number
-  obj?: { foo: string }
-  objArr?: ({ foo: string | number } | { fee: string })[] | ({ foo: number } | { fee: string })[]
-  boolArr: boolean[]
-  objMatrix?: (({ foo: string | number } | { fee: string })[] | ({ foo: number } | { fee: string })[])[]
-  numMatrix?: number[][]
 }>(), { title: 'Welcome!' })
 
 extendCompodiumMeta({

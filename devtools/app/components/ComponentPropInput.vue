@@ -8,6 +8,7 @@ import ObjectInput from '../components/inputs/ObjectInput.vue'
 import ArrayInput from '../components/inputs/ArrayInput.vue'
 import PrimitiveArrayInput from '../components/inputs/PrimitiveArrayInput.vue'
 import DateInput from '../components/inputs/DateInput.vue'
+import { createReusableTemplate } from '@vueuse/core'
 
 const inputTypes: Record<PropInputType, Component> = {
   array: ArrayInput,
@@ -22,7 +23,7 @@ const inputTypes: Record<PropInputType, Component> = {
 </script>
 
 <script setup lang="ts">
-const props = defineProps<{ name?: string, schema: PropSchema[], description?: string, disabled?: boolean, arrayItem?: boolean }>()
+const props = defineProps<{ name?: string, schema: PropSchema[], description?: string, disabled?: boolean, collapsible?: boolean, defaultOpen?: boolean }>()
 const modelValue = defineModel<any>()
 
 const currentType = ref()
@@ -38,8 +39,6 @@ const currentInput = computed<PropSchema & { component: Component } | null>(() =
   }
   return null
 })
-
-console.log('val', props.schema, currentInput.value)
 
 function inferDefaultInput(value?: any, types?: PropSchema[]): PropSchema | undefined {
   if (!value) return
@@ -57,11 +56,63 @@ function inferDefaultInput(value?: any, types?: PropSchema[]): PropSchema | unde
 const description = computed(() => {
   return props.description?.replace(/`([^`]+)`/g, '<code class="text-xs font-medium bg-[var(--ui-bg-elevated)] px-1 py-0.5 rounded">$1</code>')
 })
+
+const [DefineSelect, ReuseSelect] = createReusableTemplate()
+const [DefineInput, ReuseInput] = createReusableTemplate()
 </script>
 
 <template>
-  <div class="relative">
+  <div class="w-full">
+    <DefineSelect>
+      <USelect
+        v-if="schema?.length > 1"
+        v-model="currentType"
+        variant="none"
+        size="sm"
+        :items="schema"
+        label-key="type"
+        value-key="type"
+        trailing-icon=""
+        class="font-medium text-ellipsis truncate max-w-50 py-0.5 px-1.5 font-mono bg-(--ui-bg-elevated)/50 border border-(--ui-border)"
+        @update:model-value="modelValue = undefined"
+      />
+    </DefineSelect>
+
+    <DefineInput>
+      <component
+        :is="currentInput.component"
+        v-if="!disabled && currentInput"
+        v-model="modelValue"
+        :schema="currentInput.schema"
+      />
+    </DefineInput>
+
+    <UCollapsible
+      v-if="collapsible"
+      :default-open="defaultOpen"
+      :ui="{ root: 'w-full border border-(--ui-border) rounded-md', content: 'p-4 border-t border-(--ui-border)' }"
+    >
+      <UButton
+        class="group rounded-b-none border-(--ui-border)"
+        color="neutral"
+        variant="ghost"
+        block
+        :ui="{ trailingIcon: 'group-data-[state=open]:rotate-180 transition duration-200' }"
+      >
+        <div class="flex justify-between w-full">
+          <p class="font-semibold truncate text-ellipsis max-w-50">
+            {{ name }}
+          </p>
+          <ReuseSelect />
+        </div>
+      </UButton>
+      <template #content>
+        <ReuseInput collapsible />
+      </template>
+    </UCollapsible>
+
     <UFormField
+      v-else
       :name="name"
       class="w-full"
       :class="{ 'opacity-70 cursor-not-allowed': disabled || !currentInput }"
@@ -71,23 +122,12 @@ const description = computed(() => {
         <div class="flex w-full justify-between gap-2 mb-2">
           <p
             v-if="name"
-            class="flex-none font-mono font-semibold px-1.5 py-0.5 border border-(--ui-border-accented)/50 rounded bg-[var(--ui-bg-elevated)]"
+            class="truncate text-ellipsis font-mono font-semibold px-1.5 py-0.5 border border-(--ui-border-accented)/50 rounded bg-[var(--ui-bg-elevated)]"
           >
             {{ name }}
           </p>
           <span v-else />
-
-          <USelect
-            v-if="schema?.length > 1"
-            v-model="currentType"
-            variant="none"
-            :items="schema"
-            label-key="type"
-            value-key="type"
-            trailing-icon=""
-            class="max-w-50 py-0.5 font-mono bg-(--ui-bg-elevated)/50 border border-(--ui-border)"
-            @update:model-value="modelValue = undefined"
-          />
+          <ReuseSelect />
         </div>
       </template>
 
@@ -99,13 +139,7 @@ const description = computed(() => {
           v-html="description"
         />
       </template>
-      <component
-        :is="currentInput.component"
-        v-if="!disabled && currentInput"
-        v-model="modelValue"
-        :schema="currentInput.schema"
-        :array-item="arrayItem"
-      />
+      <ReuseInput />
     </UFormField>
   </div>
 </template>

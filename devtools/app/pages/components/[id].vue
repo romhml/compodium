@@ -166,6 +166,7 @@ watch(component, () => propsSearchTerm.value = '')
           target="_blank"
         />
       </UTooltip>
+
       <UButton
         :icon="isDark ? 'lucide:moon' : 'lucide:sun'"
         variant="link"
@@ -175,7 +176,6 @@ watch(component, () => propsSearchTerm.value = '')
       />
     </div>
   </div>
-
   <div class="bg-(--ui-bg) w-md border-l border-(--ui-border)">
     <UTabs
       variant="link"
@@ -220,7 +220,7 @@ watch(component, () => propsSearchTerm.value = '')
               :schema="prop.schema"
               :name="prop.name"
               :description="prop.description"
-              class="m-4 rounded"
+              class="p-4 rounded"
               @update:model-value="updatePropsDebounced"
             />
           </div>
