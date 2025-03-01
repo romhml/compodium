@@ -1,4 +1,4 @@
-import type { PropertyMeta as VuePropertyMeta } from 'vue-component-meta'
+import type { PropertyMeta } from '@compodium/meta'
 import { type ZodSchema, z } from 'zod'
 import type { PropSchema, PropInputType, PropertyType } from '../../../types'
 
@@ -102,14 +102,14 @@ const propResolvers: PropSchemaResolver<ZodSchema>[] = [
   { inputType: 'array', schema: arrayInputSchema }
 ]
 
-export function inferPropTypes(prop: VuePropertyMeta): PropertyType {
+export function inferPropTypes(prop: PropertyMeta): PropertyType {
   return {
     ...prop,
     schema: inferSchemaType(prop.schema)
   }
 }
 
-export function inferSchemaType(schema: string | VuePropertyMeta['schema'] | VuePropertyMeta['schema'][]): PropSchema[] {
+export function inferSchemaType(schema: string | PropertyMeta['schema'] | PropertyMeta['schema'][]): PropSchema[] {
   const schemas = Array.isArray(schema) ? schema : [schema]
   return schemas.flatMap((schema) => {
     for (const resolver of propResolvers) {
@@ -118,7 +118,7 @@ export function inferSchemaType(schema: string | VuePropertyMeta['schema'] | Vue
         const propType = { schema: result.data, inputType: resolver.inputType, type: result.data?.type ?? result.data }
 
         if (propType.inputType === 'object') {
-          const nestedSchema: Record<string, VuePropertyMeta> = propType.schema.schema
+          const nestedSchema: Record<string, PropertyMeta> = propType.schema.schema
           propType.schema.schema = Object.entries(nestedSchema).reduce((acc, [key, sch]) => {
             acc[key] = inferPropTypes(sch)
             return acc
@@ -126,7 +126,7 @@ export function inferSchemaType(schema: string | VuePropertyMeta['schema'] | Vue
         }
 
         if (propType.inputType === 'array') {
-          const nestedSchema: VuePropertyMeta['schema'][] = propType.schema.schema
+          const nestedSchema: PropertyMeta['schema'][] = propType.schema.schema
           propType.schema.schema = nestedSchema.flatMap(sch => inferSchemaType(sch), {} as any)
           // Ignore the array if the item schema cannot be resolved
           if (!propType.schema.schema?.length) return []

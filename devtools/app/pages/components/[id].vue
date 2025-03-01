@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useColorMode, useDebounceFn } from '@vueuse/core'
 import type { ComponentMeta, CompodiumHooks } from '#module/types'
-import type { PropertyMeta } from 'vue-component-meta'
+import type { PropertyMeta } from '@compodium/meta'
 import { camelCase, pascalCase } from 'scule'
 import { createHooks } from 'hookable'
 
