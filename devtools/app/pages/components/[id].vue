@@ -53,7 +53,7 @@ const { data: exampleMeta } = useAsyncData('__compodium-fetch-example-meta', asy
   return example
 }, { watch: [exampleId] })
 
-watch([exampleMeta, componentMeta], ([newExampleMeta, newComponentMeta], [oldExampleMeta, oldComponentMeta]) => {
+watch([exampleMeta, componentMeta], async ([newExampleMeta, newComponentMeta], [oldExampleMeta, oldComponentMeta]) => {
   if (!newComponentMeta) return
 
   // Don't refresh props if the change was initiated by HMR
@@ -66,9 +66,8 @@ watch([exampleMeta, componentMeta], ([newExampleMeta, newComponentMeta], [oldExa
     ...getDefaultProps(newComponentMeta),
     ...(newExampleMeta?.meta?.compodium?.defaultProps ?? newComponentMeta?.meta?.compodium?.defaultProps)
   }
-
-  updateComponent()
-  updateRenderer()
+  props.value = { ...defaultProps.value }
+  await updateComponent()
 })
 
 watch(component, async (oldValue, newValue) => {
@@ -76,31 +75,20 @@ watch(component, async (oldValue, newValue) => {
 })
 
 async function updateComponent() {
-  props.value = { ...defaultProps.value }
   await hooks.callHook('renderer:update-component', {
     collectionId: component.value.collectionId,
     componentId: component.value.componentId,
     baseName: component.value.baseName,
-    path: component.value.filePath
+    path: component.value.filePath,
+    props: props.value
   })
 }
 
-async function updateRenderer() {
-  await hooks.callHook('renderer:update-props', { props: props.value })
-}
-
-const updateRendererDebounced = useDebounceFn(updateRenderer, 100, { maxWait: 300 })
+const updatePropsDebounced = useDebounceFn(() => hooks.callHook('renderer:update-props', { props: props.value }), 100, { maxWait: 300 })
 
 const hooks = createHooks<CompodiumHooks>()
 
-hooks.hook('renderer:mounted', () => hooks.callHook('renderer:update-component', {
-  collectionId: component.value.collectionId,
-  componentId: component.value.componentId,
-  baseName: component.value.baseName,
-  path: component.value.filePath
-}))
-
-hooks.hook('renderer:component-loaded', updateRenderer)
+hooks.hook('renderer:mounted', updateComponent)
 
 hooks.hook('component:added', useDebounceFn(async () => {
   await Promise.all([
@@ -139,7 +127,7 @@ function onResetState() {
   setTimeout(() => isRotated.value = false, 500)
   isRotated.value = true
   props.value = { ...defaultProps.value, ...compodiumDefaultProps.value }
-  updateRendererDebounced()
+  updatePropsDebounced()
 }
 </script>
 
@@ -193,7 +181,7 @@ function onResetState() {
             :name="prop.name"
             :description="prop.description"
             class="p-4 rounded"
-            @update:model-value="updateRendererDebounced"
+            @update:model-value="updatePropsDebounced"
           />
         </div>
       </template>

@@ -19,9 +19,10 @@ const component = shallowRef()
 
 const componentId = ref()
 
-async function onUpdateComponent(payload: { collectionId: string, componentId: string, baseName: string, path: string }) {
+async function onUpdateComponent(payload: { collectionId: string, componentId: string, baseName: string, path: string, props: Record<string, any> }) {
   component.value = null
   componentId.value = payload.componentId
+  props.value = payload.props
   // FIXME: This might not be very secure...
   // It's required because imports to virtual templates don't update properly on HMR.
   component.value = await import(/* @vite-ignore */ buildAssetsURL(payload.path)).then(c => c.default)

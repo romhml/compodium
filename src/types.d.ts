@@ -84,14 +84,11 @@ export interface CompodiumHooks {
   // Triggered when a component has been deleted
   'component:removed': () => void
 
-  // Triggered when a component has been loaded by the renderer
-  'renderer:component-loaded': () => void
-
   // Called after the renderer has mounted
   'renderer:mounted': () => void
 
   // Update the renderer component
-  'renderer:update-component': (payload: { collectionId: string, componentId: string, baseName: string, path: string }) => void
+  'renderer:update-component': (payload: { collectionId: string, componentId: string, baseName: string, path: string, props: Record<string, any> }) => void
 
   // Update the renderer props
   'renderer:update-props': (payload: { props: Record<string, any> }) => void
