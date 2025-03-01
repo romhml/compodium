@@ -11,8 +11,5 @@
   ],
   "compilerOptions": {
     "types": ["vite/client"]
-    "paths": {
-      "@compodium/meta": ["./meta/dist/*"],
-    }
   },
 }

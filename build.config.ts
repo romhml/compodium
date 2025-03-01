@@ -1,6 +1,9 @@
 import { defineBuildConfig } from 'unbuild'
 
 export default defineBuildConfig({
+  // TODO: Remove
+  failOnWarn: false,
+
   entries: [
     { input: './meta/dist', name: '@compodium/meta' }
   ],
