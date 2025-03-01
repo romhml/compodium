@@ -21,7 +21,7 @@
     "prepack": "pnpm --filter @compodium/meta build && nuxt-module-build build && nuxi generate devtools",
     "dev": "COMPODIUM_LOCAL=true nuxi dev playground",
     "dev:build": "nuxi build playground",
-    "dev:prepare": "nuxt-module-build build --stub && nuxt-module-build prepare && nuxi prepare devtools && nuxi prepare playground && pnpm --filter @compodium/meta build",
+    "dev:prepare":  "pnpm --filter @compodium/meta build && nuxt-module-build build --stub && nuxt-module-build prepare && nuxi prepare devtools && nuxi prepare playground",
     "release": "pnpm run lint && pnpm run test && pnpm run prepack && changelogen --release && pnpm publish && git push --follow-tags",
     "lint": "eslint .",
     "test": "vitest run",
