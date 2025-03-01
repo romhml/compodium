@@ -150,25 +150,15 @@ importers:
 
   meta:
     dependencies:
-      '@volar/typescript':
-        specifier: ~2.4.11
-        version: 2.4.11
       '@vue/language-core':
         specifier: 2.2.4
         version: 2.2.4(typescript@5.6.3)
+      path-browserify:
+        specifier: ^1.0.1
+        version: 1.0.1
       typescript:
         specifier: '*'
         version: 5.6.3
-      vue-component-meta:
-        specifier: 2.2.4
-        version: 2.2.4(typescript@5.6.3)
-    devDependencies:
-      '@types/node':
-        specifier: ^22.10.4
-        version: 22.13.5
-      '@types/path-browserify':
-        specifier: ^1.0.1
-        version: 1.0.3
 
   playground:
     dependencies:
@@ -1633,9 +1623,6 @@ packages:
 
   '@types/parse-path@7.0.3':
     resolution: {integrity: sha512-LriObC2+KYZD3FzCrgWGv/qufdUy4eXrxcLgQMfYXgPbLIecKIsVBaQgUPmxSSLcjmYbDTQbMgr6qr6l/eb7Bg==}
-
-  '@types/path-browserify@1.0.3':
-    resolution: {integrity: sha512-ZmHivEbNCBtAfcrFeBCiTjdIc2dey0l7oCGNGpSuRTy8jP6UVND7oUowlvDujBy8r2Hoa8bfFUOCiPWfmtkfxw==}
 
   '@types/resolve@1.20.2':
     resolution: {integrity: sha512-60BCwRFOZCQhDncwQdxxeOEEkbc5dIMccYLwbxsS4TUNeVECQ/pBJ0j09mrHOl/JJvpRPGwO9SvE4nR2Nb/a4Q==}
@@ -6968,8 +6955,6 @@ snapshots:
   '@types/normalize-package-data@2.4.4': {}
 
   '@types/parse-path@7.0.3': {}
-
-  '@types/path-browserify@1.0.3': {}
 
   '@types/resolve@1.20.2': {}
 
