@@ -33,7 +33,6 @@
     "@nuxt/devtools-kit": "^2.1.0",
     "@nuxt/kit": "^3.15.4",
     "@vueuse/core": "^12.7.0",
-    "@vue/language-core": "2.2.4",
     "chokidar": "^4.0.3",
     "consola": "^3.4.0",
     "defu": "^6.1.4",

@@ -378,7 +378,8 @@ ${commandLine.vueOptions.target < 3 ? vue2TypeHelpersCode : typeHelpersCode}
             return undefined
           }
         }
-        return printer?.printNode(ts.EmitHint.Expression, node, ast)
+
+        console.warn('[Compodium] Could not evaluate meta property:', printer?.printNode(ts.EmitHint.Expression, node, ast))
       }
       // Traverse the AST to find and transform the object literal
       return traverse(node)

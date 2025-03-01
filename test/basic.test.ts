@@ -121,12 +121,12 @@ describe('basic', async () => {
 
     it('filters variables', async () => {
       const component = await $fetch<ComponentMeta>('/__compodium__/api/component-meta/extendMetaWithVars')
-      expect(component.meta.compodium).toMatchObject({})
+      expect(component.meta.compodium).toEqual({ defaultProps: {} })
     })
 
     it('ignores if invalid param', async () => {
       const component = await $fetch<ComponentMeta>('/__compodium__/api/component-meta/extendMetaBad')
-      expect(component.meta.compodium).toMatchObject({})
+      expect(component.meta.compodium).toEqual({ defaultProps: {} })
     })
   })
 
