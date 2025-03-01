@@ -148,7 +148,7 @@ compodium
 
 ### Default Props
 
-You can use the `extendCompodiumMeta` in your component to pass default values for required properties:
+You can use the `extendCompodiumMeta` in your component or in examples to pass default values for required properties:
 ```ts
 const props = defineProps<{ label: string }>()
 

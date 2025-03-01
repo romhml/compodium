@@ -43,16 +43,34 @@ function evalPropValue(meta: Partial<PropertyMeta>) {
   }
 }
 
-const { data: componentMeta, refresh: refreshComponent } = useAsyncData('__compodium-fetch-meta', async () => {
+const { data: componentMeta, refresh: refreshComponentMeta } = useAsyncData('__compodium-fetch-meta', async () => {
   const component = await $fetch<ComponentMeta>(`/api/component-meta/${componentId.value}`, { baseURL: '/__compodium__' })
-  defaultProps.value = { ...getDefaultProps(component), ...component.meta.compodium.defaultProps }
-  if (!componentMeta.value || componentMeta.value?.componentId !== componentId.value) {
-    props.value = defaultProps.value
-    updateComponent()
-    updateRenderer()
-  }
   return component
 }, { watch: [componentId] })
+
+const { data: exampleMeta } = useAsyncData('__compodium-fetch-example-meta', async () => {
+  const example = await $fetch<ComponentMeta>(`/api/component-meta/${exampleId.value}`, { baseURL: '/__compodium__' })
+  return example
+}, { watch: [exampleId] })
+
+watch([exampleMeta, componentMeta], ([newExampleMeta, newComponentMeta], [oldExampleMeta, oldComponentMeta]) => {
+  if (!newComponentMeta) return
+
+  // Don't refresh props if the change was initiated by HMR
+  if (
+    newComponentMeta?.componentId === oldComponentMeta?.componentId
+    && newExampleMeta?.pascalName === oldExampleMeta?.pascalName
+  ) return
+
+  console.log(newExampleMeta.value)
+  defaultProps.value = {
+    ...getDefaultProps(newComponentMeta),
+    ...(newExampleMeta?.meta?.compodium?.defaultProps ?? newComponentMeta?.meta?.compodium?.defaultProps)
+  }
+
+  updateComponent()
+  updateRenderer()
+})
 
 watch(component, async (oldValue, newValue) => {
   if (oldValue.componentId === newValue.componentId) updateComponent()
@@ -93,7 +111,7 @@ hooks.hook('component:added', useDebounceFn(async () => {
 }, 300))
 
 hooks.hook('component:removed', useDebounceFn(fetchCollections, 300))
-hooks.hook('component:changed', useDebounceFn(() => refreshComponent(), 300))
+hooks.hook('component:changed', useDebounceFn(() => refreshComponentMeta(), 300))
 
 onMounted(() => window.__COMPODIUM_HOOKS__ = hooks)
 
