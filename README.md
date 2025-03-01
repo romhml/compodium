@@ -158,6 +158,8 @@ extendCompodiumMeta({
   }
 })
 ```
+> [!WARNING]
+> `extendCompodiumMeta` is a macro that is evaluated at compile time. As such, you can only use literal values, and can't reference variables.
 
 Alternatively, you can specify default properties for your components in your `app.config.ts` file:
 

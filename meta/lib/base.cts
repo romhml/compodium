@@ -17,6 +17,12 @@ import type {
   SlotMeta
 } from 'vue-component-meta'
 
+export type CompodiumMeta<T = Record<string, any>> = ComponentMeta & {
+  compodium?: {
+    defaultProps: Partial<T>
+  }
+}
+
 const windowsPathReg = /\\/g
 
 export function createCheckerByJsonConfigBase(
@@ -242,7 +248,7 @@ ${commandLine.vueOptions.target < 3 ? vue2TypeHelpersCode : typeHelpersCode}
     return _getExports(program, typeChecker, componentPath).exports.map(e => e.getName())
   }
 
-  function getComponentMeta(componentPath: string, exportName = 'default'): ComponentMeta {
+  function getComponentMeta(componentPath: string, exportName = 'default'): CompodiumMeta {
     const program = tsLs.getProgram()!
     const typeChecker = program.getTypeChecker()
     const { symbolNode, exports } = _getExports(program, typeChecker, componentPath)
@@ -260,6 +266,7 @@ ${commandLine.vueOptions.target < 3 ? vue2TypeHelpersCode : typeHelpersCode}
     let _events: ReturnType<typeof getEvents> | undefined
     let _slots: ReturnType<typeof getSlots> | undefined
     let _exposed: ReturnType<typeof getExposed> | undefined
+    let _compodium: CompodiumMeta['compodium']
 
     return {
       get type() {
@@ -276,6 +283,9 @@ ${commandLine.vueOptions.target < 3 ? vue2TypeHelpersCode : typeHelpersCode}
       },
       get exposed() {
         return _exposed ?? (_exposed = getExposed())
+      },
+      get compodium() {
+        return _compodium ?? (_compodium = getCompodiumMeta() as CompodiumMeta['compodium'])
       }
     }
 
@@ -288,6 +298,90 @@ ${commandLine.vueOptions.target < 3 ? vue2TypeHelpersCode : typeHelpersCode}
       }
 
       return 0
+    }
+
+    function getCompodiumMeta() {
+      const snapshot = language.scripts.get(componentPath)?.snapshot
+      const sourceScript = language.scripts.get(componentPath)
+
+      if (!snapshot || !sourceScript) {
+        console.error('Snapshot or source script not found.')
+        return
+      }
+
+      const vueFile = sourceScript!.generated?.root
+      const ast = vueFile && exportName === 'default'
+        ? (vueFile as vue.VueVirtualCode).sfc.scriptSetup?.ast
+        : ts.createSourceFile(
+            '/tmp.' + componentPath.slice(componentPath.lastIndexOf('.') + 1),
+            snapshot.getText(0, snapshot.getLength()),
+            ts.ScriptTarget.Latest
+          )
+
+      if (!ast) return
+      const identifier = 'extendCompodiumMeta'
+      function traverse(node: ts.Node, parent?: ts.Node): void {
+        if (!ast) return
+
+        if ((node as any)?.text === identifier && ts.isIdentifier(node)) {
+          const argument = (parent as any)?.arguments?.[0]
+          if (argument && ts.isObjectLiteralExpression(argument)) {
+            return parseObjectLiteralExpression(argument, ast)
+          }
+        }
+        return ts.forEachChild(node, child => traverse(child, node))
+      }
+
+      return traverse(ast)
+    }
+
+    function parseObjectLiteralExpression(node: ts.Node, ast: ts.SourceFile): any {
+      const printer = ts.createPrinter(checkerOptions.printer)
+
+      // Function to traverse the AST and find the object literal expression
+      function traverse(node: ts.Node): any {
+        if (ts.isObjectLiteralExpression(node)) {
+          // Create a JavaScript object from the object literal expression
+          const obj: any = {}
+          node.properties.forEach((property) => {
+            if (ts.isPropertyAssignment(property) && ts.isIdentifier(property.name)) {
+              const key = property.name.text
+              const value = evaluateExpression(property.initializer)
+              obj[key] = value
+            }
+          })
+          return obj
+        }
+        return ts.forEachChild(node, traverse)
+      }
+
+      // Function to evaluate expressions (supports literals and arrays)
+      function evaluateExpression(node: ts.Node): any {
+        if (ts.isStringLiteral(node)) {
+          return node.text
+        } else if (ts.isNumericLiteral(node)) {
+          return Number.parseFloat(node.text)
+        } else if (ts.isStringLiteralOrJsxExpression(node)) {
+          return true
+        } else if (ts.isObjectLiteralExpression(node)) {
+          return traverse(node)
+        } else if (ts.isArrayLiteralExpression(node)) {
+          return node.elements.map(element => evaluateExpression(element))
+        } else if (ts.isLiteralTypeLiteral(node)) {
+          if (node.kind === ts.SyntaxKind.TrueKeyword) {
+            return true
+          } else if (node.kind === ts.SyntaxKind.FalseKeyword) {
+            return false
+          } else if (node.kind === ts.SyntaxKind.NullKeyword) {
+            return null
+          } else if (node.kind === ts.SyntaxKind.UndefinedKeyword) {
+            return undefined
+          }
+        }
+        return printer?.printNode(ts.EmitHint.Expression, node, ast)
+      }
+      // Traverse the AST to find and transform the object literal
+      return traverse(node)
     }
 
     function getProps() {

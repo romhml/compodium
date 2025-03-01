@@ -28,13 +28,13 @@ const component = computed(() => {
 
 function getDefaultProps(component: ComponentMeta): Record<string, any> {
   return component.meta?.props?.reduce((acc: Record<string, any>, prop: any) => {
-    const value = getDefaultPropValue(prop)
+    const value = evalPropValue(prop)
     if (value !== undefined) acc[prop.name] = value
     return acc
   }, {})
 }
 
-function getDefaultPropValue(meta: Partial<PropertyMeta>) {
+function evalPropValue(meta: Partial<PropertyMeta>) {
   if (!meta.default) return
   try {
     return new Function(`return ${meta.default}`)()
@@ -44,14 +44,14 @@ function getDefaultPropValue(meta: Partial<PropertyMeta>) {
 }
 
 const { data: componentMeta, refresh: refreshComponent } = useAsyncData('__compodium-fetch-meta', async () => {
-  const meta = await $fetch<ComponentMeta>(`/api/component-meta/${componentId.value}`, { baseURL: '/__compodium__' })
-  defaultProps.value = getDefaultProps(meta)
-
+  const component = await $fetch<ComponentMeta>(`/api/component-meta/${componentId.value}`, { baseURL: '/__compodium__' })
+  defaultProps.value = { ...getDefaultProps(component), ...component.meta.compodium.defaultProps }
   if (!componentMeta.value || componentMeta.value?.componentId !== componentId.value) {
+    props.value = defaultProps.value
     updateComponent()
+    updateRenderer()
   }
-
-  return meta
+  return component
 }, { watch: [componentId] })
 
 watch(component, async (oldValue, newValue) => {
@@ -74,17 +74,6 @@ async function updateRenderer() {
 
 const updateRendererDebounced = useDebounceFn(updateRenderer, 100, { maxWait: 300 })
 
-function onComponentLoaded() {
-  updateRenderer()
-}
-
-async function updateDefaultProps(payload: { componentId: string, defaultProps: any }) {
-  if (componentId.value !== payload.componentId) return
-  props.value = { ...defaultProps.value, ...payload.defaultProps, ...props.value }
-  compodiumDefaultProps.value = { ...payload.defaultProps }
-  await hooks.callHook('renderer:update-props', { props: props.value })
-}
-
 const hooks = createHooks<CompodiumHooks>()
 
 hooks.hook('renderer:mounted', () => hooks.callHook('renderer:update-component', {
@@ -94,7 +83,7 @@ hooks.hook('renderer:mounted', () => hooks.callHook('renderer:update-component',
   path: component.value.filePath
 }))
 
-hooks.hook('renderer:component-loaded', onComponentLoaded)
+hooks.hook('renderer:component-loaded', updateRenderer)
 
 hooks.hook('component:added', useDebounceFn(async () => {
   await Promise.all([
@@ -105,7 +94,6 @@ hooks.hook('component:added', useDebounceFn(async () => {
 
 hooks.hook('component:removed', useDebounceFn(fetchCollections, 300))
 hooks.hook('component:changed', useDebounceFn(() => refreshComponent(), 300))
-hooks.hook('devtools:update-default-props', updateDefaultProps)
 
 onMounted(() => window.__COMPODIUM_HOOKS__ = hooks)
 
