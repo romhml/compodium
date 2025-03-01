@@ -1,5 +1,34 @@
 # Changelog
 
+## v0.1.0-beta.3
+
+[compare changes](https://github.com/romhml/compodium/compare/v0.1.0-beta.2...v0.1.0-beta.3)
+
+### 🚀 Enhancements
+
+- Add placeholder component ([c58301f](https://github.com/romhml/compodium/commit/c58301f))
+- Improve nuxt ui examples ([66a2a76](https://github.com/romhml/compodium/commit/66a2a76))
+- Add prop search ([7e77281](https://github.com/romhml/compodium/commit/7e77281))
+- Improve renderer controls ([4f260b9](https://github.com/romhml/compodium/commit/4f260b9))
+
+### 🩹 Fixes
+
+- Reset default props on example change ([55f5e26](https://github.com/romhml/compodium/commit/55f5e26))
+- Reset prop search term on component change ([5f5ffca](https://github.com/romhml/compodium/commit/5f5ffca))
+- Align prop search icon ([4dcba09](https://github.com/romhml/compodium/commit/4dcba09))
+
+### 🏡 Chore
+
+- Setup pr.pkg.new ([8baeb94](https://github.com/romhml/compodium/commit/8baeb94))
+- Configure Renovate ([#2](https://github.com/romhml/compodium/pull/2))
+- Update renovate.json ([e6762f7](https://github.com/romhml/compodium/commit/e6762f7))
+- Update playground ([71866fa](https://github.com/romhml/compodium/commit/71866fa))
+
+### ❤️ Contributors
+
+- Romhml ([@romhml](https://github.com/romhml))
+- Romain Hamel ([@romhml](https://github.com/romhml))
+
 ## v0.1.0-beta.2
 
 [compare changes](https://github.com/romhml/compodium/compare/v0.1.0-beta.1...v0.1.0-beta.2)

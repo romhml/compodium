@@ -77,8 +77,8 @@ const treeItems = computed(() =>
 )
 
 defineShortcuts({
-  meta_shift_k: () => {
-    modalState.value = !modalState.value
+  meta_b: () => {
+    modalState.value = true
   }
 })
 </script>
@@ -100,7 +100,7 @@ defineShortcuts({
         <div class="absolute flex items-center top-2 left-2">
           <UTooltip
             text="Search"
-            :kbds="['shift', 'meta', 'k']"
+            :kbds="['meta', 'b']"
             :content="{ side: 'right' }"
           >
             <UButton

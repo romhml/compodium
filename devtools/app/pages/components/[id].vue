@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useColorMode, useDebounceFn } from '@vueuse/core'
+import { useFuse } from '@vueuse/integrations/useFuse'
 import type { ComponentMeta, CompodiumHooks } from '#module/types'
 import type { PropertyMeta } from '@compodium/meta'
 import { camelCase, pascalCase } from 'scule'
@@ -129,29 +130,41 @@ function onResetState() {
   props.value = { ...defaultProps.value, ...compodiumDefaultProps.value }
   updatePropsDebounced()
 }
+
+const componentProps = computed(() => componentMeta.value?.meta?.props ?? [])
+const propsSearchTerm = ref()
+
+const { results: fuseResults } = useFuse<PropertyMeta>(propsSearchTerm, componentProps, {
+  fuseOptions: {
+    ignoreLocation: true,
+    threshold: 0.1,
+    keys: ['name', 'description']
+  },
+  matchAllWhenSearchEmpty: true
+})
+
+const visibleProps = computed(() => new Set(fuseResults.value?.map(result => result.item.name)))
+watch(component, () => propsSearchTerm.value = '')
 </script>
 
 <template>
   <div class="relative flex grow">
     <ComponentPreview class="grow h-full" />
     <div class="flex gap-2 absolute top-2 right-2">
-      <UButton
-        v-if="componentMeta?.docUrl"
-        icon="lucide:book-open"
-        variant="link"
-        class="rounded-full"
-        color="neutral"
-        :href="componentMeta?.docUrl"
-        target="_blank"
-      />
-      <UButton
-        icon="lucide:rotate-cw"
-        variant="link"
-        color="neutral"
-        class="rounded-full"
-        :class="{ 'animate-rotate': isRotated }"
-        @click="onResetState"
-      />
+      <UTooltip
+        text="Open docs"
+        :content="{ side: 'left' }"
+      >
+        <UButton
+          v-if="componentMeta?.docUrl"
+          icon="lucide:book-open"
+          variant="link"
+          class="rounded-full"
+          color="neutral"
+          :href="componentMeta?.docUrl"
+          target="_blank"
+        />
+      </UTooltip>
       <UButton
         :icon="isDark ? 'lucide:moon' : 'lucide:sun'"
         variant="link"
@@ -166,29 +179,55 @@ function onResetState() {
     <UTabs
       variant="link"
       :items="tabs"
-      class="relative h-screen flex flex-col overflow-y-scroll gap-0"
-      :ui="{ list: 'sticky top-0 bg-(--ui-bg) border-b border-(--ui-border) z-50', content: 'grow' }"
+      class="h-screen flex flex-col gap-0"
+      :ui="{ content: 'grow relative overflow-y-scroll' }"
     >
       <template #props>
-        <div
-          v-for="prop in componentMeta?.meta.props"
-          :key="componentMeta.componentId + '-prop-' + prop.name"
-          class="px-3 py-2 border-b border-(--ui-border)"
-        >
-          <ComponentPropInput
-            v-model="props[prop.name]"
-            :schema="prop.schema"
-            :name="prop.name"
-            :description="prop.description"
-            class="p-4 rounded"
-            @update:model-value="updatePropsDebounced"
-          />
+        <div class="overflow-y-scroll h-full">
+          <div class="bg-(--ui-bg) p-0.5 border-y border-(--ui-border) sticky top-0 z-1 flex gap-2">
+            <UInput
+              v-model="propsSearchTerm"
+              placeholder="Search props..."
+              icon="lucide:search"
+              variant="none"
+              class="w-full ml-1"
+            />
+
+            <UTooltip
+              text="Reset props"
+              :content="{ side: 'left' }"
+            >
+              <UButton
+                icon="lucide:rotate-cw"
+                variant="link"
+                color="neutral"
+                class="rounded-full"
+                size="sm"
+                :class="{ 'animate-rotate': isRotated }"
+                @click="onResetState"
+              />
+            </UTooltip>
+          </div>
+          <div
+            v-for="prop in componentMeta?.meta.props"
+            v-show="visibleProps.has(prop.name)"
+            :key="componentMeta.componentId + '-prop-' + prop.name"
+            class="grow px-3 py-2 border-b border-(--ui-border)"
+          >
+            <ComponentPropInput
+              v-model="props[prop.name]"
+              :schema="prop.schema"
+              :name="prop.name"
+              :description="prop.description"
+              class="p-4 rounded"
+              @update:model-value="updatePropsDebounced"
+            />
+          </div>
         </div>
       </template>
 
       <template #code>
         <ComponentCode
-          class=""
           :component="componentMeta"
           :example="exampleId"
           :props="props"
