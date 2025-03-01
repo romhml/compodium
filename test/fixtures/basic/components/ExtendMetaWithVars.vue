@@ -1,12 +1,12 @@
 <script setup lang="ts">
 defineProps<{ foo: string }>()
 
-const foo = 'bar'
+const baz = 'bar'
 
 extendCompodiumMeta({
   defaultProps: {
-    foo,
-    bar: foo
+    baz,
+    bar: baz
   }
 })
 </script>
