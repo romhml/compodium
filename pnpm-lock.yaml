@@ -13,6 +13,9 @@ importers:
 
   .:
     dependencies:
+      '@compodium/meta':
+        specifier: workspace:*
+        version: link:meta
       '@nuxt/devtools-kit':
         specifier: ^2.1.0
         version: 2.1.0(magicast@0.3.5)(vite@6.2.0(@types/node@22.13.5)(jiti@2.4.2)(lightningcss@1.29.1)(terser@5.39.0)(yaml@2.7.0))
@@ -61,9 +64,6 @@ importers:
       ufo:
         specifier: ^1.5.4
         version: 1.5.4
-      vue-component-meta:
-        specifier: ^2.2.4
-        version: 2.2.4(typescript@5.6.3)
       zod:
         specifier: ^3.24.2
         version: 3.24.2
@@ -144,9 +144,33 @@ importers:
         specifier: ^3.0.0
         version: 3.0.0
     devDependencies:
+      '@compodium/meta':
+        specifier: workspace:*
+        version: link:../meta
       '@iconify-json/lucide':
         specifier: ^1.2.26
         version: 1.2.26
+
+  meta:
+    dependencies:
+      '@volar/language-core':
+        specifier: ^2.4.11
+        version: 2.4.11
+      '@volar/typescript':
+        specifier: ^2.4.11
+        version: 2.4.11
+      '@vue/language-core':
+        specifier: 2.2.4
+        version: 2.2.4(typescript@5.6.3)
+      typescript:
+        specifier: '*'
+        version: 5.6.3
+      vue-component-meta:
+        specifier: ^2.2.4
+        version: 2.2.4(typescript@5.6.3)
+      vue-component-type-helpers:
+        specifier: ^2.2.6
+        version: 2.2.6
 
   playground:
     dependencies:
@@ -4987,6 +5011,9 @@ packages:
 
   vue-component-type-helpers@2.2.4:
     resolution: {integrity: sha512-F66p0XLbAu92BRz6kakHyAcaUSF7HWpWX/THCqL0TxySSj7z/nok5UUMohfNkkCm1pZtawsdzoJ4p1cjNqCx0Q==}
+
+  vue-component-type-helpers@2.2.6:
+    resolution: {integrity: sha512-kFdh3gw9DN+h6d/JEQfW8GbNG4XHwiJSJO1T3Akx1QtLT0tS/4njk4JpAzQ6i9PvOwALg3ESMnS31xr2wXluXA==}
 
   vue-demi@0.14.10:
     resolution: {integrity: sha512-nMZBOwuzabUO0nLgIcc6rycZEebF6eeUfaiQx9+WSk8e29IbLvPU9feI6tqW4kTo3hvoYAJkMh8n8D0fuISphg==}
@@ -11037,6 +11064,8 @@ snapshots:
       typescript: 5.6.3
 
   vue-component-type-helpers@2.2.4: {}
+
+  vue-component-type-helpers@2.2.6: {}
 
   vue-demi@0.14.10(vue@3.5.13(typescript@5.6.3)):
     dependencies:

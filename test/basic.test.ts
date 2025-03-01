@@ -80,7 +80,7 @@ describe('basic', async () => {
       const component = await $fetch('/__compodium__/api/component-meta/basicComponent')
       expect(component).toEqual(expect.objectContaining({
         pascalName: 'BasicComponent',
-        meta: {
+        meta: expect.objectContaining({
           props: [
             {
               description: '',
@@ -98,8 +98,35 @@ describe('basic', async () => {
               type: 'string'
             }
           ]
-        }
+        })
       }))
+    })
+  })
+
+  describe('compodium meta', async () => {
+    it('works', async () => {
+      const component = await $fetch<ComponentMeta>('/__compodium__/api/component-meta/extendMeta')
+      expect(component.meta.compodium).toMatchObject({
+        defaultProps: {
+          foo: 'bar',
+          bool: true,
+          num: 123,
+          nested: {
+            bat: 'baz'
+          },
+          array: [{ foo: 'bar' }, 'hello']
+        }
+      })
+    })
+
+    it('filters variables', async () => {
+      const component = await $fetch<ComponentMeta>('/__compodium__/api/component-meta/extendMetaWithVars')
+      expect(component.meta.compodium).toEqual({ defaultProps: {} })
+    })
+
+    it('ignores if invalid param', async () => {
+      const component = await $fetch<ComponentMeta>('/__compodium__/api/component-meta/extendMetaBad')
+      expect(component.meta.compodium).toEqual({ defaultProps: {} })
     })
   })
 

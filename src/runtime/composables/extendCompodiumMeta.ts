@@ -1,21 +1,5 @@
-import { useState } from '#imports'
-
-export type ExtendCompodiumMetaOptions<T> = {
-  defaultProps: T
-}
-
-export function _useCompodiumMetaState() {
-  const defaultProps = useState<Record<string, any> | null>('__compodium-meta', () => null)
-  return {
-    defaultProps
-  }
-}
-
+import type { CompodiumMeta } from '@compodium/meta'
 /**
- * Define default props for the component's preview.
+ * Runtime placeholder for the for the extendCompodiumMeta macro.
  */
-export function extendCompodiumMeta<T = Record<string, any>>(options: ExtendCompodiumMetaOptions<T>) {
-  if (!import.meta.dev) return
-  const { defaultProps } = _useCompodiumMetaState()
-  defaultProps.value = options.defaultProps as any
-}
+export function extendCompodiumMeta<T = Record<string, any>>(_options: CompodiumMeta<T>['compodium']) { }

@@ -25,7 +25,7 @@ describe('with nuxt ui', async () => {
       const component = await $fetch('/__compodium__/api/component-meta/uButton')
       expect(component).toEqual(expect.objectContaining({
         pascalName: 'UButton',
-        meta: {
+        meta: expect.objectContaining({
           props: expect.arrayContaining([
             expect.objectContaining({
               name: 'label',
@@ -39,7 +39,7 @@ describe('with nuxt ui', async () => {
               type: 'string'
             })
           ])
-        }
+        })
       }))
     })
   })

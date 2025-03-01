@@ -42,6 +42,63 @@ export const defaultProps = {
       ]
     },
     checkbox: { label: 'Check me!' },
+    contextMenu: {
+      items: [
+        {
+          label: 'System',
+          icon: 'i-lucide-monitor'
+        },
+        {
+          label: 'Light',
+          icon: 'i-lucide-sun'
+        },
+        {
+          label: 'Dark',
+          icon: 'i-lucide-moon'
+        }
+      ]
+    },
+    commandPalette: {
+      groups: [{
+        id: 'actions',
+        items: [{
+          label: 'Add new file',
+          suffix: 'Create a new file in the current directory or workspace.',
+          icon: 'i-lucide-file-plus'
+        }, {
+          label: 'Add new folder',
+          suffix: 'Create a new folder in the current directory or workspace.',
+          icon: 'i-lucide-folder-plus',
+          kbds: ['meta', 'F']
+        }, {
+          label: 'Add hashtag',
+          suffix: 'Add a hashtag to the current item.',
+          icon: 'i-lucide-hash',
+          kbds: ['meta', 'H']
+        }, {
+          label: 'Add label',
+          suffix: 'Add a label to the current item.',
+          icon: 'i-lucide-tag',
+          kbds: ['meta', 'L']
+        }]
+      }]
+    },
+    dropdownMenu: {
+      items: [
+        {
+          label: 'Profile',
+          icon: 'i-lucide-user'
+        },
+        {
+          label: 'Billing',
+          icon: 'i-lucide-credit-card'
+        },
+        {
+          label: 'Settings',
+          icon: 'i-lucide-cog'
+        }
+      ]
+    },
     icon: { name: 'lucide:rocket' },
     formField: { label: 'Label' },
     inputMenu: { items: ['Option 1', 'Option 2', 'Option 3'] },

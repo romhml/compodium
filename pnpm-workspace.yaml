@@ -1,4 +1,5 @@
 packages:
   - "./"
+  - "meta"
   - "devtools"
   - "playground"

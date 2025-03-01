@@ -1,4 +1,4 @@
-import type { CollectionConfig } from './types'
+import type { Collection, CollectionConfig } from './types'
 import { existsSync, readFileSync } from 'node:fs'
 import { addCustomTab, startSubprocess } from '@nuxt/devtools-kit'
 import { defineNuxtModule, createResolver, addTemplate, addServerHandler, addVitePlugin, updateTemplates, addImportsDir, logger, addComponentsDir } from '@nuxt/kit'
@@ -151,7 +151,7 @@ export default defineNuxtModule<ModuleOptions>({
         const collections = (nuxt.options.appConfig.compodium as any).collections
         const components = [...app.components, ...exampleComponents]
         return JSON.stringify(components.reduce((acc, component) => {
-          const collection = getComponentCollection<CollectionConfig>(component, collections)
+          const collection = getComponentCollection<CollectionConfig & Collection>(component, collections)
 
           const componentId = camelCase(component.kebabName)
           const baseName = collection?.prefix
@@ -162,6 +162,7 @@ export default defineNuxtModule<ModuleOptions>({
             ...component,
             baseName,
             componentId,
+            collectionId: collection?.id,
             docUrl: collection?.getDocUrl?.(component.pascalName)
           }
           return acc

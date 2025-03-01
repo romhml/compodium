@@ -5,5 +5,8 @@ export default defineBuildConfig({
     'process.env.DEV': 'false',
     'process.env.COMPODIUM_LOCAL': 'false',
     'process.env.COMPODIUM_TEST': 'false'
-  }
+  },
+  externals: [
+    'typescript'
+  ]
 })

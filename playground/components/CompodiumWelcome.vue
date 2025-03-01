@@ -8,6 +8,12 @@ withDefaults(defineProps<{
   spinIt?: boolean
   bounceIt?: boolean
 }>(), { title: 'Welcome!' })
+
+extendCompodiumMeta({
+  defaultProps: {
+    bounceIt: true
+  }
+})
 </script>
 
 <template>
