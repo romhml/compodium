@@ -29,6 +29,7 @@
     "typecheck": "vue-tsc --noEmit && nuxi typecheck devtools && nuxi typecheck playground"
   },
   "dependencies": {
+    "@compodium/meta": "workspace:*",
     "@nuxt/devtools-kit": "^2.1.0",
     "@nuxt/kit": "^3.15.4",
     "@vue/language-core": "^2.2.4",

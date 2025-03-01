@@ -69,6 +69,7 @@ declare module 'nuxt/schema' {
       componentsPath: string
       collections: Collection[]
       defaultProps?: Record<string, any>
+      matchUIColors?: boolean
     }
   }
 }

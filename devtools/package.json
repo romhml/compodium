@@ -19,6 +19,7 @@
     "shiki": "^3.0.0"
   },
   "devDependencies": {
-    "@iconify-json/lucide": "^1.2.26"
+    "@iconify-json/lucide": "^1.2.26",
+    "@compodium/meta": "workspace:*"
   }
 }
