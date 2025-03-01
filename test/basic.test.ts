@@ -105,7 +105,7 @@ describe('basic', async () => {
 
   describe('compodium meta', async () => {
     it('works', async () => {
-      const component = await $fetch<ComponentMeta>('/__compodium__/api/component-meta/withExtendMeta')
+      const component = await $fetch<ComponentMeta>('/__compodium__/api/component-meta/extendMeta')
       expect(component.meta.compodium).toMatchObject({
         defaultProps: {
           foo: 'bar',
@@ -117,6 +117,16 @@ describe('basic', async () => {
           array: [{ foo: 'bar' }, 'hello']
         }
       })
+    })
+
+    it('filters variables', async () => {
+      const component = await $fetch<ComponentMeta>('/__compodium__/api/component-meta/extendMetaWithVars')
+      expect(component.meta.compodium).toMatchObject({})
+    })
+
+    it('ignores if invalid param', async () => {
+      const component = await $fetch<ComponentMeta>('/__compodium__/api/component-meta/extendMetaBad')
+      expect(component.meta.compodium).toMatchObject({})
     })
   })
 
