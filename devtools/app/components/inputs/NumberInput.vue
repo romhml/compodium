@@ -2,7 +2,7 @@
 import type { NumberInputSchema } from '#module/runtime/server/services/infer'
 
 defineProps<{ schema: NumberInputSchema }>()
-const modelValue = defineModel<number>()
+const modelValue = defineModel<number>({ default: null })
 </script>
 
 <template>

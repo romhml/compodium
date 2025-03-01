@@ -5,6 +5,7 @@ import { useAppConfig } from '#imports'
 import { getChecker } from '../services/checker'
 import { inferPropTypes } from '../services/infer'
 import { camelCase } from 'scule'
+import type { CompodiumMeta } from '@compodium/meta'
 
 export default defineEventHandler(async (event) => {
   appendHeader(event, 'Access-Control-Allow-Origin', '*')
@@ -43,6 +44,8 @@ export default defineEventHandler(async (event) => {
           ...meta.compodium?.defaultProps
         }
       }
-    }
-  }
+    },
+    // TODO: remove
+    srcMeta: meta
+  } as CompodiumMeta
 })

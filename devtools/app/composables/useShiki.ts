@@ -29,5 +29,28 @@ export function useShiki() {
     })
   }
 
-  return { codeToHtml }
+  async function typeToHtml(code: string, lang: BuiltinLanguage | 'text' = 'text') {
+    if (!highlighter.value) {
+      highlighter.value = await createHighlighterCore({
+        themes: [MaterialThemeLighter, MaterialThemePalenight],
+        langs: [VueLang, MarkdownLang],
+        engine: createOnigurumaEngine(() => import('shiki/wasm'))
+      })
+    }
+
+    return highlighter.value.codeToHtml(code, {
+      lang,
+      grammarContextCode: 'let a:',
+      themes: {
+        dark: 'material-theme-palenight',
+        default: 'material-theme-lighter',
+        light: 'material-theme-lighter'
+      }
+    })
+  }
+
+  return {
+    typeToHtml,
+    codeToHtml
+  }
 }

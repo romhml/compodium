@@ -22,7 +22,7 @@ const inputTypes: Record<PropInputType, Component> = {
 </script>
 
 <script setup lang="ts">
-const props = defineProps<{ name?: string, schema: PropSchema[], description?: string, disabled?: boolean }>()
+const props = defineProps<{ name?: string, schema: PropSchema[], description?: string, disabled?: boolean, arrayItem?: boolean }>()
 const modelValue = defineModel<any>()
 
 const currentType = ref()
@@ -38,6 +38,8 @@ const currentInput = computed<PropSchema & { component: Component } | null>(() =
   }
   return null
 })
+
+console.log('val', props.schema, currentInput.value)
 
 function inferDefaultInput(value?: any, types?: PropSchema[]): PropSchema | undefined {
   if (!value) return
@@ -62,17 +64,30 @@ const description = computed(() => {
     <UFormField
       :name="name"
       class="w-full"
-      :ui="{ wrapper: 'mb-2' }"
       :class="{ 'opacity-70 cursor-not-allowed': disabled || !currentInput }"
+      :ui="{ label: 'w-full' }"
     >
       <template #label>
-        <div>
+        <div class="flex w-full justify-between gap-2 mb-2">
           <p
             v-if="name"
-            class="font-mono font-bold px-1.5 py-0.5 border border-[var(--ui-border-accented)] border-dashed rounded bg-[var(--ui-bg-elevated)]"
+            class="flex-none font-mono font-semibold px-1.5 py-0.5 border border-(--ui-border-accented)/50 rounded bg-[var(--ui-bg-elevated)]"
           >
             {{ name }}
           </p>
+          <span v-else />
+
+          <USelect
+            v-if="schema?.length > 1"
+            v-model="currentType"
+            variant="none"
+            :items="schema"
+            label-key="type"
+            value-key="type"
+            trailing-icon=""
+            class="max-w-50 py-0.5 font-mono bg-(--ui-bg-elevated)/50 border border-(--ui-border)"
+            @update:model-value="modelValue = undefined"
+          />
         </div>
       </template>
 
@@ -89,18 +104,8 @@ const description = computed(() => {
         v-if="!disabled && currentInput"
         v-model="modelValue"
         :schema="currentInput.schema"
+        :array-item="arrayItem"
       />
     </UFormField>
-
-    <USelect
-      v-if="schema?.length > 1"
-      v-model="currentType"
-      variant="none"
-      :items="schema"
-      label-key="type"
-      value-key="type"
-      class="absolute top-2 right-5 max-w-xs font-mono"
-      @update:model-value="modelValue = undefined"
-    />
   </div>
 </template>

@@ -32,6 +32,7 @@ const { data: formattedCode } = useAsyncData('__compodium-component-formatted-co
 }, { watch: [code] })
 
 const { codeToHtml } = useShiki()
+
 const { data: highlightedCode } = useAsyncData('__compodium-component-highlighted-code', async () => {
   return formattedCode.value
     ? codeToHtml(formattedCode.value, 'vue')

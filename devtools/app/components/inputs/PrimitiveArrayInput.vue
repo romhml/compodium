@@ -5,11 +5,11 @@ const props = defineProps<{ schema: PrimitiveArrayInputSchema }>()
 
 const searchTerm = ref('')
 const items = ref<string[]>([])
-const modelValue = defineModel<any[]>({ default: [] })
+const modelValue = defineModel<any[]>()
 
 const inputValue = computed({
   get() {
-    return modelValue.value.map(v => v.toString())
+    return modelValue.value?.map(v => v.toString())
   },
   set(value: string[]) {
     modelValue.value = (props.schema as any).schema[0] === 'number' ? value.map(Number) : value
@@ -18,7 +18,7 @@ const inputValue = computed({
 
 function onCreate(item: string) {
   items.value.push(item)
-  inputValue.value = [...inputValue.value, item]
+  inputValue.value = [...inputValue.value ?? [], item]
   searchTerm.value = ''
 }
 </script>
@@ -39,7 +39,7 @@ function onCreate(item: string) {
     no-portal
     :items="items"
     :ui="{ viewport: 'invisible', content: 'invisible' }"
-    class="min-w-56"
+    class="max-w-56"
     @create="onCreate"
   >
     <template #trailing>

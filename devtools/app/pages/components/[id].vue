@@ -50,6 +50,7 @@ const { data: componentMeta, refresh: refreshComponentMeta } = useAsyncData('__c
 }, { watch: [componentId] })
 
 const { data: exampleMeta } = useAsyncData('__compodium-fetch-example-meta', async () => {
+  if (!exampleId.value) return
   const example = await $fetch<ComponentMeta>(`/api/component-meta/${exampleId.value}`, { baseURL: '/__compodium__' })
   return example
 }, { watch: [exampleId] })
@@ -219,7 +220,7 @@ watch(component, () => propsSearchTerm.value = '')
               :schema="prop.schema"
               :name="prop.name"
               :description="prop.description"
-              class="p-4 rounded"
+              class="m-4 rounded"
               @update:model-value="updatePropsDebounced"
             />
           </div>

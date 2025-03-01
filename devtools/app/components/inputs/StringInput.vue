@@ -5,5 +5,10 @@ defineProps<{ schema: StringEnumInputSchema }>()
 </script>
 
 <template>
-  <UInput class="min-w-56" />
+  <UTextarea
+    class="min-w-56"
+    :rows="1"
+    :maxrows="8"
+    autoresize
+  />
 </template>

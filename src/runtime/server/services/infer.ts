@@ -48,8 +48,9 @@ export type DateInputSchema = z.infer<typeof dateInputSchema>
 const stringEnumInputSchema = z.object({
   kind: z.literal('enum'),
   schema: z.array(z.string())
-    .or(z.record(z.any(), z.string()).transform<string[]>(t => Object.values(t)))
-    .transform<string[]>(t => t.filter(s => s.trim().match(/^["'`]/)).map(s => s.trim().replaceAll(/["'`]/g, '')))
+    .or(z.record(z.any(), z.string()).transform(t => Object.values(t)))
+    .transform(t => t.filter(s => s.trim().match(/^["'`]/)))
+    .transform(t => t.map(s => s.trim().replaceAll(/["'`]/g, '')))
     .pipe(z.array(z.string()).min(1)),
   type: z.string(),
   default: z.any()
@@ -80,9 +81,9 @@ export type PrimitiveArrayInputSchema = z.infer<typeof primitiveArrayInputSchema
 
 const arrayInputSchema = z.object({
   kind: z.literal('array'),
-  schema: z.array(z.any({}))
-    .or(z.record(z.any(), z.any({})).transform(t => Object.values(t)))
-    .transform((t) => { return t.filter(s => s !== 'undefined') }).pipe(z.array(z.any()).min(1)),
+  schema: z.array(z.any())
+    .or(z.record(z.any(), z.any()).transform(t => Object.values(t)).transform(t => t.filter(s => s !== 'undefined')))
+    .pipe(z.array(z.any()).min(1)),
   type: z.string(),
   default: z.any()
 })
