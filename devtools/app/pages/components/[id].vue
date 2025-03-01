@@ -62,7 +62,6 @@ watch([exampleMeta, componentMeta], ([newExampleMeta, newComponentMeta], [oldExa
     && newExampleMeta?.pascalName === oldExampleMeta?.pascalName
   ) return
 
-  console.log(newExampleMeta.value)
   defaultProps.value = {
     ...getDefaultProps(newComponentMeta),
     ...(newExampleMeta?.meta?.compodium?.defaultProps ?? newComponentMeta?.meta?.compodium?.defaultProps)
