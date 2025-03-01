@@ -15,5 +15,5 @@
       "#module/*": ["../src/*"]
     }
   },
-	"include": ["lib/**/*"]
+  "include": ["lib/**/*"]
 }

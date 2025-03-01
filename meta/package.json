@@ -6,23 +6,23 @@
   "exports": {
     ".": "./dist/index.cjs"
   },
-	"files": [
-		"dist/**/*.cjs",
-		"dist/**/*.d.ts"
-	],
+  "files": [
+    "dist/**/*.cjs",
+    "dist/**/*.d.ts"
+  ],
   "scripts": {
     "build": "tsc -b"
   },
-	"dependencies": {
-		"@vue/language-core": "2.2.4",
-		"path-browserify": "^1.0.1"
-	},
-	"peerDependencies": {
-		"typescript": "*"
-	},
-	"peerDependenciesMeta": {
-		"typescript": {
-			"optional": true
-		}
-	}
+  "dependencies": {
+    "@vue/language-core": "2.2.4",
+    "path-browserify": "^1.0.1"
+  },
+  "peerDependencies": {
+    "typescript": "*"
+  },
+  "peerDependenciesMeta": {
+    "typescript": {
+      "optional": true
+    }
+  }
 }
