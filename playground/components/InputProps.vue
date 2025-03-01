@@ -7,6 +7,9 @@ const _props = defineProps<{
   stringArray: string[]
   numberArray: number[]
   booleanArray: boolean[]
+  /**
+   * This is a very long description of things I don't know yet what I'm going to say but it just needs to be long, not to make sense.
+   */
   object?: { foo: string }
   objectArray?: ({ foo: string | number } | { fee: string })[]
   arrayOfMultipleObjects?: ({ foo: string | number } | { fee: string })[]

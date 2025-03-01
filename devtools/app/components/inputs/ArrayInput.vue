@@ -30,7 +30,7 @@ function updateValue(index: number, value: any) {
     <div
       v-for="value, index in modelValue"
       :key="index"
-      class="relative mb-2 w-full flex gap-1.5"
+      class="relative mb-1 w-full flex gap-2"
     >
       <ComponentPropInput
         :model-value="value"
@@ -38,7 +38,6 @@ function updateValue(index: number, value: any) {
         :name="'Value ' + (index + 1)"
         array-item
         collapsible
-        :default-open="true"
         @update:model-value="(val) => updateValue(index, val)"
       />
 
@@ -49,7 +48,7 @@ function updateValue(index: number, value: any) {
           icon="lucide:x"
           size="sm"
           square
-          class="p-2.5"
+          class="p-1.75"
           @click="removeArrayItem(index)"
         />
       </div>
@@ -60,7 +59,6 @@ function updateValue(index: number, value: any) {
       color="neutral"
       variant="ghost"
       block
-      class="justify-center"
       @click="addArrayItem()"
     >
       Add value

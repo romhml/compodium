@@ -23,7 +23,7 @@ const inputTypes: Record<PropInputType, Component> = {
 </script>
 
 <script setup lang="ts">
-const props = defineProps<{ name?: string, schema: PropSchema[], description?: string, disabled?: boolean, collapsible?: boolean, defaultOpen?: boolean }>()
+const props = defineProps<{ name: string, schema: PropSchema[], description?: string, disabled?: boolean, collapsible?: boolean, defaultOpen?: boolean }>()
 const modelValue = defineModel<any>()
 
 const currentType = ref()
@@ -59,6 +59,8 @@ const description = computed(() => {
 
 const [DefineSelect, ReuseSelect] = createReusableTemplate()
 const [DefineInput, ReuseInput] = createReusableTemplate()
+const [DefineLabel, ReuseLabel] = createReusableTemplate()
+const [DefineDescription, ReuseDescription] = createReusableTemplate()
 </script>
 
 <template>
@@ -87,58 +89,61 @@ const [DefineInput, ReuseInput] = createReusableTemplate()
       />
     </DefineInput>
 
-    <UCollapsible
-      v-if="collapsible"
-      :default-open="defaultOpen"
-      :ui="{ root: 'w-full border border-(--ui-border) rounded-md', content: 'p-4 border-t border-(--ui-border)' }"
-    >
-      <UButton
-        class="group rounded-b-none border-(--ui-border)"
-        color="neutral"
-        variant="ghost"
-        block
-        :ui="{ trailingIcon: 'group-data-[state=open]:rotate-180 transition duration-200' }"
-      >
-        <div class="flex justify-between w-full">
-          <p class="font-semibold truncate text-ellipsis max-w-50">
-            {{ name }}
-          </p>
-          <ReuseSelect />
-        </div>
-      </UButton>
-      <template #content>
-        <ReuseInput collapsible />
-      </template>
-    </UCollapsible>
+    <DefineLabel>
+      <p class="truncate text-ellipsis font-mono font-semibold">
+        {{ name }}
+      </p>
+    </DefineLabel>
+    <DefineDescription>
+      <!-- eslint-disable vue/no-v-html -->
+      <p
+        v-if="description"
+        class="text-(--ui-text-muted) text-sm"
+        v-html="description"
+      />
+    </DefineDescription>
 
+    <template v-if="collapsible">
+      <UCollapsible
+        :default-open="defaultOpen"
+        :ui="{ root: 'w-full border border-(--ui-border) rounded-md', content: 'p-4 border-t border-(--ui-border)' }"
+      >
+        <UButton
+          class="group rounded-b-none text-sm ring-0 hover:bg-(--ui-bg-elevated)/50 py-1 flex justify-between w-full"
+          color="neutral"
+          size="sm"
+          variant="ghost"
+          block
+          :ui="{ trailingIcon: 'group-data-[state=open]:rotate-180 transition duration-200' }"
+        >
+          <ReuseLabel />
+          <ReuseSelect class="border-none" />
+        </UButton>
+        <template #content>
+          <ReuseInput :collapsible="collapsible" />
+        </template>
+      </UCollapsible>
+
+      <ReuseDescription />
+    </template>
     <UFormField
       v-else
       :name="name"
       class="w-full"
       :class="{ 'opacity-70 cursor-not-allowed': disabled || !currentInput }"
-      :ui="{ label: 'w-full' }"
+      :ui="{ label: 'w-full mb-1' }"
     >
       <template #label>
-        <div class="flex w-full justify-between gap-2 mb-2">
-          <p
-            v-if="name"
-            class="truncate text-ellipsis font-mono font-semibold px-1.5 py-0.5 border border-(--ui-border-accented)/50 rounded bg-[var(--ui-bg-elevated)]"
-          >
-            {{ name }}
-          </p>
-          <span v-else />
+        <div class="flex w-full justify-between gap-2">
+          <ReuseLabel class="py-0.5 px-1.5 font-mono bg-(--ui-bg-elevated)/50 border border-(--ui-border) rounded text-md" />
           <ReuseSelect />
         </div>
       </template>
 
       <template #description>
-        <!-- eslint-disable vue/no-v-html -->
-        <p
-          v-if="description"
-          class="text-neutral-600 dark:text-neutral-400 mt-1"
-          v-html="description"
-        />
+        <ReuseDescription class="mb-2" />
       </template>
+
       <ReuseInput />
     </UFormField>
   </div>
