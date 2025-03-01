@@ -16,8 +16,8 @@
   "dependencies": {
     "@volar/language-core": "^2.4.11",
     "@volar/typescript": "^2.4.11",
-    "@vue/language-core": "2.2.4",
-    "vue-component-meta": "^2.2.4",
+    "@vue/language-core": "2.2.6",
+    "vue-component-meta": "^2.2.6",
     "vue-component-type-helpers": "^2.2.6"
   },
   "peerDependencies": {
