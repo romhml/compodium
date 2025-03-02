@@ -39,7 +39,6 @@ function onCreate(item: string) {
     no-portal
     :items="items"
     :ui="{ viewport: 'invisible', content: 'invisible' }"
-    class="max-w-56"
     @create="onCreate"
   >
     <template #trailing>

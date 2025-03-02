@@ -6,7 +6,6 @@ defineProps<{ schema: StringEnumInputSchema }>()
 
 <template>
   <UTextarea
-    class="min-w-56"
     :rows="1"
     :maxrows="8"
     autoresize

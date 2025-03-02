@@ -23,7 +23,7 @@ const inputTypes: Record<PropInputType, Component> = {
 </script>
 
 <script setup lang="ts">
-const props = defineProps<{ name: string, schema: PropSchema[], description?: string, disabled?: boolean, collapsible?: boolean, defaultOpen?: boolean }>()
+const props = defineProps<{ name: string, schema: PropSchema[], description?: string, disabled?: boolean, inline?: boolean }>()
 const modelValue = defineModel<any>()
 
 const currentType = ref()
@@ -57,8 +57,7 @@ const description = computed(() => {
   return props.description?.replace(/`([^`]+)`/g, '<code class="text-xs font-medium bg-[var(--ui-bg-elevated)] px-1 py-0.5 rounded">$1</code>')
 })
 
-const open = defineModel<boolean>('open')
-const isObject = computed(() => currentInput.value?.inputType === 'object')
+const isArray = computed(() => currentInput.value?.inputType === 'array')
 
 const [DefineSelect, ReuseSelect] = createReusableTemplate()
 const [DefineInput, ReuseInput] = createReusableTemplate()
@@ -88,7 +87,9 @@ const [DefineDescription, ReuseDescription] = createReusableTemplate()
         :is="currentInput.component"
         v-if="!disabled && currentInput"
         v-model="modelValue"
+        class="w-full"
         :schema="currentInput.schema"
+        :name="name"
       />
     </DefineInput>
 
@@ -106,50 +107,53 @@ const [DefineDescription, ReuseDescription] = createReusableTemplate()
       />
     </DefineDescription>
 
-    <template v-if="collapsible || isObject">
-      <UCollapsible
-        v-model:open="open"
-        :default-open="defaultOpen || isObject"
-        :ui="{ root: 'w-full border border-(--ui-border) rounded-md', content: !isObject ? 'p-4' : '' }"
+    <template v-if="!inline || isArray">
+      <UFormField
+        :name="name"
+        class=""
+        :class="{ 'opacity-70 cursor-not-allowed': disabled || !currentInput }"
+        :label="name"
+        :ui="{ label: 'w-full flex gap-2 justify-between mb-1', description: 'mb-2', container: 'w-full' }"
       >
-        <UButton
-          class="rounded-b-none text-sm py-1 flex justify-between w-full"
-          color="neutral"
-          size="sm"
-          variant="ghost"
-          block
-          :ui="{ base: 'py-1.5 hover:bg-(--ui-bg-elevated)/50', trailingIcon: 'group-data-[state=open]:rotate-180 transition duration-200' }"
-        >
-          <ReuseLabel class="text-sm" />
+        <template #label>
+          <ReuseLabel class="py-0.5" />
           <ReuseSelect />
-        </UButton>
-        <template #content>
-          <ReuseInput :collapsible="collapsible" />
         </template>
-      </UCollapsible>
+
+        <ReuseDescription />
+
+        <div class="flex gap-2 justify-center">
+          <ReuseInput />
+          <slot name="actions" />
+        </div>
+      </UFormField>
+    </template>
+
+    <template v-else>
+      <div class="flex justify-end mb-1">
+        <ReuseSelect />
+      </div>
+      <UFormField
+        :name="name"
+        class="w-full flex gap-4"
+        :class="{ 'opacity-70 cursor-not-allowed': disabled || !currentInput }"
+        :label="name"
+        :ui="{ label: 'font-sans my-auto w-32', description: 'mb-2', container: 'mt-0 w-full', wrapper: name ? '' : 'hidden' }"
+      >
+        <template #label>
+          <ReuseLabel
+            v-if="name"
+            class="mt-1.5"
+          />
+        </template>
+        <div class="flex w-full gap-2">
+          <ReuseInput />
+          <slot name="actions" />
+        </div>
+      </UFormField>
       <div class="mt-2">
         <ReuseDescription />
       </div>
     </template>
-    <UFormField
-      v-else
-      :name="name"
-      class="w-full"
-      :class="{ 'opacity-70 cursor-not-allowed': disabled || !currentInput }"
-      :ui="{ label: 'w-full', description: 'mb-2' }"
-    >
-      <template #label>
-        <div class="flex w-full justify-between gap-2">
-          <ReuseLabel />
-          <ReuseSelect />
-        </div>
-      </template>
-
-      <template #description>
-        <ReuseDescription />
-      </template>
-
-      <ReuseInput />
-    </UFormField>
   </div>
 </template>

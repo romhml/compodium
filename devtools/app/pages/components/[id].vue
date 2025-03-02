@@ -220,6 +220,7 @@ watch(component, () => propsSearchTerm.value = '')
               :schema="prop.schema"
               :name="prop.name"
               :description="prop.description"
+              inline
               class="p-3 rounded"
               @update:model-value="updatePropsDebounced"
             />

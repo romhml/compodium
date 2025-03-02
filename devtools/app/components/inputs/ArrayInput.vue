@@ -26,15 +26,10 @@ function updateValue(index: number, value: any) {
 }
 
 const openedItem = ref<number | null>(0)
-
-function onUpdateOpen(index: number, value?: boolean) {
-  if (!value && openedItem.value === index) openedItem.value = null
-  if (value) openedItem.value = index
-}
 </script>
 
 <template>
-  <div>
+  <div class="flex flex-col gap-2">
     <div
       v-for="value, index in modelValue"
       :key="index"
@@ -43,25 +38,20 @@ function onUpdateOpen(index: number, value?: boolean) {
       <ComponentPropInput
         :model-value="value"
         :schema="schema.schema"
-        :name="'value ' + (index + 1)"
-        array-item
-        collapsible
-        :open="openedItem === index"
         @update:model-value="(val) => updateValue(index, val)"
-        @update:open="(val) => onUpdateOpen(index, val)"
-      />
-
-      <div>
-        <UButton
-          variant="outline"
-          color="neutral"
-          icon="lucide:x"
-          size="sm"
-          square
-          class="p-2.25"
-          @click="removeArrayItem(index)"
-        />
-      </div>
+      >
+        <template #actions>
+          <UButton
+            variant="outline"
+            color="neutral"
+            icon="i-lucide-x"
+            size="sm"
+            class="p-2"
+            square
+            @click="removeArrayItem(index)"
+          />
+        </template>
+      </ComponentPropInput>
     </div>
 
     <UButton
