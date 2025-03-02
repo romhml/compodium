@@ -1,6 +1,9 @@
 import { kebabCase } from 'scule'
+import { existsSync, readFileSync } from 'node:fs'
 import type { NuxtOptions } from '@nuxt/schema'
 import type { Resolver } from '@nuxt/kit'
+import { satisfies } from 'semver'
+import { resolve } from 'pathe'
 
 export const buildLibraryCollections = (options: NuxtOptions) => [
   {
@@ -20,23 +23,22 @@ export const buildLibraryCollections = (options: NuxtOptions) => [
   }
 ]
 
-export async function getLibraryCollections(options: NuxtOptions, _appResolver: Resolver) {
+export async function getLibraryCollections(options: NuxtOptions, appResolver: Resolver) {
   const supportedCollections = buildLibraryCollections(options)
-  return supportedCollections
-  // if (process.env.COMPODIUM_TEST === 'true') return supportedCollections
+  if (process.env.COMPODIUM_TEST === 'true') return supportedCollections
 
-  // TODO: Fixme
-  // const result = []
-  // for (const collection of supportedCollections) {
-  //   const packagePath = appResolver.resolve(`node_modules/${collection.path}/package.json`)
-  //   if (existsSync(packagePath)) {
-  //     const pkg = JSON.parse(readFileSync(packagePath).toString())
-  //
-  //     if (satisfies(pkg.version, collection.version)) {
-  //       result.push(collection)
-  //     }
-  //   }
-  // }
-  //
-  // return result
+  const result = []
+  for (const collection of supportedCollections) {
+    const appPath = appResolver.resolve(`node_modules/${collection.path}/package.json`)
+    const packagePath = existsSync(appPath) ? appPath : resolve(`node_modules/${collection.path}/package.json`)
+    if (existsSync(packagePath)) {
+      const pkg = JSON.parse(readFileSync(packagePath).toString())
+
+      if (satisfies(pkg.version, collection.version)) {
+        result.push(collection)
+      }
+    }
+  }
+
+  return result
 }

@@ -106,16 +106,7 @@ export default defineNuxtModule<ModuleOptions>({
       if (pages.length) pages.push({ path: '/__compodium__/renderer', file: resolve('./runtime/renderer-placeholder.vue') })
     })
 
-    // Watch for changes in example directory
     const examplesDir = appResolver.resolve(options.examples)
-    const examplesWatcher = watch(examplesDir, {
-      persistent: true,
-      awaitWriteFinish: {
-        stabilityThreshold: 200,
-        pollInterval: 100
-      }
-    })
-
     const libraryExampleDirs = libraryCollections.map(c => ({ path: resolve(c.examplePath), pattern: '**/*.{vue,ts,tsx}', prefix: c.prefix }))
     const exampleComponents = options.examples
       ? (await scanComponents([{
@@ -123,6 +114,15 @@ export default defineNuxtModule<ModuleOptions>({
           pattern: '**/*.{vue,ts,tsx}'
         }, ...libraryExampleDirs], nuxt.options.rootDir)).map(c => ({ ...c, isExample: true }))
       : []
+
+    // Watch for changes in example directory
+    const examplesWatcher = watch([examplesDir, ...libraryExampleDirs.map(e => e.path)], {
+      persistent: true,
+      awaitWriteFinish: {
+        stabilityThreshold: 200,
+        pollInterval: 100
+      }
+    })
 
     // FIXME: This might cause a race condition with the vite plugin.
     examplesWatcher.on('add', async (path) => {
@@ -175,11 +175,10 @@ export default defineNuxtModule<ModuleOptions>({
         filename: 'compodium/dirs.mjs',
         write: true,
         getContents: () => {
-          return `export default ${JSON.stringify(dirs)}`
+          return `export default ${JSON.stringify([...dirs, examplesDir, ...libraryExampleDirs])}`
         }
       })
-
-      addVitePlugin(compodiumVite({ dirs: [...dirs, examplesDir] }))
+      addVitePlugin(compodiumVite({ dirs: [...dirs, examplesDir, ...libraryExampleDirs] }))
     })
 
     if (process.env.COMPODIUM_LOCAL === 'true') {

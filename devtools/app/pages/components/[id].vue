@@ -24,7 +24,7 @@ const { fetchCollections, getComponent } = useCollections()
 
 const component = computed(() => {
   const baseComponent = getComponent(componentId.value)
-  return baseComponent.examples?.find((e: any) => e.pascalName === pascalCase(exampleId.value)) ?? baseComponent
+  return baseComponent?.examples?.find((e: any) => e.pascalName === pascalCase(exampleId.value)) ?? baseComponent
 })
 
 function getDefaultProps(component: ComponentMeta): Record<string, any> {

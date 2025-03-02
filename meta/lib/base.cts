@@ -1,7 +1,7 @@
 import type { TypeScriptProjectHost } from '@volar/typescript'
 import { createLanguageServiceHost, resolveFileLanguageId } from '@volar/typescript'
 import * as vue from '@vue/language-core'
-import path from 'node:path'
+import path from 'pathe'
 import type ts from 'typescript'
 import { code as typeHelpersCode } from 'vue-component-type-helpers'
 import { code as vue2TypeHelpersCode } from 'vue-component-type-helpers/vue2'
@@ -255,7 +255,7 @@ ${commandLine.vueOptions.target < 3 ? vue2TypeHelpersCode : typeHelpersCode}
     const _export = exports.find(property => property.getName() === exportName)
 
     if (!_export) {
-      throw `Could not find export ${exportName}`
+      throw `[Compodium] Could not find export ${exportName}`
     }
 
     const componentType = typeChecker.getTypeOfSymbolAtLocation(_export, symbolNode)
@@ -524,12 +524,12 @@ ${commandLine.vueOptions.target < 3 ? vue2TypeHelpersCode : typeHelpersCode}
   ) {
     const sourceFile = program?.getSourceFile(getMetaFileName(componentPath))
     if (!sourceFile) {
-      throw 'Could not find main source file'
+      throw '[Compodium] Could not find main source file'
     }
 
     const moduleSymbol = typeChecker.getSymbolAtLocation(sourceFile)
     if (!moduleSymbol) {
-      throw 'Could not find module symbol'
+      throw '[Compodium] Could not find module symbol'
     }
 
     const exportedSymbols = typeChecker.getExportsOfModule(moduleSymbol)
@@ -545,7 +545,7 @@ ${commandLine.vueOptions.target < 3 ? vue2TypeHelpersCode : typeHelpersCode}
     }
 
     if (!symbolNode) {
-      throw 'Could not find symbol node'
+      throw '[Compodium] Could not find symbol node'
     }
 
     const exportDefaultType = typeChecker.getTypeAtLocation(symbolNode)
