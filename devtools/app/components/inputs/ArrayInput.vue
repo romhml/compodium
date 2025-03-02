@@ -16,12 +16,20 @@ function addArrayItem() {
   } else {
     modelValue.value.push(null)
   }
+  openedItem.value = modelValue.value?.length - 1
 }
 
 function updateValue(index: number, value: any) {
   if (!modelValue.value) return
   modelValue.value[index] = value
   modelValue.value = [...modelValue.value]
+}
+
+const openedItem = ref<number | null>(0)
+
+function onUpdateOpen(index: number, value?: boolean) {
+  if (!value && openedItem.value === index) openedItem.value = null
+  if (value) openedItem.value = index
 }
 </script>
 
@@ -30,15 +38,17 @@ function updateValue(index: number, value: any) {
     <div
       v-for="value, index in modelValue"
       :key="index"
-      class="relative mb-1 w-full flex gap-2"
+      class="relative w-full flex gap-2"
     >
       <ComponentPropInput
         :model-value="value"
         :schema="schema.schema"
-        :name="'Value ' + (index + 1)"
+        :name="'value ' + (index + 1)"
         array-item
         collapsible
+        :open="openedItem === index"
         @update:model-value="(val) => updateValue(index, val)"
+        @update:open="(val) => onUpdateOpen(index, val)"
       />
 
       <div>
@@ -48,7 +58,7 @@ function updateValue(index: number, value: any) {
           icon="lucide:x"
           size="sm"
           square
-          class="p-1.75"
+          class="p-2.25"
           @click="removeArrayItem(index)"
         />
       </div>

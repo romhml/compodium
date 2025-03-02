@@ -57,6 +57,9 @@ const description = computed(() => {
   return props.description?.replace(/`([^`]+)`/g, '<code class="text-xs font-medium bg-[var(--ui-bg-elevated)] px-1 py-0.5 rounded">$1</code>')
 })
 
+const open = defineModel<boolean>('open')
+const isObject = computed(() => currentInput.value?.inputType === 'object')
+
 const [DefineSelect, ReuseSelect] = createReusableTemplate()
 const [DefineInput, ReuseInput] = createReusableTemplate()
 const [DefineLabel, ReuseLabel] = createReusableTemplate()
@@ -74,7 +77,7 @@ const [DefineDescription, ReuseDescription] = createReusableTemplate()
         :items="schema"
         label-key="type"
         value-key="type"
-        trailing-icon=""
+        :trailing-icon="undefined"
         class="font-medium text-ellipsis truncate max-w-50 py-0.5 px-1.5 font-mono bg-(--ui-bg-elevated)/50 border border-(--ui-border)"
         @update:model-value="modelValue = undefined"
       />
@@ -103,10 +106,11 @@ const [DefineDescription, ReuseDescription] = createReusableTemplate()
       />
     </DefineDescription>
 
-    <template v-if="collapsible">
+    <template v-if="collapsible || isObject">
       <UCollapsible
-        :default-open="defaultOpen"
-        :ui="{ root: 'w-full border border-(--ui-border) rounded-md', content: 'p-4' }"
+        v-model:open="open"
+        :default-open="defaultOpen || isObject"
+        :ui="{ root: 'w-full border border-(--ui-border) rounded-md', content: !isObject ? 'p-4' : '' }"
       >
         <UButton
           class="rounded-b-none text-sm py-1 flex justify-between w-full"
@@ -114,7 +118,7 @@ const [DefineDescription, ReuseDescription] = createReusableTemplate()
           size="sm"
           variant="ghost"
           block
-          :ui="{ base: 'py-1 hover:bg-(--ui-bg-elevated)/50', trailingIcon: 'group-data-[state=open]:rotate-180 transition duration-200' }"
+          :ui="{ base: 'py-1.5 hover:bg-(--ui-bg-elevated)/50', trailingIcon: 'group-data-[state=open]:rotate-180 transition duration-200' }"
         >
           <ReuseLabel class="text-sm" />
           <ReuseSelect />
@@ -123,15 +127,16 @@ const [DefineDescription, ReuseDescription] = createReusableTemplate()
           <ReuseInput :collapsible="collapsible" />
         </template>
       </UCollapsible>
-
-      <ReuseDescription />
+      <div class="mt-2">
+        <ReuseDescription />
+      </div>
     </template>
     <UFormField
       v-else
       :name="name"
       class="w-full"
       :class="{ 'opacity-70 cursor-not-allowed': disabled || !currentInput }"
-      :ui="{ label: 'w-full mb-1' }"
+      :ui="{ label: 'w-full', description: 'mb-2' }"
     >
       <template #label>
         <div class="flex w-full justify-between gap-2">
@@ -141,7 +146,7 @@ const [DefineDescription, ReuseDescription] = createReusableTemplate()
       </template>
 
       <template #description>
-        <ReuseDescription class="mb-2" />
+        <ReuseDescription />
       </template>
 
       <ReuseInput />

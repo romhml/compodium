@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { ObjectInputSchema } from '#module/runtime/server/services/infer'
 
-const props = defineProps<{ schema: ObjectInputSchema, collapsible: boolean }>()
+const props = defineProps<{ schema: ObjectInputSchema }>()
 
 const modelValue = defineModel<Record<string, any>>({})
 
@@ -11,10 +11,7 @@ const attrs = computed(() => {
 </script>
 
 <template>
-  <div
-    class="border-(--ui-border)"
-    :class="{ 'p-4 rounded-md border': !collapsible }"
-  >
+  <div>
     <ComponentPropInput
       v-for="attr in attrs"
       :key="attr.name"
@@ -23,7 +20,7 @@ const attrs = computed(() => {
       :name="attr.name"
       :description="attr.description"
       :default-value="attr.default"
-      class="not-last:mb-4"
+      class="p-4 not-last:border-b border-(--ui-border)"
       @update:model-value="(value: any) => {
         if (!modelValue) modelValue ||= {}
         else modelValue[attr.name] = value

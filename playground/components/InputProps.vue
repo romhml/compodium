@@ -24,8 +24,13 @@ extendCompodiumMeta<typeof _props>({
   defaultProps: {
     string: 'hello',
     primitiveUnion: 42,
-    objectArray: [{ foo: 'aksjda' }],
-    object: { foo: 'kasjdkja' }
+    objectArray: [{ foo: 'bar' }],
+    object: { foo: 'bar' },
+    arrayOfMultipleObjects: [{ foo: 'bar' }, { fee: 'bar' }],
+    multipleArrayOfMultipleObjects: [{ foo: 'bar' }, { fee: 'bar' }],
+    objectMatrix: [[{ foo: 'bar' }, { fee: 'bar' }], [{ foo: 42 }]],
+    numberMatrix: [[42, 42], [42]],
+    literalMatrix: [['string', true], [42]]
   }
 })
 </script>
