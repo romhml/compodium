@@ -1,7 +1,7 @@
 import type { TypeScriptProjectHost } from '@volar/typescript'
 import { createLanguageServiceHost, resolveFileLanguageId } from '@volar/typescript'
 import * as vue from '@vue/language-core'
-import path from 'node:path'
+import path from 'pathe'
 import type ts from 'typescript'
 import { code as typeHelpersCode } from 'vue-component-type-helpers'
 import { code as vue2TypeHelpersCode } from 'vue-component-type-helpers/vue2'

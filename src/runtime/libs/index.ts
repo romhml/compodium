@@ -3,6 +3,7 @@ import { existsSync, readFileSync } from 'node:fs'
 import type { NuxtOptions } from '@nuxt/schema'
 import type { Resolver } from '@nuxt/kit'
 import { satisfies } from 'semver'
+import { resolve } from 'pathe'
 
 export const buildLibraryCollections = (options: NuxtOptions) => [
   {
@@ -29,7 +30,8 @@ export async function getLibraryCollections(options: NuxtOptions, appResolver: R
   if (process.env.COMPODIUM_TEST === 'true') return supportedCollections
 
   for (const collection of supportedCollections) {
-    const packagePath = appResolver.resolve(`node_modules/${collection.path}/package.json`)
+    const appPath = appResolver.resolve(`node_modules/${collection.path}/package.json`)
+    const packagePath = existsSync(appPath) ? appPath : resolve(`node_modules/${collection.path}/package.json`)
     if (existsSync(packagePath)) {
       const pkg = JSON.parse(readFileSync(packagePath).toString())
 
