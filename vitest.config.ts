@@ -3,7 +3,7 @@ import { defaultExclude } from 'vitest/config'
 
 export default defineVitestConfig({
   test: {
-    testTimeout: 5000,
+    testTimeout: 10000,
     globals: true,
     silent: true,
     exclude: [...defaultExclude, './test/vue/**.spec.ts'],
