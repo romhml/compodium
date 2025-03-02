@@ -13,14 +13,27 @@ const modalState = ref(false)
 </script>
 
 <template>
-  <UModal
+  <USlideover
     ref="modal"
     v-model:open="modalState"
-    close-icon="i-lucide-x"
     class="rounded"
-    :title="'Edit ' + name"
-    :ui="{ body: 'p-0 sm:p-0' }"
+    :close="false"
+    :ui="{ body: 'p-0 sm:p-0', header: 'p-4 sm:p-4' }"
+    :overlay="false"
   >
+    <template #header>
+      <div class="flex items-center gap-2">
+        <UButton
+          icon="i-lucide-arrow-left"
+          color="neutral"
+          variant="ghost"
+          @click="modalState = false"
+        />
+        <p class="font-bold">
+          Edit {{ name }}
+        </p>
+      </div>
+    </template>
     <UButton
       color="neutral"
       variant="outline"
@@ -48,17 +61,5 @@ const modalState = ref(false)
         }"
       />
     </template>
-
-    <template #footer>
-      <div class="flex w-full justify-end">
-        <UButton
-          variant="outline"
-          color="neutral"
-          @click="modalState = false"
-        >
-          Close
-        </UButton>
-      </div>
-    </template>
-  </UModal>
+  </USlideover>
 </template>
