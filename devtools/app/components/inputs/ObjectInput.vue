@@ -34,7 +34,7 @@ const visibleProps = computed(() => new Set(fuseResults.value?.map(result => res
     v-model:open="modalState"
     class="rounded"
     :close="false"
-    :ui="{ body: 'p-0 sm:p-0', header: 'px-4 py-1.5 sm:py-1.5 sm:px-4 min-h-0' }"
+    :ui="{ body: 'p-0 sm:p-0', header: 'px-2.5 py-1.5 sm:py-1.5 sm:px-2.5 min-h-0' }"
     :overlay="false"
   >
     <template #header>
