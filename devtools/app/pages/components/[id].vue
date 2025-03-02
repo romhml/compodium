@@ -24,7 +24,7 @@ const { fetchCollections, getComponent } = useCollections()
 
 const component = computed(() => {
   const baseComponent = getComponent(componentId.value)
-  return baseComponent.examples?.find((e: any) => e.pascalName === pascalCase(exampleId.value)) ?? baseComponent
+  return baseComponent?.examples?.find((e: any) => e.pascalName === pascalCase(exampleId.value)) ?? baseComponent
 })
 
 function getDefaultProps(component: ComponentMeta): Record<string, any> {
@@ -50,6 +50,7 @@ const { data: componentMeta, refresh: refreshComponentMeta } = useAsyncData('__c
 }, { watch: [componentId] })
 
 const { data: exampleMeta } = useAsyncData('__compodium-fetch-example-meta', async () => {
+  if (!exampleId.value) return
   const example = await $fetch<ComponentMeta>(`/api/component-meta/${exampleId.value}`, { baseURL: '/__compodium__' })
   return example
 }, { watch: [exampleId] })

@@ -8,7 +8,6 @@ let checker
 
 export function createChecker() {
   const rootDir = process.cwd()
-
   const metaChecker = createCheckerByJson(
     rootDir,
     {
