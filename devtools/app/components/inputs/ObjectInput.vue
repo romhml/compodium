@@ -41,7 +41,7 @@ const modalState = ref(false)
         :description="attr.description"
         :default-value="attr.default"
         inline
-        class="px-6 py-4 first:pt-0 not-last:border-b border-(--ui-border)"
+        class="px-6 py-4 not-last:border-b border-(--ui-border)"
         @update:model-value="(value: any) => {
           if (!modelValue) modelValue ||= {}
           else modelValue[attr.name] = value
