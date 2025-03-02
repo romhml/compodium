@@ -6,7 +6,7 @@ withDefaults(defineProps<{
   title?: string
   shakeIt?: boolean
   spinIt?: boolean
-  bounceIt?: boolean | string | number
+  bounceIt?: boolean
 }>(), { title: 'Welcome!' })
 
 extendCompodiumMeta({
