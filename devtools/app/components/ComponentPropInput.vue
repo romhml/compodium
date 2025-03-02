@@ -106,18 +106,18 @@ const [DefineDescription, ReuseDescription] = createReusableTemplate()
     <template v-if="collapsible">
       <UCollapsible
         :default-open="defaultOpen"
-        :ui="{ root: 'w-full border border-(--ui-border) rounded-md', content: 'p-4 border-t border-(--ui-border)' }"
+        :ui="{ root: 'w-full border border-(--ui-border) rounded-md', content: 'p-4' }"
       >
         <UButton
-          class="group rounded-b-none text-sm ring-0 hover:bg-(--ui-bg-elevated)/50 py-1 flex justify-between w-full"
+          class="rounded-b-none text-sm py-1 flex justify-between w-full"
           color="neutral"
           size="sm"
           variant="ghost"
           block
-          :ui="{ trailingIcon: 'group-data-[state=open]:rotate-180 transition duration-200' }"
+          :ui="{ base: 'py-1 hover:bg-(--ui-bg-elevated)/50', trailingIcon: 'group-data-[state=open]:rotate-180 transition duration-200' }"
         >
-          <ReuseLabel />
-          <ReuseSelect class="border-none" />
+          <ReuseLabel class="text-sm" />
+          <ReuseSelect />
         </UButton>
         <template #content>
           <ReuseInput :collapsible="collapsible" />
@@ -135,7 +135,7 @@ const [DefineDescription, ReuseDescription] = createReusableTemplate()
     >
       <template #label>
         <div class="flex w-full justify-between gap-2">
-          <ReuseLabel class="py-0.5 px-1.5 font-mono bg-(--ui-bg-elevated)/50 border border-(--ui-border) rounded text-md" />
+          <ReuseLabel />
           <ReuseSelect />
         </div>
       </template>
