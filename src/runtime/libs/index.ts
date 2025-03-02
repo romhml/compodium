@@ -1,8 +1,6 @@
 import { kebabCase } from 'scule'
-import { existsSync, readFileSync } from 'node:fs'
 import type { NuxtOptions } from '@nuxt/schema'
 import type { Resolver } from '@nuxt/kit'
-import { satisfies } from 'semver'
 
 export const buildLibraryCollections = (options: NuxtOptions) => [
   {
@@ -22,22 +20,23 @@ export const buildLibraryCollections = (options: NuxtOptions) => [
   }
 ]
 
-export async function getLibraryCollections(options: NuxtOptions, appResolver: Resolver) {
+export async function getLibraryCollections(options: NuxtOptions, _appResolver: Resolver) {
   const supportedCollections = buildLibraryCollections(options)
-  const result = []
+  return supportedCollections
+  // if (process.env.COMPODIUM_TEST === 'true') return supportedCollections
 
-  if (process.env.COMPODIUM_TEST === 'true') return supportedCollections
-
-  for (const collection of supportedCollections) {
-    const packagePath = appResolver.resolve(`node_modules/${collection.path}/package.json`)
-    if (existsSync(packagePath)) {
-      const pkg = JSON.parse(readFileSync(packagePath).toString())
-
-      if (satisfies(pkg.version, collection.version)) {
-        result.push(collection)
-      }
-    }
-  }
-
-  return result
+  // TODO: Fixme
+  // const result = []
+  // for (const collection of supportedCollections) {
+  //   const packagePath = appResolver.resolve(`node_modules/${collection.path}/package.json`)
+  //   if (existsSync(packagePath)) {
+  //     const pkg = JSON.parse(readFileSync(packagePath).toString())
+  //
+  //     if (satisfies(pkg.version, collection.version)) {
+  //       result.push(collection)
+  //     }
+  //   }
+  // }
+  //
+  // return result
 }

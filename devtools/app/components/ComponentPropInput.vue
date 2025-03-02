@@ -23,7 +23,7 @@ const inputTypes: Record<PropInputType, Component> = {
 </script>
 
 <script setup lang="ts">
-const props = defineProps<{ name: string, schema: PropSchema[], description?: string, disabled?: boolean, inline?: boolean }>()
+const props = defineProps<{ name?: string, schema: PropSchema[], description?: string, disabled?: boolean, inline?: boolean }>()
 const modelValue = defineModel<any>()
 
 const currentType = ref()
@@ -130,7 +130,7 @@ const [DefineDescription, ReuseDescription] = createReusableTemplate()
     </template>
 
     <template v-else>
-      <div class="flex justify-end mb-1">
+      <div class="flex justify-end mb-2">
         <ReuseSelect />
       </div>
       <UFormField
