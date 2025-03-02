@@ -113,7 +113,7 @@ const [DefineDescription, ReuseDescription] = createReusableTemplate()
         class=""
         :class="{ 'opacity-70 cursor-not-allowed': disabled || !currentInput }"
         :label="name"
-        :ui="{ label: 'w-full flex gap-2 justify-between mb-1', description: 'mb-2', container: 'w-full' }"
+        :ui="{ label: 'w-full flex gap-2 justify-between mb-1', description: 'mb-2', container: 'w-full', wrapper: name || schema?.length > 1 ? '' : 'hidden' }"
       >
         <template #label>
           <ReuseLabel class="py-0.5" />
