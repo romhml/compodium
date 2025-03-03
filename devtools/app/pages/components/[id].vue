@@ -166,6 +166,7 @@ watch(component, () => propsSearchTerm.value = '')
           target="_blank"
         />
       </UTooltip>
+
       <UButton
         :icon="isDark ? 'lucide:moon' : 'lucide:sun'"
         variant="link"
@@ -175,7 +176,6 @@ watch(component, () => propsSearchTerm.value = '')
       />
     </div>
   </div>
-
   <div class="bg-(--ui-bg) w-md border-l border-(--ui-border)">
     <UTabs
       variant="link"
@@ -185,7 +185,7 @@ watch(component, () => propsSearchTerm.value = '')
     >
       <template #props>
         <div class="overflow-y-scroll h-full">
-          <div class="bg-(--ui-bg) p-0.5 border-y border-(--ui-border) sticky top-0 z-1 flex gap-2">
+          <div class="bg-(--ui-bg) p-0.5 border-y border-(--ui-border) sticky top-0 z-1 flex gap-0.5">
             <UInput
               v-model="propsSearchTerm"
               placeholder="Search props..."
@@ -193,11 +193,45 @@ watch(component, () => propsSearchTerm.value = '')
               variant="none"
               class="w-full ml-1"
             />
-
             <UTooltip
               text="Reset props"
               :content="{ side: 'left' }"
+              title="JSON Editor"
             >
+              <USlideover
+                ref="modal"
+                class="rounded"
+                close-icon="i-lucide-arrow-right"
+                :ui="{
+                  body: 'p-0 sm:p-0',
+                  header: 'px-2.5 py-1.5 sm:py-1.5 sm:px-2.5 min-h-8 flex justify-between',
+                  close: 'top-1'
+                }"
+                :overlay="false"
+                title="JSON Editor"
+              >
+                <template #close>
+                  <UButton
+                    size="sm"
+                    icon="i-lucide-arrow-right"
+                    color="neutral"
+                    variant="ghost"
+                  />
+                </template>
+                <UButton
+                  icon="lucide:braces"
+                  variant="link"
+                  color="neutral"
+                  size="sm"
+                />
+                <template #body>
+                  <JsonEditor
+                    v-model="props"
+                    class="h-full"
+                    @update:model-value="updatePropsDebounced"
+                  />
+                </template>
+              </USlideover>
               <UButton
                 icon="lucide:rotate-cw"
                 variant="link"
@@ -220,7 +254,8 @@ watch(component, () => propsSearchTerm.value = '')
               :schema="prop.schema"
               :name="prop.name"
               :description="prop.description"
-              class="p-4 rounded"
+              inline
+              class="p-3 rounded"
               @update:model-value="updatePropsDebounced"
             />
           </div>

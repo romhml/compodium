@@ -25,10 +25,9 @@ export const buildLibraryCollections = (options: NuxtOptions) => [
 
 export async function getLibraryCollections(options: NuxtOptions, appResolver: Resolver) {
   const supportedCollections = buildLibraryCollections(options)
-  const result = []
-
   if (process.env.COMPODIUM_TEST === 'true') return supportedCollections
 
+  const result = []
   for (const collection of supportedCollections) {
     const appPath = appResolver.resolve(`node_modules/${collection.path}/package.json`)
     const packagePath = existsSync(appPath) ? appPath : resolve(`node_modules/${collection.path}/package.json`)

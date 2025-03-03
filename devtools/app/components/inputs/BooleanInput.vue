@@ -5,5 +5,5 @@ defineProps<{ schema: BooleanInputSchema }>()
 </script>
 
 <template>
-  <USwitch />
+  <USwitch class="pt-1" />
 </template>

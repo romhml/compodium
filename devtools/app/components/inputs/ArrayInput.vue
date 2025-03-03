@@ -3,7 +3,7 @@ import type { ArrayInputSchema } from '#module/runtime/server/services/infer'
 
 defineProps<{ schema: ArrayInputSchema }>()
 
-const modelValue = defineModel<Array<any>>({})
+const modelValue = defineModel<Array<any>>()
 
 function removeArrayItem(index: number) {
   if (!modelValue.value) return
@@ -16,6 +16,7 @@ function addArrayItem() {
   } else {
     modelValue.value.push(null)
   }
+  openedItem.value = modelValue.value?.length - 1
 }
 
 function updateValue(index: number, value: any) {
@@ -23,29 +24,34 @@ function updateValue(index: number, value: any) {
   modelValue.value[index] = value
   modelValue.value = [...modelValue.value]
 }
+
+const openedItem = ref<number | null>(0)
 </script>
 
 <template>
-  <div>
+  <div class="flex flex-col gap-2">
     <div
       v-for="value, index in modelValue"
       :key="index"
-      class="relative"
+      class="relative w-full flex gap-2"
     >
       <ComponentPropInput
         :model-value="value"
         :schema="schema.schema"
         @update:model-value="(val) => updateValue(index, val)"
-      />
-
-      <UButton
-        variant="link"
-        color="neutral"
-        size="sm"
-        icon="lucide:x"
-        class="absolute top-2.5 right-1"
-        @click="removeArrayItem(index)"
-      />
+      >
+        <template #actions>
+          <UButton
+            variant="outline"
+            color="neutral"
+            icon="i-lucide-x"
+            size="sm"
+            class="p-2"
+            square
+            @click="removeArrayItem(index)"
+          />
+        </template>
+      </ComponentPropInput>
     </div>
 
     <UButton
@@ -53,7 +59,6 @@ function updateValue(index: number, value: any) {
       color="neutral"
       variant="ghost"
       block
-      class="justify-center mt-4"
       @click="addArrayItem()"
     >
       Add value

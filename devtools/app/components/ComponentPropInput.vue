@@ -8,6 +8,7 @@ import ObjectInput from '../components/inputs/ObjectInput.vue'
 import ArrayInput from '../components/inputs/ArrayInput.vue'
 import PrimitiveArrayInput from '../components/inputs/PrimitiveArrayInput.vue'
 import DateInput from '../components/inputs/DateInput.vue'
+import { createReusableTemplate } from '@vueuse/core'
 
 const inputTypes: Record<PropInputType, Component> = {
   array: ArrayInput,
@@ -22,7 +23,7 @@ const inputTypes: Record<PropInputType, Component> = {
 </script>
 
 <script setup lang="ts">
-const props = defineProps<{ name?: string, schema: PropSchema[], description?: string, disabled?: boolean }>()
+const props = defineProps<{ name?: string, schema: PropSchema[], description?: string, disabled?: boolean, inline?: boolean }>()
 const modelValue = defineModel<any>()
 
 const currentType = ref()
@@ -55,52 +56,104 @@ function inferDefaultInput(value?: any, types?: PropSchema[]): PropSchema | unde
 const description = computed(() => {
   return props.description?.replace(/`([^`]+)`/g, '<code class="text-xs font-medium bg-[var(--ui-bg-elevated)] px-1 py-0.5 rounded">$1</code>')
 })
+
+const isArray = computed(() => currentInput.value?.inputType === 'array')
+
+const [DefineSelect, ReuseSelect] = createReusableTemplate()
+const [DefineInput, ReuseInput] = createReusableTemplate()
+const [DefineLabel, ReuseLabel] = createReusableTemplate()
+const [DefineDescription, ReuseDescription] = createReusableTemplate()
 </script>
 
 <template>
-  <div class="relative">
-    <UFormField
-      :name="name"
-      class="w-full"
-      :ui="{ wrapper: 'mb-2' }"
-      :class="{ 'opacity-70 cursor-not-allowed': disabled || !currentInput }"
-    >
-      <template #label>
-        <div>
-          <p
-            v-if="name"
-            class="font-mono font-bold px-1.5 py-0.5 border border-[var(--ui-border-accented)] border-dashed rounded bg-[var(--ui-bg-elevated)]"
-          >
-            {{ name }}
-          </p>
-        </div>
-      </template>
+  <div class="w-full">
+    <DefineSelect>
+      <USelect
+        v-if="schema?.length > 1"
+        v-model="currentType"
+        variant="none"
+        size="sm"
+        :items="schema"
+        label-key="type"
+        value-key="type"
+        :trailing-icon="undefined"
+        class="font-medium text-ellipsis truncate max-w-50 py-0.5 px-1.5 font-mono bg-(--ui-bg-elevated)/50 border border-(--ui-border)"
+        @update:model-value="modelValue = undefined"
+      />
+    </DefineSelect>
 
-      <template #description>
-        <!-- eslint-disable vue/no-v-html -->
-        <p
-          v-if="description"
-          class="text-neutral-600 dark:text-neutral-400 mt-1"
-          v-html="description"
-        />
-      </template>
+    <DefineInput>
       <component
         :is="currentInput.component"
         v-if="!disabled && currentInput"
         v-model="modelValue"
+        class="w-full"
         :schema="currentInput.schema"
+        :name="name"
       />
-    </UFormField>
+    </DefineInput>
 
-    <USelect
-      v-if="schema?.length > 1"
-      v-model="currentType"
-      variant="none"
-      :items="schema"
-      label-key="type"
-      value-key="type"
-      class="absolute top-2 right-5 max-w-xs font-mono"
-      @update:model-value="modelValue = undefined"
-    />
+    <DefineLabel>
+      <p class="truncate text-ellipsis font-mono font-semibold">
+        {{ name }}
+      </p>
+    </DefineLabel>
+    <DefineDescription>
+      <!-- eslint-disable vue/no-v-html -->
+      <p
+        v-if="description"
+        class="text-(--ui-text-muted) text-sm"
+        v-html="description"
+      />
+    </DefineDescription>
+
+    <template v-if="!inline || isArray">
+      <UFormField
+        :name="name"
+        class=""
+        :class="{ 'opacity-70 cursor-not-allowed': disabled || !currentInput }"
+        :label="name"
+        :ui="{ label: 'w-full flex gap-2 justify-between mb-1', description: 'mb-2', container: 'w-full', wrapper: name || schema?.length > 1 ? '' : 'hidden' }"
+      >
+        <template #label>
+          <ReuseLabel class="py-0.5" />
+          <ReuseSelect />
+        </template>
+
+        <ReuseDescription />
+
+        <div class="flex gap-2 justify-center">
+          <ReuseInput />
+          <slot name="actions" />
+        </div>
+      </UFormField>
+    </template>
+
+    <template v-else>
+      <div class="flex justify-end mb-2">
+        <ReuseSelect />
+      </div>
+      <UFormField
+        :name="name"
+        class="w-full flex gap-4"
+        :class="{ 'opacity-70 cursor-not-allowed': disabled || !currentInput }"
+        :label="name"
+        :ui="{ label: 'font-sans my-auto w-32', description: 'mb-2', container: 'mt-0 w-full', wrapper: name ? '' : 'hidden' }"
+      >
+        <template #label>
+          <ReuseLabel
+            v-if="name"
+            class="mt-1.5"
+          />
+        </template>
+        <div class="flex w-full gap-2">
+          <ReuseInput />
+          <slot name="actions" />
+        </div>
+      </UFormField>
+      <div class="mt-2">
+        <ReuseDescription />
+      </div>
+    </template>
   </div>
 </template>

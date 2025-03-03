@@ -11,14 +11,17 @@ withDefaults(defineProps<{
 
 extendCompodiumMeta({
   defaultProps: {
-    bounceIt: true
+    bounceIt: true,
+    objArr: [{ foo: 'aksjda' }],
+    obj: { foo: 'kasjdkja' }
+
   }
 })
 </script>
 
 <template>
   <div
-    class="h-screen w-screen flex flex-col justify-center items-center data-[spin=true]:animate-spin data-[bounce=true]:animate-bounce"
+    class="data-[spin=true]:animate-spin data-[bounce=true]:animate-bounce"
     :data-spin="spinIt"
     :data-bounce="bounceIt"
     :class="{ shaker: shakeIt }"

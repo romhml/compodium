@@ -42,8 +42,5 @@ const options = computed(() => {
 </script>
 
 <template>
-  <USelectMenu
-    :items="options"
-    class="min-w-56"
-  />
+  <USelectMenu :items="options" />
 </template>
