@@ -7,7 +7,7 @@
 [![License][license-src]][license-href]
 [![Nuxt][nuxt-src]][nuxt-href]
 
-A plug and play interactive component playground for Nuxt.
+A plug and play component playground for Nuxt.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://github.com/user-attachments/assets/7e354f8f-72cb-43ee-bbc3-857bb665e841">
