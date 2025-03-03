@@ -193,11 +193,45 @@ watch(component, () => propsSearchTerm.value = '')
               variant="none"
               class="w-full ml-1"
             />
-
             <UTooltip
               text="Reset props"
               :content="{ side: 'left' }"
+              title="JSON Editor"
             >
+              <USlideover
+                ref="modal"
+                class="rounded"
+                close-icon="i-lucide-arrow-right"
+                :ui="{
+                  body: 'p-0 sm:p-0',
+                  header: 'px-2.5 py-1.5 sm:py-1.5 sm:px-2.5 min-h-8 flex justify-between',
+                  close: 'top-1'
+                }"
+                :overlay="false"
+                title="JSON Editor"
+              >
+                <template #close>
+                  <UButton
+                    size="sm"
+                    icon="i-lucide-arrow-right"
+                    color="neutral"
+                    variant="ghost"
+                  />
+                </template>
+                <UButton
+                  icon="lucide:braces"
+                  variant="link"
+                  color="neutral"
+                  size="sm"
+                />
+                <template #body>
+                  <JsonEditor
+                    v-model="props"
+                    class="h-full"
+                    @update:model-value="updatePropsDebounced"
+                  />
+                </template>
+              </USlideover>
               <UButton
                 icon="lucide:rotate-cw"
                 variant="link"

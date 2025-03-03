@@ -33,23 +33,22 @@ const visibleProps = computed(() => new Set(fuseResults.value?.map(result => res
     ref="modal"
     v-model:open="modalState"
     class="rounded"
-    :close="false"
-    :ui="{ body: 'p-0 sm:p-0', header: 'px-2.5 py-1.5 sm:py-1.5 sm:px-2.5 min-h-0' }"
+    close-icon="i-lucide-arrow-right"
+    :ui="{
+      body: 'p-0 sm:p-0',
+      header: 'px-2.5 py-1.5 sm:py-1.5 sm:px-2.5 min-h-8 flex justify-between',
+      close: 'top-1'
+    }"
     :overlay="false"
+    :title="'Edit ' + (name ?? 'object')"
   >
-    <template #header>
-      <div class="flex items-center gap-2">
-        <UButton
-          icon="i-lucide-arrow-left"
-          color="neutral"
-          variant="ghost"
-          size="sm"
-          @click="modalState = false"
-        />
-        <p class="font-bold">
-          Edit {{ name }}
-        </p>
-      </div>
+    <template #close>
+      <UButton
+        size="sm"
+        icon="i-lucide-arrow-right"
+        color="neutral"
+        variant="ghost"
+      />
     </template>
     <UButton
       color="neutral"
