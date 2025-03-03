@@ -21,6 +21,8 @@ watch(jsonValue, (value) => {
       :stringified="false"
       :main-menu-bar="false"
       :status-bar="false"
+      :indentation="2"
+      :tab-size="2"
     />
   </div>
 </template>
@@ -145,5 +147,10 @@ watch(jsonValue, (value) => {
   /* color picker */
   --jse-color-picker-background: var(--ui-bg-accented);
   --jse-color-picker-border-box-shadow: var(--ui-border) 0 0 0 1px;
+}
+
+.json-editor .cm-gutter-lint {
+  visibility: hidden;
+  width: 0px;
 }
 </style>
