@@ -11,8 +11,6 @@ const attrs = computed(() => {
   return Object.values(props.schema.schema)
 })
 
-const modalState = ref(false)
-
 const componentProps = computed(() => attrs.value ?? [])
 const propsSearchTerm = ref()
 
@@ -30,8 +28,6 @@ const visibleProps = computed(() => new Set(fuseResults.value?.map(result => res
 
 <template>
   <USlideover
-    ref="modal"
-    v-model:open="modalState"
     class="rounded"
     close-icon="i-lucide-arrow-right"
     :ui="{
