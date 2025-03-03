@@ -23,7 +23,7 @@ const attrs = computed(() => {
       :default-value="attr.default"
       @update:model-value="(value: any) => {
         if (!modelValue) modelValue ||= {}
-        else modelValue[attr.name] = value
+        else modelValue = { ...modelValue, [attr.name]: value }
       }"
     />
   </CollapseContainer>
