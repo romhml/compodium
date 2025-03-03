@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { IconifyIcon } from '../../src/types'
-
 // @ts-expect-error this is auto imported
 const devtoolsClient = useNuxtDevTools()
 
@@ -9,7 +7,11 @@ const _props = withDefaults(defineProps<{
   shakeIt?: boolean
   spinIt?: boolean
   bounceIt?: boolean
-  icon?: IconifyIcon
+  /**
+    Icon example
+    @IconifyIcon
+   */
+  icon?: string
 }>(), { title: 'Welcome!' })
 
 extendCompodiumMeta<typeof _props>({

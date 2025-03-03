@@ -3,7 +3,7 @@ import type { Component as NuxtComponent } from 'nuxt'
 import type { InputSchema } from './runtime/server/services/infer'
 import type { Hookable } from 'hookable'
 
-export interface IconifyIcon extends string {}
+export type IconifyIcon = string & {}
 
 export type PropInputType = 'array' | 'object' | 'stringEnum' | 'primitiveArray' | 'array' | 'string' | 'number' | 'boolean' | 'date' | 'icon'
 

@@ -92,7 +92,6 @@ export type ArrayInputSchema = z.infer<typeof arrayInputSchema>
 export type InputSchema = StringInputSchema | BooleanInputSchema | NumberInputSchema | ObjectInputSchema | DateInputSchema | ArrayInputSchema | PrimitiveArrayInputSchema
 
 const IconInputSchema = z.object({
-  kind: z.literal('object'),
   schema: z.any(),
   type: z.literal('IconifyIcon'),
   default: z.any()
@@ -100,7 +99,6 @@ const IconInputSchema = z.object({
 
 export type IconInputSchema = z.infer<typeof stringInputSchema>
 
-//
 // List of available inputs
 const propResolvers: PropSchemaResolver<ZodSchema>[] = [
   { inputType: 'icon', schema: IconInputSchema },
@@ -115,6 +113,11 @@ const propResolvers: PropSchemaResolver<ZodSchema>[] = [
 ]
 
 export function inferPropTypes(prop: PropertyMeta): PropertyType {
+  if (prop.tags?.find(tag => tag.name === 'IconifyIcon')) return {
+    ...prop,
+    schema: [{ schema: 'IconifyIcon', inputType: 'icon', type: 'IconifyIcon' }]
+  }
+
   return {
     ...prop,
     schema: inferSchemaType(prop.schema)
