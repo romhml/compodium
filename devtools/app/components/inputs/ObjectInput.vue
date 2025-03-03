@@ -83,7 +83,7 @@ const visibleProps = computed(() => new Set(fuseResults.value?.map(result => res
         class="px-6 py-4 not-last:border-b border-(--ui-border)"
         @update:model-value="(value: any) => {
           if (!modelValue) modelValue ||= {}
-          else modelValue[attr.name] = value
+          else modelValue = { ...modelValue, [attr.name]: value }
         }"
       />
     </template>
