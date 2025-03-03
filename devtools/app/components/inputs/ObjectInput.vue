@@ -3,7 +3,7 @@ import type { ObjectInputSchema } from '#module/runtime/server/services/infer'
 import type { PropertyMeta } from '@compodium/meta'
 import { useFuse } from '@vueuse/integrations/useFuse.mjs'
 
-const props = defineProps<{ schema: ObjectInputSchema, name: string }>()
+const props = defineProps<{ schema: ObjectInputSchema, name?: string }>()
 
 const modelValue = defineModel<Record<string, any>>({})
 
