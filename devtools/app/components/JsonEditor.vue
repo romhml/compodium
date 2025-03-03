@@ -14,6 +14,7 @@ watch(jsonValue, (value) => {
 <template>
   <div class="json-editor">
     <JsonEditorVue
+      ref="editor"
       v-model="jsonValue"
       class="h-full w-full"
       :mode="Mode.text"
@@ -26,12 +27,15 @@ watch(jsonValue, (value) => {
 
 <style>
 .json-editor {
+  --jse-font-familly: var(--font-sans);
+  --jse-font-familly-mono: var(--font-mono);
+
   --jse-error-color: var(--ui-error);
   --jse-warning-color: var(--ui-warning);
   --jse-info-color: var(--ui-info);
 
   /* over all fonts, sizes, and colors */
-  --jse-theme-color: green;
+  --jse-theme-color: var(--ui-primary);
   --jse-theme-color-highlight: var(--ui-primary);
   --jse-background-color: var(--ui-bg);
   --jse-text-color: var(--ui-text);
