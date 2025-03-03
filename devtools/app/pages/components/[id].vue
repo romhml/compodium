@@ -185,7 +185,7 @@ watch(component, () => propsSearchTerm.value = '')
     >
       <template #props>
         <div class="overflow-y-scroll h-full">
-          <div class="bg-(--ui-bg) p-0.5 border-y border-(--ui-border) sticky top-0 z-1 flex gap-2">
+          <div class="bg-(--ui-bg) p-0.5 border-y border-(--ui-border) sticky top-0 z-1 flex gap-0.5">
             <UInput
               v-model="propsSearchTerm"
               placeholder="Search props..."
