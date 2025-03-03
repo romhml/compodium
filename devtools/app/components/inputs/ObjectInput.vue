@@ -36,7 +36,7 @@ const visibleProps = computed(() => new Set(fuseResults.value?.map(result => res
     close-icon="i-lucide-arrow-right"
     :ui="{
       body: 'p-0 sm:p-0',
-      header: 'px-2.5 py-1.5 sm:py-1.5 sm:px-2.5 min-h-8 flex justify-between',
+      header: 'px-2.5 py-1.5 sm:py-1.5 sm:px-2.5 min-h-8 flex justify-between border-b-0',
       close: 'top-1'
     }"
     :overlay="false"
