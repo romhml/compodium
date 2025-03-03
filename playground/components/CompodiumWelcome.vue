@@ -1,20 +1,25 @@
 <script setup lang="ts">
+import type { IconifyIcon } from '../../src/types'
+
 // @ts-expect-error this is auto imported
 const devtoolsClient = useNuxtDevTools()
 
-withDefaults(defineProps<{
+const _props = withDefaults(defineProps<{
   title?: string
   shakeIt?: boolean
   spinIt?: boolean
   bounceIt?: boolean
+  icon?: IconifyIcon
 }>(), { title: 'Welcome!' })
 
-extendCompodiumMeta({
+extendCompodiumMeta<typeof _props>({
   defaultProps: {
-    bounceIt: true,
-    objArr: [{ foo: 'aksjda' }],
-    obj: { foo: 'kasjdkja' }
-
+    bounceIt: true
+  },
+  inputs: {
+    icon: {
+      string: 'icon'
+    }
   }
 })
 </script>

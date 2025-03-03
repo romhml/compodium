@@ -6,8 +6,10 @@ import type ts from 'typescript'
 import { code as typeHelpersCode } from 'vue-component-type-helpers'
 import { code as vue2TypeHelpersCode } from 'vue-component-type-helpers/vue2'
 
+// @ts-expect-error commonjs <-> esm module error on type only import
+import type { CompodiumMeta } from '../../src/types'
+
 import type {
-  ComponentMeta,
   Declaration,
   EventMeta,
   ExposeMeta,
@@ -16,12 +18,6 @@ import type {
   PropertyMetaSchema,
   SlotMeta
 } from 'vue-component-meta'
-
-export type CompodiumMeta<T = Record<string, any>> = ComponentMeta & {
-  compodium?: {
-    defaultProps: Partial<T>
-  }
-}
 
 const windowsPathReg = /\\/g
 

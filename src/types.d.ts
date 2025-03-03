@@ -1,9 +1,20 @@
+import type { ComponentMeta as VueComponentMeta } from 'vue-component-meta'
 import type { Component as NuxtComponent } from 'nuxt'
 import type { InputSchema } from './runtime/server/services/infer'
 import type { Hookable } from 'hookable'
-import type { CompodiumMeta } from '@compodium/meta'
 
-export type PropInputType = 'string' | 'number' | 'array' | 'object' | 'stringEnum' | 'primitiveArray' | 'array' | 'boolean' | 'date'
+export interface IconifyIcon extends string {}
+
+export type PropInputType = 'array' | 'object' | 'stringEnum' | 'primitiveArray' | 'array' | 'string' | 'number' | 'boolean' | 'date' | 'icon'
+
+export type CompodiumMeta<T = Record<string, any>> = VueComponentMeta & {
+  compodium?: {
+    defaultProps: Partial<T>
+    inputs: {
+      [K in keyof T]?: Record<string, ConfigurableInputType>
+    }
+  }
+}
 
 export type PropSchema = {
   inputType: PropInputType

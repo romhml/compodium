@@ -2,7 +2,6 @@ import ts from 'typescript'
 import { createCheckerBase, createCheckerByJsonConfigBase } from './base.cjs'
 import type { MetaCheckerOptions } from 'vue-component-meta'
 
-export type { CompodiumMeta } from './base.cts'
 export type * from 'vue-component-meta'
 
 export function createCheckerByJson(
