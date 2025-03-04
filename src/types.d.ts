@@ -7,9 +7,15 @@ export type IconifyIcon = string & {}
 
 export type PropInputType = 'array' | 'object' | 'stringEnum' | 'primitiveArray' | 'array' | 'string' | 'number' | 'boolean' | 'date' | 'icon'
 
+type StringLiteral<T> = T extends string ? (string extends T ? never : T) : never
+type FilterStringLiteral<T> = {
+  [K in keyof T]: T[K] extends EnumOrSymbol<T[K]> ? K : never;
+}[keyof T]
+
 export type CompodiumMeta<T = Record<string, any>> = VueComponentMeta & {
   compodium?: {
-    defaultProps: Partial<T>
+    combo?: [(Keyof<FilterStringLiteral<T>> | undefied), Keyof<FilterStringLiteral<T>> | undefied]
+    defaultProps?: Partial<T>
   }
 }
 
@@ -103,6 +109,9 @@ export interface CompodiumHooks {
 
   // Update the renderer props
   'renderer:update-props': (payload: { props: Record<string, any> }) => void
+
+  // Update the renderer combo (displaying multiple variants)
+  'renderer:update-combo': (payload: { props: { value: string, options: string[] }[] }) => void
 
   // Update the renderer colorMode
   'renderer:set-color': (color: 'light' | 'dark') => void

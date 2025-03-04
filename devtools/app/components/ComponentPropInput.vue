@@ -88,11 +88,12 @@ const [DefineDescription, ReuseDescription] = createReusableTemplate()
     <DefineInput>
       <component
         :is="currentInput.component"
-        v-if="!disabled && currentInput"
+        v-if="currentInput"
         v-model="modelValue"
         class="w-full"
         :schema="currentInput.schema"
         :name="name"
+        :disabled="disabled"
       />
     </DefineInput>
 

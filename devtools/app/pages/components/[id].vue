@@ -5,7 +5,8 @@ import type { ComponentMeta, CompodiumHooks } from '#module/types'
 import type { PropertyMeta } from '@compodium/meta'
 import { camelCase, pascalCase } from 'scule'
 import { createHooks } from 'hookable'
-
+import type { ComboItem } from '../../components/ComboInput.vue'
+import { getEnumOptions } from '~/utils/enum'
 // Disable devtools in component renderer iframe
 // @ts-expect-error - Nuxt Devtools internal value
 window.__NUXT_DEVTOOLS_DISABLE__ = true
@@ -55,6 +56,38 @@ const { data: exampleMeta } = useAsyncData('__compodium-fetch-example-meta', asy
   return example
 }, { watch: [exampleId] })
 
+const combo = ref<string[]>([])
+
+const comboProps = computed<Partial<[ComboItem, ComboItem]>>({
+  get() {
+    return [
+      comboItems.value?.find(i => i.value === combo.value[0]),
+      comboItems.value?.find(i => i.value === combo.value[1])
+    ]
+  },
+  set(value) {
+    combo.value = value?.map(c => c?.value ?? null) as [string, string] ?? [null, null]
+  }
+})
+
+const comboItems = computed<ComboItem[]>(() => {
+  return componentMeta.value?.meta?.props.flatMap((prop: PropertyMeta) => {
+    if (!Array.isArray(prop.schema)) return
+    const enumInput = prop.schema?.find((sch: any) => sch?.inputType === 'stringEnum')
+    if (enumInput) {
+      const options = getEnumOptions(enumInput.schema)
+      return options?.length > 1
+        ? [{ value: prop.name, label: prop.name, options }]
+        : []
+    }
+    return []
+  })
+})
+
+watch([componentMeta, exampleMeta, combo], async () => {
+  await hooks.callHook('renderer:update-combo', { props: comboProps.value?.filter(Boolean) as ComboItem[] ?? [] })
+}, { deep: true })
+
 watch([exampleMeta, componentMeta], async ([newExampleMeta, newComponentMeta], [oldExampleMeta, oldComponentMeta]) => {
   if (!newComponentMeta) return
 
@@ -64,6 +97,8 @@ watch([exampleMeta, componentMeta], async ([newExampleMeta, newComponentMeta], [
     && newExampleMeta?.pascalName === oldExampleMeta?.pascalName
   ) return
 
+  combo.value = [...(newExampleMeta?.meta?.compodium?.combo ?? newComponentMeta?.meta?.compodium?.combo ?? [])]
+
   defaultProps.value = {
     ...getDefaultProps(newComponentMeta),
     ...(newExampleMeta?.meta?.compodium?.defaultProps ?? newComponentMeta?.meta?.compodium?.defaultProps)
@@ -71,6 +106,8 @@ watch([exampleMeta, componentMeta], async ([newExampleMeta, newComponentMeta], [
   props.value = { ...defaultProps.value }
   await updateComponent()
 })
+
+watch(combo, () => combo.value?.forEach(name => props.value[name] = undefined))
 
 watch(component, async (oldValue, newValue) => {
   if (oldValue.componentId === newValue.componentId) updateComponent()
@@ -151,6 +188,17 @@ watch(component, () => propsSearchTerm.value = '')
 <template>
   <div class="relative flex grow">
     <ComponentPreview class="grow h-full" />
+
+    <div
+      v-if="comboItems?.length"
+      class="flex justify-center items-center gap-1 absolute top-2 inset-x-1/2"
+    >
+      <ComboInput
+        v-model="comboProps"
+        :items="comboItems"
+      />
+    </div>
+
     <div class="flex gap-2 absolute top-2 right-2">
       <UTooltip
         text="Open docs"
@@ -256,6 +304,7 @@ watch(component, () => propsSearchTerm.value = '')
               :description="prop.description"
               inline
               class="p-3 rounded"
+              :disabled="combo.includes(prop.name)"
               @update:model-value="updatePropsDebounced"
             />
           </div>

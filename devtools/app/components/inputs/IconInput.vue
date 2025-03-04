@@ -48,7 +48,6 @@ watch([icons, selectedCollection], () => page.value = 1)
 const page = ref(1)
 const visibleIcons = computed(() => {
   const result = icons.value?.slice(40 * (page.value - 1), page.value * 40)
-  console.log(page.value, result, icons.value)
   return result
 })
 </script>

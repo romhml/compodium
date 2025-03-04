@@ -17,9 +17,11 @@ app._isNuxtLayoutUsed = true
 const props = shallowRef()
 const component = shallowRef()
 
+const combo = shallowRef<{ value: string, options: string[] }[]>([])
 const componentId = ref()
 
 async function onUpdateComponent(payload: { collectionId: string, componentId: string, baseName: string, path: string, props: Record<string, any> }) {
+  combo.value = []
   component.value = null
   componentId.value = payload.componentId
   props.value = payload.props
@@ -40,8 +42,9 @@ onMounted(() => {
 
   hooks.value.hook('renderer:update-component', onUpdateComponent)
   hooks.value.hook('renderer:update-props', payload => props.value = { ...payload.props })
-  hooks.value.hook('renderer:set-color', color => colorMode.value = color)
+  hooks.value.hook('renderer:update-combo', payload => combo.value = payload.props)
 
+  hooks.value.hook('renderer:set-color', color => colorMode.value = color)
   hooks.value.callHook('renderer:mounted')
 })
 
@@ -53,9 +56,36 @@ onMounted(() => {
 </script>
 
 <template>
-  <component
-    :is="component"
-    v-if="component"
-    v-bind="props"
-  />
+  <template v-if="combo?.length">
+    <template v-if="component">
+      <div
+        v-for="combo1 in combo[0]?.options ?? [undefined]"
+        :key="combo1"
+        :style="{ display: 'flex', flexDirection: 'column', gap: '8px', margin: '4px' }"
+      >
+        <div
+          v-for="combo2 in combo[1]?.options ?? [undefined]"
+          :key="combo2"
+          :style="{ display: 'flex', alignContent: 'center', justifyContent: 'center' }"
+        >
+          <component
+            :is="component"
+            v-bind="{
+              ...props,
+              [combo[0]?.value]: combo1,
+              [combo[1]?.value]: combo2
+            }"
+          />
+        </div>
+      </div>
+    </template>
+  </template>
+
+  <template v-else>
+    <component
+      :is="component"
+      v-if="component"
+      v-bind="props"
+    />
+  </template>
 </template>
