@@ -34,6 +34,13 @@ export function getEnumOptions(schema: StringEnumInputSchema) {
         return sizeA.suffix.localeCompare(sizeB.suffix)
       }
     }
+
+    // Handle the case where the suffix is the same or for sizes under 'md'
+    if (suffixAIndex <= sizes.indexOf('md') && suffixBIndex <= sizes.indexOf('md')) {
+      return sizeB.number - sizeA.number
+    }
+
+    // Default to comparing the number part
     return sizeA.number - sizeB.number
   })
 }
