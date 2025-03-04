@@ -25,7 +25,7 @@ const inputTypes: Record<PropInputType, Component> = {
 </script>
 
 <script setup lang="ts">
-const props = defineProps<{ name?: string, schema: PropSchema[], description?: string, disabled?: boolean, inline?: boolean }>()
+const props = defineProps<{ name?: string, schema: PropSchema[], description?: string, disabled?: boolean, inline?: boolean, hideLabel?: boolean }>()
 const modelValue = defineModel<any>()
 
 const currentType = ref()
@@ -98,9 +98,13 @@ const [DefineDescription, ReuseDescription] = createReusableTemplate()
     </DefineInput>
 
     <DefineLabel>
-      <p class="truncate text-ellipsis font-mono font-semibold">
+      <p
+        v-if="name && !hideLabel"
+        class="truncate text-ellipsis font-mono font-semibold"
+      >
         {{ name }}
       </p>
+      <span v-else />
     </DefineLabel>
     <DefineDescription>
       <!-- eslint-disable vue/no-v-html -->
@@ -120,7 +124,7 @@ const [DefineDescription, ReuseDescription] = createReusableTemplate()
         :ui="{ label: 'w-full flex gap-2 justify-between mb-1', description: 'mb-2', container: 'w-full', wrapper: name || schema?.length > 1 ? '' : 'hidden' }"
       >
         <template #label>
-          <ReuseLabel class="py-0.5" />
+          <ReuseLabel />
           <ReuseSelect />
         </template>
 

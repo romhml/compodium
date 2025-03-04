@@ -32,7 +32,7 @@ const visibleProps = computed(() => new Set(fuseResults.value?.map(result => res
     close-icon="i-lucide-arrow-right"
     :ui="{
       body: 'p-0 sm:p-0',
-      header: 'px-2.5 py-1.5 sm:py-1.5 sm:px-2.5 min-h-8 flex justify-between border-b-0',
+      header: 'px-4 py-1.5 sm:py-1.5 sm:px-4 min-h-8 flex justify-between border-b-0',
       close: 'top-1'
     }"
     :overlay="false"
@@ -53,7 +53,7 @@ const visibleProps = computed(() => new Set(fuseResults.value?.map(result => res
       class="w-full"
       :ui="{ leadingIcon: 'size-4' }"
     >
-      Edit
+      {{ 'Edit ' + (name ?? 'object') }}
     </UButton>
 
     <template #body>

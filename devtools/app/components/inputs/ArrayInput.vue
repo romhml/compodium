@@ -29,15 +29,17 @@ const openedItem = ref<number | null>(0)
 </script>
 
 <template>
-  <div class="flex flex-col gap-2">
+  <div class="flex flex-col">
     <div
       v-for="value, index in modelValue"
       :key="index"
-      class="relative w-full flex gap-2"
+      class="relative w-full flex mb-2"
     >
       <ComponentPropInput
         :model-value="value"
         :schema="schema.schema"
+        :name="'item ' + (index + 1)"
+        hide-label
         @update:model-value="(val) => updateValue(index, val)"
       >
         <template #actions>

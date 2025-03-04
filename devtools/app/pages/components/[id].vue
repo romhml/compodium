@@ -252,7 +252,7 @@ watch(component, () => propsSearchTerm.value = '')
                 close-icon="i-lucide-arrow-right"
                 :ui="{
                   body: 'p-0 sm:p-0',
-                  header: 'px-2.5 py-1.5 sm:py-1.5 sm:px-2.5 min-h-8 flex justify-between',
+                  header: 'px-4 py-1.5 sm:py-1.5 sm:px-4 min-h-8 flex justify-between',
                   close: 'top-1'
                 }"
                 :overlay="false"
