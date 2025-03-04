@@ -84,7 +84,7 @@ export default defineNuxtModule<ModuleOptions>({
     })
 
     nuxt.options.appConfig.compodium = {
-      collections: options.collections.map(c => ({ ...c, id: camelCase(c.name), path: appResolver.resolve(c.path) })).concat(libraryCollections),
+      collections: options.collections.map(c => ({ ...c, id: c.id ?? camelCase(c.name), path: appResolver.resolve(c.path) })).concat(libraryCollections),
       matchUIColors: options.extras?.ui?.matchColors
     }
 
