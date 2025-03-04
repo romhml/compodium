@@ -10,9 +10,6 @@ export type PropInputType = 'array' | 'object' | 'stringEnum' | 'primitiveArray'
 export type CompodiumMeta<T = Record<string, any>> = VueComponentMeta & {
   compodium?: {
     defaultProps: Partial<T>
-    inputs: {
-      [K in keyof T]?: Record<string, ConfigurableInputType>
-    }
   }
 }
 

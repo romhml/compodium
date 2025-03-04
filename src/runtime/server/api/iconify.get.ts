@@ -1,10 +1,10 @@
-import { defineCachedEventHandler, getQuery } from '#imports'
-import type { H3Event } from 'h3'
+// @ts-expect-error import error but type is here
+import { type H3Event, getQuery, defineCachedEventHandler } from '#imports'
 import { joinURL } from 'ufo'
 
-export default defineCachedEventHandler(async (event) => {
+export default defineCachedEventHandler(async (event: H3Event) => {
   const { q } = getQuery(event)
-  return $fetch(joinURL('https://api.iconify.design', q))
+  return $fetch(joinURL('https://api.iconify.design', q as string))
 }, {
   group: 'compodium',
   name: 'iconify',

@@ -18,7 +18,7 @@ watchOnce(collectionItems, () => {
   selectedCollection.value = collectionItems.value?.[0]
 }, { immediate: true })
 
-const { data: icons, refresh: fetchIcons } = await useAsyncData<string[]>(async () => {
+const { data: icons, refresh: fetchIcons } = await useAsyncData<string[] | undefined>(async () => {
   if (!selectedCollection.value) return
 
   if (searchTerm.value && searchTerm.value?.trim() !== '') {
@@ -66,7 +66,7 @@ const visibleIcons = computed(() => {
 
       <UInput
         v-model="modelValue as string"
-        @click="e => e.stopPropagation()"
+        @click="(e: MouseEvent) => e.stopPropagation()"
       />
     </UButtonGroup>
     <template #content>
@@ -87,7 +87,7 @@ const visibleIcons = computed(() => {
           />
         </div>
         <div
-          v-if="icons?.length > 0"
+          v-if="icons?.length"
           class="flex flex-col gap-2 justify-center"
         >
           <div class="flex flex-wrap gap-2 h-[196px]">

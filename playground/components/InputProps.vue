@@ -4,15 +4,20 @@ const _props = defineProps<{
   number?: number
   boolean?: boolean
   primitiveUnion?: string | number | boolean
-  stringArray: string[]
+  stringArray?: string[]
+  /**
+    Icon example
+    @IconifyIcon
+   */
+  icon?: string
   /**
    * This is a very long description of things I don't know yet what I'm going to say but it just needs to be long, not to make sense.
    */
-  numberArray: number[]
+  numberArray?: number[]
   /**
    * This is a very long description of things I don't know yet what I'm going to say but it just needs to be long, not to make sense.
    */
-  booleanArray: boolean[]
+  booleanArray?: boolean[]
   /**
    * This is a very long description of things I don't know yet what I'm going to say but it just needs to be long, not to make sense.
    */
@@ -29,7 +34,7 @@ const _props = defineProps<{
   objectMatrix?: (({ foo: string | number } | { fee: string })[] | ({ foo: number } | { fee: string })[])[]
   numberMatrix?: number[][]
   literalMatrix?: (number | string | boolean)[][]
-  aVeryVeryVeryLongPropNameWithLongType: ({ foo: string | number } | { fee: string })[] | ({ foo: number } | { fee: string })[][]
+  aVeryVeryVeryLongPropNameWithLongType?: ({ foo: string | number } | { fee: string })[] | ({ foo: number } | { fee: string })[][]
 }>()
 
 extendCompodiumMeta<typeof _props>({

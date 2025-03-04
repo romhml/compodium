@@ -7,21 +7,11 @@ const _props = withDefaults(defineProps<{
   shakeIt?: boolean
   spinIt?: boolean
   bounceIt?: boolean
-  /**
-    Icon example
-    @IconifyIcon
-   */
-  icon?: string
 }>(), { title: 'Welcome!' })
 
 extendCompodiumMeta<typeof _props>({
   defaultProps: {
     bounceIt: true
-  },
-  inputs: {
-    icon: {
-      string: 'icon'
-    }
   }
 })
 </script>
