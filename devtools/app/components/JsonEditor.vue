@@ -81,14 +81,15 @@ watch(jsonValue, (value) => {
   --jse-context-menu-pointer-color: var(--jse-context-menu-color);
 
   /* contents: json key and values */
-  --jse-key-color: var(--ui-text-toned);
-  --jse-value-color: var(--jse-text-color);
-  --jse-value-color-number: var(--ui-text-dimmed);
-  --jse-value-color-boolean: var(--ui-text-dimmed);
-  --jse-value-color-null: var(--ui-text-dimmed);
-  --jse-value-color-string: var(--ui-text-dimmed);
-  --jse-value-color-url: var(--ui-text-dimmed);
-  --jse-delimiter-color: var(--ui-text-dimmed);
+  --jse-key-color: #9C3EDA; /* Key color */
+  --jse-value-color: #91B859; /* Default value color */
+  --jse-value-color-number: #F76D47; /* Number value color */
+  --jse-value-color-boolean: #39ADB5; /* Boolean value color */
+  --jse-value-color-null: #39ADB5; /* Null value color */
+  --jse-value-color-string: #91B859; /* String value color */
+  --jse-delimiter-color: #39ADB5; /* Delimiter color */
+  --jse-value-color-url: #39ADB5; /* URL value color */
+
   --jse-edit-outline: 2px solid var(--jse-text-color);
 
   /* contents: selected or hovered */
@@ -147,6 +148,18 @@ watch(jsonValue, (value) => {
   /* color picker */
   --jse-color-picker-background: var(--ui-bg-accented);
   --jse-color-picker-border-box-shadow: var(--ui-border) 0 0 0 1px;
+}
+
+.dark .json-editor {
+  /* contents: json key and values */
+  --jse-key-color: #C792EA; /* Key color */
+  --jse-value-color: #C3E88D; /* Default value color */
+  --jse-value-color-number: #F78C6C; /* Number value color */
+  --jse-value-color-boolean: #89DDFF; /* Boolean value color */
+  --jse-value-color-null: #F78C6C; /* Null value color */
+  --jse-value-color-string: #C3E88D; /* String value color */
+  --jse-value-color-url: #89DDFF; /* URL value color */
+  --jse-delimiter-color: #89DDFF; /* Delimiter color */
 }
 
 .json-editor .cm-gutter-lint {
