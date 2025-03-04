@@ -43,6 +43,7 @@ export type ComponentExample = NuxtComponent & {
 }
 
 export type CollectionConfig = {
+  id?: string
   name: string
   path: string
   icon?: string
