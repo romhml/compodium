@@ -56,35 +56,30 @@ onMounted(() => {
 </script>
 
 <template>
-  <div
-    v-if="combo?.length"
-    :style="{
-      display: 'grid',
-      gap: '8px',
-      gridTemplateColumns: `repeat(${combo[1]?.options.length ?? 1}, minmax(0, 1fr))`,
-      gridTemplateRows: `repeat(${combo[0]?.options.length ?? 1}, minmax(0, 1fr))`,
-      gridAutoRows: 'fit-content',
-      placeItems: 'center'
-    }"
-  >
+  <template v-if="combo?.length">
     <template v-if="component">
-      <template
-        v-for="combo1 in combo[0]?.options"
+      <div
+        v-for="combo1 in combo[0]?.options ?? [undefined]"
         :key="combo1"
+        :style="{ display: 'flex', flexDirection: 'column', gap: '8px', margin: '4px' }"
       >
-        <component
-          :is="component"
-          v-for="combo2 in combo[1]?.options ?? [null]"
+        <div
+          v-for="combo2 in combo[1]?.options ?? [undefined]"
           :key="combo2"
-          v-bind="{
-            ...props,
-            [combo[0]?.value]: combo1,
-            [combo[1]?.value]: combo2
-          }"
-        />
-      </template>
+          :style="{ display: 'flex', alignContent: 'center', justifyContent: 'center' }"
+        >
+          <component
+            :is="component"
+            v-bind="{
+              ...props,
+              [combo[0]?.value]: combo1,
+              [combo[1]?.value]: combo2
+            }"
+          />
+        </div>
+      </div>
     </template>
-  </div>
+  </template>
 
   <template v-else>
     <component

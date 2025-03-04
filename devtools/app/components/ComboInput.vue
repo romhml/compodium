@@ -30,61 +30,57 @@ function updateValue(item: ComboItem) {
 </script>
 
 <template>
-  <div>
-    <UPopover>
-      <UButton
-        variant="ghost"
-        color="neutral"
+  <UPopover :ui="{ content: 'flex flex-wrap justify-center p-2 max-w-64' }">
+    <UButton
+      variant="ghost"
+      color="neutral"
+    >
+      <p
+        v-if="modelValue?.[0]"
       >
-        <p
-          v-if="modelValue?.[0]"
-        >
-          {{ modelValue?.[0]?.label }}
+        {{ modelValue?.[0]?.label }}
+      </p>
+      <p
+        v-else
+        class="text-(--ui-text-dimmed)"
+      >
+        {{ items?.length > 1 ? 'Wombo' : 'Combo' }}
+      </p>
+      <template v-if="items?.length > 1">
+        <UIcon name="lucide:x" />
+        <p v-if="modelValue?.[1]">
+          {{ modelValue?.[1]?.label }}
         </p>
         <p
           v-else
           class="text-(--ui-text-dimmed)"
         >
-          {{ items?.length > 1 ? 'Wombo' : 'Combo' }}
+          Combo
         </p>
-        <template v-if="items?.length > 1">
-          <UIcon name="lucide:x" />
-          <p v-if="modelValue?.[1]">
-            {{ modelValue?.[1]?.label }}
-          </p>
-          <p
+      </template>
+    </UButton>
+    <template #content>
+      <UButton
+        v-for="item in items"
+        :key="item.value"
+        :label="item.label"
+        color="neutral"
+        variant="ghost"
+        :trailing-icon="modelValue?.find(i => i?.value === item.value) ? 'lucide:check' : ''"
+        @click="updateValue(item)"
+      >
+        <template #trailing>
+          <UIcon
+            v-if="modelValue?.find(i => i?.value === item.value)"
+            name="lucide:check"
+            class="size-4"
+          />
+          <span
             v-else
-            class="text-(--ui-text-dimmed)"
-          >
-            Combo
-          </p>
+            class="size-4"
+          />
         </template>
       </UButton>
-      <template #content>
-        <div class="flex flex-wrap justify-center p-2 max-w-64">
-          <UButton
-            v-for="item in items"
-            :key="item.value"
-            :label="item.label"
-            color="neutral"
-            variant="ghost"
-            :trailing-icon="modelValue?.find(i => i?.value === item.value) ? 'lucide:check' : ''"
-            @click="updateValue(item)"
-          >
-            <template #trailing>
-              <UIcon
-                v-if="modelValue?.find(i => i?.value === item.value)"
-                name="lucide:check"
-                class="size-4"
-              />
-              <span
-                v-else
-                class="size-4"
-              />
-            </template>
-          </UButton>
-        </div>
-      </template>
-    </UPopover>
-  </div>
+    </template>
+  </UPopover>
 </template>

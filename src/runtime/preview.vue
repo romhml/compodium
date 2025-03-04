@@ -22,9 +22,9 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  width: 100vw;
+  min-height: 100vh;
+  min-width: min-content;
   background-color: transparent;
-  padding: 20px;
+  padding: 64px;
 }
 </style>
