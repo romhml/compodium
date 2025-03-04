@@ -17,12 +17,6 @@ import type {
   SlotMeta
 } from 'vue-component-meta'
 
-export type CompodiumMeta<T = Record<string, any>> = ComponentMeta & {
-  compodium?: {
-    defaultProps: Partial<T>
-  }
-}
-
 const windowsPathReg = /\\/g
 
 export function createCheckerByJsonConfigBase(
@@ -248,7 +242,7 @@ ${commandLine.vueOptions.target < 3 ? vue2TypeHelpersCode : typeHelpersCode}
     return _getExports(program, typeChecker, componentPath).exports.map(e => e.getName())
   }
 
-  function getComponentMeta(componentPath: string, exportName = 'default'): CompodiumMeta {
+  function getComponentMeta(componentPath: string, exportName = 'default'): ComponentMeta & { compodium?: Record<string, any> } {
     const program = tsLs.getProgram()!
     const typeChecker = program.getTypeChecker()
     const { symbolNode, exports } = _getExports(program, typeChecker, componentPath)
@@ -266,7 +260,7 @@ ${commandLine.vueOptions.target < 3 ? vue2TypeHelpersCode : typeHelpersCode}
     let _events: ReturnType<typeof getEvents> | undefined
     let _slots: ReturnType<typeof getSlots> | undefined
     let _exposed: ReturnType<typeof getExposed> | undefined
-    let _compodium: CompodiumMeta['compodium']
+    let _compodium: Record<string, any> | undefined
 
     return {
       get type() {
@@ -285,7 +279,7 @@ ${commandLine.vueOptions.target < 3 ? vue2TypeHelpersCode : typeHelpersCode}
         return _exposed ?? (_exposed = getExposed())
       },
       get compodium() {
-        return _compodium ?? (_compodium = getCompodiumMeta() as CompodiumMeta['compodium'])
+        return _compodium ?? (_compodium = getCompodiumMeta())
       }
     }
 
@@ -300,7 +294,7 @@ ${commandLine.vueOptions.target < 3 ? vue2TypeHelpersCode : typeHelpersCode}
       return 0
     }
 
-    function getCompodiumMeta() {
+    function getCompodiumMeta(): Record<string, any> | undefined {
       const snapshot = language.scripts.get(componentPath)?.snapshot
       const sourceScript = language.scripts.get(componentPath)
 
@@ -320,7 +314,7 @@ ${commandLine.vueOptions.target < 3 ? vue2TypeHelpersCode : typeHelpersCode}
 
       if (!ast) return
       const identifier = 'extendCompodiumMeta'
-      function traverse(node: ts.Node, parent?: ts.Node): void {
+      function traverse(node: ts.Node, parent?: ts.Node): Record<string, any> | undefined {
         if (!ast) return
 
         if ((node as any)?.text === identifier && ts.isIdentifier(node)) {
@@ -407,7 +401,7 @@ ${commandLine.vueOptions.target < 3 ? vue2TypeHelpersCode : typeHelpersCode}
 
       // fill global
       if (componentPath !== globalComponentName) {
-        globalPropNames ??= getComponentMeta(globalComponentName).props.map(prop => prop.name)
+        globalPropNames ??= getComponentMeta(globalComponentName).props.map((prop: any) => prop.name)
         for (const prop of result) {
           prop.global = globalPropNames.includes(prop.name)
         }

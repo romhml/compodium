@@ -8,9 +8,11 @@ import ObjectInput from '../components/inputs/ObjectInput.vue'
 import ArrayInput from '../components/inputs/ArrayInput.vue'
 import PrimitiveArrayInput from '../components/inputs/PrimitiveArrayInput.vue'
 import DateInput from '../components/inputs/DateInput.vue'
+import IconInput from '../components/inputs/IconInput.vue'
 import { createReusableTemplate } from '@vueuse/core'
 
 const inputTypes: Record<PropInputType, Component> = {
+  icon: IconInput,
   array: ArrayInput,
   object: ObjectInput,
   boolean: BooleanInput,
@@ -27,6 +29,7 @@ const props = defineProps<{ name?: string, schema: PropSchema[], description?: s
 const modelValue = defineModel<any>()
 
 const currentType = ref()
+
 watch(() => props.schema, () => {
   if (!props.schema) return
   currentType.value = inferDefaultInput(modelValue.value, props.schema)?.type ?? props.schema?.[0]?.type

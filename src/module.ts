@@ -258,6 +258,12 @@ export default defineNuxtModule<ModuleOptions>({
       handler: resolve('./runtime/server/api/colors.get')
     })
 
+    addServerHandler({
+      method: 'get',
+      route: '/__compodium__/api/iconify',
+      handler: resolve('./runtime/server/api/iconify.get')
+    })
+
     addCustomTab({
       name: 'compodium',
       title: 'Compodium',
