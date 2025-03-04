@@ -6,10 +6,8 @@ import type ts from 'typescript'
 import { code as typeHelpersCode } from 'vue-component-type-helpers'
 import { code as vue2TypeHelpersCode } from 'vue-component-type-helpers/vue2'
 
-// @ts-expect-error commonjs <-> esm module error on type only import
-import type { CompodiumMeta } from '../../src/types'
-
 import type {
+  ComponentMeta,
   Declaration,
   EventMeta,
   ExposeMeta,
@@ -244,7 +242,7 @@ ${commandLine.vueOptions.target < 3 ? vue2TypeHelpersCode : typeHelpersCode}
     return _getExports(program, typeChecker, componentPath).exports.map(e => e.getName())
   }
 
-  function getComponentMeta(componentPath: string, exportName = 'default'): CompodiumMeta {
+  function getComponentMeta(componentPath: string, exportName = 'default'): ComponentMeta & { compodium: Record<string, any> } {
     const program = tsLs.getProgram()!
     const typeChecker = program.getTypeChecker()
     const { symbolNode, exports } = _getExports(program, typeChecker, componentPath)
@@ -262,7 +260,7 @@ ${commandLine.vueOptions.target < 3 ? vue2TypeHelpersCode : typeHelpersCode}
     let _events: ReturnType<typeof getEvents> | undefined
     let _slots: ReturnType<typeof getSlots> | undefined
     let _exposed: ReturnType<typeof getExposed> | undefined
-    let _compodium: CompodiumMeta['compodium']
+    let _compodium: Record<string, any>
 
     return {
       get type() {
@@ -281,7 +279,7 @@ ${commandLine.vueOptions.target < 3 ? vue2TypeHelpersCode : typeHelpersCode}
         return _exposed ?? (_exposed = getExposed())
       },
       get compodium() {
-        return _compodium ?? (_compodium = getCompodiumMeta() as CompodiumMeta['compodium'])
+        return _compodium ?? (_compodium = getCompodiumMeta())
       }
     }
 
@@ -296,13 +294,13 @@ ${commandLine.vueOptions.target < 3 ? vue2TypeHelpersCode : typeHelpersCode}
       return 0
     }
 
-    function getCompodiumMeta() {
+    function getCompodiumMeta(): Record<string, any> {
       const snapshot = language.scripts.get(componentPath)?.snapshot
       const sourceScript = language.scripts.get(componentPath)
 
       if (!snapshot || !sourceScript) {
         console.error('Snapshot or source script not found.')
-        return
+        return {}
       }
 
       const vueFile = sourceScript!.generated?.root
@@ -314,10 +312,10 @@ ${commandLine.vueOptions.target < 3 ? vue2TypeHelpersCode : typeHelpersCode}
             ts.ScriptTarget.Latest
           )
 
-      if (!ast) return
+      if (!ast) return {}
       const identifier = 'extendCompodiumMeta'
-      function traverse(node: ts.Node, parent?: ts.Node): void {
-        if (!ast) return
+      function traverse(node: ts.Node, parent?: ts.Node): Record<string, any> {
+        if (!ast) return {}
 
         if ((node as any)?.text === identifier && ts.isIdentifier(node)) {
           const argument = (parent as any)?.arguments?.[0]
@@ -325,7 +323,7 @@ ${commandLine.vueOptions.target < 3 ? vue2TypeHelpersCode : typeHelpersCode}
             return parseObjectLiteralExpression(argument, ast)
           }
         }
-        return ts.forEachChild(node, child => traverse(child, node))
+        return ts.forEachChild(node, child => traverse(child, node)) ?? {}
       }
 
       return traverse(ast)
@@ -405,7 +403,7 @@ ${commandLine.vueOptions.target < 3 ? vue2TypeHelpersCode : typeHelpersCode}
       if (componentPath !== globalComponentName) {
         globalPropNames ??= getComponentMeta(globalComponentName).props.map((prop: any) => prop.name)
         for (const prop of result) {
-          prop.global = globalPropNames?.includes(prop.name)
+          prop.global = globalPropNames?.includes(prop.name) ?? false
         }
       }
 
