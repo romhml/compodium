@@ -403,9 +403,9 @@ ${commandLine.vueOptions.target < 3 ? vue2TypeHelpersCode : typeHelpersCode}
 
       // fill global
       if (componentPath !== globalComponentName) {
-        globalPropNames ??= getComponentMeta(globalComponentName).props.map(prop => prop.name)
+        globalPropNames ??= getComponentMeta(globalComponentName).props.map((prop: any) => prop.name)
         for (const prop of result) {
-          prop.global = globalPropNames.includes(prop.name)
+          prop.global = globalPropNames?.includes(prop.name)
         }
       }
 
