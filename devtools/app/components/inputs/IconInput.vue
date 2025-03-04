@@ -104,7 +104,7 @@ const visibleIcons = computed(() => {
           </div>
           <UPagination
             v-model:page="page"
-            class="mx-auto mt-2"
+            class="mx-auto"
             variant="link"
             color="neutral"
             active-color="neutral"
