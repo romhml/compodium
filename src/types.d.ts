@@ -49,6 +49,7 @@ export type CollectionConfig = {
   icon?: string
   prefix?: string
   ignore?: string[]
+  examplesPath?: string
   getDocUrl?: (componentName: string) => string
 }
 
@@ -60,6 +61,7 @@ export type Collection = {
   icon?: string
   prefix?: string
   ignore?: string[]
+  examplesPath?: string
 }
 
 export type ComponentCollection = Collection & {

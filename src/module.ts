@@ -106,17 +106,22 @@ export default defineNuxtModule<ModuleOptions>({
       if (pages.length) pages.push({ path: '/__compodium__/renderer', file: resolve('./runtime/renderer-placeholder.vue') })
     })
 
-    const examplesDir = appResolver.resolve(options.examples)
+    const examplesDirs = [
+      appResolver.resolve(options.examples),
+      ...options.collections.filter(c => c.examplesPath).map(c => appResolver.resolve(c.examplesPath as string))
+    ]
+
     const libraryExampleDirs = libraryCollections.map(c => ({ path: resolve(c.examplePath), pattern: '**/*.{vue,ts,tsx}', prefix: c.prefix }))
+
     const exampleComponents = options.examples
-      ? (await scanComponents([{
+      ? (await scanComponents([...examplesDirs.map(examplesDir => ({
           path: examplesDir,
           pattern: '**/*.{vue,ts,tsx}'
-        }, ...libraryExampleDirs], nuxt.options.rootDir)).map(c => ({ ...c, isExample: true }))
+        })), ...libraryExampleDirs], nuxt.options.rootDir)).map(c => ({ ...c, isExample: true }))
       : []
 
     // Watch for changes in example directory
-    const examplesWatcher = watch([examplesDir, ...libraryExampleDirs.map(e => e.path)], {
+    const examplesWatcher = watch([...examplesDirs, ...libraryExampleDirs.map(e => e.path)], {
       persistent: true,
       awaitWriteFinish: {
         stabilityThreshold: 200,
@@ -126,7 +131,7 @@ export default defineNuxtModule<ModuleOptions>({
 
     // FIXME: This might cause a race condition with the vite plugin.
     examplesWatcher.on('add', async (path) => {
-      const comps = await scanComponents([{ path: examplesDir, pattern: '**/*.{vue,ts,tsx}' }], nuxt.options.rootDir)
+      const comps = await scanComponents(examplesDirs.map(examplesDir => ({ path: examplesDir, pattern: '**/*.{vue,ts,tsx}' })), nuxt.options.rootDir)
       const newExample = comps.find(c => c.filePath === path)
       if (newExample) {
         exampleComponents.push({ ...newExample, isExample: true })
@@ -175,10 +180,10 @@ export default defineNuxtModule<ModuleOptions>({
         filename: 'compodium/dirs.mjs',
         write: true,
         getContents: () => {
-          return `export default ${JSON.stringify([...dirs, examplesDir, ...libraryExampleDirs])}`
+          return `export default ${JSON.stringify([...dirs, ...examplesDirs, ...libraryExampleDirs])}`
         }
       })
-      addVitePlugin(compodiumVite({ dirs: [...dirs, examplesDir, ...libraryExampleDirs] }))
+      addVitePlugin(compodiumVite({ dirs: [...dirs, ...examplesDirs, ...libraryExampleDirs] }))
     })
 
     if (process.env.COMPODIUM_LOCAL === 'true') {
