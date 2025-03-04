@@ -1,4 +1,4 @@
-import type { ComponentMeta as VueComponentMeta } from 'vue-component-meta'
+import type { ComponentMeta as VueComponentMeta } from '@compodium/meta'
 import type { Component as NuxtComponent } from 'nuxt'
 import type { InputSchema } from './runtime/server/services/infer'
 import type { Hookable } from 'hookable'
