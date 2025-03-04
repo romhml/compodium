@@ -107,11 +107,7 @@ watch([exampleMeta, componentMeta], async ([newExampleMeta, newComponentMeta], [
   await updateComponent()
 })
 
-watch(combo, () => {
-  combo.value?.forEach((name) => {
-    props.value[name] = undefined
-  })
-})
+watch(combo, () => combo.value?.forEach(name => props.value[name] = undefined))
 
 watch(component, async (oldValue, newValue) => {
   if (oldValue.componentId === newValue.componentId) updateComponent()
