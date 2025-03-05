@@ -51,7 +51,7 @@ const { data: componentMeta, refresh: refreshComponentMeta } = useAsyncData('__c
 }, { watch: [componentId] })
 
 const { data: exampleMeta } = useAsyncData('__compodium-fetch-example-meta', async () => {
-  if (!exampleId.value) return
+  if (!exampleId.value || component.value?.collectionId !== 'components') return
   const example = await $fetch<ComponentMeta>(`/api/component-meta/${exampleId.value}`, { baseURL: '/__compodium__' })
   return example
 }, { watch: [exampleId] })
@@ -121,6 +121,8 @@ async function updateComponent() {
     path: component.value.filePath,
     props: props.value
   })
+
+  await hooks.callHook('renderer:update-combo', { props: comboProps.value?.filter(Boolean) as ComboItem[] ?? [] })
 }
 
 const updatePropsDebounced = useDebounceFn(() => hooks.callHook('renderer:update-props', { props: props.value }), 100, { maxWait: 300 })
@@ -191,7 +193,7 @@ watch(component, () => propsSearchTerm.value = '')
 
     <div
       v-if="comboItems?.length"
-      class="flex justify-center items-center gap-1 absolute top-2 inset-x-1/2"
+      class="flex justify-center items-center gap-1 absolute top-2 inset-x-1/2 -translate-x-1/2"
     >
       <ComboInput
         v-model="comboProps"
