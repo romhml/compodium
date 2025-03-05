@@ -34,21 +34,33 @@ function updateValue(item: ComboItem) {
     <UButton
       variant="ghost"
       color="neutral"
+      class="relative flex gap-2"
     >
-      <p
-        v-if="modelValue?.[0]"
-      >
-        {{ modelValue?.[0]?.label }}
-      </p>
-      <p
-        v-else
-        class="text-(--ui-text-dimmed)"
-      >
-        {{ items?.length > 1 ? 'Wombo' : 'Combo' }}
-      </p>
-      <template v-if="items?.length > 1">
-        <UIcon name="lucide:x" />
-        <p v-if="modelValue?.[1]">
+      <div class="w-20 text-right">
+        <p
+          v-if="modelValue?.[0]"
+          class="truncate"
+        >
+          {{ modelValue?.[0]?.label }}
+        </p>
+        <p
+          v-else
+          class="text-(--ui-text-dimmed)"
+        >
+          Combo
+        </p>
+      </div>
+
+      <UIcon
+        name="lucide:x"
+        class="size-4"
+      />
+
+      <div class="w-20 text-left">
+        <p
+          v-if="modelValue?.[1]"
+          class="truncate"
+        >
           {{ modelValue?.[1]?.label }}
         </p>
         <p
@@ -57,7 +69,7 @@ function updateValue(item: ComboItem) {
         >
           Combo
         </p>
-      </template>
+      </div>
     </UButton>
     <template #content>
       <UButton
