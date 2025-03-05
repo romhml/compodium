@@ -55,6 +55,7 @@ export default defineNuxtModule<ModuleOptions>({
     // Only the extendCompodiumMeta composable is injected in production
     // It won't do anything but this is required to avoid runtime errors.
     // Might look into removing it completely using vite.
+
     const { resolve } = createResolver(import.meta.url)
     addImportsDir(resolve('./runtime/composables'))
 

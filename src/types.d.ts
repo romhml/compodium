@@ -12,9 +12,12 @@ type FilterStringLiteral<T> = {
   [K in keyof T]: T[K] extends EnumOrSymbol<T[K]> ? K : never;
 }[keyof T]
 
+type ComboItem<T> = Keyof<FilterStringLiteral<T>> | undefined
+type Combo<T> = [ComboItem<T>, ComboItem<T>] | [ComboItem<T>]
+
 export type CompodiumMeta<T = Record<string, any>> = VueComponentMeta & {
   compodium?: {
-    combo?: [(Keyof<FilterStringLiteral<T>> | undefied), Keyof<FilterStringLiteral<T>> | undefied]
+    combo?: Combo<T>
     defaultProps?: Partial<T>
   }
 }
