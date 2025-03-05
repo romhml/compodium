@@ -67,7 +67,6 @@ export type Collection = {
   icon?: string
   prefix?: string
   ignore?: string[]
-  examplesPath?: string
 }
 
 export type ComponentCollection = Collection & {

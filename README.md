@@ -45,16 +45,11 @@ Configure Compodium in your Nuxt project by customizing the settings in your `nu
 ```ts
 export default defineNuxtConfig({
   compodium: {
-    /* Customize your component collections */
-    collections: [
-      { name: 'Components', path: 'components/' }
-    ],
-
     /* Whether to include default collections for third-party libraries. */
     includeDefaultCollections: true,
 
-    /* Customize the directory for preview examples */
-    examples: 'compodium/',
+    /* Customize compodium's base directory */
+    dir: 'compodium/',
 
     /* Customize the preview component path. */
     previewComponent: 'compodium/preview.vue',
@@ -136,11 +131,11 @@ By default, Compodium will detect the UI libraries you have installed and automa
 
 ### Component Examples
 
-You can provide examples for your components in the `compodium/examples` folder. Examples will be matched to components based on the filename. Each example must be named after its corresponding component, followed by the `Example` keyword and an optional label.
+You can provide examples for your components in the `compodium/` folder. Examples will be matched to components based on the filename. Each example must be named after its corresponding component, followed by the `Example` keyword and an optional label.
 
 ```bash
 compodium
-└── components                          # The collection's name
+└── components                          # The components base directory
     ├── BaseInputExampleDisabled.vue    # Will be added to the BaseInput component.
     ├── BaseButtonExample.vue           # Will be the main example for the BaseButton component.
     └── BaseButtonExampleWithLabel.vue  # Will be added to the BaseButton component.
