@@ -41,13 +41,13 @@ describe('basic', async () => {
       const collections = await $fetch<Record<string, ComponentCollection>>('/__compodium__/api/collections')
       expect(collections.components.components.basicComponent.examples).toEqual([
         expect.objectContaining({
-          baseName: 'ComponentsBasicComponentExampleWithSuffix',
+          baseName: 'BasicComponentExampleWithSuffix',
           collectionId: 'components',
           componentId: 'basicComponent',
-          shortPath: 'compodium/components/BasicComponentExampleWithSuffix.vue',
+          shortPath: 'compodium/examples/BasicComponentExampleWithSuffix.vue',
           isExample: true,
           name: 'WithSuffix',
-          pascalName: 'ComponentsBasicComponentExampleWithSuffix'
+          pascalName: 'BasicComponentExampleWithSuffix'
         })
       ])
     })
@@ -55,17 +55,22 @@ describe('basic', async () => {
     it('overrides component with main example', async () => {
       const collections = await $fetch<Record<string, ComponentCollection>>('/__compodium__/api/collections')
       expect(collections.components.components.basicComponent).toEqual(expect.objectContaining({
-        pascalName: 'ComponentsBasicComponentExample',
-        shortPath: 'compodium/components/BasicComponentExample.vue',
+        pascalName: 'BasicComponentExample',
+        shortPath: 'compodium/examples/BasicComponentExample.vue',
         collectionId: 'components',
         componentId: 'basicComponent'
       }))
+    })
+
+    it('ignores excluded components', async () => {
+      const collections = await $fetch<Record<string, ComponentCollection>>('/__compodium__/api/collections')
+      expect(collections.components.components.excludedComponent).toBeUndefined()
     })
   })
 
   describe('examples api', () => {
     it('works', async () => {
-      const example = await $fetch('/__compodium__/api/example/componentsBasicComponentExample')
+      const example = await $fetch('/__compodium__/api/example/basicComponentExample')
       expect(example).toMatchInlineSnapshot(`
         "<template>
           <BasicComponent />
