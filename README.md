@@ -104,7 +104,7 @@ body {
 
 ### Component Examples
 
-You can provide examples for your components in the `compodium/` folder. Examples will be matched to components based on the filename. Each example must be named after its corresponding component, followed by the `Example` keyword and an optional label.
+You can provide examples for your components in the `compodium/examples/` folder. Examples will be matched to components based on the filename. Each example must be named after its corresponding component, followed by the `Example` keyword and an optional label.
 
 ```bash
 compodium
