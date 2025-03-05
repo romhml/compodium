@@ -5,9 +5,10 @@ import { Mode } from 'vanilla-jsoneditor'
 const modelValue = defineModel<Record<string, any>>({ default: () => {} })
 
 const jsonValue = shallowRef(modelValue.value)
-
 watch(jsonValue, (value) => {
-  if (value) modelValue.value = value
+  if (value && typeof value === 'object') {
+    modelValue.value = value
+  }
 })
 </script>
 
