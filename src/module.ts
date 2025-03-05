@@ -14,8 +14,9 @@ import { watch } from 'chokidar'
 import { compodiumVite } from './vite'
 import { colors } from 'consola/utils'
 import { version } from '../package.json'
-import { joinURL } from 'ufo'
+import { joinURL, withTrailingSlash } from 'ufo'
 import { getLibraryCollections } from './runtime/libs'
+import micromatch from 'micromatch'
 
 export interface ModuleOptions {
   /* Whether to include default collections for third-party libraries. */
@@ -23,6 +24,10 @@ export interface ModuleOptions {
 
   /* Customize the directory for preview examples. Defaults to 'compodium/' */
   examples: string
+
+  excludes: string[]
+
+  excludeDirs: string[]
 
   /* Customize the preview component path. Defaults to compodium/preview.vue */
   previewComponent: string
@@ -115,7 +120,7 @@ export default defineNuxtModule<ModuleOptions>({
           name: pascalCase(id),
           id
         }
-      })
+      }).filter(collection => !options?.excludes?.length || !micromatch.isMatch(withTrailingSlash(collection.path), options.excludeDirs, { contains: true }))
 
       const examplesDirs = collections.map(collection => ({
         ...collection,
@@ -173,6 +178,10 @@ export default defineNuxtModule<ModuleOptions>({
         getContents: ({ app }) => {
           const collections = (appConfig.compodium as any).collections
           const components = [...app.components, ...exampleComponents].reduce((acc, component) => {
+            if (options?.excludes?.length && micromatch.isMatch(component.filePath, options.excludes, { contains: true })) {
+              return acc
+            }
+
             const collection = getComponentCollection<CollectionConfig & Collection>(component, collections)
             const componentId = camelCase(component.kebabName)
             const baseName = collection?.prefix
