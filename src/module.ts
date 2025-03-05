@@ -26,7 +26,7 @@ export interface ModuleOptions {
   dir: string
 
   /* List of glob patterns to exclude components */
-  excludes: string[]
+  exclude: string[]
 
   extras: {
     ui: {
@@ -176,7 +176,7 @@ export default defineNuxtModule<ModuleOptions>({
         getContents: ({ app }) => {
           const collections = (appConfig.compodium as any).collections
           const components = [...app.components, ...exampleComponents].reduce((acc, component) => {
-            if (options?.excludes?.length && micromatch.isMatch(component.filePath, options.excludes, { contains: true })) {
+            if (options?.exclude?.length && micromatch.isMatch(component.filePath, options.exclude, { contains: true })) {
               return acc
             }
 

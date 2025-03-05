@@ -61,6 +61,11 @@ describe('basic', async () => {
         componentId: 'basicComponent'
       }))
     })
+
+    it('ignores excluded components', async () => {
+      const collections = await $fetch<Record<string, ComponentCollection>>('/__compodium__/api/collections')
+      expect(collections.components.components.excludedComponent).toBeUndefined()
+    })
   })
 
   describe('examples api', () => {

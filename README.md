@@ -45,11 +45,14 @@ Configure Compodium in your Nuxt project by customizing the settings in your `nu
 ```ts
 export default defineNuxtConfig({
   compodium: {
-    /* Whether to include default collections for third-party libraries. */
-    includeLibraryCollections: true,
-
     /* Customize compodium's base directory */
     dir: 'compodium/',
+
+    /* List of glob patterns to exclude components */
+    exclude: [],
+
+    /* Whether to include default collections for third-party libraries. */
+    includeLibraryCollections: true,
 
     extras: {
       ui: {
