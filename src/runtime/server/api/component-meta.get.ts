@@ -45,8 +45,7 @@ export default defineEventHandler(async (event) => {
             ...defaultProps,
             ...meta.compodium?.defaultProps
           }
-        },
-        srcMeta: meta
+        }
       }
     }
   } catch (err) {
