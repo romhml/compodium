@@ -11,9 +11,6 @@ export default defineNuxtConfig({
   compodium: {
     excludes: [
       'InputProps'
-    ],
-    excludeDirs: [
-      'my-ui'
     ]
   }
 })

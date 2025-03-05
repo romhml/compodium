@@ -16,17 +16,11 @@ describe('custom collection', async () => {
     it('works', async () => {
       const collections = await $fetch<Record<string, ComponentCollection>>('/__compodium__/api/collections')
       expect(collections).toEqual({
-        'components': expect.objectContaining({
+        components: expect.objectContaining({
           name: 'Components',
           id: 'components',
           components: expect.objectContaining({
-            basicComponent: expect.objectContaining({ componentId: 'basicComponent', collectionId: 'components' })
-          })
-        }),
-        'my-ui': expect.objectContaining({
-          name: 'MyUi',
-          id: 'my-ui',
-          components: expect.objectContaining({
+            basicComponent: expect.objectContaining({ componentId: 'basicComponent', collectionId: 'components' }),
             uButton: expect.objectContaining({ componentId: 'uButton' })
           })
         })

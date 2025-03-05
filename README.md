@@ -46,13 +46,10 @@ Configure Compodium in your Nuxt project by customizing the settings in your `nu
 export default defineNuxtConfig({
   compodium: {
     /* Whether to include default collections for third-party libraries. */
-    includeDefaultCollections: true,
+    includeLibraryCollections: true,
 
     /* Customize compodium's base directory */
     dir: 'compodium/',
-
-    /* Customize the preview component path. */
-    previewComponent: 'compodium/preview.vue',
 
     extras: {
       ui: {
@@ -105,37 +102,13 @@ body {
 > [!NOTE]
 > Compodium renders outside of your `app.vue` component. This is useful if you need to inject CSS or provide parent components.
 
-### Collections
-
-You can control which components are added to the preview using the `collections` configuration. All components inside the specified `path` of your collection will be scanned and added to it.
-
-```ts
-{
-  name: 'Components',
-  path: 'components',
-  /* Add a prefix to all components, similar to Nuxt's components.prefix option */
-  prefix: '',
-  /* Glob patterns for components to ignore */
-  ignore: [],
-  /* If true, the path will be resolved from your node_modules/ folder */
-  external: false,
-  /* Specify a function to generate the components' documentation URL. This will display a button to go to the component's documentation in the preview if specified */
-  getDocUrl?: (componentName: string) => string | null
-}
-```
-
-By default, Compodium will detect the UI libraries you have installed and automatically add a collection with examples for all components. You can disable this by setting `includeDefaultCollections` to `false`.
-
-> [!NOTE]
-> Currently, this feature supports Nuxt UI. More libraries will be added soon!
-
 ### Component Examples
 
 You can provide examples for your components in the `compodium/` folder. Examples will be matched to components based on the filename. Each example must be named after its corresponding component, followed by the `Example` keyword and an optional label.
 
 ```bash
 compodium
-└── components                          # The components base directory
+└── examples
     ├── BaseInputExampleDisabled.vue    # Will be added to the BaseInput component.
     ├── BaseButtonExample.vue           # Will be the main example for the BaseButton component.
     └── BaseButtonExampleWithLabel.vue  # Will be added to the BaseButton component.

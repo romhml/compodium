@@ -7,7 +7,7 @@ import { camelCase, pascalCase } from 'scule'
 import sirv from 'sirv'
 import { scanComponents } from './nuxt'
 import { getComponentCollection } from './runtime/utils'
-import { basename, join } from 'pathe'
+import { join } from 'pathe'
 import { defu } from 'defu'
 import { defaultProps } from './runtime/libs/defaults'
 import { watch } from 'chokidar'
@@ -20,17 +20,13 @@ import micromatch from 'micromatch'
 
 export interface ModuleOptions {
   /* Whether to include default collections for third-party libraries. */
-  includeDefaultCollections: boolean
+  includeLibraryCollections: boolean
 
-  /* Customize the directory for preview examples. Defaults to 'compodium/' */
-  examples: string
+  /* Customize compodium's base directory. Defaults to 'compodium/' */
+  dir: string
 
+  /* List of glob patterns to exclude components */
   excludes: string[]
-
-  excludeDirs: string[]
-
-  /* Customize the preview component path. Defaults to compodium/preview.vue */
-  previewComponent: string
 
   extras: {
     ui: {
@@ -46,9 +42,8 @@ export default defineNuxtModule<ModuleOptions>({
     configKey: 'compodium'
   },
   defaults: {
-    previewComponent: 'compodium/preview.vue',
-    examples: 'compodium/',
-    includeDefaultCollections: true,
+    dir: 'compodium/',
+    includeLibraryCollections: true,
     extras: {
       ui: {
         matchColors: true
@@ -65,10 +60,13 @@ export default defineNuxtModule<ModuleOptions>({
 
     if (!nuxt.options.dev) return
 
-    const appResolver = createResolver(nuxt.options.rootDir)
-    const libraryCollections = options.includeDefaultCollections ? await getLibraryCollections(nuxt.options, appResolver) : []
+    const compodiumComponentsDir = resolve('./runtime/components')
+    addComponentsDir({ path: compodiumComponentsDir, priority: -1 })
 
-    let previewComponent = appResolver.resolve(options.previewComponent)
+    const appResolver = createResolver(nuxt.options.rootDir)
+    const libraryCollections = options.includeLibraryCollections ? await getLibraryCollections(nuxt.options, appResolver) : []
+
+    let previewComponent = appResolver.resolve(joinURL(options.dir, 'preview.vue'))
     if (!existsSync(previewComponent)) {
       previewComponent = resolve('./runtime/preview.vue')
     }
@@ -113,20 +111,22 @@ export default defineNuxtModule<ModuleOptions>({
     nuxt.hooks.hookOnce('components:dirs', async (dirs) => {
       const collections = dirs.map((dir) => {
         const path = typeof dir === 'string' ? dir : dir.path
-        const id = basename(path)
         return {
           ...typeof dir === 'string' ? {} : dir,
           path,
-          name: pascalCase(id),
-          id
+          name: 'Components',
+          id: 'components'
         }
-      }).filter(collection => !options?.excludes?.length || !micromatch.isMatch(withTrailingSlash(collection.path), options.excludeDirs, { contains: true }))
+      }).filter(collection => !micromatch.isMatch(
+        withTrailingSlash(collection.path),
+        [compodiumComponentsDir, 'node_modules/**'],
+        { contains: true })
+      )
 
-      const examplesDirs = collections.map(collection => ({
-        ...collection,
-        path: appResolver.resolve(joinURL(options.examples, collection.id)),
+      const examplesDir = {
+        path: appResolver.resolve(joinURL(options.dir, 'examples/')),
         pattern: '**/*.{vue,ts,tsx}'
-      }))
+      }
 
       const libraryExampleDirs = libraryCollections.map(c => ({
         path: resolve(c.examplePath),
@@ -137,15 +137,13 @@ export default defineNuxtModule<ModuleOptions>({
       // @ts-expect-error type not resolved
       appConfig.compodium.collections = collections.concat(libraryCollections)
 
-      const exampleComponents = options.examples
-        ? (await scanComponents([
-            ...examplesDirs,
-            ...libraryExampleDirs
-          ], nuxt.options.rootDir)).map(c => ({ ...c, isExample: true }))
-        : []
+      const exampleComponents = (await scanComponents([
+        examplesDir,
+        ...libraryExampleDirs
+      ], nuxt.options.rootDir) ?? []).map(c => ({ ...c, isExample: true }))
 
       // Watch for changes in example directory
-      const examplesWatcher = watch([...examplesDirs, ...libraryExampleDirs].map(e => e.path), {
+      const examplesWatcher = watch([examplesDir, ...libraryExampleDirs].map(e => e.path), {
         persistent: true,
         awaitWriteFinish: {
           stabilityThreshold: 200,
@@ -154,7 +152,7 @@ export default defineNuxtModule<ModuleOptions>({
       })
 
       examplesWatcher.on('add', async (path) => {
-        const comps = await scanComponents(examplesDirs, nuxt.options.rootDir)
+        const comps = await scanComponents([examplesDir], nuxt.options.rootDir)
         const newExample = comps.find(c => c.filePath === path)
         if (newExample) {
           exampleComponents.push({ ...newExample, isExample: true })
@@ -206,7 +204,7 @@ export default defineNuxtModule<ModuleOptions>({
         filename: 'compodium/dirs.mjs',
         write: true,
         getContents: () => {
-          return `export default ${JSON.stringify([...dirs, ...examplesDirs, ...libraryExampleDirs])}`
+          return `export default ${JSON.stringify([...dirs, examplesDir, ...libraryExampleDirs])}`
         }
       })
 
@@ -227,10 +225,8 @@ export default defineNuxtModule<ModuleOptions>({
       }
 
       addVitePlugin(compodiumVite({
-        dirs: [...dirs, ...examplesDirs, ...libraryExampleDirs]
+        dirs: [...dirs, examplesDir, ...libraryExampleDirs]
       }))
-
-      addComponentsDir({ path: resolve('./runtime/components'), priority: -1 })
     })
 
     if (process.env.COMPODIUM_LOCAL === 'true') {

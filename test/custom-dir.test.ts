@@ -6,7 +6,7 @@ describe('custom-preview', async () => {
   await setup({
     // FIXME: TypeError: The URL must be of scheme file
     // rootDir: fileURLToPath(new URL('./fixtures/basic', import.meta.url)),
-    rootDir: resolve('./test/fixtures/custom-preview'),
+    rootDir: resolve('./test/fixtures/custom-dir'),
     dev: true,
     env: {
       COMPODIUM_TEST: 'true'
