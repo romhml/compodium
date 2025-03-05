@@ -43,7 +43,6 @@ export function createChecker() {
     getComponentMeta: (componentPath: string): ComponentMeta => {
       const meta = metaChecker.getComponentMeta(componentPath)
       return {
-        // ...meta,
         props: meta.props.filter((sch: any) => !sch.global).map((sch: any) => stripeTypeScriptInternalTypesSchema(sch, true)),
         compodium: meta.compodium
         // events: meta.events.map(sch => stripeTypeScriptInternalTypesSchema(sch, true)),
