@@ -1,6 +1,6 @@
 {
   "name": "compodium",
-  "version": "0.1.0-beta.3",
+  "version": "0.1.0-beta.4",
   "description": "A plug an play component playground for Nuxt.",
   "repository": "romhml/compodium",
   "license": "MIT",
@@ -21,7 +21,7 @@
     "prepack": "pnpm --filter @compodium/meta build && nuxt-module-build build && nuxi generate devtools",
     "dev": "COMPODIUM_LOCAL=true nuxi dev playground",
     "dev:build": "nuxi build playground",
-    "dev:prepare":  "pnpm --filter @compodium/meta build && nuxt-module-build build --stub && nuxt-module-build prepare && nuxi prepare devtools && nuxi prepare playground",
+    "dev:prepare": "pnpm --filter @compodium/meta build && nuxt-module-build build --stub && nuxt-module-build prepare && nuxi prepare devtools && nuxi prepare playground",
     "release": "pnpm run lint && pnpm run test && pnpm run prepack && changelogen --release && pnpm publish && git push --follow-tags",
     "lint": "eslint .",
     "test": "vitest run",
@@ -66,7 +66,9 @@
     "vitest": "^3.0.7",
     "vue-tsc": "^2.2.0"
   },
-  "bundleDependencies": ["@compodium/meta"],
+  "bundleDependencies": [
+    "@compodium/meta"
+  ],
   "resolutions": {
     "tailwindcss": "4.0.7",
     "@tailwindcss/vite": "4.0.7",

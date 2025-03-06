@@ -1,5 +1,60 @@
 # Changelog
 
+## v0.1.0-beta.4
+
+[compare changes](https://github.com/romhml/compodium/compare/v0.1.0-beta.3...v0.1.0-beta.4)
+
+### 🚀 Enhancements
+
+- Improve props tab ([#13](https://github.com/romhml/compodium/pull/13))
+- Icon input ([#16](https://github.com/romhml/compodium/pull/16))
+- Allow customizing the collection id ([1b75712](https://github.com/romhml/compodium/commit/1b75712))
+- Allow customizing the example directory per collections ([f93c4f9](https://github.com/romhml/compodium/commit/f93c4f9))
+- Display multiple variants of a component ([#17](https://github.com/romhml/compodium/pull/17))
+- Add togglable grid ([43ed301](https://github.com/romhml/compodium/commit/43ed301))
+- Parse defaultValue JSDoc tags ([9c7dedd](https://github.com/romhml/compodium/commit/9c7dedd))
+
+### 🩹 Fixes
+
+- Use meta+B to browse components and forward keyboard event from renderer ([c75e35b](https://github.com/romhml/compodium/commit/c75e35b))
+- Resolve libraries from cwd and nuxt rootDir ([2de1db2](https://github.com/romhml/compodium/commit/2de1db2))
+- Silence error when fetching meta for library example ([2cda294](https://github.com/romhml/compodium/commit/2cda294))
+- Refresh renderer on nested property update ([3fbe84f](https://github.com/romhml/compodium/commit/3fbe84f))
+- Disable resize on string input ([60c3acf](https://github.com/romhml/compodium/commit/60c3acf))
+- Use palenight colors in JSON Editor ([db6ce66](https://github.com/romhml/compodium/commit/db6ce66))
+- Combo input alignment ([d7b1b89](https://github.com/romhml/compodium/commit/d7b1b89))
+- Component example meta error ([4dbafd1](https://github.com/romhml/compodium/commit/4dbafd1))
+- Combo type ([f4a483a](https://github.com/romhml/compodium/commit/f4a483a))
+- JSON editor ([2588c70](https://github.com/romhml/compodium/commit/2588c70))
+- Lint ([a599c03](https://github.com/romhml/compodium/commit/a599c03))
+- Set pointer event none on grid ([d8754bc](https://github.com/romhml/compodium/commit/d8754bc))
+- Grid overflow ([ec67646](https://github.com/romhml/compodium/commit/ec67646))
+- DefaultValue evaluation ([99bbffc](https://github.com/romhml/compodium/commit/99bbffc))
+
+### 💅 Refactors
+
+- ⚠️  Convert `extendCompodiumMeta` to a compile-time macro ([#12](https://github.com/romhml/compodium/pull/12))
+- ⚠️  Remove `collections` option ([#18](https://github.com/romhml/compodium/pull/18))
+
+### 🏡 Chore
+
+- Ui tweaks ([cd6e91d](https://github.com/romhml/compodium/commit/cd6e91d))
+- Remove comments ([32d5186](https://github.com/romhml/compodium/commit/32d5186))
+
+### ✅ Tests
+
+- Increase timeout ([f9b5ac2](https://github.com/romhml/compodium/commit/f9b5ac2))
+
+#### ⚠️ Breaking Changes
+
+- ⚠️  Convert `extendCompodiumMeta` to a compile-time macro ([#12](https://github.com/romhml/compodium/pull/12))
+- ⚠️  Remove `collections` option ([#18](https://github.com/romhml/compodium/pull/18))
+
+### ❤️ Contributors
+
+- Romain Hamel ([@romhml](https://github.com/romhml))
+- Romhml ([@romhml](https://github.com/romhml))
+
 ## v0.1.0-beta.3
 
 [compare changes](https://github.com/romhml/compodium/compare/v0.1.0-beta.2...v0.1.0-beta.3)
