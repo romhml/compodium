@@ -113,13 +113,16 @@ const propResolvers: PropSchemaResolver<ZodSchema>[] = [
 ]
 
 export function inferPropTypes(prop: PropertyMeta): PropertyType {
+  const defaultValue = prop?.tags.find(tag => tag.name === 'defaultValue')?.text?.trim()?.replace(/^[`'"]|[`'"]$/g, '')
   if (prop.tags?.find(tag => tag.name === 'IconifyIcon')) return {
     ...prop,
+    default: defaultValue,
     schema: [{ schema: 'IconifyIcon', inputType: 'icon', type: 'IconifyIcon' }]
   }
 
   return {
     ...prop,
+    default: prop.default ?? defaultValue,
     schema: inferSchemaType(prop.schema)
   }
 }
