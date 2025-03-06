@@ -236,7 +236,7 @@ watch(component, () => propsSearchTerm.value = '')
           icon="lucide:grid"
           variant="link"
           class="rounded-full"
-          color="neutral"
+          :color="showGrid ? 'primary' : 'neutral'"
           @click="() => {
             showGrid = !showGrid
             updateGridDebounced()

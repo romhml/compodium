@@ -105,7 +105,8 @@ onMounted(() => {
         backgroundImage: 'linear-gradient(to right, var(--ui-border-accented, #71717b) 1px, transparent 1px), linear-gradient(to bottom, var(--ui-border-accented, #71717b) 1px, transparent 1px)',
         opacity: '50%',
         backgroundPosition: 'center',
-        backgroundSize: `${gridGap}px ${gridGap}px`
+        backgroundSize: `${gridGap}px ${gridGap}px`,
+        pointerEvents: 'none'
       }"
     />
   </Teleport>
