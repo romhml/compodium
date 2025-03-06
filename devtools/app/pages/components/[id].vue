@@ -41,7 +41,7 @@ function evalPropValue(meta: Partial<PropertyMeta>) {
   try {
     return new Function(`return ${meta.default}`)()
   } catch {
-    console.warn(`[Compodium] Could not evaluate default value for property ${meta.name}`)
+    return
   }
 }
 
