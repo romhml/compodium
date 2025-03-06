@@ -111,3 +111,11 @@ onMounted(() => {
     />
   </Teleport>
 </template>
+
+<style>
+body {
+  position: relative;
+  width: fit-content;
+  height: fit-content;
+}
+</style>

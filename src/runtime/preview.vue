@@ -23,7 +23,7 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  min-width: min-content;
+  min-width: 100vw;
   background-color: transparent;
   padding: 64px;
 }
