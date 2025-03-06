@@ -153,7 +153,15 @@ const tabs = computed(() => {
   ]
 })
 
+const showGrid = ref(false)
+const gridGap = ref<number>(8)
+
+const updateGridDebounced = useDebounceFn(() => {
+  hooks.callHook('renderer:grid', { enabled: showGrid.value, gap: gridGap.value })
+}, 50, { maxWait: 50 })
+
 const colorMode = useColorMode()
+
 const isDark = computed({
   get() {
     return colorMode.value === 'dark'
@@ -219,6 +227,40 @@ watch(component, () => propsSearchTerm.value = '')
           target="_blank"
         />
       </UTooltip>
+
+      <UPopover
+        mode="hover"
+        :ui="{ content: 'bg-transparent border-none shadow-none ring-0' }"
+      >
+        <UButton
+          icon="lucide:grid"
+          variant="link"
+          class="rounded-full"
+          color="neutral"
+          @click="() => {
+            showGrid = !showGrid
+            updateGridDebounced()
+          }"
+        />
+        <template #content>
+          <USlider
+            v-model="gridGap"
+            size="xs"
+            class="w-28"
+            :min="4"
+            :max="64"
+            :step="1"
+            @update:model-value="() => {
+              showGrid = true
+              updateGridDebounced()
+            }"
+          />
+
+          <p class="text-(--ui-text-muted) text-right text-xs mt-1">
+            {{ gridGap }}px
+          </p>
+        </template>
+      </UPopover>
 
       <UButton
         :icon="isDark ? 'lucide:moon' : 'lucide:sun'"

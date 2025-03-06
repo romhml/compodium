@@ -33,6 +33,9 @@ if (import.meta.hot) {
   import.meta.hot.on('compodium:hmr', data => hooks.value?.callHook(data.event, data))
 }
 
+const showGrid = ref(false)
+const gridGap = ref(8)
+
 const colorMode = useColorMode()
 const hooks = shallowRef<Hookable<CompodiumHooks>>()
 
@@ -42,6 +45,10 @@ onMounted(() => {
   hooks.value.hook('renderer:update-component', onUpdateComponent)
   hooks.value.hook('renderer:update-props', payload => props.value = { ...payload.props })
   hooks.value.hook('renderer:update-combo', payload => combo.value = payload.props)
+  hooks.value.hook('renderer:grid', (payload) => {
+    showGrid.value = payload.enabled
+    gridGap.value = payload.gap
+  })
 
   hooks.value.hook('renderer:set-color', color => colorMode.value = color)
   hooks.value.callHook('renderer:mounted')
@@ -87,4 +94,19 @@ onMounted(() => {
       v-bind="props"
     />
   </template>
+  <Teleport to="body">
+    <div
+      v-if="showGrid"
+      class="grid-background absolute z-50 inset-0"
+      :style="{
+        position: 'absolute',
+        inset: 0,
+        zIndex: 99999,
+        backgroundImage: 'linear-gradient(to right, var(--ui-border-accented, #71717b) 1px, transparent 1px), linear-gradient(to bottom, var(--ui-border-accented, #71717b) 1px, transparent 1px)',
+        opacity: '50%',
+        backgroundPosition: 'center',
+        backgroundSize: `${gridGap}px ${gridGap}px`
+      }"
+    />
+  </Teleport>
 </template>

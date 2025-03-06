@@ -117,6 +117,9 @@ export interface CompodiumHooks {
 
   // Update the renderer colorMode
   'renderer:set-color': (color: 'light' | 'dark') => void
+
+  // Toggle the renderer grid
+  'renderer:grid': (payload: { enabled: boolean, gap: number }) => void
 }
 
 declare global {
