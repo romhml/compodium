@@ -125,10 +125,10 @@ async function updateComponent() {
   await hooks.callHook('renderer:update-combo', { props: comboProps.value?.filter(Boolean) as ComboItem[] ?? [] })
 }
 
-const updatePropsDebounced = useDebounceFn(() => {
-  hooks.callHook('renderer:update-props', { props: { ...props.value } }),
+const updatePropsDebounced = useDebounceFn(
+  () => hooks.callHook('renderer:update-props', { props: { ...props.value } }),
   100, { maxWait: 300 }
-})
+)
 
 const hooks = createHooks<CompodiumHooks>()
 
