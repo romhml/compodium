@@ -1,7 +1,7 @@
 import { resolve } from 'pathe'
 import { describe, it, expect, beforeEach } from 'vitest'
 import { setup, $fetch } from '@nuxt/test-utils/e2e'
-import type { ComponentMeta } from '~/src/types'
+import type { ComponentCollection, ComponentMeta } from '~/src/types'
 
 describe('basic', async () => {
   await setup({
@@ -27,7 +27,7 @@ describe('basic', async () => {
 
   describe('collections api', () => {
     it('works', async () => {
-      const collections = await $fetch('/__compodium__/api/collections')
+      const collections = await $fetch<Record<string, ComponentCollection>>('/__compodium__/api/collections')
       expect(collections).toEqual({
         components: expect.objectContaining({
           name: 'Components',
@@ -38,7 +38,7 @@ describe('basic', async () => {
     })
 
     it('assigns component examples', async () => {
-      const collections = await $fetch('/__compodium__/api/collections')
+      const collections = await $fetch<Record<string, ComponentCollection>>('/__compodium__/api/collections')
       expect(collections.components.components.basicComponent.examples).toEqual([
         expect.objectContaining({
           baseName: 'BasicComponentExampleWithSuffix',
@@ -53,7 +53,7 @@ describe('basic', async () => {
     })
 
     it('overrides component with main example', async () => {
-      const collections = await $fetch('/__compodium__/api/collections')
+      const collections = await $fetch<Record<string, ComponentCollection>>('/__compodium__/api/collections')
       expect(collections.components.components.basicComponent).toEqual(expect.objectContaining({
         pascalName: 'BasicComponentExample',
         shortPath: 'compodium/examples/BasicComponentExample.vue',
@@ -63,7 +63,7 @@ describe('basic', async () => {
     })
 
     it('ignores excluded components', async () => {
-      const collections = await $fetch('/__compodium__/api/collections')
+      const collections = await $fetch<Record<string, ComponentCollection>>('/__compodium__/api/collections')
       expect(collections.components.components.excludedComponent).toBeUndefined()
     })
   })
@@ -110,7 +110,7 @@ describe('basic', async () => {
 
   describe('compodium meta', async () => {
     it('works', async () => {
-      const component = await $fetch('/__compodium__/api/component-meta/extendMeta')
+      const component = await $fetch<ComponentMeta>('/__compodium__/api/component-meta/extendMeta')
       expect(component.meta.compodium).toMatchObject({
         defaultProps: {
           foo: 'bar',
@@ -125,12 +125,12 @@ describe('basic', async () => {
     })
 
     it('filters variables', async () => {
-      const component = await $fetch('/__compodium__/api/component-meta/extendMetaWithVars')
+      const component = await $fetch<ComponentMeta>('/__compodium__/api/component-meta/extendMetaWithVars')
       expect(component.meta.compodium).toEqual({ defaultProps: {} })
     })
 
     it('ignores if invalid param', async () => {
-      const component = await $fetch('/__compodium__/api/component-meta/extendMetaBad')
+      const component = await $fetch<ComponentMeta>('/__compodium__/api/component-meta/extendMetaBad')
       expect(component.meta.compodium).toEqual({ defaultProps: {} })
     })
   })
@@ -139,7 +139,7 @@ describe('basic', async () => {
     let props: ComponentMeta['meta']['props']
 
     beforeEach(async () => {
-      const component = await $fetch('/__compodium__/api/component-meta/complexComponent')
+      const component = await $fetch<ComponentMeta>('/__compodium__/api/component-meta/complexComponent')
       props = component.meta.props
     })
 
