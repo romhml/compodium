@@ -21,7 +21,7 @@ describe('basic', async () => {
   describe('renderer', () => {
     it('is mounted in development', async () => {
       const html = await $fetch('/__compodium__/renderer')
-      expect(html).toContain('<div id="compodium-default-preview">')
+      expect(html).toContain('<div id="compodium-default-preview"')
     })
   })
 
