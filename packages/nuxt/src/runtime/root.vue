@@ -17,9 +17,19 @@ const PreviewComponent = url?.startsWith('/__compodium__/renderer') && defineAsy
 
 <template>
   <Suspense v-if="url?.startsWith('/__compodium__/renderer')">
-    <PreviewComponent>
-      <RendererComponent />
-    </PreviewComponent>
+    <div id="__compodium-root">
+      <PreviewComponent>
+        <RendererComponent />
+      </PreviewComponent>
+    </div>
   </Suspense>
   <NuxtRoot v-else />
 </template>
+
+<style scoped>
+#__compodium-root {
+  position: relative;
+  width: fit-content;
+  height: fit-content;
+}
+</style>

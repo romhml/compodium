@@ -94,7 +94,7 @@ onMounted(() => {
       v-bind="props"
     />
   </template>
-  <Teleport to="body">
+  <Teleport to="#__compodium-root">
     <div
       v-if="showGrid"
       class="grid-background absolute z-50 inset-0"
@@ -111,11 +111,3 @@ onMounted(() => {
     />
   </Teleport>
 </template>
-
-<style>
-body {
-  position: relative;
-  width: fit-content;
-  height: fit-content;
-}
-</style>
