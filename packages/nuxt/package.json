@@ -1,0 +1,70 @@
+{
+  "name": "compodium",
+  "version": "0.1.0-beta.4",
+  "description": "A plug an play component playground for Nuxt.",
+  "repository": {
+    "url": "romhml/compodium",
+    "directory": "packages/nuxt"
+  },
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/types.d.ts",
+      "import": "./dist/module.mjs",
+      "require": "./dist/module.cjs"
+    }
+  },
+  "main": "./dist/module.cjs",
+  "types": "./dist/types.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "prepack": "nuxt-module-build build && nuxi generate devtools && pnpm --filter @compodium/devtools generate",
+    "dev:prepare": "nuxt-module-build build --stub && nuxt-module-build prepare",
+    "release": "pnpm run lint && pnpm run test && pnpm run prepack && changelogen --release && pnpm publish && git push --follow-tags",
+    "typecheck": "vue-tsc --noEmit",
+    "test": "vitest run ."
+  },
+  "dependencies": {
+    "@compodium/meta": "workspace:*",
+    "@nuxt/devtools-kit": "^2.2.1",
+    "@nuxt/kit": "^3.15.4",
+    "@vueuse/core": "^12.8.2",
+    "chokidar": "^4.0.3",
+    "consola": "^3.4.0",
+    "defu": "^6.1.4",
+    "get-port-please": "^3.1.2",
+    "hookable": "^5.5.3",
+    "micromatch": "^4.0.8",
+    "npm-run-path": "^6.0.0",
+    "pathe": "^2.0.3",
+    "scule": "^1.3.0",
+    "semver": "^7.7.1",
+    "sirv": "^3.0.1",
+    "tinyglobby": "^0.2.12",
+    "ufo": "^1.5.4",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@nuxt/devtools": "^2.2.1",
+    "@nuxt/eslint-config": "^1.1.0",
+    "@nuxt/module-builder": "^0.8.4",
+    "@nuxt/schema": "^3.15.4",
+    "@nuxt/test-utils": "^3.17.1",
+    "@types/micromatch": "^4.0.9",
+    "@types/node": "^22.13.9",
+    "@types/semver": "^7.5.8",
+    "happy-dom": "^16.8.1",
+    "nuxt": "^3.15.4",
+    "playwright-core": "^1.50.1",
+    "vue-tsc": "^2.2.0"
+  },
+  "packageManager": "pnpm@10.5.2",
+  "keywords": [
+    "nuxt",
+    "components",
+    "documentation"
+  ]
+}
