@@ -17,7 +17,6 @@ describe('custom compodium dir', async () => {
   describe('renderer', () => {
     it('is mounted inside custom preview', async () => {
       const html = await $fetch('/__compodium__/renderer')
-      console.log(html)
       expect(html).toContain('<div id="custom-preview"')
     })
   })
