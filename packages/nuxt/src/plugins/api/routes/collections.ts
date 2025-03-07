@@ -1,16 +1,15 @@
 import fs from 'node:fs/promises'
 import { defineEventHandler } from 'h3'
 import type { Component, ComponentCollection, Collection, ComponentExample } from '../../../types'
-import { useAppConfig } from '#imports'
-import { getComponentCollection } from '../../utils'
+import { getComponentCollection } from '../../../utils'
 
-export default defineEventHandler(async () => {
-  const config = (useAppConfig().compodium) as any
-  // @ts-expect-error virtual file
-  const collections: Collection[] = await import('#compodium/nitro/collections').then(i => i.default)
+export default defineEventHandler(async (event) => {
+  const collections: Collection[] = event.context.compodium
+  console.log(collections)
 
   const componentsRaw = await fs.readFile(config.componentsPath, 'utf-8')
   const components = Object.values(JSON.parse(componentsRaw)) as (Component | ComponentExample)[]
+
   const examples = components.filter(c => c.isExample)
 
   return components.filter(e => !e.isExample).reduce((acc, component) => {

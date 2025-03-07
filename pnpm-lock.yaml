@@ -143,6 +143,9 @@ importers:
       ufo:
         specifier: ^1.5.4
         version: 1.5.4
+      unplugin:
+        specifier: ^2.2.0
+        version: 2.2.0
       zod:
         specifier: ^3.24.2
         version: 3.24.2

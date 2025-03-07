@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises'
 import { defineEventHandler, createError, appendHeader } from 'h3'
-import { useAppConfig } from '#imports'
-import type { ComponentExample, Component } from '../../../types'
+// import { useAppConfig } from '#imports'
+import type { ComponentExample, Component } from '../../types'
 
 export default defineEventHandler(async (event) => {
   appendHeader(event, 'Access-Control-Allow-Origin', '*')

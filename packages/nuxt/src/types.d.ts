@@ -95,6 +95,8 @@ declare module 'nuxt/schema' {
 }
 
 export interface CompodiumHooks {
+  'component:collections': () => Record<string, ComponentCollection>
+
   // Triggered when the components code has been updated
   'component:changed': () => void
 

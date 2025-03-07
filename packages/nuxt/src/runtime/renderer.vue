@@ -9,6 +9,10 @@ import { useNuxtApp } from '#imports'
 import type { CompodiumHooks } from '../types'
 import type { Hookable } from 'hookable'
 
+import { compodium } from 'virtual:compodium'
+
+console.log(compodium)
+
 // Silence Nuxt warnings on unused pages / layouts
 const app = useNuxtApp()
 app._isNuxtPageUsed = true

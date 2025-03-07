@@ -1,8 +1,7 @@
 import { createCheckerByJson } from '@compodium/meta'
-import type { ComponentMeta } from '../../../types'
+import type { ComponentMeta } from '../../types'
 
-// @ts-expect-error virtual file
-import dirs from '#compodium/nitro/dirs'
+// import dirs from '#compodium/nitro/dirs'
 
 let checker
 

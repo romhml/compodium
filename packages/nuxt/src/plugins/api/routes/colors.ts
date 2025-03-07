@@ -1,5 +1,5 @@
 import { defineEventHandler } from 'h3'
-import { useAppConfig } from '#imports'
+// import { useAppConfig } from '#imports'
 
 export default defineEventHandler(() => {
   const appConfig: any = useAppConfig()

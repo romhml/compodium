@@ -1,12 +1,12 @@
 import type { ViteDevServer } from 'vite'
+import type { PluginOptions } from '../unplugin'
 import { watch } from 'chokidar'
-import type { ComponentsDir } from '@nuxt/schema'
 
-export function compodiumVite({ dirs }: { dirs: (ComponentsDir | string)[] }) {
+export function WatcherPlugin(options: PluginOptions) {
   return {
-    name: 'compodium',
+    name: 'compodium:watcher',
     configureServer(server: ViteDevServer) {
-      const watcher = watch(dirs.map(d => typeof d === 'string' ? d : d.path), {
+      const watcher = watch(options.componentDirs.map(d => typeof d === 'string' ? d : d.path), {
         persistent: true,
         awaitWriteFinish: {
           stabilityThreshold: 200,

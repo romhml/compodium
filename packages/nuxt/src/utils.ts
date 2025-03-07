@@ -3,11 +3,11 @@ import { basename, dirname, extname, join, relative } from 'pathe'
 import { glob } from 'tinyglobby'
 import { kebabCase, pascalCase, splitByCase } from 'scule'
 import { isIgnored, useNuxt } from '@nuxt/kit'
+import micromatch from 'micromatch'
 import { withTrailingSlash } from 'ufo'
 import type { Component, ComponentsDir } from 'nuxt/schema'
 
 import type { Collection, CollectionConfig } from './types'
-import micromatch from 'micromatch'
 
 export function getComponentCollection<T = Collection | CollectionConfig>(component: Component, collections: T[]) {
   return collections.find((c: any) => {
