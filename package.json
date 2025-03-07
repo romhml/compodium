@@ -2,22 +2,9 @@
   "name": "@compodium",
   "version": "0.1.0-beta.4",
   "private": true,
-  "description": "A plug an play component playground for Nuxt.",
   "repository": "romhml/compodium",
   "license": "MIT",
   "type": "module",
-  "exports": {
-    ".": {
-      "types": "./dist/types.d.ts",
-      "import": "./dist/module.mjs",
-      "require": "./dist/module.cjs"
-    }
-  },
-  "main": "./dist/module.cjs",
-  "types": "./dist/types.d.ts",
-  "files": [
-    "dist"
-  ],
   "scripts": {
     "dev:prepare": "pnpm -r dev:prepare",
     "dev": "COMPODIUM_LOCAL=true nuxi dev playground",
@@ -30,7 +17,6 @@
     "@nuxt/eslint-config": "^1.1.0",
     "changelogen": "^0.6.1",
     "eslint": "^9.21.0",
-    "nuxt": "^3.15.4",
     "typescript": "5.6.3",
     "vitest": "^3.0.7"
   },
@@ -39,10 +25,5 @@
     "@tailwindcss/vite": "4.0.7",
     "vue-tsc": "^2.2.0"
   },
-  "packageManager": "pnpm@10.5.2",
-  "keywords": [
-    "nuxt",
-    "components",
-    "documentation"
-  ]
+  "packageManager": "pnpm@10.5.2"
 }
