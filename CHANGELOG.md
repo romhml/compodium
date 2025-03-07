@@ -1,5 +1,21 @@
 # Changelog
 
+## v0.1.0-beta.5
+
+[compare changes](https://github.com/romhml/compodium/compare/v0.1.0-beta.4...v0.1.0-beta.5)
+
+### 🩹 Fixes
+
+- Remove global style in renderer ([#24](https://github.com/romhml/compodium/pull/24))
+
+### 🏡 Chore
+
+- Improve monorepo and remove bundled dependencies ([#23](https://github.com/romhml/compodium/pull/23))
+
+### ❤️ Contributors
+
+- Romain Hamel ([@romhml](https://github.com/romhml))
+
 ## v0.1.0-beta.4
 
 [compare changes](https://github.com/romhml/compodium/compare/v0.1.0-beta.3...v0.1.0-beta.4)
