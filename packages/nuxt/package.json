@@ -2,7 +2,10 @@
   "name": "compodium",
   "version": "0.1.0-beta.4",
   "description": "A plug an play component playground for Nuxt.",
-  "repository": "romhml/compodium",
+  "repository": {
+    "url": "romhml/compodium",
+    "directory": "packages/nuxt"
+  },
   "license": "MIT",
   "type": "module",
   "exports": {
