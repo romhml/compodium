@@ -1,6 +1,7 @@
 import { resolve } from 'pathe'
 import { describe, it, expect } from 'vitest'
 import { setup, $fetch } from '@nuxt/test-utils/e2e'
+import type { ComponentCollection } from '~/src/types'
 
 describe('custom compodium dir', async () => {
   await setup({
@@ -21,7 +22,7 @@ describe('custom compodium dir', async () => {
   })
 
   it('resolves examples', async () => {
-    const collections = await $fetch('/__compodium__/api/collections')
+    const collections = await $fetch<Record<string, ComponentCollection>>('/__compodium__/api/collections')
     expect(collections.components.components.basicComponent).toEqual(expect.objectContaining({
       pascalName: 'BasicComponentExample',
       shortPath: 'play/examples/BasicComponentExample.vue',
