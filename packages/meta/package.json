@@ -1,6 +1,7 @@
 {
   "name": "@compodium/meta",
   "version": "0.1.0-beta.4",
+  "repository": "romhml/compodium",
   "license": "MIT",
   "type": "commonjs",
   "exports": {
