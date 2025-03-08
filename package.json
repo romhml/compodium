@@ -7,7 +7,8 @@
   "type": "module",
   "scripts": {
     "dev:prepare": "pnpm -r dev:prepare",
-    "dev": "COMPODIUM_LOCAL=true nuxi dev playground",
+    "dev": "COMPODIUM_LOCAL=true pnpm --filter @compodium/playground-nuxt dev",
+    "vue:dev": "COMPODIUM_LOCAL=true pnpm --filter @compodium/playground-vue dev",
     "lint": "eslint .",
     "typecheck": "pnpm -r typecheck",
     "test": "pnpm -r test",
