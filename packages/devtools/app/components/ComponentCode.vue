@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { useClipboard } from '@vueuse/core'
-import type { ComponentMeta, ComponentExample } from 'compodium'
+import type { Component, ComponentExample } from 'compodium'
 import { generateComponentCode } from '@/utils/codegen'
 
-const props = defineProps<{ example?: string, component?: ComponentMeta | ComponentExample, props?: Record<string, any>, defaultProps?: Record<string, any> }>()
+const props = defineProps<{ example?: string, component?: Component | ComponentExample, props?: Record<string, any>, defaultProps?: Record<string, any> }>()
 
 const fetch = $fetch.create({ baseURL: '/__compodium__/api' })
 const { data: exampleCode } = useAsyncData<string | null>('__compodium-component-example-code', async () => {

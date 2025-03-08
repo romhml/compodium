@@ -9,10 +9,6 @@ import { useNuxtApp } from '#imports'
 import type { CompodiumHooks } from '../types'
 import type { Hookable } from 'hookable'
 
-import { compodium } from 'virtual:compodium'
-
-console.log(compodium)
-
 // Silence Nuxt warnings on unused pages / layouts
 const app = useNuxtApp()
 app._isNuxtPageUsed = true
@@ -22,12 +18,10 @@ const props = shallowRef()
 const component = shallowRef()
 
 const combo = shallowRef<{ value: string, options: string[] }[]>([])
-const componentId = ref()
 
-async function onUpdateComponent(payload: { collectionId: string, componentId: string, baseName: string, path: string, props: Record<string, any> }) {
+async function onUpdateComponent(payload: { path: string, props: Record<string, any> }) {
   combo.value = []
   component.value = null
-  componentId.value = payload.componentId
   props.value = payload.props
 
   component.value = await import(/* @vite-ignore */ buildAssetsURL(payload.path)).then(c => c.default)
@@ -45,6 +39,13 @@ const hooks = shallowRef<Hookable<CompodiumHooks>>()
 
 onMounted(() => {
   hooks.value = window.parent.__COMPODIUM_HOOKS__ as Hookable<CompodiumHooks>
+
+  hooks.value.hook('component:collections', async () => await import('virtual:compodium:collections').then(i => i.default))
+
+  hooks.value.hook('component:meta', async (path: string) => {
+    const meta = await import(/* @vite-ignore */ `/compodium/meta${path}`).then(i => i.default).catch(e => console.error(e))
+    return meta
+  })
 
   hooks.value.hook('renderer:update-component', onUpdateComponent)
   hooks.value.hook('renderer:update-props', payload => props.value = { ...payload.props })

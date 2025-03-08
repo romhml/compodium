@@ -1,10 +1,13 @@
 import type { ComponentsDir } from '@nuxt/schema'
 import { createUnplugin } from 'unplugin'
 
-import { TemplatesPlugin } from './plugins/templates'
-import { WatcherPlugin } from './plugins/watcher'
+import { collectionsPlugin } from './plugins/collections'
+import { metaPlugin } from './plugins/meta'
+import { watcherPlugin } from './plugins/watcher'
 
 export interface PluginOptions {
+  rootDir: string
+
   componentDirs: (ComponentsDir | string)[]
 
   /* Whether to include default collections for third-party libraries. */
@@ -26,7 +29,8 @@ export interface PluginOptions {
 
 export const CompodiumPlugin = createUnplugin<PluginOptions>((options) => {
   return [
-    TemplatesPlugin(options),
-    WatcherPlugin(options)
+    collectionsPlugin(options),
+    metaPlugin(options),
+    watcherPlugin(options)
   ]
 })

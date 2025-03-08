@@ -12,7 +12,10 @@ onMounted(() => window.__COMPODIUM_HOOKS__ = hooks)
   <div
     class="h-screen w-screen flex flex-col justify-center items-center data-[spin=true]:animate-spin data-[bounce=true]:animate-bounce"
   >
-    <ComponentPreview class="hidden" />
+    <iframe
+      src="/__compodium__/renderer"
+      class="hidden"
+    />
 
     <div class="border border-(--ui-border) p-6 rounded-lg w-sm text-center flex flex-col">
       <p class="text-center font-bold text-xl mb-4">

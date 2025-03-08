@@ -1,11 +1,11 @@
 import { createCheckerByJson } from '@compodium/meta'
-import type { ComponentMeta } from '../../types'
+import type { CompodiumMeta } from '../../types'
+import type { ComponentsDir } from '@nuxt/schema'
+import { inferPropTypes } from './infer'
 
 // import dirs from '#compodium/nitro/dirs'
 
-let checker
-
-export function createChecker() {
+export function createChecker(dirs: ComponentsDir[]) {
   const rootDir = process.cwd()
   const metaChecker = createCheckerByJson(
     rootDir,
@@ -39,10 +39,14 @@ export function createChecker() {
 
   const checker = {
     ...metaChecker,
-    getComponentMeta: (componentPath: string): ComponentMeta => {
+    getComponentMeta: (componentPath: string): CompodiumMeta => {
       const meta = metaChecker.getComponentMeta(componentPath)
       return {
-        props: meta.props.filter((sch: any) => !sch.global).map((sch: any) => stripeTypeScriptInternalTypesSchema(sch, true)),
+        props: meta.props
+          .filter((sch: any) => !sch.global)
+          .map((sch: any) => stripeTypeScriptInternalTypesSchema(sch, true))
+          .map(inferPropTypes),
+
         compodium: meta.compodium
         // events: meta.events.map(sch => stripeTypeScriptInternalTypesSchema(sch, true)),
         // exposed: meta.exposed.map(sch => stripeTypeScriptInternalTypesSchema(sch, true)),
@@ -51,10 +55,6 @@ export function createChecker() {
     }
   }
   return checker
-}
-
-export function getChecker(): ReturnType<typeof createChecker> {
-  return checker ??= createChecker()
 }
 
 export function stripeTypeScriptInternalTypesSchema(type: any, topLevel: boolean = true): any {

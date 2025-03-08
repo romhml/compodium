@@ -6,18 +6,14 @@ import sirv from 'sirv'
 import { join } from 'pathe'
 import { defu } from 'defu'
 import { colors } from 'consola/utils'
-import { joinURL, withTrailingSlash } from 'ufo'
-import micromatch from 'micromatch'
-
+import { joinURL } from 'ufo'
 import { version } from '../package.json'
-import { scanComponents } from './nuxt'
 import { CompodiumPlugin, type PluginOptions } from './unplugin'
-import { getLibraryCollections } from './runtime/libs'
 import { defaultProps } from './runtime/libs/defaults'
 
 export type * from './types'
 
-export type ModuleOptions = Omit<PluginOptions, 'componentDirs'>
+export type ModuleOptions = Omit<PluginOptions, 'componentDirs' | 'rootDir'>
 
 export default defineNuxtModule<ModuleOptions>({
   meta: {
@@ -48,7 +44,7 @@ export default defineNuxtModule<ModuleOptions>({
     addComponentsDir({ path: compodiumComponentsDir, priority: -1 })
 
     const appResolver = createResolver(nuxt.options.rootDir)
-    const libraryCollections = options.includeLibraryCollections ? await getLibraryCollections(nuxt.options, appResolver) : []
+    // const libraryCollections = options.includeLibraryCollections ? await getLibraryCollections(nuxt.options, appResolver) : []
 
     let previewComponent = appResolver.resolve(joinURL(options.dir, 'preview.vue'))
     if (!existsSync(previewComponent)) {
@@ -84,52 +80,21 @@ export default defineNuxtModule<ModuleOptions>({
     })
 
     nuxt.hooks.hookOnce('components:dirs', async (dirs) => {
-      const collections = dirs.map((dir) => {
-        const path = typeof dir === 'string' ? dir : dir.path
-        return {
-          ...typeof dir === 'string' ? {} : dir,
-          path,
-          name: 'Components',
-          id: 'components'
-        }
-      }).filter(collection => !micromatch.isMatch(
-        withTrailingSlash(collection.path),
-        [compodiumComponentsDir, 'node_modules/**'],
-        { contains: true })
-      )
-
-      const examplesDir = {
-        path: appResolver.resolve(joinURL(options.dir, 'examples/')),
-        pattern: '**/*.{vue,ts,tsx}'
-      }
-
-      const libraryExampleDirs = libraryCollections.map(c => ({
-        path: resolve(c.examplePath),
-        pattern: '**/*.{vue,ts,tsx}',
-        prefix: c.prefix
-      }))
-
-      const exampleComponents = (await scanComponents([
-        examplesDir,
-        ...libraryExampleDirs
-      ], nuxt.options.rootDir) ?? []).map(c => ({ ...c, isExample: true }))
-
-      // dirs: [...dirs, examplesDir, ...libraryExampleDirs],
       addVitePlugin(CompodiumPlugin.vite({
         componentDirs: dirs,
+        rootDir: nuxt.options.rootDir,
         ...options
       }))
     })
 
     if (process.env.COMPODIUM_LOCAL === 'true') {
       const PORT = await getPort({ port: 42124 })
-
       nuxt.hooks.hookOnce('app:resolve', () => {
         startSubprocess(
           {
             command: 'pnpm',
             args: ['nuxi', 'dev'],
-            cwd: './packages/devtools',
+            cwd: '../../packages/devtools',
             stdio: 'pipe',
             env: {
               PORT: PORT.toString()
@@ -166,7 +131,7 @@ export default defineNuxtModule<ModuleOptions>({
       icon: 'lucide:book-marked',
       view: {
         type: 'iframe',
-        src: '/__compodium__/devtools/components'
+        src: '/__compodium__/devtools'
       }
     })
 

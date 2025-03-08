@@ -1,26 +1,29 @@
-import type { ComponentMeta as VueComponentMeta } from '@compodium/meta'
-import type { Component as NuxtComponent } from 'nuxt'
+import type { PropertyMeta as VuePropertyMeta } from '@compodium/meta'
+import type { Component as NuxtComponent } from '@nuxt/schema'
 import type { Hookable } from 'hookable'
 
 export type IconifyIcon = string & {}
 
-export type * from './runtime/server/services/infer'
+import type { InputSchema } from './plugins/meta/infer'
+
+export type * from './plugins/meta/infer'
 
 export type PropInputType = 'array' | 'object' | 'stringEnum' | 'primitiveArray' | 'array' | 'string' | 'number' | 'boolean' | 'date' | 'icon'
 
 type StringLiteral<T> = T extends string ? (string extends T ? never : T) : never
 type FilterStringLiteral<T> = {
-  [K in keyof T]: T[K] extends EnumOrSymbol<T[K]> ? K : never;
+  [K in keyof T]: T[K] extends StringLiteral<T[K]> ? K : never;
 }[keyof T]
 
-type ComboItem<T> = Keyof<FilterStringLiteral<T>> | undefined
+type ComboItem<T> = keyof FilterStringLiteral<T> | undefined
 type Combo<T> = [ComboItem<T>, ComboItem<T>] | [ComboItem<T>]
 
-export type CompodiumMeta<T = Record<string, any>> = VueComponentMeta & {
+export type CompodiumMeta<T = Record<string, any>> = {
   compodium?: {
     combo?: Combo<T>
     defaultProps?: Partial<T>
   }
+  props: PropertyMeta[]
 }
 
 export type PropSchema = {
@@ -31,21 +34,12 @@ export type PropSchema = {
   schema: InputSchema
 }
 
-export type PropertyType = Omit<PropertyMeta, 'schema'> & {
+export type PropertyMeta = Omit<VuePropertyMeta, 'schema'> & {
   schema: PropSchema[]
 }
 
 export type Component = NuxtComponent & {
-  // Base name of the component without collection prefix.
-  // Mainly to resolve default values in appConfig
-  baseName: string
-  // Unique component identifier (with collection prefix)
-  componentId: string
-}
-
-export type ComponentMeta = Component & {
-  meta: CompodiumMeta
-  examples?: ComponentExample[]
+  examples: ComponentExample[]
 }
 
 export type ComponentExample = NuxtComponent & {
@@ -74,7 +68,7 @@ export type Collection = {
 }
 
 export type ComponentCollection = Collection & {
-  components: Record<string, ComponentMeta>
+  components: Component[]
 }
 
 declare module 'nuxt/schema' {
@@ -95,7 +89,9 @@ declare module 'nuxt/schema' {
 }
 
 export interface CompodiumHooks {
-  'component:collections': () => Record<string, ComponentCollection>
+  'component:collections': () => ComponentCollection[]
+
+  'component:meta': (path: string) => CompodiumMeta
 
   // Triggered when the components code has been updated
   'component:changed': () => void
@@ -110,7 +106,7 @@ export interface CompodiumHooks {
   'renderer:mounted': () => void
 
   // Update the renderer component
-  'renderer:update-component': (payload: { collectionId: string, componentId: string, baseName: string, path: string, props: Record<string, any> }) => void
+  'renderer:update-component': (payload: { path: string, props: Record<string, any> }) => void
 
   // Update the renderer props
   'renderer:update-props': (payload: { props: Record<string, any> }) => void

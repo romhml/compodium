@@ -2,7 +2,7 @@ import type { ViteDevServer } from 'vite'
 import type { PluginOptions } from '../unplugin'
 import { watch } from 'chokidar'
 
-export function WatcherPlugin(options: PluginOptions) {
+export function watcherPlugin(options: PluginOptions) {
   return {
     name: 'compodium:watcher',
     configureServer(server: ViteDevServer) {

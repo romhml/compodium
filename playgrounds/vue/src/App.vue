@@ -1,10 +1,6 @@
 <script setup lang="ts">
 import HelloWorld from './components/HelloWorld.vue'
 import TheWelcome from './components/TheWelcome.vue'
-
-import { compodium } from 'virtual:compodium'
-
-console.log(compodium)
 </script>
 
 <template>
