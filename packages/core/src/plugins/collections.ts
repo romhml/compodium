@@ -1,7 +1,7 @@
-import type { PluginOptions } from '../unplugin'
-import { scanComponents } from '../utils'
+import type { PluginOptions } from '../types'
+import { scanComponents } from './utils'
 
-export async function collectionsPlugin(options: PluginOptions) {
+export function collectionsPlugin(options: PluginOptions): Unplugin {
   const virtualModuleId = 'virtual:compodium:collections'
   const resolvedVirtualModuleId = '\0' + virtualModuleId
 
@@ -16,14 +16,6 @@ export async function collectionsPlugin(options: PluginOptions) {
     }
   }).filter(collection => !collection.path?.includes('node_modules/'))
 
-  const collections = [
-    {
-      name: 'Components',
-      id: 'components',
-      components: await scanComponents(dirs, options.rootDir)
-    }
-  ]
-
   return {
     name: 'compodium:templates',
     resolveId(id: string) {
@@ -31,8 +23,15 @@ export async function collectionsPlugin(options: PluginOptions) {
         return resolvedVirtualModuleId
       }
     },
-    load(id: string) {
+    async load(id: string) {
       if (id === resolvedVirtualModuleId) {
+        const collections = [
+          {
+            name: 'Components',
+            id: 'components',
+            components: await scanComponents(dirs, options.rootDir)
+          }
+        ]
         return `export default ${JSON.stringify(collections)}`
       }
     }

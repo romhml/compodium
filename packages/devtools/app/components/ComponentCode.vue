@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useClipboard } from '@vueuse/core'
-import type { Component, ComponentExample } from 'compodium'
+import type { Component, ComponentExample } from 'compodium/types'
 import { generateComponentCode } from '@/utils/codegen'
 
 const props = defineProps<{ example?: string, component?: Component | ComponentExample, props?: Record<string, any>, defaultProps?: Record<string, any> }>()

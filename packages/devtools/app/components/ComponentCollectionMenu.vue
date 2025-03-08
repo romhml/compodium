@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Component, ComponentCollection, ComponentExample } from 'compodium'
+import type { Component, ComponentCollection, ComponentExample } from 'compodium/types'
 
 const props = defineProps<{ collections: ComponentCollection[] }>()
 const modelValue = defineModel<Component | ComponentExample>()

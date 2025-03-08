@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { CompodiumHooks } from 'compodium'
+import type { CompodiumHooks } from 'compodium/types'
 import { createHooks } from 'hookable'
 
 const hooks = createHooks<CompodiumHooks>()

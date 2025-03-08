@@ -1,4 +1,4 @@
-import type { CompodiumMeta } from '../../types'
+import type { CompodiumMeta } from 'compodium/types'
 /**
  * Runtime placeholder for the for the extendCompodiumMeta macro.
  */

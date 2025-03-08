@@ -6,14 +6,13 @@ import { buildAssetsURL } from '#internal/nuxt/paths'
 import { useNuxtApp } from '#imports'
 // // @ts-expect-error virtual file
 // import components from '#build/compodium/components.json'
-import type { CompodiumHooks } from '../types'
+import type { CompodiumHooks, CompodiumMeta, ComponentCollection } from 'compodium/types'
 import type { Hookable } from 'hookable'
 
 // Silence Nuxt warnings on unused pages / layouts
 const app = useNuxtApp()
 app._isNuxtPageUsed = true
 app._isNuxtLayoutUsed = true
-
 const props = shallowRef()
 const component = shallowRef()
 
@@ -28,7 +27,7 @@ async function onUpdateComponent(payload: { path: string, props: Record<string, 
 }
 
 if (import.meta.hot) {
-  import.meta.hot.on('compodium:hmr', data => hooks.value?.callHook(data.event, data))
+  import.meta.hot.on('compodium:hmr', data => hooks.value?.callHook(data.event, data.path))
 }
 
 const showGrid = ref(false)
@@ -40,12 +39,16 @@ const hooks = shallowRef<Hookable<CompodiumHooks>>()
 onMounted(() => {
   hooks.value = window.parent.__COMPODIUM_HOOKS__ as Hookable<CompodiumHooks>
 
-  hooks.value.hook('component:collections', async () => await import('virtual:compodium:collections').then(i => i.default))
+  // @ts-expect-error TODO??TODO??
+  hooks.value.hook('component:collections', () =>
+    // @ts-expect-error virtual file
+    import('virtual:compodium:collections').then(i => i.default as ComponentCollection[])
+  )
 
-  hooks.value.hook('component:meta', async (path: string) => {
-    const meta = await import(/* @vite-ignore */ `/compodium/meta${path}`).then(i => i.default).catch(e => console.error(e))
-    return meta
-  })
+  // @ts-expect-error TODO??TODO??
+  hooks.value.hook('component:meta', (path: string) =>
+    import(/* @vite-ignore */ `/compodium/meta${path}?${Date.now()}`).then(i => i.default as CompodiumMeta)
+  )
 
   hooks.value.hook('renderer:update-component', onUpdateComponent)
   hooks.value.hook('renderer:update-props', payload => props.value = { ...payload.props })
@@ -60,9 +63,7 @@ onMounted(() => {
 })
 
 onMounted(() => {
-  window.addEventListener('keydown', (e) => {
-    window.parent.dispatchEvent(new KeyboardEvent('keydown', e))
-  })
+  window.addEventListener('keydown', e => window.parent.dispatchEvent(new KeyboardEvent('keydown', e)))
 })
 </script>
 

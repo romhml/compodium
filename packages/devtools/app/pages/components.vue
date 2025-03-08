@@ -1,18 +1,25 @@
 <script setup lang="ts">
-import type { Component, ComponentExample, CompodiumMeta } from 'compodium'
+import type { Component, ComponentExample, CompodiumMeta, ComponentCollection, PropertyMeta } from 'compodium/types'
 import { useColorMode, useDebounceFn } from '@vueuse/core'
 import { useFuse } from '@vueuse/integrations/useFuse'
-import type { PropertyMeta } from '@compodium/meta'
 import type { ComboItem } from '../components/ComboInput.vue'
 import { getEnumOptions } from '~/utils/enum'
 
 const rendererMounted = ref(false)
 const { hooks } = useCompodiumClient()
 
-hooks.hook('renderer:mounted', () => rendererMounted.value = true)
+hooks.hook('renderer:mounted', () => {
+  rendererMounted.value = true
+  hooks.hook('component:changed', async (path: string) => {
+    if (path === component.value?.filePath) {
+      await refreshMeta()
+    }
+  })
+})
 
 const { data: collections } = useAsyncData(async () => {
-  const collections = await hooks.callHook('component:collections')
+  // @ts-expect-error TODO?? TODO??
+  const collections: ComponentCollection[] = await hooks.callHook('component:collections')
   if (!component.value) {
     const fallbackCollection = collections?.[0]
     component.value = fallbackCollection?.components?.[0]
@@ -23,7 +30,7 @@ const { data: collections } = useAsyncData(async () => {
   return collections
 }, { immediate: false, watch: [rendererMounted] })
 
-const component = shallowRef<Component | ComponentExample>()
+const component = shallowRef<Component | ComponentExample | undefined>()
 const props = useState<Record<string, any>>('__component_state', () => ({}))
 
 const defaultProps = shallowRef({})
@@ -46,9 +53,10 @@ function evalPropValue(meta: Partial<PropertyMeta>) {
   }
 }
 
-const { data: componentMeta } = useAsyncData('__compodium-fetch-meta', async () => {
+const { data: componentMeta, refresh: refreshMeta } = useAsyncData('__compodium-fetch-meta', async () => {
   if (!component.value) return
-  const meta = await hooks.callHook('component:meta', component.value.filePath)
+  // @ts-expect-error TODO??TODO??
+  const meta: CompodiumMeta = await hooks.callHook('component:meta', component.value.filePath)
   return meta
 }, { watch: [component] })
 
@@ -73,15 +81,17 @@ const comboProps = computed<Partial<[ComboItem, ComboItem]>>({
 })
 
 const comboItems = computed<ComboItem[]>(() => {
-  return componentMeta.value?.props.flatMap((prop: PropertyMeta) => {
-    if (!Array.isArray(prop.schema)) return
+  return componentMeta.value?.props.flatMap((prop) => {
+    if (!Array.isArray(prop.schema)) return []
     const enumInput = prop.schema?.find((sch: any) => sch?.inputType === 'stringEnum')
+
     if (enumInput) {
-      const options = getEnumOptions(enumInput.schema)
+      const options = getEnumOptions(enumInput.schema as any)
       return options?.length > 1
         ? [{ value: prop.name, label: prop.name, options }]
         : []
     }
+
     return []
   })
 })
@@ -92,19 +102,17 @@ watch([componentMeta, combo], async () => {
 
 watch(componentMeta, async (newComponentMeta) => {
   if (!newComponentMeta) return
-
-  // Don't refresh props if the change was initiated by HMR
-  // if (
-  //   newComponentMeta?.componentId === oldComponentMeta?.componentId
-  //   && newExampleMeta?.pascalName === oldExampleMeta?.pascalName
-  // ) return
-
-  combo.value = [...(/* newExampleMeta?.compodium?.combo ?? */ newComponentMeta?.compodium?.combo ?? [])]
+  combo.value = [...(
+    /* newExampleMeta?.compodium?.combo ?? */
+    newComponentMeta?.compodium?.combo as any ?? []
+  )]
 
   defaultProps.value = {
-    ...getDefaultProps(newComponentMeta)
-    // ...(newExampleMeta?.compodium?.defaultProps ?? newComponentMeta?.compodium?.defaultProps)
+    ...getDefaultProps(newComponentMeta),
+    // ...(newExampleMeta?.compodium?.defaultProps ??
+    ...newComponentMeta?.compodium?.defaultProps
   }
+
   props.value = { ...defaultProps.value }
   await updateComponent()
 })
@@ -130,8 +138,6 @@ const updatePropsDebounced = useDebounceFn(
   () => hooks.callHook('renderer:update-props', { props: { ...props.value } }),
   100, { maxWait: 300 }
 )
-
-onMounted(() => window.__COMPODIUM_HOOKS__ = hooks)
 
 const tabs = computed(() => {
   return [

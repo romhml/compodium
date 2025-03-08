@@ -1,10 +1,31 @@
+import type { ComponentsDir, Component as NuxtComponent } from '@nuxt/schema'
 import type { PropertyMeta as VuePropertyMeta } from '@compodium/meta'
-import type { Component as NuxtComponent } from '@nuxt/schema'
 import type { Hookable } from 'hookable'
+import type { InputSchema } from './plugins/meta/infer'
+
+export interface PluginOptions {
+  rootDir: string
+
+  componentDirs: (ComponentsDir | string)[]
+
+  /* Whether to include default collections for third-party libraries. */
+  includeLibraryCollections: boolean
+
+  /* Customize compodium's base directory. Defaults to 'compodium/' */
+  dir: string
+
+  /* List of glob patterns to exclude components */
+  exclude: string[]
+
+  extras: {
+    ui: {
+      /* If true, Compodium's UI will match your Nuxt UI color theme */
+      matchColors: boolean
+    }
+  }
+}
 
 export type IconifyIcon = string & {}
-
-import type { InputSchema } from './plugins/meta/infer'
 
 export type * from './plugins/meta/infer'
 
@@ -89,18 +110,20 @@ declare module 'nuxt/schema' {
 }
 
 export interface CompodiumHooks {
-  'component:collections': () => ComponentCollection[]
+  // Triggered by the devtools to retreive component collections
+  'component:collections': () => Promise<ComponentCollection[]>
 
-  'component:meta': (path: string) => CompodiumMeta
+  // Triggered by the devtools to retreive component meta
+  'component:meta': (path: string) => Promise<CompodiumMeta>
 
   // Triggered when the components code has been updated
-  'component:changed': () => void
+  'component:changed': (path: string) => void
 
   // Triggered when a new component has been added
-  'component:added': () => void
+  'component:added': (path: string) => void
 
   // Triggered when a component has been deleted
-  'component:removed': () => void
+  'component:removed': (path: string) => void
 
   // Called after the renderer has mounted
   'renderer:mounted': () => void

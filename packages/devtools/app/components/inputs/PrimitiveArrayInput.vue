@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { PrimitiveArrayInputSchema } from 'compodium'
+import type { PrimitiveArrayInputSchema } from 'compodium/types'
 
 const props = defineProps<{ schema: PrimitiveArrayInputSchema }>()
 

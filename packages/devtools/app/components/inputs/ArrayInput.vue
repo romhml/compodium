@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ArrayInputSchema } from 'compodium'
+import type { ArrayInputSchema } from 'compodium/types'
 
 defineProps<{ schema: ArrayInputSchema }>()
 

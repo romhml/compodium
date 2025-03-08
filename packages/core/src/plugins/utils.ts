@@ -7,7 +7,7 @@ import micromatch from 'micromatch'
 import { withTrailingSlash } from 'ufo'
 import type { Component, ComponentsDir } from 'nuxt/schema'
 
-import type { Collection, CollectionConfig } from './types'
+import type { Collection, CollectionConfig } from '../types'
 
 export function getComponentCollection<T = Collection | CollectionConfig>(component: Component, collections: T[]) {
   return collections.find((c: any) => {

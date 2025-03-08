@@ -5,6 +5,7 @@
     "node_modules",
     "test/fixtures/",
     "src/runtime/libs",
+    "test" // TODO: Remove
   ],
   "compilerOptions": {
     "types": ["vite/client"]

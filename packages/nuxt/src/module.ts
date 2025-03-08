@@ -8,10 +8,11 @@ import { defu } from 'defu'
 import { colors } from 'consola/utils'
 import { joinURL } from 'ufo'
 import { version } from '../package.json'
-import { CompodiumPlugin, type PluginOptions } from './unplugin'
-import { defaultProps } from './runtime/libs/defaults'
 
-export type * from './types'
+import { compodium } from 'compodium'
+import type { PluginOptions } from 'compodium/types'
+
+import { defaultProps } from './runtime/libs/defaults'
 
 export type ModuleOptions = Omit<PluginOptions, 'componentDirs' | 'rootDir'>
 
@@ -80,7 +81,7 @@ export default defineNuxtModule<ModuleOptions>({
     })
 
     nuxt.hooks.hookOnce('components:dirs', async (dirs) => {
-      addVitePlugin(CompodiumPlugin.vite({
+      addVitePlugin(compodium.vite({
         componentDirs: dirs,
         rootDir: nuxt.options.rootDir,
         ...options

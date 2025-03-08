@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { Component, ComponentCollection } from 'compodium'
+import type { Component, ComponentCollection, ComponentExample } from 'compodium/types'
 
 const props = defineProps<{ collections: ComponentCollection[] }>()
-const modelValue = defineModel<Component>()
+const modelValue = defineModel<Component | ComponentExample>()
 
 const modalState = ref(false)
 

@@ -1,4 +1,4 @@
-import type { CompodiumHooks } from 'compodium'
+import type { CompodiumHooks } from 'compodium/types'
 import { createHooks } from 'hookable'
 import { createSharedComposable } from '@vueuse/core'
 

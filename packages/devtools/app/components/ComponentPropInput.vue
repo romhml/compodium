@@ -1,5 +1,5 @@
 <script lang="ts">
-import type { PropInputType, PropSchema } from 'compodium'
+import type { PropInputType, PropSchema } from 'compodium/types'
 import BooleanInput from '../components/inputs/BooleanInput.vue'
 import StringInput from '../components/inputs/StringInput.vue'
 import NumberInput from '../components/inputs/NumberInput.vue'
