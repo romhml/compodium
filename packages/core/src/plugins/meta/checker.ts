@@ -3,8 +3,6 @@ import type { CompodiumMeta } from '../../types'
 import type { ComponentsDir } from '@nuxt/schema'
 import { inferPropTypes } from './infer'
 
-// import dirs from '#compodium/nitro/dirs'
-
 export function createChecker(dirs: ComponentsDir[]) {
   const rootDir = process.cwd()
   const metaChecker = createCheckerByJson(

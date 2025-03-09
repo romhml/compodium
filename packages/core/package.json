@@ -5,8 +5,8 @@
   "description": "A plug and play component playground for Vue and Nuxt.",
   "license": "MIT",
   "repository": {
-    "type": "git",
-    "url": "git+https://github.com/antfu/unplugin-starter.git"
+    "url": "romhml/compodium",
+    "directory": "packages/core"
   },
   "keywords": [
     "nuxt",
@@ -36,7 +36,7 @@
   ],
   "scripts": {
     "dev:prepare": "tsup",
-    "build": "tsup",
+    "typecheck": "tsc --noEmit",
     "dev": "tsup --watch src",
     "test": "vitest run ."
   },
@@ -57,8 +57,8 @@
     }
   },
   "dependencies": {
-    "@compodium/meta": "workspace:*",
     "@compodium/examples": "workspace:*",
+    "@compodium/meta": "workspace:*",
     "chokidar": "^4.0.3",
     "micromatch": "^4.0.8",
     "npm-run-path": "^6.0.0",

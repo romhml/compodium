@@ -6,7 +6,7 @@ import type { InputSchema } from './plugins/meta/infer'
 export type PluginOptions = {
   rootDir: string
 
-  componentDirs: (CollectionConfig | string)[]
+  componentDirs: (ComponentsDir | string)[]
 
   /* Whether to include default collections for third-party libraries. */
   includeLibraryCollections: boolean
@@ -74,10 +74,6 @@ export type ComponentExample = Component & {
   componentPath?: string
 }
 
-export type CollectionConfig = ComponentsDir & {
-  getDocUrl?: (componentName: string) => string
-}
-
 export type Collection = {
   name: string
   package?: string
@@ -86,6 +82,7 @@ export type Collection = {
   ignore?: string[]
   dirs: ComponentsDir[]
   exampleDir: ComponentsDir
+  getDocUrl?: (componentName: string) => string
 }
 
 export type ComponentCollection = Collection & {

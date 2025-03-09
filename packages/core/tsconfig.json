@@ -1,13 +1,17 @@
 {
   "compilerOptions": {
     "target": "esnext",
-    "lib": ["esnext", "DOM"],
+    "jsx": "preserve",
+    "lib": ["esnext"],
     "module": "esnext",
-    "moduleResolution": "bundler",
+    "moduleResolution": "node",
     "resolveJsonModule": true,
     "strict": true,
     "strictNullChecks": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "skipLibCheck": true
   },
-  "exclude": ["dist"]
+  "exclude": [
+    "dist"
+  ]
 }
