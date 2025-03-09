@@ -9,10 +9,8 @@ import { colors } from 'consola/utils'
 import { joinURL } from 'ufo'
 import { version } from '../package.json'
 
-import { compodium } from 'compodium'
-import type { PluginOptions } from 'compodium/types'
-
-import { defaultProps } from './runtime/libs/defaults'
+import { compodium } from '@compodium/core'
+import type { PluginOptions } from '@compodium/core'
 
 export type ModuleOptions = Omit<PluginOptions, 'componentDirs' | 'rootDir'>
 
@@ -61,7 +59,6 @@ export default defineNuxtModule<ModuleOptions>({
 
     appConfig.compodium = defu(appConfig.compodium as any, {
       matchUIColors: options.extras?.ui?.matchColors,
-      defaultProps,
       componentsPath: join(nuxt.options.buildDir, '/compodium/components.json')
     })
 

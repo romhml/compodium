@@ -1,3 +1,11 @@
+<script setup lang="ts">
+extendCompodiumMeta({
+  defaultProps: {
+    text: 'Tooltip'
+  }
+})
+</script>
+
 <template>
   <UApp>
     <UTooltip v-bind="$attrs">

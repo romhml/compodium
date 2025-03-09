@@ -1,20 +1,9 @@
-import { readdir } from 'node:fs/promises'
 import { basename, dirname, extname, join, relative } from 'pathe'
 import { glob } from 'tinyglobby'
 import { kebabCase, pascalCase, splitByCase } from 'scule'
-import { isIgnored, useNuxt } from '@nuxt/kit'
-import micromatch from 'micromatch'
+import { isIgnored } from '@nuxt/kit'
 import { withTrailingSlash } from 'ufo'
 import type { Component, ComponentsDir } from '@nuxt/schema'
-
-import type { Collection, CollectionConfig } from '../types'
-
-export function getComponentCollection<T = Collection | CollectionConfig>(component: Component, collections: T[]) {
-  return collections.find((c: any) => {
-    if (!c.external && component.filePath?.match('node_modules/')) return false
-    return micromatch.isMatch(component.filePath, [c.path], { contains: true })
-  })
-}
 
 /* Nuxt internal functions used to scan example components without adding them to the application */
 
@@ -72,28 +61,11 @@ export async function scanComponents(dirs: ComponentsDir[], srcDir: string): Pro
     if (dir.enabled === false) {
       continue
     }
+
     // A map from resolved path to component name (used for making duplicate warning message)
     const resolvedNames = new Map<string, string>()
 
     const files = (await glob(dir.pattern!, { cwd: dir.path, ignore: dir.ignore })).sort()
-
-    // Check if the directory exists (globby will otherwise read it case insensitively on MacOS)
-    if (files.length) {
-      const siblings = await readdir(dirname(dir.path)).catch(() => [] as string[])
-
-      const directory = basename(dir.path)
-      if (!siblings.includes(directory)) {
-        const directoryLowerCase = directory.toLowerCase()
-        const caseCorrected = siblings.find(sibling => sibling.toLowerCase() === directoryLowerCase)
-        if (caseCorrected) {
-          const nuxt = useNuxt()
-          const original = relative(nuxt.options.srcDir, dir.path)
-          const corrected = relative(nuxt.options.srcDir, join(dirname(dir.path), caseCorrected))
-          console.warn(`[Compodium] Components not scanned from \`~/${corrected}\`. Did you mean to name the directory \`~/${original}\` instead?`)
-          continue
-        }
-      }
-    }
 
     for (const _file of files) {
       const filePath = join(dir.path, _file)
@@ -138,10 +110,6 @@ export async function scanComponents(dirs: ComponentsDir[], srcDir: string): Pro
       const suffix = (mode !== 'all' ? `-${mode}` : '')
       const componentNameSegments = resolveComponentNameSegments(fileName.replace(QUOTE_RE, ''), prefixParts)
       const pascalName = pascalCase(componentNameSegments)
-
-      if (LAZY_COMPONENT_NAME_REGEX.test(pascalName)) {
-        console.warn(`[Compodium] The component \`${pascalName}\` (in \`${filePath}\`) is using the reserved "Lazy" prefix used for dynamic imports, which may cause it to break at runtime.`)
-      }
 
       if (resolvedNames.has(pascalName + suffix) || resolvedNames.has(pascalName)) {
         warnAboutDuplicateComponent(pascalName, filePath, resolvedNames.get(pascalName) || resolvedNames.get(pascalName + suffix)!)
@@ -215,5 +183,3 @@ function warnAboutDuplicateComponent(componentName: string, filePath: string, du
     + `\n - ${duplicatePath}`
   )
 }
-
-const LAZY_COMPONENT_NAME_REGEX = /^Lazy(?=[A-Z])/

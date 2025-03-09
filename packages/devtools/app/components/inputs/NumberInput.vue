@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { NumberInputSchema } from 'compodium/types'
+import type { NumberInputSchema } from '@compodium/core'
 
 defineProps<{ schema: NumberInputSchema }>()
 </script>

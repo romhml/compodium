@@ -21,7 +21,7 @@
   },
   "devDependencies": {
     "@compodium/meta": "workspace:*",
-    "compodium": "workspace:*",
+    "@compodium/core": "workspace:*",
     "@iconify-json/lucide": "^1.2.28"
   }
 }

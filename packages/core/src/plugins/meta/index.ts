@@ -1,29 +1,18 @@
 import { readFile } from 'node:fs/promises'
-import type { PluginOptions } from '../../types'
+import type { PluginConfig } from '../../types'
 import { createChecker } from './checker'
-import { joinURL } from 'ufo'
 import { watch } from 'chokidar'
 import type { VitePlugin } from 'unplugin'
 
-export function metaPlugin(options: PluginOptions): VitePlugin {
-  const dirs = options?.componentDirs.map((dir) => {
-    const path = typeof dir === 'string' ? dir : dir.path
-    return {
-      ...typeof dir === 'string' ? {} : dir,
-      path,
-      pattern: '**/*.{vue,ts,tsx}'
-    }
-  })
+export function metaPlugin(config: PluginConfig): VitePlugin {
+  const checkerDirs = [
+    ...config.componentCollection.dirs,
+    config.componentCollection.exampleDir,
+    ...config.libraryCollections.flatMap(c => c.dirs),
+    ...config.libraryCollections.map(c => c.exampleDir)
+  ]
 
-  const exampleDir = {
-    path: joinURL(options.rootDir, options.dir, 'examples'),
-    pattern: '**/*.{vue,ts,tsx}'
-  }
-
-  dirs.push(exampleDir)
-
-  const checker = createChecker(dirs)
-  const paths = dirs.map(d => d.path)
+  const checker = createChecker(checkerDirs)
 
   return {
     name: 'compodium:meta',
@@ -56,8 +45,13 @@ export function metaPlugin(options: PluginOptions): VitePlugin {
         }
       })
 
+      const watchedPaths = [
+        ...config.componentCollection.dirs,
+        config.componentCollection.exampleDir
+      ].map(d => d.path)
+
       // Watch for changes in example directory
-      const examplesWatcher = watch(paths, {
+      const examplesWatcher = watch(watchedPaths, {
         persistent: true,
         awaitWriteFinish: {
           stabilityThreshold: 200,
@@ -70,7 +64,7 @@ export function metaPlugin(options: PluginOptions): VitePlugin {
       })
 
       examplesWatcher.on('change', async (filePath: string) => {
-        if (paths.find(p => filePath.startsWith(p))) {
+        if (watchedPaths.find(p => filePath.startsWith(p))) {
           const code = await readFile(filePath, 'utf-8')
           checker.updateFile(filePath, code)
 

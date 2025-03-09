@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Component, ComponentCollection, ComponentExample } from 'compodium/types'
+import type { Component, ComponentCollection, ComponentExample } from '@compodium/core'
 
 const props = defineProps<{ collections: ComponentCollection[] }>()
 const modelValue = defineModel<Component | ComponentExample>()
@@ -8,6 +8,7 @@ const modalState = ref(false)
 
 const items = computed(() =>
   props.collections?.map(col => ({
+    id: col.name,
     ...col,
     items: col.components.flatMap((comp) => {
       const label = comp?.isExample ? comp.pascalName.replace(/Example$/, '') : comp.pascalName

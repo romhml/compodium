@@ -3,7 +3,7 @@ import type { PropertyMeta as VuePropertyMeta } from '@compodium/meta'
 import type { Hookable } from 'hookable'
 import type { InputSchema } from './plugins/meta/infer'
 
-export interface PluginOptions {
+export type PluginOptions = {
   rootDir: string
 
   componentDirs: (CollectionConfig | string)[]
@@ -23,6 +23,11 @@ export interface PluginOptions {
       matchColors: boolean
     }
   }
+}
+
+export type PluginConfig = PluginOptions & {
+  libraryCollections: Collection[]
+  componentCollection: Collection
 }
 
 export type IconifyIcon = string & {}
@@ -74,13 +79,13 @@ export type CollectionConfig = ComponentsDir & {
 }
 
 export type Collection = {
-  id: string
   name: string
-  path: string
-  external?: boolean
+  package?: string
   icon?: string
   prefix?: string
   ignore?: string[]
+  dirs: ComponentsDir[]
+  exampleDir: ComponentsDir
 }
 
 export type ComponentCollection = Collection & {

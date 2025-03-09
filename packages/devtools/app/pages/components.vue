@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Component, ComponentExample, CompodiumMeta, ComponentCollection, PropertyMeta } from 'compodium/types'
+import type { Component, ComponentExample, CompodiumMeta, ComponentCollection, PropertyMeta } from '@compodium/core'
 import { useColorMode, useDebounceFn } from '@vueuse/core'
 import { useFuse } from '@vueuse/integrations/useFuse'
 import type { ComboItem } from '../components/ComboInput.vue'
@@ -208,7 +208,7 @@ watch(component, () => propsSearchTerm.value = '')
       v-if="collections?.length"
       v-model="component"
       :collections="collections"
-      class="pt-1 border-r border-(--ui-border) hidden xl:block xl:w-xs"
+      class="pt-1 border-r border-(--ui-border) hidden xl:block xl:w-xs overflow-y-scroll"
     />
 
     <div class="grow relative">
