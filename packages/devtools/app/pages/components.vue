@@ -5,21 +5,26 @@ import { useFuse } from '@vueuse/integrations/useFuse'
 import type { ComboItem } from '../components/ComboInput.vue'
 import { getEnumOptions } from '~/utils/enum'
 
-const rendererMounted = ref(false)
 const { hooks } = useCompodiumClient()
 
 hooks.hook('renderer:mounted', () => {
-  rendererMounted.value = true
   hooks.hook('component:changed', async (path: string) => {
     if (path === component.value?.filePath) {
       await refreshMeta()
     }
   })
+
+  hooks.hook('component:removed', useDebounceFn(async () => {
+    await refreshCollections()
+  }, 300))
+
+  hooks.hook('component:added', useDebounceFn(async () => {
+    await refreshCollections()
+  }, 300))
 })
 
-const { data: collections } = useAsyncData(async () => {
-  // @ts-expect-error TODO?? TODO??
-  const collections: ComponentCollection[] = await hooks.callHook('component:collections')
+const { data: collections, refresh: refreshCollections } = useAsyncData(async () => {
+  const collections = await $fetch<ComponentCollection[]>('/api/collections', { baseURL: '/__compodium__' })
   if (!component.value) {
     const fallbackCollection = collections?.[0]
     component.value = fallbackCollection?.components?.[0]
@@ -28,7 +33,7 @@ const { data: collections } = useAsyncData(async () => {
     }
   }
   return collections
-}, { immediate: false, watch: [rendererMounted] })
+})
 
 const component = shallowRef<Component | ComponentExample | undefined>()
 const props = useState<Record<string, any>>('__component_state', () => ({}))
@@ -55,8 +60,7 @@ function evalPropValue(meta: Partial<PropertyMeta>) {
 
 const { data: componentMeta, refresh: refreshMeta } = useAsyncData('__compodium-fetch-meta', async () => {
   if (!component.value) return
-  // @ts-expect-error TODO??TODO??
-  const meta: CompodiumMeta = await hooks.callHook('component:meta', component.value.filePath)
+  const meta = await $fetch<CompodiumMeta>('/api/meta', { baseURL: '/__compodium__', query: { component: component.value?.filePath } })
   return meta
 }, { watch: [component] })
 
@@ -93,7 +97,7 @@ const comboItems = computed<ComboItem[]>(() => {
     }
 
     return []
-  })
+  }) ?? []
 })
 
 watch([componentMeta, combo], async () => {
@@ -227,12 +231,12 @@ watch(component, () => propsSearchTerm.value = '')
             :content="{ side: 'left' }"
           >
             <UButton
-              v-if="componentMeta?.docUrl"
+              v-if="component?.docUrl"
               icon="lucide:book-open"
               variant="link"
               class="rounded-full"
               color="neutral"
-              :href="componentMeta?.docUrl"
+              :href="component?.docUrl"
               target="_blank"
             />
           </UTooltip>

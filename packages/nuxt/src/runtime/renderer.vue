@@ -4,15 +4,14 @@ import { useColorMode } from '@vueuse/core'
 // @ts-expect-error virtual file
 import { buildAssetsURL } from '#internal/nuxt/paths'
 import { useNuxtApp } from '#imports'
-// // @ts-expect-error virtual file
-// import components from '#build/compodium/components.json'
-import type { CompodiumHooks, CompodiumMeta, ComponentCollection } from 'compodium/types'
+import type { CompodiumHooks } from 'compodium/types'
 import type { Hookable } from 'hookable'
 
 // Silence Nuxt warnings on unused pages / layouts
 const app = useNuxtApp()
 app._isNuxtPageUsed = true
 app._isNuxtLayoutUsed = true
+
 const props = shallowRef()
 const component = shallowRef()
 
@@ -38,17 +37,6 @@ const hooks = shallowRef<Hookable<CompodiumHooks>>()
 
 onMounted(() => {
   hooks.value = window.parent.__COMPODIUM_HOOKS__ as Hookable<CompodiumHooks>
-
-  // @ts-expect-error TODO??TODO??
-  hooks.value.hook('component:collections', () =>
-    // @ts-expect-error virtual file
-    import('virtual:compodium:collections').then(i => i.default as ComponentCollection[])
-  )
-
-  // @ts-expect-error TODO??TODO??
-  hooks.value.hook('component:meta', (path: string) =>
-    import(/* @vite-ignore */ `/compodium/meta${path}?${Date.now()}`).then(i => i.default as CompodiumMeta)
-  )
 
   hooks.value.hook('renderer:update-component', onUpdateComponent)
   hooks.value.hook('renderer:update-props', payload => props.value = { ...payload.props })

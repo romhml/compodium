@@ -6,7 +6,7 @@ import type { InputSchema } from './plugins/meta/infer'
 export interface PluginOptions {
   rootDir: string
 
-  componentDirs: (ComponentsDir | string)[]
+  componentDirs: (CollectionConfig | string)[]
 
   /* Whether to include default collections for third-party libraries. */
   includeLibraryCollections: boolean
@@ -60,21 +60,15 @@ export type PropertyMeta = Omit<VuePropertyMeta, 'schema'> & {
 }
 
 export type Component = NuxtComponent & {
+  docUrl?: string
   examples: ComponentExample[]
 }
 
-export type ComponentExample = NuxtComponent & {
+export type ComponentExample = Component & {
   isExample: true
 }
 
-export type CollectionConfig = {
-  id?: string
-  name: string
-  path: string
-  icon?: string
-  prefix?: string
-  ignore?: string[]
-  examplesPath?: string
+export type CollectionConfig = ComponentsDir & {
   getDocUrl?: (componentName: string) => string
 }
 
@@ -110,12 +104,6 @@ declare module 'nuxt/schema' {
 }
 
 export interface CompodiumHooks {
-  // Triggered by the devtools to retreive component collections
-  'component:collections': () => Promise<ComponentCollection[]>
-
-  // Triggered by the devtools to retreive component meta
-  'component:meta': (path: string) => Promise<CompodiumMeta>
-
   // Triggered when the components code has been updated
   'component:changed': (path: string) => void
 

@@ -1007,7 +1007,7 @@ function resolveDefaultOptionExpression(
 ) {
   if (ts.isArrowFunction(_default)) {
     if (ts.isBlock(_default.body)) {
-      return _default // TODO
+      return _default
     } else if (ts.isParenthesizedExpression(_default.body)) {
       return _default.body.expression
     } else {

@@ -1,10 +1,8 @@
+import type { ViteDevServer } from 'vite'
 import type { PluginOptions } from '../types'
 import { scanComponents } from './utils'
 
-export function collectionsPlugin(options: PluginOptions): Unplugin {
-  const virtualModuleId = 'virtual:compodium:collections'
-  const resolvedVirtualModuleId = '\0' + virtualModuleId
-
+export function collectionsPlugin(options: PluginOptions) {
   const dirs = options?.componentDirs.map((dir) => {
     const path = typeof dir === 'string' ? dir : dir.path
     return {
@@ -16,24 +14,53 @@ export function collectionsPlugin(options: PluginOptions): Unplugin {
     }
   }).filter(collection => !collection.path?.includes('node_modules/'))
 
+  const paths = dirs?.map(c => c.path)
+
   return {
-    name: 'compodium:templates',
-    resolveId(id: string) {
-      if (id === virtualModuleId) {
-        return resolvedVirtualModuleId
-      }
-    },
-    async load(id: string) {
-      if (id === resolvedVirtualModuleId) {
+    name: 'compodium:collections',
+
+    configureServer(server: ViteDevServer) {
+      server.middlewares.use('/__compodium__/api/collections', async (req, res) => {
         const collections = [
-          {
-            name: 'Components',
-            id: 'components',
-            components: await scanComponents(dirs, options.rootDir)
-          }
+          { name: 'Components', id: 'components', components: await scanComponents(dirs, options.rootDir) }
         ]
-        return `export default ${JSON.stringify(collections)}`
-      }
+
+        res.setHeader('Content-Type', 'application/json')
+        res.write(JSON.stringify(collections))
+        res.end()
+      })
+    },
+
+    handleHotUpdate({ server }: { server: ViteDevServer }) {
+      server.watcher.on('add', async (filePath: string) => {
+        if (paths.find(p => filePath.startsWith(p))) {
+          server.ws.send({
+            type: 'custom',
+            event: 'compodium:hmr',
+            data: { path: filePath, event: 'component:added' }
+          })
+        }
+      })
+
+      server.watcher.on('addDir', async (filePath: string) => {
+        if (paths.find(p => filePath.startsWith(p))) {
+          server.ws.send({
+            type: 'custom',
+            event: 'compodium:hmr',
+            data: { path: filePath, event: 'component:added' }
+          })
+        }
+      })
+
+      server.watcher.on('unlink', async (filePath: string) => {
+        if (paths.find(p => filePath.startsWith(p))) {
+          server.ws.send({
+            type: 'custom',
+            event: 'compodium:hmr',
+            data: { path: filePath, event: 'component:removed' }
+          })
+        }
+      })
     }
   }
 }

@@ -5,7 +5,7 @@ import { kebabCase, pascalCase, splitByCase } from 'scule'
 import { isIgnored, useNuxt } from '@nuxt/kit'
 import micromatch from 'micromatch'
 import { withTrailingSlash } from 'ufo'
-import type { Component, ComponentsDir } from 'nuxt/schema'
+import type { Component, ComponentsDir } from '@nuxt/schema'
 
 import type { Collection, CollectionConfig } from '../types'
 
