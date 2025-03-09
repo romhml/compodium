@@ -42,7 +42,7 @@
     "dev:prepare": "tsup",
     "build": "tsup",
     "dev": "tsup --watch src",
-    "test": "vitest"
+    "test": "vitest run ."
   },
   "peerDependencies": {
     "@nuxt/kit": "^3",
@@ -61,8 +61,8 @@
     }
   },
   "dependencies": {
-    "unplugin": "^2.2.0",
     "@compodium/meta": "workspace:*",
+    "chokidar": "^4.0.3",
     "micromatch": "^4.0.8",
     "npm-run-path": "^6.0.0",
     "pathe": "^2.0.3",
@@ -71,6 +71,7 @@
     "sirv": "^3.0.1",
     "tinyglobby": "^0.2.12",
     "ufo": "^1.5.4",
+    "unplugin": "^2.2.0",
     "zod": "^3.24.2"
   },
   "devDependencies": {

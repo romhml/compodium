@@ -10,7 +10,7 @@ const { hooks } = useCompodiumClient()
 hooks.hook('renderer:mounted', () => {
   hooks.hook('component:changed', async (path: string) => {
     if (path === component.value?.filePath) {
-      await refreshMeta()
+      await Promise.all([refreshMeta(), refreshExampleMeta()])
     }
   })
 
@@ -21,6 +21,8 @@ hooks.hook('renderer:mounted', () => {
   hooks.hook('component:added', useDebounceFn(async () => {
     await refreshCollections()
   }, 300))
+
+  updateComponent()
 })
 
 const { data: collections, refresh: refreshCollections } = useAsyncData(async () => {
@@ -35,7 +37,7 @@ const { data: collections, refresh: refreshCollections } = useAsyncData(async ()
   return collections
 })
 
-const component = shallowRef<Component | ComponentExample | undefined>()
+const component = shallowRef<(Component & Partial<ComponentExample>) | undefined>()
 const props = useState<Record<string, any>>('__component_state', () => ({}))
 
 const defaultProps = shallowRef({})
@@ -60,15 +62,17 @@ function evalPropValue(meta: Partial<PropertyMeta>) {
 
 const { data: componentMeta, refresh: refreshMeta } = useAsyncData('__compodium-fetch-meta', async () => {
   if (!component.value) return
-  const meta = await $fetch<CompodiumMeta>('/api/meta', { baseURL: '/__compodium__', query: { component: component.value?.filePath } })
+  const meta = await $fetch<CompodiumMeta>('/api/meta', { baseURL: '/__compodium__', query: {
+    component: component.value?.componentPath ?? component.value?.filePath }
+  })
   return meta
 }, { watch: [component] })
 
-// const { data: exampleMeta } = useAsyncData('__compodium-fetch-example-meta', async () => {
-//   if (!exampleId.value || component.value?.collectionId !== 'components') return
-//   const example = await $fetch<CompodiumMeta>(`/api/component-meta/${exampleId.value}`, { baseURL: '/__compodium__' })
-//   return example
-// }, { watch: [exampleId] })
+const { data: exampleMeta, refresh: refreshExampleMeta } = useAsyncData('__compodium-fetch-example-meta', async () => {
+  if (!component.value || !component.value.isExample) return
+  const example = await $fetch<CompodiumMeta>(`/api/meta`, { baseURL: '/__compodium__', query: { component: component.value.filePath } })
+  return example
+}, { watch: [component] })
 
 const combo = ref<string[]>([])
 
@@ -100,21 +104,21 @@ const comboItems = computed<ComboItem[]>(() => {
   }) ?? []
 })
 
-watch([componentMeta, combo], async () => {
+watch([componentMeta, exampleMeta, combo], async () => {
   await hooks.callHook('renderer:update-combo', { props: comboProps.value?.filter(Boolean) as ComboItem[] ?? [] })
 }, { deep: true })
 
-watch(componentMeta, async (newComponentMeta) => {
+watch([componentMeta, exampleMeta], async ([newComponentMeta, newExampleMeta]) => {
   if (!newComponentMeta) return
   combo.value = [...(
-    /* newExampleMeta?.compodium?.combo ?? */
-    newComponentMeta?.compodium?.combo as any ?? []
+    newExampleMeta?.compodium?.combo
+    ?? newComponentMeta?.compodium?.combo as any
+    ?? []
   )]
 
   defaultProps.value = {
     ...getDefaultProps(newComponentMeta),
-    // ...(newExampleMeta?.compodium?.defaultProps ??
-    ...newComponentMeta?.compodium?.defaultProps
+    ...(newExampleMeta?.compodium?.defaultProps ?? newComponentMeta?.compodium?.defaultProps)
   }
 
   props.value = { ...defaultProps.value }

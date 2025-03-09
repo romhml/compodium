@@ -9,10 +9,19 @@ const modalState = ref(false)
 const items = computed(() =>
   props.collections?.map(col => ({
     ...col,
-    items: col.components.map(comp => ({
-      ...comp,
-      id: comp.pascalName
-    }))
+    items: col.components.flatMap((comp) => {
+      const label = comp?.isExample ? comp.pascalName.replace(/Example$/, '') : comp.pascalName
+      return [{
+        ...comp,
+        id: comp.pascalName,
+        label
+      }, ...comp.examples.map(e => ({
+        ...e,
+        id: e.pascalName,
+        label,
+        suffix: e.pascalName.replace(label, '').replace(/^Example/, '')
+      }))]
+    })
   }))
 )
 
@@ -41,7 +50,6 @@ defineShortcuts({
         v-model="modelValue"
         :groups="items"
         placeholder="Search component..."
-        label-key="pascalName"
         class="h-80"
         @update:model-value="modalState = false"
       />

@@ -1,19 +1,26 @@
 import { readFile } from 'node:fs/promises'
 import type { PluginOptions } from '../../types'
 import { createChecker } from './checker'
-import type { ViteDevServer } from 'vite'
+import { joinURL } from 'ufo'
+import { watch } from 'chokidar'
+import type { VitePlugin } from 'unplugin'
 
-export function metaPlugin(options: PluginOptions) {
+export function metaPlugin(options: PluginOptions): VitePlugin {
   const dirs = options?.componentDirs.map((dir) => {
     const path = typeof dir === 'string' ? dir : dir.path
     return {
       ...typeof dir === 'string' ? {} : dir,
       path,
-      name: 'Components',
-      id: 'components',
       pattern: '**/*.{vue,ts,tsx}'
     }
   })
+
+  const exampleDir = {
+    path: joinURL(options.rootDir, options.dir, 'examples'),
+    pattern: '**/*.{vue,ts,tsx}'
+  }
+
+  dirs.push(exampleDir)
 
   const checker = createChecker(dirs)
   const paths = dirs.map(d => d.path)
@@ -21,7 +28,7 @@ export function metaPlugin(options: PluginOptions) {
   return {
     name: 'compodium:meta',
 
-    configureServer(server: ViteDevServer) {
+    configureServer(server) {
       server.middlewares.use('/__compodium__/api/meta', async (req, res) => {
         try {
           const url = new URL(req.url!, `http://${req.headers.host}`)
@@ -48,10 +55,21 @@ export function metaPlugin(options: PluginOptions) {
           res.end(JSON.stringify({ error: 'Failed to fetch metadata' }))
         }
       })
-    },
 
-    handleHotUpdate({ server }: { server: ViteDevServer }) {
-      server.watcher.on('change', async (filePath: string) => {
+      // Watch for changes in example directory
+      const examplesWatcher = watch(paths, {
+        persistent: true,
+        awaitWriteFinish: {
+          stabilityThreshold: 200,
+          pollInterval: 100
+        }
+      })
+
+      examplesWatcher.on('add', async () => {
+        checker.reload()
+      })
+
+      examplesWatcher.on('change', async (filePath: string) => {
         if (paths.find(p => filePath.startsWith(p))) {
           const code = await readFile(filePath, 'utf-8')
           checker.updateFile(filePath, code)
@@ -61,12 +79,6 @@ export function metaPlugin(options: PluginOptions) {
             event: 'compodium:hmr',
             data: { path: filePath, event: 'component:changed' }
           })
-        }
-      })
-
-      server.watcher.on('add', async (filePath: string) => {
-        if (paths.find(p => filePath.startsWith(p))) {
-          checker.reload()
         }
       })
     }

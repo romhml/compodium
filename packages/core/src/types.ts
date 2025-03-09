@@ -66,6 +66,7 @@ export type Component = NuxtComponent & {
 
 export type ComponentExample = Component & {
   isExample: true
+  componentPath?: string
 }
 
 export type CollectionConfig = ComponentsDir & {
@@ -83,7 +84,7 @@ export type Collection = {
 }
 
 export type ComponentCollection = Collection & {
-  components: Component[]
+  components: (Component & Partial<ComponentExample>)[]
 }
 
 declare module 'nuxt/schema' {
