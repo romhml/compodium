@@ -20,8 +20,8 @@
     "prepack": "tsc -b"
   },
   "dependencies": {
-    "@volar/language-core": "^2.4.11",
-    "@volar/typescript": "^2.4.11",
+    "@volar/language-core": "^2.4.12",
+    "@volar/typescript": "^2.4.12",
     "@vue/language-core": "2.2.8",
     "vue-component-meta": "^2.2.8",
     "vue-component-type-helpers": "^2.2.8"
