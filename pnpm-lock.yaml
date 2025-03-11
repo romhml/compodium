@@ -75,6 +75,9 @@ importers:
       unplugin:
         specifier: ^2.2.0
         version: 2.2.0
+      unplugin-ast:
+        specifier: ^0.14.3
+        version: 0.14.3
       vite:
         specifier: '>=3'
         version: 6.2.1(@types/node@22.13.10)(jiti@2.4.2)(lightningcss@1.29.2)(terser@5.39.0)(yaml@2.7.0)
@@ -152,6 +155,9 @@ importers:
 
   packages/examples:
     dependencies:
+      pathe:
+        specifier: ^2.0.3
+        version: 2.0.3
       scule:
         specifier: ^1.3.0
         version: 1.3.0
@@ -216,6 +222,9 @@ importers:
       '@vue/devtools-kit':
         specifier: ^7.7.2
         version: 7.7.2
+      defu:
+        specifier: ^6.1.4
+        version: 6.1.4
       vite:
         specifier: '>=3'
         version: 6.2.1(@types/node@22.13.10)(jiti@2.4.2)(lightningcss@1.29.2)(terser@5.39.0)(yaml@2.7.0)
@@ -3835,6 +3844,10 @@ packages:
     resolution: {integrity: sha512-ub9iytsEbT7Yw/Pd29mSo/cNQpaEu67zR1VVcXDiYjSFwzeBxNdTd0FMnSslLQXiRj8uGPzwsaoefrMD5XAmdw==}
     engines: {node: '>=16.14.0'}
 
+  magic-string-ast@0.8.0:
+    resolution: {integrity: sha512-e9eH6YOYl2OuDd3fNt2ciFhj/l2vxJmGeWLLcY+0NcW6k0Xitq7XIxN2++QVVhswXeJLy95SjF8oVKRyJC95GQ==}
+    engines: {node: '>=20.18.0'}
+
   magic-string@0.30.17:
     resolution: {integrity: sha512-sNPKHvyjVf7gyjwS4xGTaW/mCnF8wnjtifKBEhxfZ7E/S8tQ0rssrwGNn6q8JH/ohItJfSQp9mBtQYuTlH5QnA==}
 
@@ -5106,6 +5119,10 @@ packages:
   universalify@2.0.1:
     resolution: {integrity: sha512-gptHNQghINnc/vTGIk0SOFGFNXw7JVrlRUtConJRlvaw6DuX0wO5Jeko9sWrMBhh+PsYAZ7oXAiOnf/UKogyiw==}
     engines: {node: '>= 10.0.0'}
+
+  unplugin-ast@0.14.3:
+    resolution: {integrity: sha512-IolafxIoszpJ0Phx+wjZmNZxvh81PXLJEGnnIm3NPRaYUsgrZ9En05ScuEhbL8UZ/nry2aKPmy7CsM6arZI1Sg==}
+    engines: {node: '>=18.12.0'}
 
   unplugin-auto-import@19.1.1:
     resolution: {integrity: sha512-sCGZZrSR1Bc8RfN8Q0RUDxXtC20rdAt7UB4lDyq8MNtKVHiXXh+5af6Nz4JRp9Q+7HjnbgQfQox0TkEymjdUAQ==}
@@ -9530,6 +9547,10 @@ snapshots:
     dependencies:
       magic-string: 0.30.17
 
+  magic-string-ast@0.8.0:
+    dependencies:
+      magic-string: 0.30.17
+
   magic-string@0.30.17:
     dependencies:
       '@jridgewell/sourcemap-codec': 1.5.0
@@ -11221,6 +11242,14 @@ snapshots:
       unist-util-visit-parents: 6.0.1
 
   universalify@2.0.1: {}
+
+  unplugin-ast@0.14.3:
+    dependencies:
+      '@babel/generator': 7.26.9
+      ast-kit: 1.4.2
+      magic-string-ast: 0.8.0
+      unplugin: 2.2.0
+      unplugin-utils: 0.2.4
 
   unplugin-auto-import@19.1.1(@nuxt/kit@3.16.0(magicast@0.3.5))(@vueuse/core@12.8.2(typescript@5.6.3)):
     dependencies:

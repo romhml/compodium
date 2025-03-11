@@ -1,5 +1,5 @@
 import { addCustomTab } from '@nuxt/devtools-kit'
-import { defineNuxtModule, createResolver, addTemplate, addVitePlugin, addImportsDir, logger, addComponentsDir } from '@nuxt/kit'
+import { defineNuxtModule, createResolver, addTemplate, addVitePlugin, logger, addComponentsDir } from '@nuxt/kit'
 import { colors } from 'consola/utils'
 import { joinURL } from 'ufo'
 import { version } from '../package.json'
@@ -25,11 +25,7 @@ export default defineNuxtModule<ModuleOptions>({
   },
 
   async setup(options, nuxt) {
-    // Only the extendCompodiumMeta composable is injected in production
-    // It won't do anything but this is required to avoid runtime errors.
-    // Might look into removing it completely using vite.
     const { resolve } = createResolver(import.meta.url)
-    addImportsDir(resolve('./runtime/composables'))
 
     if (!nuxt.options.dev) return
 

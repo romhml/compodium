@@ -4,14 +4,13 @@ const _props = withDefaults(defineProps<{
   shakeIt?: boolean
   spinIt?: boolean
   bounceIt?: boolean
-  bounceI2?: boolean
 }>(), { title: 'Welcome!' })
 
-// extendCompodiumMeta<typeof _props>({
-//   defaultProps: {
-//     bounceIt: true
-//   }
-// })
+extendCompodiumMeta<typeof _props>({
+  defaultProps: {
+    bounceIt: true
+  }
+})
 </script>
 
 <template>

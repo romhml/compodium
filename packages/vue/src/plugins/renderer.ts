@@ -3,7 +3,7 @@ import type { PluginOptions } from '@compodium/core'
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 
-export function rendererPlugin(_options: PluginOptions): VitePlugin {
+export function rendererPlugin(options: PluginOptions): VitePlugin {
   return {
     name: 'compodium:renderer',
     configureServer(server) {
@@ -38,9 +38,8 @@ export function rendererPlugin(_options: PluginOptions): VitePlugin {
     },
     load(id) {
       if (id === '\0renderer.ts') {
-        const cwd = process.cwd()
         // Read the user's main entrypoint file
-        const mainPath = resolve(cwd, 'src/main.ts')
+        const mainPath = resolve(options.rootDir, 'src/main.ts')
         const mainContent: string = readFileSync(mainPath, 'utf-8').replace(
           /createApp\([^)]*\)/,
           'createApp(CompodiumRoot)'

@@ -4,12 +4,14 @@ import { metaPlugin } from './plugins/meta'
 import type { Collection, PluginConfig, PluginOptions } from './types'
 import { libraryCollections as libraryCollectionsConfig } from '@compodium/examples'
 import { devtoolsPlugin } from './plugins/devtools'
+import AST from 'unplugin-ast/vite'
+import { RemoveWrapperFunction } from 'unplugin-ast/transformers'
 
 export * from './types'
 
 export const compodium = /* #__PURE__ */ (options: PluginOptions) => {
   const exampleDir = {
-    path: joinURL(options.rootDir, options.dir ?? 'compodium', 'examples'),
+    path: joinURL(options.rootDir, options.dir, 'examples'),
     pattern: '**/*.{vue,tsx}'
   }
 
@@ -58,6 +60,10 @@ export const compodium = /* #__PURE__ */ (options: PluginOptions) => {
   return [
     collectionsPlugin(config),
     metaPlugin(config),
-    devtoolsPlugin(config)
+    devtoolsPlugin(config),
+    AST({
+      include: [/\.[jt]sx?$/, /\.vue$/],
+      transformer: [RemoveWrapperFunction(['extendCompodiumMeta'])]
+    })
   ]
 }

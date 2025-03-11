@@ -9,7 +9,7 @@ const { hooks } = useCompodiumClient()
 
 hooks.hook('renderer:mounted', () => {
   hooks.hook('component:changed', async (path: string) => {
-    if (path === component.value?.shortPath) {
+    if (path === component.value?.filePath) {
       await Promise.all([refreshMeta(), refreshExampleMeta()])
     }
   })

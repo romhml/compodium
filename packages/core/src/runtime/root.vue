@@ -2,6 +2,7 @@
 import { onMounted, shallowRef, ref } from 'vue'
 import type { CompodiumHooks } from '@compodium/core'
 import { useColorMode } from '@vueuse/core'
+import { joinURL } from 'ufo'
 import type { Hookable } from 'hookable'
 
 // @ts-expect-error virtual module
@@ -20,7 +21,7 @@ async function onUpdateComponent(payload: { path: string, props: Record<string, 
   if (window?.__buildAssetsURL) {
     component.value = await import(/* @vite-ignore */ window?.__buildAssetsURL(payload.path)).then(c => c.default)
   } else {
-    component.value = await import(/* @vite-ignore */ '/' + payload.path).then(c => c.default)
+    component.value = await import(/* @vite-ignore */ joinURL('/@fs/' + payload.path)).then(c => c.default)
   }
 }
 

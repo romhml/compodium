@@ -25,7 +25,7 @@
     "dev:prepare": "unbuild",
     "typecheck": "tsc --noEmit",
     "prepack": "unbuild",
-    "dev": "unbuild"
+    "dev": "unbuild --watch"
   },
   "dependencies": {
     "@volar/typescript": "^2.4.12",

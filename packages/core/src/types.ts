@@ -12,7 +12,7 @@ export type PluginOptions = {
   includeLibraryCollections?: boolean
 
   /* Customize compodium's base directory. Defaults to 'compodium/' */
-  dir?: string
+  dir: string
 
   /* List of glob patterns to exclude components */
   exclude?: string[]

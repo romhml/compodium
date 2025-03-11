@@ -1,10 +1,14 @@
 import type { VitePlugin } from 'unplugin'
 import sirv from 'sirv'
 import type { PluginConfig } from '../types'
-import { resolve } from 'pathe'
+import { resolve, dirname } from 'pathe'
+import { fileURLToPath } from 'node:url'
 import { existsSync, readFileSync } from 'node:fs'
+import { joinURL } from 'ufo'
 
 export function devtoolsPlugin(config: PluginConfig): VitePlugin {
+  const userPreview = resolve(joinURL(config.rootDir, config.dir, 'preview.vue'))
+
   return {
     name: 'compodium:devtools',
     config(config) {
@@ -21,11 +25,8 @@ export function devtoolsPlugin(config: PluginConfig): VitePlugin {
 
     configureServer(server) {
       if (process.env.COMPODIUM_DEVTOOLS_URL) return
-
       server.middlewares.use('/__compodium__/devtools',
-        sirv(
-          // TODO: Fix resolution. This will break in production
-          resolve('../../packages/core/dist/client/devtools'),
+        sirv(resolve(dirname(fileURLToPath(import.meta.url)), './client/devtools'),
           { single: true }
         )
       )
@@ -33,7 +34,6 @@ export function devtoolsPlugin(config: PluginConfig): VitePlugin {
 
     resolveId(id) {
       if (id === 'virtual:compodium:preview') {
-        const userPreview = resolve(process.cwd(), config.dir ?? 'compodium/', 'preview.vue')
         if (existsSync(userPreview)) {
           return userPreview
         }
@@ -43,7 +43,6 @@ export function devtoolsPlugin(config: PluginConfig): VitePlugin {
 
     load(id) {
       if (id === '\0virtual:compodium:preview') {
-        const userPreview = resolve(process.cwd(), 'compodium/preview.vue')
         if (existsSync(userPreview)) {
           return readFileSync(userPreview, 'utf-8')
         }

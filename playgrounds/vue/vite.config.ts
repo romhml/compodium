@@ -13,21 +13,15 @@ export default defineConfig({
     vueDevTools(),
     ui(),
     compodium({
-      rootDir: import.meta.resolve('./src'),
       componentDirs: [
-        {
-          path: './src/components',
-          global: true,
-          pathPrefix: false
-        },
+        { path: './src/components', pathPrefix: false },
         {
           path: './node_modules/@nuxt/ui/dist/runtime/',
-          global: true,
           pathPrefix: false,
-          prefix: 'U'
+          prefix: 'U',
+          ignore: ['App.vue', 'Toast.vue', '*Provider.vue', '*Base.vue', '*Content.vue']
         }
-      ],
-      dir: 'compodium'
+      ]
     })
   ],
 
