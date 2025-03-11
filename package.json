@@ -22,7 +22,7 @@
   },
   "resolutions": {
      "rollup": "4.34.9",
-     "vue-tsc": "^2.2.0"
+     "vue-tsc": "2.2.0"
   },
   "packageManager": "pnpm@10.6.2"
 }
