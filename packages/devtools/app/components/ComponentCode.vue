@@ -3,20 +3,20 @@ import { useClipboard } from '@vueuse/core'
 import type { Component, ComponentExample } from '@compodium/core'
 import { generateComponentCode } from '@/utils/codegen'
 
-const props = defineProps<{ example?: string, component?: Component | ComponentExample, props?: Record<string, any>, defaultProps?: Record<string, any> }>()
+const props = defineProps<{ component?: Component & Partial<ComponentExample>, props?: Record<string, any>, defaultProps?: Record<string, any> }>()
 
 const fetch = $fetch.create({ baseURL: '/__compodium__/api' })
 const { data: exampleCode } = useAsyncData<string | null>('__compodium-component-example-code', async () => {
-  if (props.example) {
-    return await fetch<string>(`/__compodium__/api/example/${props.example}`)
+  if (props.component?.isExample) {
+    return await fetch<string>(`/__compodium__/api/example`, { query: { path: props.component.filePath } })
   }
   return null
-}, { watch: [() => props.example] })
+}, { watch: [() => props.component?.pascalName] })
 
 const code = computed(() => {
   if (!props.component) return
 
-  return props.example && exampleCode.value
+  return props.component?.isExample && exampleCode.value
     ? updateComponentCode(props.component.pascalName, exampleCode.value, props.props, props.defaultProps)
     : generateComponentCode(props.component.pascalName, props.props, props.defaultProps)
 })

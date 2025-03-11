@@ -6,6 +6,7 @@ import { libraryCollections as libraryCollectionsConfig } from '@compodium/examp
 import { devtoolsPlugin } from './plugins/devtools'
 import AST from 'unplugin-ast/vite'
 import { RemoveWrapperFunction } from 'unplugin-ast/transformers'
+import { examplePlugin } from './plugins/examples'
 
 export * from './types'
 
@@ -61,6 +62,7 @@ export const compodium = /* #__PURE__ */ (options: PluginOptions) => {
     collectionsPlugin(config),
     metaPlugin(config),
     devtoolsPlugin(config),
+    examplePlugin(config),
     AST({
       include: [/\.[jt]sx?$/, /\.vue$/],
       transformer: [RemoveWrapperFunction(['extendCompodiumMeta'])]
