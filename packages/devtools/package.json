@@ -10,8 +10,8 @@
   },
   "dependencies": {
     "@nuxt/ui": "3.0.0-beta.3",
-    "@vueuse/core": "^12.8.2",
-    "@vueuse/integrations": "^12.8.2",
+    "@vueuse/core": "^13.0.0",
+    "@vueuse/integrations": "^13.0.0",
     "fuse.js": "^7.1.0",
     "json-editor-vue": "^0.18.1",
     "knitwork": "^1.2.0",
