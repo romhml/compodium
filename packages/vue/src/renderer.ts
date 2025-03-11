@@ -1,5 +1,7 @@
 import type { VitePlugin } from 'unplugin'
 import type { PluginOptions } from '@compodium/core'
+import { readFileSync } from 'node:fs'
+import { resolve } from 'node:path'
 
 export function rendererPlugin(_options: PluginOptions): VitePlugin {
   return {
@@ -14,7 +16,7 @@ export function rendererPlugin(_options: PluginOptions): VitePlugin {
                 <meta charset="UTF-8">
                 <link rel="icon" href="/favicon.ico">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>Vite App</title>
+                <title>Compodium Renderer</title>
               </head>
               <body>
                 <div id="compodium"></div>
@@ -30,21 +32,24 @@ export function rendererPlugin(_options: PluginOptions): VitePlugin {
       })
     },
     resolveId(id) {
-      // Resolve the virtual module ID for the renderer script
       if (id === '/@compodium/renderer.ts') {
         return '\0renderer.ts'
       }
     },
     load(id) {
-      // TODO: Create from user main.ts
+      const cwd = process.cwd()
       if (id === '\0renderer.ts') {
-        return `
-          import { createApp } from 'vue';
-          import CompodiumRoot from '@compodium/core/runtime/root.vue';
+        // Read the user's main entrypoint file
+        const mainPath = resolve(cwd, 'src/main.ts')
+        const mainContent: string = readFileSync(mainPath, 'utf-8').replace(
+          /createApp\([^)]*\)/,
+          'createApp(CompodiumRoot)'
+        ).replace(
+          /\.mount\([^)]*\)/,
+          '.mount("#compodium")'
+        ).replace(/'.\//g, '\'@/')
 
-          const app = createApp(CompodiumRoot);
-          app.mount('#compodium');
-        `
+        return `import CompodiumRoot from '@compodium/core/runtime/root.vue';\n${mainContent}`
       }
     }
   }
