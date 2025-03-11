@@ -14,8 +14,8 @@
   "types": "./dist/index.d.ts",
   "files": ["dist"],
   "scripts": {
-    "dev:prepare": "unbuild && cp -r src/examples dist/examples",
-    "prepack": "unbuild && cp -r src/examples dist/examples"
+    "dev:prepare": "unbuild",
+    "prepack": "unbuild"
   },
   "license": "MIT",
   "packageManager": "pnpm@10.5.2",

@@ -40,12 +40,9 @@ export function rendererPlugin(_options: PluginOptions): VitePlugin {
       if (id === '\0renderer.ts') {
         return `
           import { createApp } from 'vue';
-          import CompodiumRoot from '@compodium/core/runtime/root-component.vue';
-          import CompodiumRenderer from '@compodium/core/runtime/renderer.vue';
+          import CompodiumRoot from '@compodium/core/runtime/root.vue';
 
           const app = createApp(CompodiumRoot);
-          app.component('CompodiumRenderer', CompodiumRenderer)
-
           app.mount('#compodium');
         `
       }
