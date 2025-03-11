@@ -1,19 +1,17 @@
 <script setup lang="ts">
-// @ts-expect-error this is auto imported
-const devtoolsClient = useNuxtDevTools()
-
 const _props = withDefaults(defineProps<{
   title?: string
   shakeIt?: boolean
   spinIt?: boolean
   bounceIt?: boolean
+  bounceI2?: boolean
 }>(), { title: 'Welcome!' })
 
-extendCompodiumMeta<typeof _props>({
-  defaultProps: {
-    bounceIt: true
-  }
-})
+// extendCompodiumMeta<typeof _props>({
+//   defaultProps: {
+//     bounceIt: true
+//   }
+// })
 </script>
 
 <template>
@@ -35,7 +33,7 @@ extendCompodiumMeta<typeof _props>({
         color="neutral"
         icon="lucide:rocket"
         block
-        @click="navigateTo('/__compodium__/devtools', { external: true })"
+        to="/__compodium__/devtools"
       >
         Go to Compodium
       </UButton>
@@ -43,12 +41,12 @@ extendCompodiumMeta<typeof _props>({
       <UButton
         variant="ghost"
         color="success"
-        icon="lineicons:nuxt"
+        icon="devicon-plain:vuejs"
         block
         :disabled="!devtoolsClient"
         @click="devtoolsClient?.devtools.navigate('/modules/custom-compodium')"
       >
-        Open in Nuxt Devtools
+        Open in Vue Devtools
       </UButton>
     </div>
   </div>

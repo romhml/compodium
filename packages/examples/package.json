@@ -8,7 +8,8 @@
     "directory": "packages/examples"
   },
   "exports": {
-    ".": "./dist/index.mjs"
+    ".": "./dist/index.mjs",
+    "./*": "./dist/*"
   },
   "lib": "./dist/index.mjs",
   "types": "./dist/index.d.ts",

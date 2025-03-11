@@ -37,8 +37,8 @@ export function rendererPlugin(_options: PluginOptions): VitePlugin {
       }
     },
     load(id) {
-      const cwd = process.cwd()
       if (id === '\0renderer.ts') {
+        const cwd = process.cwd()
         // Read the user's main entrypoint file
         const mainPath = resolve(cwd, 'src/main.ts')
         const mainContent: string = readFileSync(mainPath, 'utf-8').replace(

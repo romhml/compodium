@@ -264,6 +264,9 @@ importers:
       '@compodium/vue':
         specifier: workspace:*
         version: link:../../packages/vue
+      '@nuxt/ui':
+        specifier: 3.0.0-beta.3
+        version: 3.0.0-beta.3(@babel/parser@7.26.9)(change-case@5.4.4)(db0@0.3.1)(embla-carousel@8.5.2)(ioredis@5.6.0)(magicast@0.3.5)(typescript@5.6.3)(vite@6.2.1(@types/node@22.13.10)(jiti@2.4.2)(lightningcss@1.29.2)(terser@5.39.0)(yaml@2.7.0))(vue@3.5.13(typescript@5.6.3))
       vue:
         specifier: ^3.5.13
         version: 3.5.13(typescript@5.6.3)

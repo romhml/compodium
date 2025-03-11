@@ -4,6 +4,9 @@ import type { CompodiumHooks } from '@compodium/core'
 import { useColorMode } from '@vueuse/core'
 import type { Hookable } from 'hookable'
 
+// @ts-expect-error virtual module
+import PreviewComponent from 'virtual:compodium:preview'
+
 const props = shallowRef()
 const component = shallowRef()
 
@@ -55,40 +58,42 @@ onMounted(() => {
   <Suspense>
     <div
       id="__compodium-root"
-      :style="{ position: 'relative', width: 'fit-content', height: 'fit-content' }"
+      :style="{ position: 'relative', minWidth: '100vw', minHeight: '100vh' }"
     >
-      <template v-if="combo?.length">
-        <template v-if="component">
-          <div
-            v-for="combo1 in combo[0]?.options ?? [undefined]"
-            :key="combo1"
-            :style="{ display: 'flex', flexDirection: 'column', gap: '8px', margin: '4px' }"
-          >
+      <PreviewComponent>
+        <template v-if="combo?.length">
+          <template v-if="component">
             <div
-              v-for="combo2 in combo[1]?.options ?? [undefined]"
-              :key="combo2"
-              :style="{ display: 'flex', alignContent: 'center', justifyContent: 'center' }"
+              v-for="combo1 in combo[0]?.options ?? [undefined]"
+              :key="combo1"
+              :style="{ display: 'flex', flexDirection: 'column', gap: '8px', margin: '4px' }"
             >
-              <component
-                :is="component"
-                v-bind="{
-                  ...props,
-                  [combo[0]?.value]: combo1,
-                  [combo[1]?.value]: combo2
-                }"
-              />
+              <div
+                v-for="combo2 in combo[1]?.options ?? [undefined]"
+                :key="combo2"
+                :style="{ display: 'flex', alignContent: 'center', justifyContent: 'center' }"
+              >
+                <component
+                  :is="component"
+                  v-bind="{
+                    ...props,
+                    [combo[0]?.value]: combo1,
+                    [combo[1]?.value]: combo2
+                  }"
+                />
+              </div>
             </div>
-          </div>
+          </template>
         </template>
-      </template>
 
-      <template v-else>
-        <component
-          :is="component"
-          v-if="component"
-          v-bind="props"
-        />
-      </template>
+        <template v-else>
+          <component
+            :is="component"
+            v-if="component"
+            v-bind="props"
+          />
+        </template>
+      </PreviewComponent>
 
       <div
         v-if="showGrid"
