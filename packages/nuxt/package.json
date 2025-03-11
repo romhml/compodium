@@ -31,7 +31,7 @@
     "@compodium/meta": "workspace:*",
     "@nuxt/devtools-kit": "^2.2.1",
     "@nuxt/kit": "^3.16.0",
-    "@vueuse/core": "^12.8.2",
+    "@vueuse/core": "^13.0.0",
     "chokidar": "^4.0.3",
     "consola": "^3.4.0",
     "defu": "^6.1.4",
