@@ -9,12 +9,12 @@
   "type": "commonjs",
   "exports": {
     ".": {
-      "import": "./dist/index.js",
+      "import": "./dist/index.mjs",
       "require": "./dist/index.cjs"
     },
-    "./*": "./*"
+    "./*": "./dist/*"
   },
-  "main": "dist/index.js",
+  "main": "dist/index.cjs",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "files": [
@@ -22,19 +22,17 @@
     "dist/**/*.d.ts"
   ],
   "scripts": {
-    "dev:prepare": "tsup",
+    "dev:prepare": "unbuild",
     "typecheck": "tsc --noEmit",
-    "prepack": "tsup"
+    "prepack": "unbuild",
+    "dev": "unbuild"
   },
   "dependencies": {
-    "@volar/language-core": "^2.4.12",
     "@volar/typescript": "^2.4.12",
     "@vue/language-core": "2.2.8",
+    "pathe": "^2.0.3",
     "vue-component-meta": "^2.2.8",
     "vue-component-type-helpers": "^2.2.8"
-  },
-  "devDependencies": {
-    "tsup": "^8.3.6"
   },
   "peerDependencies": {
     "typescript": "*"

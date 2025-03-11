@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
-
 const collapsed = ref(true)
 const wrapper = ref<HTMLElement | null>(null)
 const content = ref<HTMLElement | null>(null)

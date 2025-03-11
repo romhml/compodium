@@ -4,7 +4,7 @@ import * as vue from '@vue/language-core'
 import path from 'pathe'
 import type ts from 'typescript'
 import { code as typeHelpersCode } from 'vue-component-type-helpers'
-import { code as vue2TypeHelpersCode } from 'vue-component-type-helpers/vue2'
+import { code as vue2TypeHelpersCode } from 'vue-component-type-helpers/vue2.js'
 
 import type {
   ComponentMeta,

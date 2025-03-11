@@ -13,16 +13,22 @@
     "@nuxt/ui": "3.0.0-beta.3",
     "@vueuse/core": "^13.0.0",
     "@vueuse/integrations": "^13.0.0",
+    "defu": "^6.1.4",
     "fuse.js": "^7.1.0",
+    "hookable": "^5.5.3",
     "json-editor-vue": "^0.18.1",
     "knitwork": "^1.2.0",
     "nuxt": "^3.16.0",
+    "pathe": "^2.0.3",
     "prettier": "^3.5.3",
-    "shiki": "^3.2.0"
+    "scule": "^1.3.0",
+    "shiki": "^3.2.0",
+    "vue": "latest"
   },
   "devDependencies": {
-    "@compodium/meta": "workspace:*",
     "@compodium/core": "workspace:*",
-    "@iconify-json/lucide": "^1.2.29"
+    "@compodium/meta": "workspace:*",
+    "@iconify-json/lucide": "^1.2.29",
+    "@iconify/types": "^2.0.0"
   }
 }

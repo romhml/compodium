@@ -1,11 +1,8 @@
 import { defineBuildConfig } from 'unbuild'
+import config from '../../build.config'
 
 export default defineBuildConfig({
-  entries: [
-    'src/index'
-  ],
-  externals: [
-    'typescript'
-  ],
-  declaration: true
+  ...config,
+  entries: ['src/index'],
+  externals: ['typescript']
 })
