@@ -8,12 +8,7 @@ export type * from './runtime/server/services/infer'
 
 export type PropInputType = 'array' | 'object' | 'stringEnum' | 'primitiveArray' | 'array' | 'string' | 'number' | 'boolean' | 'date' | 'icon'
 
-type StringLiteral<T> = T extends string ? (string extends T ? never : T) : never
-type FilterStringLiteral<T> = {
-  [K in keyof T]: T[K] extends EnumOrSymbol<T[K]> ? K : never;
-}[keyof T]
-
-type ComboItem<T> = Keyof<FilterStringLiteral<T>> | undefined
+type ComboItem<T> = Keyof<T> | undefined
 type Combo<T> = [ComboItem<T>, ComboItem<T>] | [ComboItem<T>]
 
 export type CompodiumMeta<T = Record<string, any>> = VueComponentMeta & {
