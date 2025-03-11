@@ -28,7 +28,7 @@
   ],
   "scripts": {
     "dev:prepare": "unbuild",
-    "prepack": "unbuild && pnpm --filter @compodium/devtools generate",
+    "prepack": "unbuild && pnpm --filter devtools generate",
     "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {

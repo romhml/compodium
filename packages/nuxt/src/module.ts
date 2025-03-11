@@ -1,4 +1,3 @@
-import { existsSync } from 'node:fs'
 import { addCustomTab } from '@nuxt/devtools-kit'
 import { defineNuxtModule, createResolver, addTemplate, addVitePlugin, addImportsDir, logger, addComponentsDir } from '@nuxt/kit'
 import { colors } from 'consola/utils'
@@ -36,18 +35,6 @@ export default defineNuxtModule<ModuleOptions>({
 
     const compodiumComponentsDir = resolve('./runtime/components')
     addComponentsDir({ path: compodiumComponentsDir, priority: -1 })
-
-    const appResolver = createResolver(nuxt.options.rootDir)
-
-    let previewComponent = appResolver.resolve(joinURL(options.dir ?? 'compodium', 'preview.vue'))
-    if (!existsSync(previewComponent)) {
-      previewComponent = resolve('./runtime/preview.vue')
-    }
-
-    addTemplate({
-      filename: 'compodium/preview.mjs',
-      getContents: () => `export { default } from '${previewComponent}'`
-    })
 
     nuxt.hooks.hookOnce('app:resolve', (app) => {
       const rootComponent = app.rootComponent
