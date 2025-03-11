@@ -67,7 +67,6 @@ export function metaPlugin(config: PluginConfig): VitePlugin {
         if (watchedPaths.find(p => filePath.startsWith(p))) {
           const code = await readFile(filePath, 'utf-8')
           checker.updateFile(filePath, code)
-          console.log('changed', filePath)
 
           server.ws.send({
             type: 'custom',

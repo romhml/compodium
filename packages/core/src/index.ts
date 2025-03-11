@@ -1,6 +1,7 @@
 import { joinURL } from 'ufo'
 import { collectionsPlugin } from './plugins/collections'
 import { metaPlugin } from './plugins/meta'
+import { iconifyPlugin } from './plugins/iconify'
 import type { Collection, PluginConfig, PluginOptions } from './types'
 import { libraryCollections as libraryCollectionsConfig } from '@compodium/examples'
 import { devtoolsPlugin } from './plugins/devtools'
@@ -63,6 +64,7 @@ export const compodium = /* #__PURE__ */ (options: PluginOptions) => {
     metaPlugin(config),
     devtoolsPlugin(config),
     examplePlugin(config),
+    iconifyPlugin(config),
     AST({
       include: [/\.[jt]sx?$/, /\.vue$/],
       transformer: [RemoveWrapperFunction(['extendCompodiumMeta'])]
