@@ -3,12 +3,13 @@ import { collectionsPlugin } from './plugins/collections'
 import { metaPlugin } from './plugins/meta'
 import type { Collection, PluginConfig, PluginOptions } from './types'
 import { libraryCollections as libraryCollectionsConfig } from '@compodium/examples'
+import { devtoolsPlugin } from './plugins/devtools'
 
 export * from './types'
 
 export const compodium = /* #__PURE__ */ (options: PluginOptions) => {
   const exampleDir = {
-    path: joinURL(options.rootDir, options.dir, 'examples'),
+    path: joinURL(options.rootDir, options.dir ?? 'compodium', 'examples'),
     pattern: '**/*.{vue,tsx}'
   }
 
@@ -56,6 +57,7 @@ export const compodium = /* #__PURE__ */ (options: PluginOptions) => {
 
   return [
     collectionsPlugin(config),
-    metaPlugin(config)
+    metaPlugin(config),
+    devtoolsPlugin(config)
   ]
 }

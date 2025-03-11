@@ -6,12 +6,12 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "dev:prepare": "pnpm -r dev:prepare",
-    "dev": "COMPODIUM_LOCAL=true pnpm --filter @compodium/playground-nuxt dev",
-    "vue:dev": "COMPODIUM_LOCAL=true pnpm --filter @compodium/playground-vue dev",
+    "dev:prepare": "pnpm -r --color dev:prepare",
+    "dev": "COMPODIUM_DEVTOOLS_URL=http://localhost:4242 pnpm --color --filter '@compodium/playground-nuxt' dev",
+    "dev:vue": "COMPODIUM_DEVTOOLS_URL=http://localhost:4242 pnpm --color --filter '@compodium/playground-vue' dev",
     "lint": "eslint .",
-    "typecheck": "pnpm -r typecheck",
-    "test": "pnpm -r test",
+    "typecheck": "pnpm -r --color typecheck",
+    "test": "pnpm -r --color test",
     "bump": "jiti ./scripts/bump.ts"
   },
   "devDependencies": {

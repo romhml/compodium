@@ -9,18 +9,18 @@ export type PluginOptions = {
   componentDirs: (ComponentsDir | string)[]
 
   /* Whether to include default collections for third-party libraries. */
-  includeLibraryCollections: boolean
+  includeLibraryCollections?: boolean
 
   /* Customize compodium's base directory. Defaults to 'compodium/' */
-  dir: string
+  dir?: string
 
   /* List of glob patterns to exclude components */
-  exclude: string[]
+  exclude?: string[]
 
-  extras: {
-    ui: {
+  extras?: {
+    ui?: {
       /* If true, Compodium's UI will match your Nuxt UI color theme */
-      matchColors: boolean
+      matchColors?: boolean
     }
   }
 }

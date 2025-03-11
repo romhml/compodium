@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Renderer from './_renderer.vue'
+import Renderer from './renderer.vue'
 
 // TODO: Preview component
 // const PreviewComponent = url?.startsWith('/__compodium__/renderer') && defineAsyncComponent(async () => {

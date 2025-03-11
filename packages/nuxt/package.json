@@ -21,7 +21,7 @@
     "dist"
   ],
   "scripts": {
-    "prepack": "nuxt-module-build build && nuxi generate devtools && pnpm --filter @compodium/devtools generate",
+    "prepack": "nuxt-module-build build",
     "dev:prepare": "nuxt-module-build build --stub && nuxt-module-build prepare",
     "release": "pnpm run lint && pnpm run test && pnpm run prepack && changelogen --release && pnpm publish && git push --follow-tags",
     "typecheck": "vue-tsc --noEmit",
@@ -31,14 +31,9 @@
     "@compodium/core": "workspace:*",
     "@nuxt/devtools-kit": "^2.2.1",
     "@nuxt/kit": "^3.15.4",
-    "@vueuse/core": "^12.8.2",
-    "chokidar": "^4.0.3",
     "consola": "^3.4.0",
     "defu": "^6.1.4",
-    "get-port-please": "^3.1.2",
-    "hookable": "^5.5.3",
-    "pathe": "^2.0.3",
-    "sirv": "^3.0.1"
+    "hookable": "^5.5.3"
   },
   "devDependencies": {
     "@nuxt/devtools": "^2.2.1",
@@ -51,6 +46,7 @@
     "@types/semver": "^7.5.8",
     "happy-dom": "^16.8.1",
     "nuxt": "^3.15.4",
+    "pathe": "^2.0.3",
     "playwright-core": "^1.50.1",
     "vue-tsc": "^2.2.0"
   },

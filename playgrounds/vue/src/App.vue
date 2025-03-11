@@ -1,6 +1,20 @@
 <script setup lang="ts">
 import HelloWorld from './components/HelloWorld.vue'
 import TheWelcome from './components/TheWelcome.vue'
+
+// TODO: Move this in the Vue Plugin
+import { addCustomTab } from '@vue/devtools-api'
+
+addCustomTab({
+  name: 'compodium',
+  title: 'Compodium',
+  // TODO: Icon
+  view: {
+    type: 'iframe',
+    src: '/__compodium__/devtools'
+  },
+  category: 'modules'
+})
 </script>
 
 <template>

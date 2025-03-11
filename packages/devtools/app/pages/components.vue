@@ -9,7 +9,7 @@ const { hooks } = useCompodiumClient()
 
 hooks.hook('renderer:mounted', () => {
   hooks.hook('component:changed', async (path: string) => {
-    if (path === component.value?.filePath) {
+    if (path === component.value?.shortPath) {
       await Promise.all([refreshMeta(), refreshExampleMeta()])
     }
   })
@@ -212,7 +212,7 @@ watch(component, () => propsSearchTerm.value = '')
     />
 
     <div class="grow relative">
-      <div class="grid grid-cols-3 inset-x-0 p-2">
+      <div class="grid grid-cols-3 absolute inset-x-0 p-2 z-1">
         <div>
           <ComponentSearchMenu
             v-if="collections?.length"
@@ -290,7 +290,7 @@ watch(component, () => propsSearchTerm.value = '')
         </div>
       </div>
 
-      <div class="absolute inset-0 -z-1">
+      <div class="absolute inset-0">
         <iframe
           class="w-full h-full"
           src="/__compodium__/renderer"

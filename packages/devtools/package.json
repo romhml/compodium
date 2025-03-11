@@ -5,6 +5,7 @@
   "scripts": {
     "dev:prepare": "nuxi prepare",
     "typecheck": "nuxi typecheck",
+    "dev": "nuxi dev -p 4242",
     "generate": "nuxt generate",
     "test": "vitest run ."
   },
