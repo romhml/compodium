@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useToast, ref, resolveComponent, h, useTemplateRef } from '#imports'
+import { ref, resolveComponent, h, useTemplateRef } from 'vue'
 import { upperFirst } from 'scule'
 import type { TableColumn } from '@nuxt/ui'
 

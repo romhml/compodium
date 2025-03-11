@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive } from '#imports'
+import { reactive } from 'vue'
 
 const state = reactive({ email: undefined, password: undefined })
 

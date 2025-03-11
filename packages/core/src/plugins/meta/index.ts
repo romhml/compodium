@@ -51,7 +51,7 @@ export function metaPlugin(config: PluginConfig): VitePlugin {
       ].map(d => d.path)
 
       // Watch for changes in example directory
-      const examplesWatcher = watch(watchedPaths, {
+      const watcher = watch(watchedPaths, {
         persistent: true,
         awaitWriteFinish: {
           stabilityThreshold: 200,
@@ -59,14 +59,15 @@ export function metaPlugin(config: PluginConfig): VitePlugin {
         }
       })
 
-      examplesWatcher.on('add', async () => {
+      watcher.on('add', async () => {
         checker.reload()
       })
 
-      examplesWatcher.on('change', async (filePath: string) => {
+      watcher.on('change', async (filePath: string) => {
         if (watchedPaths.find(p => filePath.startsWith(p))) {
           const code = await readFile(filePath, 'utf-8')
           checker.updateFile(filePath, code)
+          console.log('changed', filePath)
 
           server.ws.send({
             type: 'custom',
