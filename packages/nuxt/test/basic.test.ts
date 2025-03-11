@@ -1,7 +1,8 @@
 import { resolve } from 'pathe'
 import { describe, it, expect, beforeEach } from 'vitest'
 import { setup, $fetch } from '@nuxt/test-utils/e2e'
-import type { ComponentCollection, ComponentMeta } from '~/src/types'
+import type { ComponentCollection } from '@compodium/core'
+import type { ComponentMeta } from '@compodium/meta'
 
 describe('basic', async () => {
   await setup({
