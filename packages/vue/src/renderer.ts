@@ -23,7 +23,7 @@ export function rendererPlugin(_options: PluginOptions): VitePlugin {
             </html>`
           res.setHeader('Content-Type', 'text/html')
           res.end(index)
-        } catch (error) {
+        } catch {
           res.statusCode = 500
           res.end('Internal Server Error')
         }

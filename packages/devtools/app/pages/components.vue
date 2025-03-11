@@ -116,12 +116,12 @@ watch([componentMeta, exampleMeta], async ([newComponentMeta, newExampleMeta]) =
     ?? []
   )]
 
+  compodiumDefaultProps.value = { ...(newExampleMeta?.compodium?.defaultProps ?? newComponentMeta?.compodium?.defaultProps) }
   defaultProps.value = {
-    ...getDefaultProps(newComponentMeta),
-    ...(newExampleMeta?.compodium?.defaultProps ?? newComponentMeta?.compodium?.defaultProps)
+    ...getDefaultProps(newComponentMeta)
   }
 
-  props.value = { ...defaultProps.value }
+  props.value = { ...defaultProps.value, ...compodiumDefaultProps.value }
   await updateComponent()
 })
 
