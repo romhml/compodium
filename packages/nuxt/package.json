@@ -21,7 +21,7 @@
     "dist"
   ],
   "scripts": {
-    "prepack": "nuxt-module-build build  && cp ../LICENSE.md ../README.md ./dist",
+    "prepack": "nuxt-module-build build && nuxi generate devtools && pnpm --filter @compodium/devtools generate && cp ../../LICENSE.md ../../README.md ./dist",
     "dev:prepare": "nuxt-module-build build --stub && nuxt-module-build prepare",
     "release": "pnpm run lint && pnpm run test && pnpm run prepack && changelogen --release && pnpm publish && git push --follow-tags",
     "typecheck": "vue-tsc --noEmit",
@@ -33,7 +33,8 @@
     "@nuxt/kit": "^3.16.0",
     "@vueuse/core": "^13.0.0",
     "chokidar": "^4.0.3",
-    "consola": "^3.4.0"
+    "consola": "^3.4.0",
+    "ufo": "^1.5.4"
   },
   "devDependencies": {
     "@nuxt/devtools": "^2.2.1",
