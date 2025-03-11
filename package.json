@@ -14,16 +14,16 @@
     "bump": "jiti ./scripts/bump.ts"
   },
   "devDependencies": {
-    "@nuxt/eslint-config": "^1.1.0",
+    "@nuxt/eslint-config": "^1.2.0",
     "changelogen": "^0.6.1",
-    "eslint": "^9.21.0",
+    "eslint": "^9.22.0",
     "typescript": "5.6.3",
-    "vitest": "^3.0.7"
+    "vitest": "^3.0.8"
   },
   "resolutions": {
     "tailwindcss": "4.0.7",
     "@tailwindcss/vite": "4.0.7",
     "vue-tsc": "^2.2.0"
   },
-  "packageManager": "pnpm@10.5.2"
+  "packageManager": "pnpm@10.6.2"
 }
