@@ -21,7 +21,7 @@
     "dist"
   ],
   "scripts": {
-    "prepack": "nuxt-module-build build && nuxi generate devtools && pnpm --filter @compodium/devtools generate && cp ../LICENSE.md ../README.md ./dist",
+    "prepack": "nuxt-module-build build && nuxi generate devtools && pnpm --filter @compodium/devtools generate && cp ../../LICENSE.md ../../README.md ./dist",
     "dev:prepare": "nuxt-module-build build --stub && nuxt-module-build prepare",
     "release": "pnpm run lint && pnpm run test && pnpm run prepack && changelogen --release && pnpm publish && git push --follow-tags",
     "typecheck": "vue-tsc --noEmit",
