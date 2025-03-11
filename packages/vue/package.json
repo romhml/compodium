@@ -41,6 +41,6 @@
   },
   "dependencies": {
     "@compodium/core": "workspace:*",
-    "@vue/devtools-api": "^7.7.2"
+    "@vue/devtools-kit": "^7.7.2"
   }
 }
