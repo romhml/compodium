@@ -12,7 +12,7 @@ export type ModuleOptions = Omit<PluginOptions, 'componentDirs' | 'rootDir'>
 
 export default defineNuxtModule<ModuleOptions>({
   meta: {
-    name: 'compodium',
+    name: '@compodium/nuxt',
     configKey: 'compodium'
   },
   defaults: {

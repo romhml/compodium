@@ -14,7 +14,11 @@ async function onUpdateComponent(payload: { path: string, props: Record<string, 
   component.value = null
   props.value = payload.props
 
-  component.value = await import('/' + payload.path).then(c => c.default)
+  if (__buildAssetsURL) {
+    component.value = await import(__buildAssetsURL(payload.path)).then(c => c.default)
+  } else {
+    component.value = await import('/' + payload.path).then(c => c.default)
+  }
 }
 
 if (import.meta.hot) {
@@ -48,40 +52,44 @@ onMounted(() => {
 </script>
 
 <template>
-  <div>
-    <template v-if="combo?.length">
-      <template v-if="component">
-        <div
-          v-for="combo1 in combo[0]?.options ?? [undefined]"
-          :key="combo1"
-          :style="{ display: 'flex', flexDirection: 'column', gap: '8px', margin: '4px' }"
-        >
+  <Suspense>
+    <div
+      id="__compodium-root"
+      :style="{ position: 'relative', width: 'fit-content', height: 'fit-content' }"
+    >
+      <template v-if="combo?.length">
+        <template v-if="component">
           <div
-            v-for="combo2 in combo[1]?.options ?? [undefined]"
-            :key="combo2"
-            :style="{ display: 'flex', alignContent: 'center', justifyContent: 'center' }"
+            v-for="combo1 in combo[0]?.options ?? [undefined]"
+            :key="combo1"
+            :style="{ display: 'flex', flexDirection: 'column', gap: '8px', margin: '4px' }"
           >
-            <component
-              :is="component"
-              v-bind="{
-                ...props,
-                [combo[0]?.value]: combo1,
-                [combo[1]?.value]: combo2
-              }"
-            />
+            <div
+              v-for="combo2 in combo[1]?.options ?? [undefined]"
+              :key="combo2"
+              :style="{ display: 'flex', alignContent: 'center', justifyContent: 'center' }"
+            >
+              <component
+                :is="component"
+                v-bind="{
+                  ...props,
+                  [combo[0]?.value]: combo1,
+                  [combo[1]?.value]: combo2
+                }"
+              />
+            </div>
           </div>
-        </div>
+        </template>
       </template>
-    </template>
 
-    <template v-else>
-      <component
-        :is="component"
-        v-if="component"
-        v-bind="props"
-      />
-    </template>
-    <Teleport to="#__compodium-root">
+      <template v-else>
+        <component
+          :is="component"
+          v-if="component"
+          v-bind="props"
+        />
+      </template>
+
       <div
         v-if="showGrid"
         class="grid-background absolute z-50 inset-0"
@@ -96,6 +104,6 @@ onMounted(() => {
           pointerEvents: 'none'
         }"
       />
-    </Teleport>
-  </div>
+    </div>
+  </Suspense>
 </template>

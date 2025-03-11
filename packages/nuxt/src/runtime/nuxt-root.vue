@@ -1,7 +1,7 @@
 <script setup lang="ts">
 // @ts-expect-error virtual file
 import NuxtRoot from '#build/compodium/root.mjs'
-import CompodiumRoot from './root.vue'
+import CompodiumRoot from '@compodium/core/runtime/root-component.vue'
 
 import { useNuxtApp } from '#imports'
 
