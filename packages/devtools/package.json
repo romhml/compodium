@@ -9,7 +9,7 @@
     "test": "vitest run ."
   },
   "dependencies": {
-    "@nuxt/ui": "3.0.0-beta.2",
+    "@nuxt/ui": "3.0.0-beta.3",
     "@vueuse/core": "^12.8.2",
     "@vueuse/integrations": "^12.8.2",
     "fuse.js": "^7.1.0",
@@ -17,11 +17,11 @@
     "knitwork": "^1.2.0",
     "nuxt": "^3.15.4",
     "prettier": "^3.5.3",
-    "shiki": "^3.1.0"
+    "shiki": "^3.2.0"
   },
   "devDependencies": {
     "@compodium/meta": "workspace:*",
     "compodium": "workspace:*",
-    "@iconify-json/lucide": "^1.2.28"
+    "@iconify-json/lucide": "^1.2.29"
   }
 }
