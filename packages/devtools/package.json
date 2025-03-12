@@ -10,7 +10,7 @@
     "test": "vitest run ."
   },
   "dependencies": {
-    "@nuxt/ui": "3.0.0-beta.3",
+    "@nuxt/ui": "3.0.0",
     "@vueuse/core": "^13.0.0",
     "@vueuse/integrations": "^13.0.0",
     "defu": "^6.1.4",
@@ -22,7 +22,7 @@
     "pathe": "^2.0.3",
     "prettier": "^3.5.3",
     "scule": "^1.3.0",
-    "shiki": "^3.2.0",
+    "shiki": "^3.2.1",
     "vue": "latest"
   },
   "devDependencies": {
