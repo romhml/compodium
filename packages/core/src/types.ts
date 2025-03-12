@@ -66,7 +66,7 @@ export type PropertyMeta = Omit<VuePropertyMeta, 'schema'> & {
 }
 
 export type Component = NuxtComponent & {
-  realPath?: string
+  realPath: string
   docUrl?: string
   examples: ComponentExample[]
 }
