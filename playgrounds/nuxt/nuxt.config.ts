@@ -10,5 +10,14 @@ export default defineNuxtConfig({
         skipLibCheck: true
       }
     }
+  },
+
+  compodium: {
+    extras: {
+      colors: {
+        primary: 'blue',
+        neutral: 'zinc'
+      }
+    }
   }
 })

@@ -18,9 +18,10 @@ export type PluginOptions = {
   exclude?: string[]
 
   extras?: {
-    ui?: {
-      /* If true, Compodium's UI will match your Nuxt UI color theme */
-      matchColors?: boolean
+    /* Customize Compodium's UI Colors. */
+    colors?: {
+      primary?: string
+      neutral?: string
     }
   }
 }

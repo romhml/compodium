@@ -1,13 +1,16 @@
 import { joinURL } from 'ufo'
-import { collectionsPlugin } from './plugins/collections'
-import { metaPlugin } from './plugins/meta'
-import { iconifyPlugin } from './plugins/iconify'
-import type { Collection, PluginConfig, PluginOptions } from './types'
-import { libraryCollections as libraryCollectionsConfig } from '@compodium/examples'
-import { devtoolsPlugin } from './plugins/devtools'
 import AST from 'unplugin-ast/vite'
 import { RemoveWrapperFunction } from 'unplugin-ast/transformers'
+
+import { libraryCollections as libraryCollectionsConfig } from '@compodium/examples'
+import { collectionsPlugin } from './plugins/collections'
+import { metaPlugin } from './plugins/meta'
 import { examplePlugin } from './plugins/examples'
+import { devtoolsPlugin } from './plugins/devtools'
+import { colorsPlugin } from './plugins/colors'
+import { iconifyPlugin } from './plugins/iconify'
+
+import type { Collection, PluginConfig, PluginOptions } from './types'
 
 export * from './types'
 
@@ -65,6 +68,7 @@ export const compodium = /* #__PURE__ */ (options: PluginOptions) => {
     devtoolsPlugin(config),
     examplePlugin(config),
     iconifyPlugin(config),
+    colorsPlugin(config),
     AST({
       include: [/\.[jt]sx?$/, /\.vue$/],
       transformer: [RemoveWrapperFunction(['extendCompodiumMeta'])]

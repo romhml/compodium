@@ -7,7 +7,10 @@ import { getEnumOptions } from '~/utils/enum'
 
 const { hooks } = useCompodiumClient()
 
+const rendererMounted = ref(false)
 hooks.hook('renderer:mounted', () => {
+  rendererMounted.value = true
+
   hooks.hook('component:changed', async (path: string) => {
     if (path === component.value?.filePath) {
       await Promise.all([refreshMeta(), refreshExampleMeta()])
@@ -254,6 +257,7 @@ watch(component, () => propsSearchTerm.value = '')
               variant="link"
               class="rounded-full"
               :color="showGrid ? 'primary' : 'neutral'"
+              :disabled="!rendererMounted"
               @click="() => {
                 showGrid = !showGrid
                 updateGridDebounced()
@@ -285,15 +289,23 @@ watch(component, () => propsSearchTerm.value = '')
             variant="link"
             class="rounded-full"
             color="neutral"
+            :disabled="!rendererMounted"
             @click="isDark = !isDark"
           />
         </div>
       </div>
 
-      <div class="absolute inset-0">
+      <div class="absolute inset-0 flex justify-center items-center">
         <iframe
+          v-show="rendererMounted"
           class="w-full h-full"
           src="/__compodium__/renderer"
+        />
+        <UIcon
+          v-if="!rendererMounted"
+          name="lucide:loader-circle"
+          class="m-auto animate-rotate text-(--ui-bg-accented)"
+          size="20"
         />
       </div>
     </div>

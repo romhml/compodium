@@ -3,14 +3,13 @@
 // @ts-expect-error - Nuxt Devtools internal value
 window.__NUXT_DEVTOOLS_DISABLE__ = true
 
-// TODO: Nuxt UI Colors
-// const appConfig = useAppConfig()
-//
-// useAsyncData('__compodium-fetch-colors', async () => {
-//   const colors = await $fetch('/api/colors', { baseURL: '/__compodium__' })
-//   if (colors) appConfig.ui!.colors = { ...appConfig.ui!.colors, ...colors as any }
-//   return true
-// })
+const appConfig = useAppConfig()
+
+useAsyncData('__compodium-fetch-colors', async () => {
+  const colors = await $fetch('/api/colors', { baseURL: '/__compodium__' })
+  if (colors) appConfig.ui!.colors = { ...appConfig.ui!.colors, ...colors as any }
+  return true
+})
 </script>
 
 <template>

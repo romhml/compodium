@@ -21,7 +21,13 @@ export default defineConfig({
           prefix: 'U',
           ignore: ['App.vue', 'Toast.vue', '*Provider.vue', '*Base.vue', '*Content.vue']
         }
-      ]
+      ],
+      extras: {
+        colors: {
+          primary: 'green',
+          neutral: 'slate'
+        }
+      }
     })
   ],
 

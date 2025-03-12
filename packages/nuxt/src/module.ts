@@ -8,7 +8,6 @@ import { compodium } from '@compodium/core'
 import type { PluginOptions } from '@compodium/core'
 
 export type ModuleOptions = Omit<PluginOptions, 'componentDirs' | 'rootDir'>
-
 export default defineNuxtModule<ModuleOptions>({
   meta: {
     name: '@compodium/nuxt',
@@ -16,12 +15,7 @@ export default defineNuxtModule<ModuleOptions>({
   },
   defaults: {
     dir: 'compodium/',
-    includeLibraryCollections: true,
-    extras: {
-      ui: {
-        matchColors: true
-      }
-    }
+    includeLibraryCollections: true
   },
 
   async setup(options, nuxt) {
