@@ -43,6 +43,7 @@
   "dependencies": {
     "@compodium/core": "workspace:*",
     "@vue/devtools-kit": "^7.7.2",
-    "defu": "^6.1.4"
+    "defu": "^6.1.4",
+    "unplugin": "^2.2.0"
   }
 }

@@ -225,6 +225,12 @@ importers:
       defu:
         specifier: ^6.1.4
         version: 6.1.4
+      unplugin:
+        specifier: ^2.2.0
+        version: 2.2.0
+      unplugin-auto-import:
+        specifier: ^19.1.1
+        version: 19.1.1(@nuxt/kit@3.16.0(magicast@0.3.5))(@vueuse/core@13.0.0(vue@3.5.13(typescript@5.6.3)))
       vite:
         specifier: '>=3'
         version: 6.2.1(@types/node@22.13.10)(jiti@2.4.2)(lightningcss@1.29.2)(terser@5.39.0)(yaml@2.7.0)
@@ -11262,6 +11268,18 @@ snapshots:
     optionalDependencies:
       '@nuxt/kit': 3.16.0(magicast@0.3.5)
       '@vueuse/core': 12.8.2(typescript@5.6.3)
+
+  unplugin-auto-import@19.1.1(@nuxt/kit@3.16.0(magicast@0.3.5))(@vueuse/core@13.0.0(vue@3.5.13(typescript@5.6.3))):
+    dependencies:
+      local-pkg: 1.1.1
+      magic-string: 0.30.17
+      picomatch: 4.0.2
+      unimport: 4.1.2
+      unplugin: 2.2.0
+      unplugin-utils: 0.2.4
+    optionalDependencies:
+      '@nuxt/kit': 3.16.0(magicast@0.3.5)
+      '@vueuse/core': 13.0.0(vue@3.5.13(typescript@5.6.3))
 
   unplugin-utils@0.2.4:
     dependencies:

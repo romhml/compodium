@@ -1,5 +1,5 @@
 import type { PluginOptions } from '@compodium/core'
-import { compodium as _compodium } from '@compodium/core'
+import { compodium as core } from '@compodium/core'
 import { rendererPlugin } from './plugins/renderer'
 import { vueDevtoolsPlugin } from './plugins/vueDevtools'
 import { defu } from 'defu'
@@ -15,7 +15,7 @@ export const compodium = /* #__PURE__ */ (options: Partial<PluginOptions>) => {
   ]
 
   return [
-    _compodium(opts),
+    core(opts),
     rendererPlugin(opts),
     vueDevtoolsPlugin(opts)
   ]

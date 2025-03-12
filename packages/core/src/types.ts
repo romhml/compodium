@@ -143,5 +143,10 @@ declare global {
      * Compodium Hooks for the renderer and devtools
      */
     __COMPODIUM_HOOKS__?: Hookable<CompodiumHooks>
+
+    /**
+     * Macro to configure components and examples.
+     */
+    extendCompodiumMeta: <T = Record<string, any>>(_options: CompodiumMeta<T>['compodium']) => void
   }
 }

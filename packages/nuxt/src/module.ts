@@ -1,5 +1,5 @@
 import { addCustomTab } from '@nuxt/devtools-kit'
-import { defineNuxtModule, createResolver, addTemplate, addVitePlugin, logger, addComponentsDir } from '@nuxt/kit'
+import { defineNuxtModule, createResolver, addTemplate, addVitePlugin, logger, addComponentsDir, addImports } from '@nuxt/kit'
 import { colors } from 'consola/utils'
 import { joinURL } from 'ufo'
 import { version } from '../package.json'
@@ -19,9 +19,11 @@ export default defineNuxtModule<ModuleOptions>({
   },
 
   async setup(options, nuxt) {
-    const { resolve } = createResolver(import.meta.url)
+    addImports({ name: 'extendCompodiumMeta', from: '@compodium/core/runtime/composables/extendCompodiumMeta' })
 
     if (!nuxt.options.dev) return
+
+    const { resolve } = createResolver(import.meta.url)
 
     const compodiumComponentsDir = resolve('./runtime/components')
     addComponentsDir({ path: compodiumComponentsDir, priority: -1 })

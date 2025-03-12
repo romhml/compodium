@@ -6,7 +6,6 @@ import type { ComboItem } from '../components/ComboInput.vue'
 import { getEnumOptions } from '~/utils/enum'
 
 const { hooks } = useCompodiumClient()
-
 const rendererMounted = ref(false)
 hooks.hook('renderer:mounted', () => {
   rendererMounted.value = true
@@ -42,7 +41,6 @@ const { data: collections, refresh: refreshCollections } = useAsyncData(async ()
 
 const component = shallowRef<(Component & Partial<ComponentExample>) | undefined>()
 const props = useState<Record<string, any>>('__component_state', () => ({}))
-
 const defaultProps = shallowRef({})
 const compodiumDefaultProps = shallowRef({})
 
@@ -77,8 +75,44 @@ const { data: exampleMeta, refresh: refreshExampleMeta } = useAsyncData('__compo
   return example
 }, { watch: [component] })
 
-const combo = ref<string[]>([])
+watch([componentMeta, exampleMeta], async ([newComponentMeta, newExampleMeta]) => {
+  if (!newComponentMeta) return
+  combo.value = [...(
+    newExampleMeta?.compodium?.combo
+    ?? newComponentMeta?.compodium?.combo as any
+    ?? []
+  )]
 
+  compodiumDefaultProps.value = { ...(newExampleMeta?.compodium?.defaultProps ?? newComponentMeta?.compodium?.defaultProps) }
+  defaultProps.value = {
+    ...getDefaultProps(newComponentMeta)
+  }
+
+  props.value = { ...defaultProps.value, ...compodiumDefaultProps.value }
+  await updateComponent()
+})
+
+watch(component, async (oldValue, newValue) => {
+  if (oldValue?.pascalName === newValue?.pascalName) updateComponent()
+})
+
+async function updateComponent() {
+  if (!component.value) return
+
+  await hooks.callHook('renderer:update-component', {
+    path: component.value.realPath,
+    props: props.value
+  })
+
+  await hooks.callHook('renderer:update-combo', { props: comboProps.value?.filter(Boolean) as ComboItem[] ?? [] })
+}
+
+const updatePropsDebounced = useDebounceFn(
+  () => hooks.callHook('renderer:update-props', { props: { ...props.value } }),
+  100, { maxWait: 300 }
+)
+
+const combo = ref<string[]>([])
 const comboProps = computed<Partial<[ComboItem, ComboItem]>>({
   get() {
     return [
@@ -111,61 +145,15 @@ watch([componentMeta, exampleMeta, combo], async () => {
   await hooks.callHook('renderer:update-combo', { props: comboProps.value?.filter(Boolean) as ComboItem[] ?? [] })
 }, { deep: true })
 
-watch([componentMeta, exampleMeta], async ([newComponentMeta, newExampleMeta]) => {
-  if (!newComponentMeta) return
-  combo.value = [...(
-    newExampleMeta?.compodium?.combo
-    ?? newComponentMeta?.compodium?.combo as any
-    ?? []
-  )]
-
-  compodiumDefaultProps.value = { ...(newExampleMeta?.compodium?.defaultProps ?? newComponentMeta?.compodium?.defaultProps) }
-  defaultProps.value = {
-    ...getDefaultProps(newComponentMeta)
-  }
-
-  props.value = { ...defaultProps.value, ...compodiumDefaultProps.value }
-  await updateComponent()
-})
-
 watch(combo, () => combo.value?.forEach(name => props.value[name] = undefined))
-
-watch(component, async (oldValue, newValue) => {
-  if (oldValue?.pascalName === newValue?.pascalName) updateComponent()
-})
-
-async function updateComponent() {
-  if (!component.value) return
-
-  await hooks.callHook('renderer:update-component', {
-    path: component.value.realPath,
-    props: props.value
-  })
-
-  await hooks.callHook('renderer:update-combo', { props: comboProps.value?.filter(Boolean) as ComboItem[] ?? [] })
-}
-
-const updatePropsDebounced = useDebounceFn(
-  () => hooks.callHook('renderer:update-props', { props: { ...props.value } }),
-  100, { maxWait: 300 }
-)
-
-const tabs = computed(() => {
-  return [
-    { label: 'Props', slot: 'props', icon: 'lucide:settings' },
-    { label: 'Code', slot: 'code', icon: 'lucide:code' }
-  ]
-})
 
 const showGrid = ref(false)
 const gridGap = ref<number>(8)
-
 const updateGridDebounced = useDebounceFn(() => {
   hooks.callHook('renderer:grid', { enabled: showGrid.value, gap: gridGap.value })
 }, 50, { maxWait: 50 })
 
 const colorMode = useColorMode()
-
 const isDark = computed({
   get() {
     return colorMode.value === 'dark'
@@ -176,8 +164,14 @@ const isDark = computed({
   }
 })
 
-const isRotated = ref(false)
+const tabs = computed(() => {
+  return [
+    { label: 'Props', slot: 'props', icon: 'lucide:settings' },
+    { label: 'Code', slot: 'code', icon: 'lucide:code' }
+  ]
+})
 
+const isRotated = ref(false)
 function onResetState() {
   if (isRotated.value) return
   setTimeout(() => isRotated.value = false, 500)
