@@ -11,7 +11,7 @@ export function examplePlugin(config: PluginConfig): VitePlugin {
       const paths = [
         config.componentCollection.exampleDir,
         ...config.libraryCollections.map(c => c.exampleDir)
-      ].map(d => resolve(process.cwd(), config.rootDir, d.path))
+      ].map(d => resolve(config.rootDir, d.path))
 
       server.middlewares.use('/__compodium__/api/example', async (req, res) => {
         try {

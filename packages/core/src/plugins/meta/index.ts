@@ -3,6 +3,7 @@ import type { PluginConfig } from '../../types'
 import { createChecker } from './checker'
 import { watch } from 'chokidar'
 import type { VitePlugin } from 'unplugin'
+import { resolve } from 'pathe'
 
 export function metaPlugin(config: PluginConfig): VitePlugin {
   const checkerDirs = [
@@ -48,7 +49,7 @@ export function metaPlugin(config: PluginConfig): VitePlugin {
       const watchedPaths = [
         ...config.componentCollection.dirs,
         config.componentCollection.exampleDir
-      ].map(d => d.path)
+      ].map(d => resolve(config.rootDir, d.path))
 
       // Watch for changes in example directory
       const watcher = watch(watchedPaths, {

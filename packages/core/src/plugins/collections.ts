@@ -2,6 +2,7 @@ import type { PluginConfig } from '../types'
 import { scanComponents } from './utils'
 import { watch } from 'chokidar'
 import type { VitePlugin } from 'unplugin'
+import { resolve } from 'pathe'
 
 export function collectionsPlugin(config: PluginConfig): VitePlugin {
   return {
@@ -17,7 +18,7 @@ export function collectionsPlugin(config: PluginConfig): VitePlugin {
               const componentExamples = examples?.filter(e => e.pascalName.startsWith(`${c.pascalName}Example`)).map(e => ({
                 ...e,
                 isExample: true,
-                componentPath: c.filePath
+                componentPath: resolve(config.rootDir, c.filePath)
               }))
 
               const mainExample = componentExamples.find(e => e.pascalName === `${c.pascalName}Example`)
@@ -48,7 +49,7 @@ export function collectionsPlugin(config: PluginConfig): VitePlugin {
       const watchedPaths = [
         ...config.componentCollection.dirs,
         config.componentCollection.exampleDir
-      ].map(c => c.path)
+      ].map(d => resolve(config.rootDir, d.path))
 
       // Watch for changes in example directory
       const watcher = watch(watchedPaths, {
