@@ -3,7 +3,9 @@ import { glob } from 'tinyglobby'
 import { kebabCase, pascalCase, splitByCase } from 'scule'
 import { isIgnored } from '@nuxt/kit'
 import { withTrailingSlash } from 'ufo'
-import type { Component, ComponentsDir } from '@nuxt/schema'
+import type { Component as NuxtComponent } from '../types'
+import type { ComponentsDir } from '@nuxt/schema'
+import { realpath } from 'node:fs/promises'
 
 /* Nuxt internal functions used to scan example components without adding them to the application */
 
@@ -38,6 +40,10 @@ export function resolveComponentNameSegments(fileName: string, prefixParts: stri
     index--
   }
   return [...componentNameParts, ...fileNameParts]
+}
+
+interface Component extends NuxtComponent {
+  realPath: string
 }
 
 /**
@@ -130,6 +136,7 @@ export async function scanComponents(dirs: ComponentsDir[], srcDir: string): Pro
         preload: Boolean(dir.preload),
         // specific to the file
         filePath,
+        realPath: await realpath(filePath),
         pascalName,
         kebabName,
         chunkName,
@@ -142,7 +149,7 @@ export async function scanComponents(dirs: ComponentsDir[], srcDir: string): Pro
       }
 
       if (typeof dir.extendComponent === 'function') {
-        component = (await dir.extendComponent(component)) || component
+        component = (await dir.extendComponent(component) as Component) || component
       }
 
       // Ignore files like `~/components/index.vue` which end up not having a name at all

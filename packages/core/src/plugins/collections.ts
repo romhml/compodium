@@ -21,9 +21,10 @@ export function collectionsPlugin(config: PluginConfig): VitePlugin {
               }))
 
               const mainExample = componentExamples.find(e => e.pascalName === `${c.pascalName}Example`)
+              const component = mainExample ?? c
 
               return {
-                ...(mainExample ?? c),
+                ...component,
                 docUrl: col.getDocUrl?.(c.pascalName),
                 examples: componentExamples.filter(e => e.pascalName !== mainExample?.pascalName)
               }
