@@ -27,7 +27,7 @@ export function devtoolsPlugin(config: PluginConfig): VitePlugin {
       if (process.env.COMPODIUM_DEVTOOLS_URL) return
       server.middlewares.use('/__compodium__/devtools',
         sirv(resolve(dirname(fileURLToPath(import.meta.url)), './client/devtools'),
-          { single: true }
+          { single: true, setHeaders: res => res.setHeader('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400') }
         )
       )
     },
