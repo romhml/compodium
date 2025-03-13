@@ -219,12 +219,18 @@ importers:
       '@compodium/core':
         specifier: workspace:*
         version: link:../core
+      '@compodium/examples':
+        specifier: workspace:*
+        version: link:../examples
       '@vue/devtools-kit':
         specifier: ^7.7.2
         version: 7.7.2
       defu:
         specifier: ^6.1.4
         version: 6.1.4
+      pathe:
+        specifier: ^2.0.3
+        version: 2.0.3
       unplugin:
         specifier: ^2.2.0
         version: 2.2.0

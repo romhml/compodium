@@ -14,29 +14,22 @@ describe('custom components dirs', async () => {
 
   describe('collections api', () => {
     it('works', async () => {
-      const collections = await $fetch<Record<string, ComponentCollection>>('/__compodium__/api/collections')
-      expect(collections).toEqual({
-        components: expect.objectContaining({
-          name: 'Components',
-          id: 'components',
-          components: expect.objectContaining({
-            basicComponent: expect.objectContaining({ componentId: 'basicComponent', collectionId: 'components' }),
-            uButton: expect.objectContaining({ componentId: 'uButton' })
+      const collections = await $fetch<ComponentCollection[]>('/__compodium__/api/collections')
+      expect(collections).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            name: 'Components',
+            components: expect.arrayContaining([
+              expect.objectContaining({
+                pascalName: 'BasicComponentExample'
+              }),
+              expect.objectContaining({
+                pascalName: 'UButton'
+              })
+            ])
           })
-        })
-      })
-    })
-
-    describe('collections api', () => {
-      it('resolves examples', async () => {
-        const collections = await $fetch<Record<string, ComponentCollection>>('/__compodium__/api/collections')
-        expect(collections.components.components.basicComponent).toEqual(expect.objectContaining({
-          pascalName: 'BasicComponentExample',
-          shortPath: 'compodium/examples/BasicComponentExample.vue',
-          collectionId: 'components',
-          componentId: 'basicComponent'
-        }))
-      })
+        ])
+      )
     })
   })
 })

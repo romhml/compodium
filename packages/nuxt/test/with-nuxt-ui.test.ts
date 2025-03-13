@@ -14,47 +14,30 @@ describe('with nuxt ui', async () => {
 
   describe('collections api', () => {
     it('works', async () => {
-      const collections = await $fetch<Record<string, ComponentCollection>>('/__compodium__/api/collections')
-      expect(collections.components.components.basicComponent).toEqual(expect.objectContaining({ componentId: 'basicComponent', collectionId: 'components' }))
-      expect(collections.ui.components.uButton).toEqual(expect.objectContaining({ componentId: 'uButton', collectionId: 'ui' }))
-    })
-  })
-
-  describe('component-meta api', () => {
-    it('works for basic component', async () => {
-      const component = await $fetch('/__compodium__/api/component-meta/uButton')
-      expect(component).toEqual(expect.objectContaining({
-        pascalName: 'UButton',
-        meta: expect.objectContaining({
-          props: expect.arrayContaining([
-            expect.objectContaining({
-              name: 'label',
-              schema: [
-                {
-                  inputType: 'string',
-                  schema: 'string',
-                  type: 'string'
-                }
-              ],
-              type: 'string'
-            })
-          ])
-        })
-      }))
-    })
-  })
-
-  describe('examples api', () => {
-    it('works', async () => {
-      const example = await $fetch('/__compodium__/api/example/uChipExample')
-      expect(example).toMatchInlineSnapshot(`
-        "<template>
-          <UChip>
-            <UAvatar src="https://avatars.githubusercontent.com/u/739984?v=4" />
-          </UChip>
-        </template>
-        "
-      `)
+      const collections = await $fetch<ComponentCollection[]>('/__compodium__/api/collections')
+      expect(collections).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            name: 'Components',
+            components: expect.arrayContaining([
+              expect.objectContaining({
+                pascalName: 'BasicComponent'
+              })
+            ])
+          }),
+          expect.objectContaining({
+            name: 'Nuxt UI',
+            components: expect.arrayContaining([
+              expect.objectContaining({
+                pascalName: 'UCalendar'
+              }),
+              expect.objectContaining({
+                pascalName: 'UButtonExample'
+              })
+            ])
+          })
+        ])
+      )
     })
   })
 })

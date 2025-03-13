@@ -21,11 +21,11 @@ export const compodium = /* #__PURE__ */ (options: PluginOptions) => {
   }
 
   const componentDirs = options?.componentDirs.map((dir) => {
-    const path = typeof dir === 'string' ? dir : dir.path
+    const componentDir = typeof dir === 'string' ? { path: dir } : dir
     return {
       pattern: '**/*.{vue,tsx}',
-      path,
-      ...typeof dir === 'string' ? {} : dir
+      ...componentDir,
+      ignore: (componentDir.ignore ?? []).concat(options.ignore ?? [])
     }
   }).filter(collection => !collection.path?.includes('node_modules/'))
 

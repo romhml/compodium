@@ -6,8 +6,7 @@ export default defineBuildConfig({
   ],
   replace: {
     'process.env.DEV': 'false',
-    'process.env.COMPODIUM_LOCAL': 'false',
-    'process.env.COMPODIUM_TEST': 'false'
+    'process.env.COMPODIUM_DEVTOOLS_URL': undefined
   },
   externals: [
     'typescript'

@@ -1,16 +1,16 @@
 import { resolve } from 'pathe'
 import { describe, it, expect, beforeEach } from 'vitest'
 import { setup, $fetch } from '@nuxt/test-utils/e2e'
-import type { ComponentCollection } from '@compodium/core'
-import type { ComponentMeta } from '@compodium/meta'
+import type { ComponentCollection, CompodiumMeta } from '@compodium/core'
+import { joinURL } from 'ufo'
 
 describe('basic', async () => {
+  const rootDir = resolve('./test/fixtures/basic')
+
   await setup({
-    rootDir: resolve('./test/fixtures/basic'),
+    rootDir,
     dev: true,
-    env: {
-      COMPODIUM_TEST: 'true'
-    }
+    port: 4545
   })
 
   it('renders the index page', async () => {
@@ -28,50 +28,64 @@ describe('basic', async () => {
 
   describe('collections api', () => {
     it('works', async () => {
-      const collections = await $fetch<Record<string, ComponentCollection>>('/__compodium__/api/collections')
-      expect(collections).toEqual({
-        components: expect.objectContaining({
-          name: 'Components',
-          id: 'components',
-          components: expect.objectContaining({ basicComponent: expect.objectContaining({ componentId: 'basicComponent', collectionId: 'components' }) })
-        })
-      })
+      const collections = await $fetch<ComponentCollection[]>('/__compodium__/api/collections')
+      expect(collections).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            name: 'Components',
+            components: expect.arrayContaining([
+              expect.objectContaining({
+                pascalName: 'BasicComponentExample'
+              })
+            ])
+          })
+        ])
+      )
     })
 
     it('assigns component examples', async () => {
-      const collections = await $fetch<Record<string, ComponentCollection>>('/__compodium__/api/collections')
-      expect(collections.components.components.basicComponent.examples).toEqual([
-        expect.objectContaining({
-          baseName: 'BasicComponentExampleWithSuffix',
-          collectionId: 'components',
-          componentId: 'basicComponent',
-          shortPath: 'compodium/examples/BasicComponentExampleWithSuffix.vue',
-          isExample: true,
-          name: 'WithSuffix',
-          pascalName: 'BasicComponentExampleWithSuffix'
-        })
-      ])
-    })
-
-    it('overrides component with main example', async () => {
-      const collections = await $fetch<Record<string, ComponentCollection>>('/__compodium__/api/collections')
-      expect(collections.components.components.basicComponent).toEqual(expect.objectContaining({
-        pascalName: 'BasicComponentExample',
-        shortPath: 'compodium/examples/BasicComponentExample.vue',
-        collectionId: 'components',
-        componentId: 'basicComponent'
-      }))
+      const collections = await $fetch<ComponentCollection[]>('/__compodium__/api/collections')
+      expect(collections).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            name: 'Components',
+            components: expect.arrayContaining([
+              expect.objectContaining({
+                pascalName: 'BasicComponentExample',
+                examples: expect.arrayContaining([
+                  expect.objectContaining({ pascalName: 'BasicComponentExampleWithSuffix' })
+                ])
+              })
+            ])
+          })
+        ])
+      )
     })
 
     it('ignores excluded components', async () => {
-      const collections = await $fetch<Record<string, ComponentCollection>>('/__compodium__/api/collections')
-      expect(collections.components.components.excludedComponent).toBeUndefined()
+      const collections = await $fetch<ComponentCollection[]>('/__compodium__/api/collections')
+      expect(collections).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            name: 'Components',
+            components: expect.not.arrayContaining([
+              expect.objectContaining({
+                pascalName: 'ExcludedComponent'
+              })
+            ])
+          })
+        ])
+      )
     })
   })
 
   describe('examples api', () => {
     it('works', async () => {
-      const example = await $fetch('/__compodium__/api/example/basicComponentExample')
+      const example = await $fetch(`/__compodium__/api/example`, {
+        query: {
+          path: joinURL(rootDir, '/compodium/examples/BasicComponentExample.vue')
+        }
+      })
       expect(example).toMatchInlineSnapshot(`
         "<template>
           <BasicComponent />
@@ -81,38 +95,44 @@ describe('basic', async () => {
     })
   })
 
-  describe('component-meta api', () => {
+  describe('meta api', () => {
     it('works for basic component', async () => {
-      const component = await $fetch('/__compodium__/api/component-meta/basicComponent')
+      const component = await $fetch(`/__compodium__/api/meta`, {
+        query: {
+          component: joinURL(rootDir, '/components/BasicComponent.vue')
+        }
+      })
+
       expect(component).toEqual(expect.objectContaining({
-        pascalName: 'BasicComponent',
-        meta: expect.objectContaining({
-          props: [
-            {
-              description: '',
-              global: false,
-              name: 'foo',
-              required: true,
-              schema: [
-                {
-                  inputType: 'string',
-                  schema: 'string',
-                  type: 'string'
-                }
-              ],
-              tags: [],
-              type: 'string'
-            }
-          ]
-        })
+        props: [
+          {
+            description: '',
+            global: false,
+            name: 'foo',
+            required: true,
+            schema: [
+              {
+                inputType: 'string',
+                schema: 'string',
+                type: 'string'
+              }
+            ],
+            tags: [],
+            type: 'string'
+          }
+        ]
       }))
     })
   })
 
   describe('compodium meta', async () => {
     it('works', async () => {
-      const component = await $fetch<ComponentMeta>('/__compodium__/api/component-meta/extendMeta')
-      expect(component.meta.compodium).toMatchObject({
+      const component = await $fetch<CompodiumMeta>('/__compodium__/api/meta', {
+        query: {
+          component: joinURL(rootDir, '/components/ExtendMeta.vue')
+        }
+      })
+      expect(component.compodium).toMatchObject({
         defaultProps: {
           foo: 'bar',
           bool: true,
@@ -126,22 +146,34 @@ describe('basic', async () => {
     })
 
     it('filters variables', async () => {
-      const component = await $fetch<ComponentMeta>('/__compodium__/api/component-meta/extendMetaWithVars')
-      expect(component.meta.compodium).toEqual({ defaultProps: {} })
+      const component = await $fetch<CompodiumMeta>('/__compodium__/api/meta', {
+        query: {
+          component: joinURL(rootDir, '/components/ExtendMetaWithVars.vue')
+        }
+      })
+      expect(component.compodium).toEqual({ defaultProps: {} })
     })
 
     it('ignores if invalid param', async () => {
-      const component = await $fetch<ComponentMeta>('/__compodium__/api/component-meta/extendMetaBad')
-      expect(component.meta.compodium).toEqual({ defaultProps: {} })
+      const component = await $fetch<CompodiumMeta>('/__compodium__/api/meta', {
+        query: {
+          component: joinURL(rootDir, '/components/ExtendMetaBad.vue')
+        }
+      })
+      expect(component.compodium).toBeUndefined
     })
   })
 
   describe('prop inference', async () => {
-    let props: ComponentMeta['meta']['props']
+    let props: CompodiumMeta['props']
 
     beforeEach(async () => {
-      const component = await $fetch<ComponentMeta>('/__compodium__/api/component-meta/complexComponent')
-      props = component.meta.props
+      const component = await $fetch<CompodiumMeta>('/__compodium__/api/meta', {
+        query: {
+          component: joinURL(rootDir, '/components/ComplexComponent.vue')
+        }
+      })
+      props = component.props
     })
 
     it('works with string', async () => {

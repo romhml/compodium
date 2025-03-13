@@ -14,8 +14,8 @@ export type PluginOptions = {
   /* Customize compodium's base directory. Defaults to 'compodium/' */
   dir: string
 
-  /* List of glob patterns to exclude components */
-  exclude?: string[]
+  /* List of glob patterns to ignore components */
+  ignore?: string[]
 
   extras?: {
     /* Customize Compodium's UI Colors. */
@@ -82,6 +82,7 @@ export type Collection = {
   name: string
   package?: string
   icon?: string
+  version?: string
   prefix?: string
   ignore?: string[]
   dirs: ComponentsDir[]
