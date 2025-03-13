@@ -7,6 +7,8 @@ export type LibraryCollection = {
   package: string
   version: string
   icon?: string
+  path: string
+  prefix?: string
   exampleDir: string
   ignore?: string[]
   getDocUrl?: (component: string) => string
@@ -24,7 +26,9 @@ export const libraryCollections = [
     version: '^3.0.0-alpha.1',
     icon: 'lineicons:nuxt',
     exampleDir: resolve('./examples/ui'),
+    path: 'node_modules/@nuxt/ui/dist/runtime/components',
     ignore: ['App.vue', 'Toast.vue', '*Provider.vue', '*Base.vue', '*Content.vue'],
+    prefix: 'U',
     getDocUrl(componentName: string) {
       const prefix = 'U' // TODO: Handle user defined prefix
       return `https://ui3.nuxt.dev/components/${kebabCase(componentName.replace(new RegExp(`^${prefix}`), ''))}`

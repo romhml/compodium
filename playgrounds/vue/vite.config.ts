@@ -13,15 +13,6 @@ export default defineConfig({
     vueDevTools(),
     ui(),
     compodium({
-      componentDirs: [
-        { path: './src/components', pathPrefix: false },
-        {
-          path: './node_modules/@nuxt/ui/dist/runtime/',
-          pathPrefix: false,
-          prefix: 'U',
-          ignore: ['App.vue', 'Toast.vue', '*Provider.vue', '*Base.vue', '*Content.vue']
-        }
-      ],
       extras: {
         colors: {
           primary: 'green',

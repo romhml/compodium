@@ -35,26 +35,28 @@ export const compodium = /* #__PURE__ */ (options: PluginOptions) => {
     dirs: componentDirs
   }
 
-  const libraryCollections = options.componentDirs.map((dir) => {
-    const path = typeof dir === 'string' ? dir : dir.path
-    const collection = libraryCollectionsConfig.find((c: any) => path.includes(`node_modules/${c.package}`))
-    if (collection) {
-      return {
-        ...collection,
-        exampleDir: {
-          ...typeof dir === 'string' ? {} : dir,
-          path: collection.exampleDir.replace(/^file:\/\//, ''),
-          pattern: '**/*.{vue,tsx}'
-        },
-        dirs: [{
-          ...typeof dir === 'string' ? {} : dir,
-          path,
-          pattern: '**/*.{vue,tsx}',
-          ignore: collection.ignore
-        }]
-      }
-    }
-  }).filter(c => !!c)
+  const libraryCollections = options.includeLibraryCollections
+    ? options.componentDirs.map((dir) => {
+        const path = typeof dir === 'string' ? dir : dir.path
+        const collection = libraryCollectionsConfig.find((c: any) => path.includes(`node_modules/${c.package}`))
+        if (collection) {
+          return {
+            ...collection,
+            exampleDir: {
+              ...typeof dir === 'string' ? {} : dir,
+              path: collection.exampleDir,
+              pattern: '**/*.{vue,tsx}'
+            },
+            dirs: [{
+              ...typeof dir === 'string' ? {} : dir,
+              path,
+              pattern: '**/*.{vue,tsx}',
+              ignore: collection.ignore
+            }]
+          }
+        }
+      }).filter(c => !!c)
+    : []
 
   const config: PluginConfig = {
     ...options,
