@@ -1,7 +1,7 @@
 {
   "name": "@compodium/vue",
   "type": "module",
-  "version": "0.1.0",
+  "version": "0.1.0-beta.5",
   "description": "A plug and play component playground for Vue and Nuxt.",
   "license": "MIT",
   "repository": {
