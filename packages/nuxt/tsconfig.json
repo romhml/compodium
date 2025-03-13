@@ -3,8 +3,7 @@
   "exclude": [
     "dist",
     "node_modules",
-    "test/fixtures/",
-    "src/runtime/libs",
+    "test"
   ],
   "compilerOptions": {
     "types": ["vite/client"]

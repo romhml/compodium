@@ -42,8 +42,7 @@ extendCompodiumMeta<typeof _props>({
         color="success"
         icon="devicon-plain:vuejs"
         block
-        :disabled="!devtoolsClient"
-        @click="devtoolsClient?.devtools.navigate('/modules/custom-compodium')"
+        :disabled="true"
       >
         Open in Vue Devtools
       </UButton>

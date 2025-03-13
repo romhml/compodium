@@ -12,16 +12,19 @@ const items = computed(() =>
     ...col,
     items: col.components.flatMap((comp) => {
       const label = comp?.isExample ? comp.pascalName.replace(/Example$/, '') : comp.pascalName
-      return [{
-        ...comp,
-        id: comp.pascalName,
-        label
-      }, ...comp.examples.map(e => ({
-        ...e,
-        id: e.pascalName,
-        label,
-        suffix: e.pascalName.replace(label, '').replace(/^Example/, '')
-      }))]
+      return [
+        {
+          ...comp,
+          id: comp.pascalName,
+          label
+        },
+        ...(comp.examples?.map(e => ({
+          ...e,
+          id: e.pascalName,
+          label,
+          suffix: e.pascalName.replace(label, '').replace(/^Example/, '')
+        })) ?? [])
+      ]
     })
   }))
 )

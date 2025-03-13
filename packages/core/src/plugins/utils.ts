@@ -3,14 +3,12 @@ import { glob } from 'tinyglobby'
 import { kebabCase, pascalCase, splitByCase } from 'scule'
 import { isIgnored } from '@nuxt/kit'
 import { withTrailingSlash } from 'ufo'
-import type { Component as NuxtComponent } from '../types'
-import type { ComponentsDir } from '@nuxt/schema'
+import type { Component, ComponentsDir } from '../types'
 import { realpath } from 'node:fs/promises'
 
 /* Nuxt internal functions used to scan example components without adding them to the application */
 
 const ISLAND_RE = /\.island(?:\.global)?$/
-const GLOBAL_RE = /\.global(?:\.island)?$/
 const COMPONENT_MODE_RE = /(?<=\.)(client|server)(\.global|\.island)*$/
 const MODE_REPLACEMENT_RE = /(\.(client|server))?(\.global|\.island)*$/
 export const QUOTE_RE = /["']/g
@@ -42,10 +40,6 @@ export function resolveComponentNameSegments(fileName: string, prefixParts: stri
   return [...componentNameParts, ...fileNameParts]
 }
 
-interface Component extends NuxtComponent {
-  realPath: string
-}
-
 /**
  * Scan the components inside different components folders
  * and return a unique list of components
@@ -64,10 +58,6 @@ export async function scanComponents(dirs: ComponentsDir[], srcDir: string): Pro
   const scannedPaths: string[] = []
 
   for (const dir of dirs) {
-    if (dir.enabled === false) {
-      continue
-    }
-
     // A map from resolved path to component name (used for making duplicate warning message)
     const resolvedNames = new Map<string, string>()
 
@@ -104,8 +94,7 @@ export async function scanComponents(dirs: ComponentsDir[], srcDir: string): Pro
        */
       let fileName = basename(filePath, extname(filePath))
 
-      const island = ISLAND_RE.test(fileName) || dir.island
-      const global = GLOBAL_RE.test(fileName) || dir.global
+      const island = ISLAND_RE.test(fileName)
       const mode = island ? 'server' : (fileName.match(COMPONENT_MODE_RE)?.[1] || 'all') as 'client' | 'server' | 'all'
       fileName = fileName.replace(MODE_REPLACEMENT_RE, '')
 
@@ -124,32 +113,13 @@ export async function scanComponents(dirs: ComponentsDir[], srcDir: string): Pro
       resolvedNames.set(pascalName + suffix, filePath)
 
       const kebabName = kebabCase(componentNameSegments)
-      const shortPath = relative(srcDir, filePath)
-      const chunkName = 'components/' + kebabName + suffix
 
-      let component: Component = {
-        // inheritable from directory configuration
+      const component: Component = {
         mode,
-        global,
-        island,
-        prefetch: Boolean(dir.prefetch),
-        preload: Boolean(dir.preload),
-        // specific to the file
         filePath,
         realPath: await realpath(filePath),
         pascalName,
-        kebabName,
-        chunkName,
-        shortPath,
-        export: 'default',
-        // by default, give priority to scanned components
-        priority: dir.priority ?? 1,
-        // @ts-expect-error untyped property
-        _scanned: true
-      }
-
-      if (typeof dir.extendComponent === 'function') {
-        component = (await dir.extendComponent(component) as Component) || component
+        kebabName
       }
 
       // Ignore files like `~/components/index.vue` which end up not having a name at all

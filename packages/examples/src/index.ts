@@ -1,18 +1,15 @@
 import { dirname, resolve as _resolve } from 'pathe'
 import { kebabCase } from 'scule'
 import { fileURLToPath } from 'node:url'
+import type { ComponentsDirs } from '@compodium/core'
 
-export type LibraryCollection = {
+export type LibraryCollection = ComponentsDirs & {
   name: string
   package: string
   version: string
   icon?: string
-  path: string
-  prefix?: string
   exampleDir: string
-  ignore?: string[]
   getDocUrl?: (component: string) => string
-  defaultProps?: Record<string, any>
 }
 
 function resolve(path: string) {

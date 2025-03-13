@@ -1,4 +1,4 @@
-import type { ComponentsDir, Component as NuxtComponent } from '@nuxt/schema'
+import type { ScanDir, Component as NuxtComponent } from '@nuxt/schema'
 import type { PropertyMeta as VuePropertyMeta } from '@compodium/meta'
 import type { Hookable } from 'hookable'
 import type { InputSchema } from './plugins/meta/infer'
@@ -45,6 +45,8 @@ type FilterStringLiteral<T> = {
 type ComboItem<T> = keyof FilterStringLiteral<T> | undefined
 type Combo<T> = [ComboItem<T>, ComboItem<T>] | [ComboItem<T>]
 
+export type ComponentsDir = Pick<ScanDir, 'path' | 'pattern' | 'ignore' | 'prefix' | 'pathPrefix'>
+
 export type CompodiumMeta<T = Record<string, any>> = {
   compodium?: {
     combo?: Combo<T>
@@ -65,10 +67,10 @@ export type PropertyMeta = Omit<VuePropertyMeta, 'schema'> & {
   schema: PropSchema[]
 }
 
-export type Component = NuxtComponent & {
+export type Component = Pick<NuxtComponent, 'pascalName' | 'kebabName' | 'filePath' | 'priority' | 'mode'> & {
   realPath: string
   docUrl?: string
-  examples: ComponentExample[]
+  examples?: ComponentExample[]
 }
 
 export type ComponentExample = Component & {

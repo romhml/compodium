@@ -1,6 +1,5 @@
 import { createCheckerByJson } from '@compodium/meta'
-import type { CompodiumMeta } from '../../types'
-import type { ComponentsDir } from '@nuxt/schema'
+import type { CompodiumMeta, ComponentsDir } from '../../types'
 import { inferPropTypes } from './infer'
 
 export function createChecker(dirs: ComponentsDir[]) {
