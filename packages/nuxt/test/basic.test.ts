@@ -160,7 +160,7 @@ describe('basic', async () => {
           component: joinURL(rootDir, '/components/ExtendMetaBad.vue')
         }
       })
-      expect(component.compodium).toBeUndefined
+      expect(component.compodium).toBeUndefined()
     })
   })
 
