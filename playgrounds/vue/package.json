@@ -8,7 +8,7 @@
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
     "build-only": "vite build",
-    "typecheck": "vue-tsc --build"
+    "typecheck": "vue-tsc --noEmit"
   },
   "dependencies": {
     "@compodium/vue": "workspace:*",

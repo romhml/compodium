@@ -18,8 +18,8 @@ async function onUpdateComponent(payload: { path: string, props: Record<string, 
   component.value = null
   props.value = payload.props
 
-  if (window?.__buildAssetsURL) {
-    component.value = await import(/* @vite-ignore */ window?.__buildAssetsURL(payload.path)).then(c => c.default)
+  if ((window as any)?.__buildAssetsURL) {
+    component.value = await import(/* @vite-ignore */ (window as any)?.__buildAssetsURL(payload.path)).then(c => c.default)
   } else {
     component.value = await import(/* @vite-ignore */ joinURL('/@fs/' + payload.path)).then(c => c.default)
   }
