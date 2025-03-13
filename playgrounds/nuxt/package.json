@@ -1,6 +1,6 @@
 {
-  "private": true,
   "name": "@compodium/playground-nuxt",
+  "private": true,
   "type": "module",
   "scripts": {
     "dev:prepare": "nuxi prepare",

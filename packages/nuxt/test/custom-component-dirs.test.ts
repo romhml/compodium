@@ -6,10 +6,7 @@ import type { ComponentCollection } from '@compodium/core'
 describe('custom components dirs', async () => {
   await setup({
     rootDir: resolve('./test/fixtures/custom-component-dirs'),
-    dev: true,
-    env: {
-      COMPODIUM_TEST: 'true'
-    }
+    dev: true
   })
 
   describe('collections api', () => {
