@@ -4,13 +4,8 @@ import { setup, $fetch } from '@nuxt/test-utils/e2e'
 
 describe('prod', async () => {
   await setup({
-    // FIXME: TypeError: The URL must be of scheme file
-    // rootDir: fileURLToPath(new URL('./fixtures/basic', import.meta.url)),
     rootDir: resolve('./test/fixtures/basic'),
-    dev: false,
-    env: {
-      COMPODIUM_TEST: 'true'
-    }
+    dev: false
   })
 
   it('renderer is not injected in production', async () => {

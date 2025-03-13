@@ -6,10 +6,7 @@ import type { ComponentCollection } from '@compodium/core'
 describe('with nuxt ui', async () => {
   await setup({
     rootDir: resolve('./test/fixtures/with-nuxt-ui'),
-    dev: true,
-    env: {
-      COMPODIUM_TEST: 'true'
-    }
+    dev: true
   })
 
   describe('collections api', () => {

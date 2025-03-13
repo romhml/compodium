@@ -5,13 +5,8 @@ import type { ComponentCollection } from '@compodium/core'
 
 describe('custom compodium dir', async () => {
   await setup({
-    // FIXME: TypeError: The URL must be of scheme file
-    // rootDir: fileURLToPath(new URL('./fixtures/basic', import.meta.url)),
     rootDir: resolve('./test/fixtures/custom-compodium-dir'),
-    dev: true,
-    env: {
-      COMPODIUM_TEST: 'true'
-    }
+    dev: true
   })
 
   describe('renderer', () => {
