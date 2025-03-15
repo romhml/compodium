@@ -8,8 +8,9 @@
   "scripts": {
     "dev:prepare": "pnpm -r --color dev:prepare",
     "devtools": "pnpm --filter @compodium/devtools dev --port 4242",
-    "dev": "COMPODIUM_DEVTOOLS_URL=http://localhost:4242 pnpm --color --filter '@compodium/playground-nuxt' dev",
-    "dev:vue": "COMPODIUM_DEVTOOLS_URL=http://localhost:4242 pnpm --color --filter '@compodium/playground-vue' dev",
+    "dev": "COMPODIUM_DEVTOOLS_URL=http://localhost:4242 pnpm --color --parallel -r dev",
+    "dev:nuxt": "COMPODIUM_DEVTOOLS_URL=http://localhost:4242 pnpm --color --parallel --filter '!@compodium/playground-vue' dev",
+    "dev:vue": "COMPODIUM_DEVTOOLS_URL=http://localhost:4242 pnpm --color --parallel --filter '!@compodium/playground-nuxt' dev",
     "lint": "eslint .",
     "typecheck": "pnpm -r --color typecheck",
     "test": "pnpm -r --color test",
