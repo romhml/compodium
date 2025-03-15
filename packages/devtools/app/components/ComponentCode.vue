@@ -16,9 +16,11 @@ const { data: exampleCode } = useAsyncData<string | null>('__compodium-component
 const code = computed(() => {
   if (!props.component) return
 
+  const componentName = props.component?.isExample ? props.component.pascalName.replace(/Example.*/, '') : props.component.pascalName
+
   return props.component?.isExample && exampleCode.value
-    ? updateComponentCode(props.component.pascalName, exampleCode.value, props.props, props.defaultProps)
-    : generateComponentCode(props.component.pascalName, props.props, props.defaultProps)
+    ? updateComponentCode(componentName, exampleCode.value, props.props, props.defaultProps)
+    : generateComponentCode(componentName, props.props, props.defaultProps)
 })
 
 const { $prettier } = useNuxtApp()

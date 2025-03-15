@@ -40,7 +40,7 @@ const { data: collections, refresh: refreshCollections } = useAsyncData(async ()
 })
 
 const component = shallowRef<(Component & Partial<ComponentExample>) | undefined>()
-const props = useState<Record<string, any>>('__component_state', () => ({}))
+const props = useState<Record<string, any>>('__component_state', () => ref({}))
 const defaultProps = shallowRef({})
 const compodiumDefaultProps = shallowRef({})
 
@@ -356,7 +356,7 @@ watch(component, () => propsSearchTerm.value = '')
                     <JsonEditor
                       v-model="props"
                       class="h-full"
-                      @update:model-value="updatePropsDebounced"
+                      @update:model-value="updatePropsDebounced()"
                     />
                   </template>
                 </USlideover>
@@ -385,7 +385,7 @@ watch(component, () => propsSearchTerm.value = '')
                 inline
                 class="p-3 rounded"
                 :disabled="combo.includes(prop.name)"
-                @update:model-value="updatePropsDebounced"
+                @update:model-value="updatePropsDebounced()"
               />
             </div>
           </div>
