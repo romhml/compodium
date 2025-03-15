@@ -7,7 +7,6 @@
   "type": "module",
   "scripts": {
     "dev:prepare": "pnpm -r --color dev:prepare",
-    "devtools": "pnpm --filter @compodium/devtools dev --port 4242",
     "dev": "COMPODIUM_DEVTOOLS_URL=http://localhost:4242 pnpm --color --parallel -r dev",
     "dev:nuxt": "COMPODIUM_DEVTOOLS_URL=http://localhost:4242 pnpm --color --parallel --filter '!@compodium/playground-vue' dev",
     "dev:vue": "COMPODIUM_DEVTOOLS_URL=http://localhost:4242 pnpm --color --parallel --filter '!@compodium/playground-nuxt' dev",
