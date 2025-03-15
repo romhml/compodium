@@ -17,6 +17,8 @@ export function devtoolsPlugin(config: PluginConfig): VitePlugin {
         config.server.proxy ||= {}
         config.server.proxy['/__compodium__/devtools'] = {
           target: process.env.COMPODIUM_DEVTOOLS_URL,
+          ws: true,
+          rewriteWsOrigin: true,
           changeOrigin: true,
           followRedirects: true
         }
