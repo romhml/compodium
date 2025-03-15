@@ -7,7 +7,7 @@ import { version } from '../package.json'
 import { compodium } from '@compodium/core'
 import type { PluginOptions } from '@compodium/core'
 
-export type ModuleOptions = Omit<PluginOptions, 'componentDirs' | 'rootDir'>
+export type ModuleOptions = Omit<PluginOptions, 'componentDirs' | 'rootDir' | '_nuxt'>
 export default defineNuxtModule<ModuleOptions>({
   meta: {
     name: '@compodium/nuxt',
@@ -47,6 +47,7 @@ export default defineNuxtModule<ModuleOptions>({
       addVitePlugin(compodium({
         componentDirs: dirs,
         rootDir: nuxt.options.rootDir,
+        _nuxt: true,
         ...options
       }))
     })

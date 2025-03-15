@@ -7,7 +7,7 @@ import { libraryCollections } from '@compodium/examples'
 import { existsSync } from 'node:fs'
 import { resolve } from 'pathe'
 
-export const compodium = /* #__PURE__ */ (opts: Partial<PluginOptions>) => {
+export const compodium = /* #__PURE__ */ (opts: Partial<Omit<PluginOptions, '_nuxt'>>) => {
   const options = defu(opts, {
     rootDir: process.cwd(),
     dir: './compodium',

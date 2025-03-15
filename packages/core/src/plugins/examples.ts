@@ -32,9 +32,15 @@ export function examplePlugin(config: PluginConfig): VitePlugin {
 
           const exampleCode = await fs.readFile(path)
 
-          const result = exampleCode.toString()
+          let result = exampleCode.toString()
             .replace(/extendCompodiumMeta\s*\([\s\S]*?\)\s*;?/g, '')
             .replace(/<script [^>]*>\s<\/\s*script\s*>/g, '')
+
+          if (config._nuxt) {
+            result = result
+              .replace(/import .* from 'vue'/, '')
+              .replace(/import .* from '@nuxt\/ui'/, '')
+          }
 
           res.setHeader('Content-Type', 'text/plain')
           res.end(result)

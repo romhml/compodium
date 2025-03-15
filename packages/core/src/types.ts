@@ -24,6 +24,9 @@ export type PluginOptions = {
       neutral?: string
     }
   }
+
+  /* Internal */
+  _nuxt?: boolean
 }
 
 export type PluginConfig = PluginOptions & {
