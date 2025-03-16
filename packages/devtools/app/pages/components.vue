@@ -7,6 +7,7 @@ import { getEnumOptions } from '~/utils/enum'
 
 const { hooks } = useCompodiumClient()
 const rendererMounted = ref(false)
+
 hooks.hook('renderer:mounted', () => {
   rendererMounted.value = true
 
@@ -43,6 +44,7 @@ const component = shallowRef<(Component & Partial<ComponentExample>) | undefined
 const props = useState<Record<string, any>>('__component_state', () => ref({}))
 const defaultProps = shallowRef({})
 const compodiumDefaultProps = shallowRef({})
+const touched = ref(false)
 
 function getDefaultProps(meta: CompodiumMeta): Record<string, any> {
   return meta.props?.reduce((acc: Record<string, any>, prop: any) => {
@@ -88,7 +90,10 @@ watch([componentMeta, exampleMeta], async ([newComponentMeta, newExampleMeta]) =
     ...getDefaultProps(newComponentMeta)
   }
 
-  props.value = { ...defaultProps.value, ...compodiumDefaultProps.value }
+  if (!touched.value) {
+    props.value = { ...defaultProps.value, ...compodiumDefaultProps.value }
+  }
+
   await updateComponent()
 })
 
@@ -177,6 +182,7 @@ function onResetState() {
   setTimeout(() => isRotated.value = false, 500)
   isRotated.value = true
   props.value = { ...defaultProps.value, ...compodiumDefaultProps.value }
+  touched.value = false
   updatePropsDebounced()
 }
 
@@ -385,7 +391,10 @@ watch(component, () => propsSearchTerm.value = '')
                 inline
                 class="p-3 rounded"
                 :disabled="combo.includes(prop.name)"
-                @update:model-value="updatePropsDebounced()"
+                @update:model-value="() => {
+                  touched = true
+                  updatePropsDebounced()
+                }"
               />
             </div>
           </div>
