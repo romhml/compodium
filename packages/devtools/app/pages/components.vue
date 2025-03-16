@@ -46,6 +46,8 @@ const defaultProps = shallowRef({})
 const compodiumDefaultProps = shallowRef({})
 const touched = ref(false)
 
+watch(component, () => touched.value = false)
+
 function getDefaultProps(meta: CompodiumMeta): Record<string, any> {
   return meta.props?.reduce((acc: Record<string, any>, prop: any) => {
     const value = evalPropValue(prop)
