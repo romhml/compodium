@@ -33,18 +33,10 @@
     "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
-    "@nuxt/kit": "^3",
-    "@nuxt/schema": "^3",
     "vite": ">=3",
     "vue": ">=3"
   },
   "peerDependenciesMeta": {
-    "@nuxt/kit": {
-      "optional": true
-    },
-    "@nuxt/schema": {
-      "optional": true
-    },
     "vite": {
       "optional": true
     }
@@ -63,9 +55,5 @@
     "unplugin": "^2.2.0",
     "unplugin-ast": "^0.14.3",
     "zod": "^3.24.2"
-  },
-  "devDependencies": {
-    "@nuxt/kit": "^3.15.4",
-    "@nuxt/schema": "^3.15.4"
   }
 }
