@@ -7,7 +7,7 @@
       block
     />
     <template #content>
-      <Placeholder class="h-60" />
+      <div class="placeholder h-60" />
     </template>
   </UCollapsible>
 </template>

@@ -46,21 +46,4 @@
   opacity: 0.75;
   border: 1px dashed var(--ui-border-accented, oklch(0.37 0.013 285.805));
 }
-
-.placeholder-svg {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  stroke-opacity: 0.1;
-  stroke: var(--ui-border-inverted, oklch(0.21 0.006 285.885));
-}
-
-.dark .placeholder-svg {
-  stroke: var(--ui-border-inverted, #fff);
-  stroke-opacity: 0.1;
-}
 </style>

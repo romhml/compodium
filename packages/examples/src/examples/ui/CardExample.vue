@@ -1,11 +1,5 @@
 <template>
   <UCard class="w-96">
-    <template #header>
-      <Placeholder class="h-8" />
-    </template>
-    <Placeholder class="h-32" />
-    <template #footer>
-      <Placeholder class="h-8" />
-    </template>
+    <div class="placeholder h-32" />
   </UCard>
 </template>

@@ -17,7 +17,7 @@
     "dist"
   ],
   "scripts": {
-    "dev:prepare": "unbuild",
+    "dev:prepare": "tailwindcss -i src/assets/base.css -o src/assets/index.css && unbuild",
     "dev": "unbuild --watch",
     "prepack": "unbuild"
   },
@@ -26,5 +26,9 @@
   "dependencies": {
     "pathe": "^2.0.3",
     "scule": "^1.3.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.0.14",
+    "tailwindcss": "^4.0.14"
   }
 }

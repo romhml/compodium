@@ -6,7 +6,7 @@
       variant="outline"
     />
     <template #content>
-      <Placeholder class="aspect-video w-60" />
+      <div class="placeholder aspect-video w-60" />
     </template>
   </UPopover>
 </template>

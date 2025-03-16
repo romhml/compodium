@@ -21,8 +21,8 @@ extendCompodiumMeta({
 
 <template>
   <UContextMenu>
-    <Placeholder class="aspect-video w-72">
+    <div class="placeholder aspect-video w-72">
       Right click here
-    </Placeholder>
+    </div>
   </UContextMenu>
 </template>
