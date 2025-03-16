@@ -13,26 +13,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cpattern id='a' width='10' height='10' patternTransform='rotate(135)' patternUnits='userSpaceOnUse'%3E%3Crect width='100%25' height='100%25' fill='transparent' /%3E%3Cpath fill='none' stroke='var(--ui-border-accenter, oklch(0.871 0.006 286.286))' stroke-width='0.5' d='M0 0h10zm0 10h10zm0 10h10zm0 10h10z'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23a)'/%3E%3C/svg%3E%0A");
 }
 
 .dark .placeholder {
   opacity: 0.75;
   border: 1px dashed var(--ui-border-accented, oklch(0.37 0.013 285.805));
-}
-
-.placeholder-svg {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  stroke-opacity: 0.1;
-  stroke: var(--ui-border-inverted, oklch(0.21 0.006 285.885));
-}
-
-.dark .placeholder-svg {
-  stroke: var(--ui-border-inverted, #fff);
-  stroke-opacity: 0.1;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cpattern id='a' width='10' height='10' patternTransform='rotate(135)' patternUnits='userSpaceOnUse'%3E%3Crect width='100%25' height='100%25' fill='transparent' /%3E%3Cpath fill='none' stroke='var(--ui-border-accented, oklch(0.37 0.013 285.805))' stroke-width='0.5' d='M0 0h10zm0 10h10zm0 10h10zm0 10h10z'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23a)'/%3E%3C/svg%3E%0A");
 }
