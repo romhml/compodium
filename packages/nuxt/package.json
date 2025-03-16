@@ -27,8 +27,10 @@
     "typecheck": "vue-tsc --noEmit",
     "test": "vitest run ."
   },
+  "peerDependencies": {
+    "@compodium/core": "workspace:*"
+  },
   "dependencies": {
-    "@compodium/core": "workspace:*",
     "@nuxt/devtools-kit": "^2.2.1",
     "@nuxt/kit": "^3.15.4",
     "consola": "^3.4.0",
