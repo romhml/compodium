@@ -26,8 +26,8 @@
     "vue": "latest"
   },
   "devDependencies": {
-    "@compodium/core": "workspace:*",
-    "@compodium/meta": "workspace:*",
+    "@compodium/core": "workspace:^",
+    "@compodium/meta": "workspace:^",
     "@iconify-json/lucide": "^1.2.29",
     "@iconify/types": "^2.0.0"
   }

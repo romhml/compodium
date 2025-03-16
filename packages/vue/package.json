@@ -34,8 +34,8 @@
   },
   "peerDependencies": {
     "vite": ">=3",
-    "@compodium/core": "workspace:*",
-    "@compodium/examples": "workspace:*",
+    "@compodium/core": "workspace:^",
+    "@compodium/examples": "workspace:^",
     "@vue/devtools-kit": "^7.7.2"
   },
   "dependencies": {

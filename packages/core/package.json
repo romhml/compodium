@@ -42,8 +42,8 @@
     }
   },
   "dependencies": {
-    "@compodium/examples": "workspace:*",
-    "@compodium/meta": "workspace:*",
+    "@compodium/examples": "workspace:^",
+    "@compodium/meta": "workspace:^",
     "@nuxt/schema": "^3.15.4",
     "@vueuse/core": "^12.8.2",
     "chokidar": "^4.0.3",

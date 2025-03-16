@@ -28,7 +28,7 @@
     "test": "vitest run ."
   },
   "peerDependencies": {
-    "@compodium/core": "workspace:*"
+    "@compodium/core": "workspace:^"
   },
   "dependencies": {
     "@nuxt/devtools-kit": "^2.2.1",

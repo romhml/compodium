@@ -46,10 +46,10 @@ importers:
   packages/core:
     dependencies:
       '@compodium/examples':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../examples
       '@compodium/meta':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../meta
       '@nuxt/schema':
         specifier: ^3.15.4
@@ -140,10 +140,10 @@ importers:
         version: 3.5.13(typescript@5.6.3)
     devDependencies:
       '@compodium/core':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../core
       '@compodium/meta':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../meta
       '@iconify-json/lucide':
         specifier: ^1.2.29
@@ -192,7 +192,7 @@ importers:
   packages/nuxt:
     dependencies:
       '@compodium/core':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../core
       '@nuxt/devtools-kit':
         specifier: ^2.2.1
@@ -223,10 +223,10 @@ importers:
   packages/vue:
     dependencies:
       '@compodium/core':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../core
       '@compodium/examples':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../examples
       '@vue/devtools-kit':
         specifier: ^7.7.2
@@ -259,7 +259,7 @@ importers:
   playgrounds/nuxt:
     dependencies:
       '@compodium/nuxt':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/nuxt
       '@nuxt/ui':
         specifier: 3.0.0-beta.3
@@ -271,7 +271,7 @@ importers:
   playgrounds/vue:
     dependencies:
       '@compodium/vue':
-        specifier: workspace:*
+        specifier: workspace:^
         version: link:../../packages/vue
       '@nuxt/ui':
         specifier: 3.0.0-beta.3
