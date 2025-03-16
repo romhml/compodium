@@ -12,7 +12,7 @@ export function vueDevtoolsPlugin(_options: PluginOptions): VitePlugin {
     load(id) {
       if (id === '\0virtual:compodium:devtools') {
         return `
-          import { addCustomTab } from '@vue/devtools-kit'
+          import { addCustomTab } from '${import.meta.resolve('@vue/devtools-kit')}'
           addCustomTab({
             name: 'compodium',
             title: 'Compodium',

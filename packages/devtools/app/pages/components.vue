@@ -31,7 +31,7 @@ hooks.hook('renderer:mounted', () => {
 const { data: collections, refresh: refreshCollections } = useAsyncData(async () => {
   const collections = await $fetch<ComponentCollection[]>('/api/collections', { baseURL: '/__compodium__' })
   if (!component.value) {
-    const fallbackCollection = collections?.[0]
+    const fallbackCollection = collections?.find(c => c.components?.length > 0)
     component.value = fallbackCollection?.components?.[0]
     if (!component.value) {
       await navigateTo(`/welcome`)

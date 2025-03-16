@@ -48,7 +48,7 @@ export function rendererPlugin(options: PluginOptions): VitePlugin {
           '.mount("#compodium")'
         ).replace(/'.\//g, '\'@/')
 
-        return `import CompodiumRoot from '@compodium/core/runtime/root.vue';\n${mainContent}`
+        return `import CompodiumRoot from '${import.meta.resolve('@compodium/core/runtime/root.vue')}';\n${mainContent}`
       }
     }
   }

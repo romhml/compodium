@@ -33,12 +33,12 @@
     "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
-    "vite": ">=3",
-    "@compodium/core": "workspace:^",
-    "@compodium/examples": "workspace:^",
-    "@vue/devtools-kit": "^7.7.2"
+    "vite": ">=3"
   },
   "dependencies": {
+    "@compodium/core": "workspace:^",
+    "@compodium/examples": "workspace:^",
+    "@vue/devtools-kit": "^7.7.2",
     "defu": "^6.1.4",
     "pathe": "^2.0.3",
     "unplugin": "^2.2.0"
