@@ -18,8 +18,7 @@
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "files": [
-    "dist/**/*.cjs",
-    "dist/**/*.d.ts"
+    "dist/"
   ],
   "scripts": {
     "dev:prepare": "unbuild",
