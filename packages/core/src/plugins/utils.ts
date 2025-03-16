@@ -1,7 +1,6 @@
 import { basename, dirname, extname, join, relative } from 'pathe'
 import { glob } from 'tinyglobby'
 import { kebabCase, pascalCase, splitByCase } from 'scule'
-import { isIgnored } from '@nuxt/kit'
 import { withTrailingSlash } from 'ufo'
 import type { Component, ComponentsDir } from '../types'
 import { realpath } from 'node:fs/promises'
@@ -66,7 +65,7 @@ export async function scanComponents(dirs: ComponentsDir[], srcDir: string): Pro
     for (const _file of files) {
       const filePath = join(dir.path, _file)
 
-      if (scannedPaths.find(d => filePath.startsWith(withTrailingSlash(d))) || isIgnored(filePath)) {
+      if (scannedPaths.find(d => filePath.startsWith(withTrailingSlash(d)))) {
         continue
       }
 
