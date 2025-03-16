@@ -231,6 +231,9 @@ importers:
       '@vue/devtools-kit':
         specifier: ^7.7.2
         version: 7.7.2
+      consola:
+        specifier: ^3.4.0
+        version: 3.4.0
       defu:
         specifier: ^6.1.4
         version: 6.1.4

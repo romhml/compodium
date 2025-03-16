@@ -60,15 +60,16 @@ export default defineNuxtModule<ModuleOptions>({
     })
 
     nuxt.hook('listen', (_, listener) => {
-      const url = joinURL(listener.url, '/__compodium__/devtools')
+      const compodiumUrl = joinURL(listener.url, '/__compodium__/devtools')
       console.log('')
       logger.log([
-        colors.magenta(`  ➜ Compodium:`),
+        colors.magenta(`  ➜ `),
+        colors.bold(colors.magenta(`Compodium:`)),
         colors.dim(` available in`),
         colors.yellow(` DevTools`),
-        colors.gray(` (v${version})`),
-        '\n',
-        colors.gray(`               ${url}`),
+        colors.dim(` (v${version})`),
+        colors.gray(`\n               or `),
+        colors.underline(colors.dim(`${compodiumUrl}`)),
         '\n'
       ].join(''))
     })

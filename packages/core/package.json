@@ -33,9 +33,9 @@
     "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
+    "@nuxt/schema": ">=3",
     "vite": ">=3",
-    "vue": ">=3",
-    "@nuxt/schema": ">=3"
+    "vue": ">=3"
   },
   "peerDependenciesMeta": {
     "vite": {
