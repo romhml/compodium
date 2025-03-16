@@ -34,13 +34,16 @@ export function examplePlugin(config: PluginConfig): VitePlugin {
 
           let result = exampleCode.toString()
             .replace(/extendCompodiumMeta\s*\([\s\S]*?\)\s*;?/g, '')
-            .replace(/<script [^>]*>\s<\/\s*script\s*>/g, '')
+            .replace(/import .* from '@nuxt\/ui\/runtime\/components\/.*'/g, '')
+            .replace(/import .* from '@nuxt\/ui\/runtime\/composables\/.*'/g, '')
 
           if (config._nuxt) {
             result = result
               .replace(/import .* from 'vue'/, '')
               .replace(/import .* from '@nuxt\/ui'/, '')
           }
+
+          result = result.replace(/<script[^>]*>\s*<\/script>/g, '')
 
           res.setHeader('Content-Type', 'text/plain')
           res.end(result)

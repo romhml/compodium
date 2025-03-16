@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import USelect from '@nuxt/ui/runtime/components/Select.vue'
+
 extendCompodiumMeta({
   defaultProps: {
     defaultValue: 'Option 1',

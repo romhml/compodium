@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import UTable from '@nuxt/ui/runtime/components/Table.vue'
 import { ref } from 'vue'
 
 const data = ref([

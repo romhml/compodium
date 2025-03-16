@@ -1,3 +1,7 @@
+<script setup lang="ts">
+import UCarousel from '@nuxt/ui/runtime/components/Carousel.vue'
+</script>
+
 <template>
   <UCarousel
     v-slot="{ item }"

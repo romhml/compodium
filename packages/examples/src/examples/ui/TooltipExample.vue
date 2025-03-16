@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import UApp from '@nuxt/ui/runtime/components/App.vue'
+import UTooltip from '@nuxt/ui/runtime/components/Tooltip.vue'
+import UButton from '@nuxt/ui/runtime/components/Button.vue'
+
 extendCompodiumMeta({
   defaultProps: {
     text: 'Tooltip'

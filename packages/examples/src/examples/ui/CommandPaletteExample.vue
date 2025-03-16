@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import UCommandPalette from '@nuxt/ui/runtime/components/CommandPalette.vue'
+
 extendCompodiumMeta({
   defaultProps: {
     groups: [{
