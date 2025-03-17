@@ -45,7 +45,7 @@
   "dependencies": {
     "@compodium/examples": "workspace:^",
     "@compodium/meta": "workspace:^",
-    "@vueuse/core": "^12.8.2",
+    "@vueuse/core": "^13.0.0",
     "chokidar": "^4.0.3",
     "hookable": "^5.5.3",
     "pathe": "^2.0.3",
