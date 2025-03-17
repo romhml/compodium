@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import UTabs from '@nuxt/ui/runtime/components/Tabs.vue'
-
 extendCompodiumMeta({
   defaultProps: {
     items: [{

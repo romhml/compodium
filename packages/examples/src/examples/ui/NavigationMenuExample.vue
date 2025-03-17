@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import UNavigationMenu from '@nuxt/ui/runtime/components/NavigationMenu.vue'
-
 extendCompodiumMeta({
   defaultProps: {
     items: [

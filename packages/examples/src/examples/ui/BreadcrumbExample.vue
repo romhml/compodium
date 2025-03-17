@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import UBreadcrumb from '@nuxt/ui/runtime/components/Breadcrumb.vue'
-
 extendCompodiumMeta({
   defaultProps: {
     // Props

@@ -1,8 +1,3 @@
-<script setup lang="ts">
-import USlideover from '@nuxt/ui/runtime/components/Slideover.vue'
-import UButton from '@nuxt/ui/runtime/components/Button.vue'
-</script>
-
 <template>
   <USlideover>
     <UButton

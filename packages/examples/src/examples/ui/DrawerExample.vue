@@ -1,8 +1,3 @@
-<script setup lang="ts">
-import UDrawer from '@nuxt/ui/runtime/components/Drawer.vue'
-import UButton from '@nuxt/ui/runtime/components/Button.vue'
-</script>
-
 <template>
   <UDrawer>
     <UButton

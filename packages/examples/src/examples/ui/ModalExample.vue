@@ -1,8 +1,3 @@
-<script setup lang="ts">
-import UModal from '@nuxt/ui/runtime/components/Modal.vue'
-import UButton from '@nuxt/ui/runtime/components/Button.vue'
-</script>
-
 <template>
   <UModal>
     <UButton

@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import UStepper from '@nuxt/ui/runtime/components/Stepper.vue'
-import UButton from '@nuxt/ui/runtime/components/Button.vue'
 import { ref } from 'vue'
 
 const items = [

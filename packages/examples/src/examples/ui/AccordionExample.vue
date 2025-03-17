@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import UAccordion from '@nuxt/ui/runtime/components/Accordion.vue'
-
 extendCompodiumMeta({
   defaultProps: {
     items: [{

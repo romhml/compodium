@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import UContextMenu from '@nuxt/ui/runtime/components/ContextMenu.vue'
-
 extendCompodiumMeta({
   defaultProps: {
     items: [

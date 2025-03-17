@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import UTree from '@nuxt/ui/runtime/components/Tree.vue'
-
 extendCompodiumMeta({
   defaultProps: {
     items: [

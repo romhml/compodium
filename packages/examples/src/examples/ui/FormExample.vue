@@ -1,8 +1,4 @@
 <script setup lang="ts">
-import UForm from '@nuxt/ui/runtime/components/Form.vue'
-import UFormField from '@nuxt/ui/runtime/components/FormField.vue'
-import UInput from '@nuxt/ui/runtime/components/Input.vue'
-
 import { reactive } from 'vue'
 
 const state = reactive({ email: undefined, password: undefined })

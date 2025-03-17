@@ -1,8 +1,3 @@
-<script setup lang="ts">
-import UCollapsible from '@nuxt/ui/runtime/components/Collapsible.vue'
-import UButton from '@nuxt/ui/runtime/components/Button.vue'
-</script>
-
 <template>
   <UCollapsible class="w-48">
     <UButton
