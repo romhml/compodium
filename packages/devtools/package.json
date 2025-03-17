@@ -13,6 +13,7 @@
     "@nuxt/ui": "3.0.0",
     "@vueuse/core": "^13.0.0",
     "@vueuse/integrations": "^13.0.0",
+    "deep-eql": "^5.0.2",
     "defu": "^6.1.4",
     "fuse.js": "^7.1.0",
     "hookable": "^5.5.3",
@@ -29,6 +30,7 @@
     "@compodium/core": "workspace:^",
     "@compodium/meta": "workspace:^",
     "@iconify-json/lucide": "^1.2.29",
-    "@iconify/types": "^2.0.0"
+    "@iconify/types": "^2.0.0",
+    "@types/deep-eql": "^4.0.2"
   }
 }

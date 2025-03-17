@@ -1,5 +1,6 @@
 import { camelCase, kebabCase, pascalCase } from 'scule'
 import { escapeString } from 'knitwork'
+import deepEqual from 'deep-eql'
 
 // TODO: Might want to use vue/language-tools to refactor this and get rid of horrible RegExp.
 export function genPropValue(value: any): string {
@@ -33,6 +34,7 @@ export function generatePropsTemplate(props?: Record<string, any>, defaultProps?
     if (value === false && defaultValue === true) return `:${kebabCase(key)}="false"`
     if (!value) return
     if (typeof value === 'string') return `${kebabCase(key)}=${genPropValue(value)}`
+    if (deepEqual(defaultValue, value)) return
     return `:${kebabCase(key)}="${genPropValue(value)}"`
   }).filter(Boolean).join('\n')
 }
