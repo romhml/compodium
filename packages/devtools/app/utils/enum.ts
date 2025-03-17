@@ -1,4 +1,4 @@
-import type { StringEnumInputSchema } from 'compodium'
+import type { StringEnumInputSchema } from '@compodium/core'
 
 const sizes = ['xs', 'sm', 'md', 'lg', 'xl']
 

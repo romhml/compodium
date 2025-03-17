@@ -8,21 +8,28 @@
   "license": "MIT",
   "type": "commonjs",
   "exports": {
-    ".": "./dist/index.cjs"
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    },
+    "./*": "./dist/*"
   },
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
   "files": [
-    "dist/**/*.cjs",
-    "dist/**/*.d.ts"
+    "dist/"
   ],
   "scripts": {
-    "dev:prepare": "tsc -b",
+    "dev:prepare": "unbuild",
     "typecheck": "tsc --noEmit",
-    "prepack": "tsc -b"
+    "prepack": "unbuild",
+    "dev": "unbuild --watch"
   },
   "dependencies": {
-    "@volar/language-core": "^2.4.12",
     "@volar/typescript": "^2.4.12",
     "@vue/language-core": "2.2.8",
+    "pathe": "^2.0.3",
     "vue-component-meta": "^2.2.8",
     "vue-component-type-helpers": "^2.2.8"
   },

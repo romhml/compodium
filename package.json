@@ -6,23 +6,32 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "dev:prepare": "pnpm -r dev:prepare",
-    "dev": "COMPODIUM_LOCAL=true nuxi dev playground",
+    "dev:prepare": "pnpm -r --color dev:prepare",
+    "dev": "COMPODIUM_DEVTOOLS_URL=http://localhost:4242 pnpm --color --parallel -r dev",
+    "dev:nuxt": "COMPODIUM_DEVTOOLS_URL=http://localhost:4242 pnpm --color --parallel --filter '!@compodium/playground-vue' dev",
+    "dev:vue": "COMPODIUM_DEVTOOLS_URL=http://localhost:4242 pnpm --color --parallel --filter '!@compodium/playground-nuxt' dev",
     "lint": "eslint .",
-    "typecheck": "pnpm -r typecheck",
-    "test": "pnpm -r test",
+    "typecheck": "pnpm -r --color typecheck",
+    "test": "pnpm -r --color test",
     "bump": "jiti ./scripts/bump.ts"
   },
   "devDependencies": {
     "@nuxt/eslint-config": "^1.2.0",
+    "@nuxt/test-utils": "^3.17.2",
+    "@types/node": "^22.13.1",
     "changelogen": "^0.6.1",
     "eslint": "^9.22.0",
     "typescript": "5.6.3",
+    "unbuild": "^3.5.0",
+    "vite": "^6.1.0",
     "vitest": "^3.0.8"
   },
   "resolutions": {
+    "rollup": "4.35.0",
     "typescript": "5.6.3",
-    "vue-tsc": "2.2.0"
+    "vue-tsc": "2.2.0",
+    "nuxt": "3.15.4",
+    "@nuxt/ui": "3.0.0-beta.3"
   },
   "packageManager": "pnpm@10.6.2"
 }

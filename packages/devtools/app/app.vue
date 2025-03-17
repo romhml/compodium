@@ -13,7 +13,9 @@ useAsyncData('__compodium-fetch-colors', async () => {
 </script>
 
 <template>
-  <UApp class="flex justify-center items-center h-screen w-full relative font-sans">
-    <NuxtPage />
+  <UApp>
+    <div class="relative flex justify-center items-center h-screen w-full font-sans">
+      <NuxtPage />
+    </div>
   </UApp>
 </template>

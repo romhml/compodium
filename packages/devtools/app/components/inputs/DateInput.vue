@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { DateInputSchema } from 'compodium'
+import type { DateInputSchema } from '@compodium/core'
 import { CalendarDate, DateFormatter, getLocalTimeZone } from '@internationalized/date'
 
 defineProps<{ schema: DateInputSchema }>()

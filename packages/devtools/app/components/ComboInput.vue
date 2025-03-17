@@ -32,7 +32,7 @@ function updateValue(item: ComboItem) {
 <template>
   <UPopover :ui="{ content: 'flex flex-wrap justify-center p-2 max-w-64' }">
     <UButton
-      variant="ghost"
+      variant="link"
       color="neutral"
       class="relative flex gap-2"
     >
@@ -45,7 +45,7 @@ function updateValue(item: ComboItem) {
         </p>
         <p
           v-else
-          class="text-(--ui-text-dimmed)"
+          class="opacity-80"
         >
           Combo
         </p>
@@ -65,7 +65,7 @@ function updateValue(item: ComboItem) {
         </p>
         <p
           v-else
-          class="text-(--ui-text-dimmed)"
+          class="opacity-80"
         >
           Combo
         </p>

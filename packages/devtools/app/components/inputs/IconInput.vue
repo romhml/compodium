@@ -69,7 +69,7 @@ const visibleIcons = computed(() => {
       />
     </UButtonGroup>
     <template #content>
-      <div class="w-md p-4">
+      <div class="w-md p-4 h-[312px]">
         <div class="flex gap-2 mb-4">
           <USelectMenu
             v-model="selectedCollection"
@@ -85,11 +85,8 @@ const visibleIcons = computed(() => {
             @update:model-value="fetchIconsDebounced()"
           />
         </div>
-        <div
-          v-if="icons?.length"
-          class="flex flex-col gap-2 justify-center"
-        >
-          <div class="flex flex-wrap gap-2 h-[196px]">
+        <div v-if="icons?.length">
+          <div class="grid grid-cols-10 grid-rows-4 h-[196px]">
             <UButton
               v-for="icon in visibleIcons"
               :key="icon"
@@ -103,7 +100,7 @@ const visibleIcons = computed(() => {
           </div>
           <UPagination
             v-model:page="page"
-            class="mx-auto"
+            class="flex justify-center mt-2"
             variant="link"
             color="neutral"
             active-color="neutral"
@@ -115,13 +112,13 @@ const visibleIcons = computed(() => {
         </div>
         <div
           v-else
-          class="flex flex-col text-center justify-center w-full text-center h-[196px] text-(--ui-text-muted)"
+          class="flex flex-col text-center justify-center w-full h-[196px] text-(--ui-text-muted)"
         >
           <UIcon
             name="lucide:x"
             class="mx-auto"
           />
-          <p>
+          <p class="text-sm">
             No results
           </p>
         </div>

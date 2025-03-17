@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { BooleanInputSchema } from 'compodium'
+import type { BooleanInputSchema } from '@compodium/core'
 
 defineProps<{ schema: BooleanInputSchema }>()
 </script>

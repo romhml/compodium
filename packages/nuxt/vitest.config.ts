@@ -9,7 +9,7 @@ export default defineVitestConfig({
     exclude: [...defaultExclude, './test/vue/**.spec.ts'],
     environment: 'nuxt',
     env: {
-      COMPODIUM_TEST: 'true'
+      COMPODIUM_DEVTOOLS_URL: 'http://localhost:4242'
     }
   }
 })

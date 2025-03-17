@@ -1,0 +1,47 @@
+{
+  "name": "@compodium/vue",
+  "type": "module",
+  "version": "0.1.0-beta.5",
+  "description": "A plug and play component playground for Vue and Nuxt.",
+  "license": "MIT",
+  "repository": {
+    "url": "romhml/compodium",
+    "directory": "packages/vue"
+  },
+  "keywords": [
+    "nuxt",
+    "components",
+    "documentation"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    },
+    "./*": "./dist/*"
+  },
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev:prepare": "unbuild",
+    "dev": "unbuild --watch",
+    "prepack": "unbuild",
+    "typecheck": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "vite": ">=3"
+  },
+  "dependencies": {
+    "@compodium/core": "workspace:^",
+    "@compodium/examples": "workspace:^",
+    "@vue/devtools-kit": "^7.7.2",
+    "consola": "^3.4.0",
+    "defu": "^6.1.4",
+    "pathe": "^2.0.3",
+    "unplugin": "^2.2.0"
+  }
+}

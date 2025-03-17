@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { StringEnumInputSchema } from 'compodium'
+import type { StringEnumInputSchema } from '@compodium/core'
 
 defineProps<{ schema: StringEnumInputSchema }>()
 </script>

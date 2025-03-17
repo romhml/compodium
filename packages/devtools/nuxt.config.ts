@@ -26,7 +26,7 @@ export default defineNuxtConfig({
       }
     },
     output: {
-      publicDir: resolve(__dirname, '../nuxt/dist/client/devtools')
+      publicDir: resolve(__dirname, '../core/dist/client/devtools')
     }
   },
   vite: {

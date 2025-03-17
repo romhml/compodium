@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ObjectInputSchema } from 'compodium'
+import type { ObjectInputSchema } from '@compodium/core'
 import type { PropertyMeta } from '@compodium/meta'
 import { useFuse } from '@vueuse/integrations/useFuse.mjs'
 

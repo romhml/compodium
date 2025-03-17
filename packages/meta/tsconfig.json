@@ -11,9 +11,6 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "moduleResolution": "nodenext",
-    "paths": {
-      "#module/*": ["../src/*"]
-    }
   },
-  "include": ["lib/**/*"]
+  "include": ["src/**/*"]
 }
