@@ -5,7 +5,7 @@ const navigation = inject<Ref<ContentNavigationItem[]>>('navigation')
 </script>
 
 <template>
-  <UContainer class="py-20">
+  <UContainer class="pb-20">
     <UPage>
       <template #left>
         <UPageAside>

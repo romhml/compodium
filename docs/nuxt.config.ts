@@ -5,7 +5,8 @@ export default defineNuxtConfig({
     '@nuxt/ui-pro',
     '@nuxt/content',
     'nuxt-og-image',
-    'nuxt-llms'
+    'nuxt-llms',
+    '@nuxthub/core'
   ],
 
   devtools: {
@@ -39,21 +40,12 @@ export default defineNuxtConfig({
     }
   },
 
-  eslint: {
-    config: {
-      stylistic: {
-        commaDangle: 'never',
-        braceStyle: '1tbs'
-      }
-    }
-  },
-
   icon: {
     provider: 'iconify'
   },
 
   llms: {
-    domain: 'https://docs-template.nuxt.dev/',
+    domain: 'https://compodium.dev/',
     title: 'Compodium',
     description: 'A plug and play component playground for Vue and Nuxt.',
     sections: [

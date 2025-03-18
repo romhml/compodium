@@ -26,8 +26,8 @@ const features = [
     icon: 'i-lucide-zap'
   },
   {
-    title: 'Seamless DevTools Integration',
-    description: 'Integrates seamlessly with Vue and Nuxt devtools for a cohesive development experience.',
+    title: 'DevTools Integration',
+    description: 'Integrates with Vue and Nuxt devtools for a cohesive development experience.',
     icon: 'i-lucide-terminal'
   },
   {
@@ -52,7 +52,7 @@ const features = [
   <div class="py-20">
     <UPageSection
       title="Build Vue components faster."
-      description="Compodium streamlines Vue and Nuxt component development with direct code analysis, seamless devtools integration, and effortless setup."
+      description="Compodium streamlines Vue and Nuxt component development with direct code analysis, devtools integration, and effortless setup."
       orientation="vertical"
       :links="[
         { label: 'Get started', to: '/getting-started', trailingIcon: 'i-lucide-arrow-right', size: 'lg', color: 'neutral' },
@@ -64,6 +64,8 @@ const features = [
       :features="features"
       class="pb-20"
     />
-    <HeroBg class="absolute -z-1 inset-x-0 inset-y-20 md:inset-y-0" />
+    <ClientOnly>
+      <HeroBg class="absolute -z-1 inset-x-0 inset-y-20 md:inset-y-0" />
+    </ClientOnly>
   </div>
 </template>

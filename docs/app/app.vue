@@ -32,7 +32,7 @@ provide('navigation', navigation)
     <NuxtLoadingIndicator />
 
     <UMain class="min-h-screen relative">
-      <AppHeader class="absolute top-0 inset-x-0" />
+      <AppHeader class="sticky top-0 inset-x-0" />
 
       <NuxtLayout>
         <NuxtPage />

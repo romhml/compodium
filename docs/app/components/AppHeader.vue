@@ -10,7 +10,7 @@ const { header } = useAppConfig()
   <UHeader
     :ui="{ center: 'flex-1' }"
     :to="header?.to || '/'"
-    class="bg-transparent backdrop-blur-xs"
+    class="bg-transparent"
   >
     <UContentSearchButton
       v-if="header?.search"
