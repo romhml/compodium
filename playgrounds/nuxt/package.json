@@ -10,8 +10,8 @@
     "generate": "nuxi generate"
   },
   "dependencies": {
-    "@nuxt/ui": "^3.0.0",
-    "nuxt": "^3.15.4",
+    "@nuxt/ui": "catalog:",
+    "nuxt": "catalog:",
     "@compodium/nuxt": "workspace:^"
   }
 }

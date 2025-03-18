@@ -13,7 +13,7 @@
   "dependencies": {
     "@compodium/vue": "workspace:^",
     "@nuxt/ui": "3.0.0-beta.3",
-    "vue": "^3.5.13"
+    "vue": "catalog:"
   },
   "devDependencies": {
     "@tsconfig/node22": "^22.0.0",

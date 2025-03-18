@@ -1,3 +1,10 @@
 packages:
   - "./packages/*"
   - "./playgrounds/*"
+
+catalog:
+  nuxt: "^3.16.0"
+  "@nuxt/kit": "^3.16.0"
+  "@nuxt/schema": "^3.16.0"
+  "@nuxt/ui": "^3.0.0"
+  vue: latest

@@ -8,6 +8,7 @@ import { compodium } from '@compodium/core'
 import type { PluginOptions } from '@compodium/core'
 
 export type ModuleOptions = Omit<PluginOptions, 'componentDirs' | 'rootDir' | '_nuxt'>
+
 export default defineNuxtModule<ModuleOptions>({
   meta: {
     name: '@compodium/nuxt',
