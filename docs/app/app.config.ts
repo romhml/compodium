@@ -28,7 +28,7 @@ export default defineAppConfig({
     colorMode: true,
     links: [{
       'icon': 'i-simple-icons-github',
-      'to': 'https://github.com/nuxt-ui-pro/docs',
+      'to': 'https://github.com/romhml/compodium',
       'target': '_blank',
       'aria-label': 'GitHub'
     }]

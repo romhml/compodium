@@ -1,17 +1,17 @@
 <template>
   <div class="pointer-events-none overflow-hidden">
     <div class="w-full h-full">
-    <svg :viewBox="`0 0 ${width} ${height}`" >
-      <circle
-        v-for="dot in dots"
-        :key="dot.id"
-        class="dot"
-        :cx="dot.x"
-        :cy="dot.y"
-        :r="dot.radius"
-        :style="{ animationDelay: `${dot.delay}s` }"
-      />
-    </svg>
+      <svg :viewBox="`0 0 ${width} ${height}`">
+        <circle
+          v-for="dot in dots"
+          :key="dot.id"
+          class="dot"
+          :cx="dot.x"
+          :cy="dot.y"
+          :r="dot.radius"
+          :style="{ animationDelay: `${dot.delay}s` }"
+        />
+      </svg>
     </div>
   </div>
 </template>

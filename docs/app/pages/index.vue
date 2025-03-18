@@ -44,7 +44,7 @@ const features = [
     title: 'UI Library Integrations',
     description: 'Integrates with popular UI libraries, showcasing examples for locally installed components.',
     icon: 'i-lucide-plug'
-  },
+  }
 ]
 </script>
 
@@ -60,7 +60,10 @@ const features = [
       ]"
       :ui="{ container: 'relative', description: 'max-w-5xl mx-auto' }"
     />
-    <UPageSection :features="features" class="pb-20" />
-    <HeroBg class="absolute -z-1 inset-x-0 inset-y-20 md:inset-y-0"/>
+    <UPageSection
+      :features="features"
+      class="pb-20"
+    />
+    <HeroBg class="absolute -z-1 inset-x-0 inset-y-20 md:inset-y-0" />
   </div>
 </template>
