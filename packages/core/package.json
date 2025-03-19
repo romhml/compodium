@@ -34,8 +34,8 @@
   },
   "peerDependencies": {
     "@nuxt/schema": ">=3",
-    "vite": ">=3",
-    "vue": ">=3"
+    "vite": ">=3.2.11",
+    "vue": ">=3.5.13"
   },
   "peerDependenciesMeta": {
     "vite": {
@@ -53,8 +53,8 @@
     "sirv": "^3.0.1",
     "tinyglobby": "^0.2.12",
     "ufo": "^1.5.4",
-    "unplugin": "^2.2.0",
-    "unplugin-ast": "^0.14.3",
+    "unplugin": "^2.2.1",
+    "unplugin-ast": "^0.14.4",
     "zod": "^3.24.2"
   }
 }
