@@ -3,7 +3,10 @@ const { footer } = useAppConfig()
 </script>
 
 <template>
-  <UFooter class="backdrop-blur-xs">
+  <UFooter
+    class="backdrop-blur-xs"
+    :ui="{ container: 'max-w-screen-xl', right: 'justify-end', left: 'justify-start' }"
+  >
     <template #left>
       {{ footer.credits }}
     </template>

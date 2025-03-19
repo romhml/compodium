@@ -5,8 +5,6 @@ import { useColorMode } from '@vueuse/core'
 import { joinURL } from 'ufo'
 import type { Hookable } from 'hookable'
 
-import '@compodium/examples/assets/index.css'
-
 // @ts-expect-error virtual module
 import PreviewComponent from 'virtual:compodium:preview'
 
