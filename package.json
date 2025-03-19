@@ -8,8 +8,9 @@
   "scripts": {
     "dev:prepare": "pnpm -r --color dev:prepare",
     "dev": "COMPODIUM_DEVTOOLS_URL=http://localhost:4242 pnpm --color --parallel -r dev",
-    "dev:nuxt": "COMPODIUM_DEVTOOLS_URL=http://localhost:4242 pnpm --color --parallel --filter '!@compodium/playground-vue' dev",
-    "dev:vue": "COMPODIUM_DEVTOOLS_URL=http://localhost:4242 pnpm --color --parallel --filter '!@compodium/playground-nuxt' dev",
+    "dev:nuxt": "COMPODIUM_DEVTOOLS_URL=http://localhost:4242 pnpm --color --parallel --filter devtools --filter playground-nuxt dev",
+    "dev:vue": "COMPODIUM_DEVTOOLS_URL=http://localhost:4242 pnpm --color --parallel --filter devtools --filter playground-vue dev",
+    "dev:docs": "COMPODIUM_DEVTOOLS_URL=http://localhost:4242 pnpm --color --parallel --filter devtools --filter docs dev",
     "lint": "eslint .",
     "typecheck": "pnpm -r --color typecheck",
     "test": "pnpm -r --color test",
@@ -28,6 +29,12 @@
     "wrangler": "^4.1.0"
   },
   "resolutions": {
+    "@compodium/core": "workspace:^",
+    "@compodium/examples": "workspace:^",
+    "@compodium/meta": "workspace:^",
+    "@compodium/nuxt": "workspace:^",
+    "@compodium/vue": "workspace:^",
+    "typescript": "5.6.3",
     "typescript": "5.6.3",
     "vue-tsc": "2.2.0"
   },

@@ -23,6 +23,11 @@ catalogs:
       version: 3.5.13
 
 overrides:
+  '@compodium/core': workspace:^
+  '@compodium/examples': workspace:^
+  '@compodium/meta': workspace:^
+  '@compodium/nuxt': workspace:^
+  '@compodium/vue': workspace:^
   typescript: 5.6.3
   vue-tsc: 2.2.0
 
@@ -80,7 +85,7 @@ importers:
         version: 1.9.0(db0@0.3.1(better-sqlite3@11.9.1))(ioredis@5.6.0)(magicast@0.3.5)
       '@nuxt/ui-pro':
         specifier: 3.0.0
-        version: 3.0.0(@babel/parser@7.26.9)(change-case@5.4.4)(db0@0.3.1(better-sqlite3@11.9.1))(embla-carousel@8.5.2)(ioredis@5.6.0)(magicast@0.3.5)(typescript@5.6.3)(vite@6.2.1(@types/node@22.13.10)(jiti@2.4.2)(lightningcss@1.29.2)(terser@5.39.0)(yaml@2.7.0))(vue@3.5.13(typescript@5.6.3))
+        version: 3.0.0(@babel/parser@7.26.9)(db0@0.3.1(better-sqlite3@11.9.1))(ioredis@5.6.0)(magicast@0.3.5)(typescript@5.6.3)(vite@6.2.1(@types/node@22.13.10)(jiti@2.4.2)(lightningcss@1.29.2)(terser@5.39.0)(yaml@2.7.0))(vue@3.5.13(typescript@5.6.3))
       '@nuxthub/core':
         specifier: 0.8.18
         version: 0.8.18(db0@0.3.1(better-sqlite3@11.9.1))(ioredis@5.6.0)(magicast@0.3.5)(vite@6.2.1(@types/node@22.13.10)(jiti@2.4.2)(lightningcss@1.29.2)(terser@5.39.0)(yaml@2.7.0))
@@ -8133,7 +8138,7 @@ snapshots:
       - typescript
       - yaml
 
-  '@nuxt/ui-pro@3.0.0(@babel/parser@7.26.9)(change-case@5.4.4)(db0@0.3.1(better-sqlite3@11.9.1))(embla-carousel@8.5.2)(ioredis@5.6.0)(magicast@0.3.5)(typescript@5.6.3)(vite@6.2.1(@types/node@22.13.10)(jiti@2.4.2)(lightningcss@1.29.2)(terser@5.39.0)(yaml@2.7.0))(vue@3.5.13(typescript@5.6.3))':
+  '@nuxt/ui-pro@3.0.0(@babel/parser@7.26.9)(db0@0.3.1(better-sqlite3@11.9.1))(ioredis@5.6.0)(magicast@0.3.5)(typescript@5.6.3)(vite@6.2.1(@types/node@22.13.10)(jiti@2.4.2)(lightningcss@1.29.2)(terser@5.39.0)(yaml@2.7.0))(vue@3.5.13(typescript@5.6.3))':
     dependencies:
       '@nuxt/kit': 3.16.0(magicast@0.3.5)
       '@nuxt/schema': 3.16.0

@@ -1,21 +1,3 @@
-<template>
-  <div class="pointer-events-none overflow-hidden">
-    <div class="w-full h-full">
-      <svg :viewBox="`0 0 ${width} ${height}`">
-        <circle
-          v-for="dot in dots"
-          :key="dot.id"
-          class="dot"
-          :cx="dot.x"
-          :cy="dot.y"
-          :r="dot.radius"
-          :style="{ '--delay': `${dot.delay}s`, '--startX': `${dot.x}px`, '--startY': `${dot.y}px` }"
-        />
-      </svg>
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useBreakpoints, breakpointsTailwind } from '@vueuse/core'
@@ -36,6 +18,12 @@ const props = withDefaults(defineProps<{
   dotCount: 800,
   width: 1000,
   height: 1000
+})
+
+extendCompodiumMeta({
+  defaultProps: {
+    class: 'w-full h-full'
+  }
 })
 
 const dots = ref<Dot[]>([])
@@ -61,6 +49,24 @@ onMounted(() => {
   generateDots(props.dotCount)
 })
 </script>
+
+<template>
+  <div class="pointer-events-none overflow-hidden">
+    <div class="w-full h-full">
+      <svg :viewBox="`0 0 ${width} ${height}`">
+        <circle
+          v-for="dot in dots"
+          :key="dot.id"
+          class="dot"
+          :cx="dot.x"
+          :cy="dot.y"
+          :r="dot.radius"
+          :style="{ '--delay': `${dot.delay}s`, '--startX': `${dot.x}px`, '--startY': `${dot.y}px` }"
+        />
+      </svg>
+    </div>
+  </div>
+</template>
 
 <style scoped>
 .dot {
