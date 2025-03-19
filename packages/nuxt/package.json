@@ -29,9 +29,9 @@
   },
   "dependencies": {
     "@compodium/core": "workspace:^",
-    "@nuxt/devtools-kit": "^2.2.1",
+    "@nuxt/devtools-kit": "^2.3.0",
     "@nuxt/kit": "catalog:",
-    "consola": "^3.4.0",
+    "consola": "^3.4.2",
     "ufo": "^1.5.4"
   },
   "devDependencies": {

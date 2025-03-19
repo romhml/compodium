@@ -33,15 +33,15 @@
     "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
-    "vite": ">=3"
+    "vite": ">=3.2.11"
   },
   "dependencies": {
     "@compodium/core": "workspace:^",
     "@compodium/examples": "workspace:^",
     "@vue/devtools-kit": "^7.7.2",
-    "consola": "^3.4.0",
+    "consola": "^3.4.2",
     "defu": "^6.1.4",
     "pathe": "^2.0.3",
-    "unplugin": "^2.2.0"
+    "unplugin": "^2.2.1"
   }
 }
