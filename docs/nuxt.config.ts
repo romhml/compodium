@@ -13,8 +13,13 @@ export default defineNuxtConfig({
     enabled: true
   },
 
-  css: ['~/assets/css/main.css'],
+  app: {
+    head: {
+      link: [{ rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }]
+    }
+  },
 
+  css: ['~/assets/css/main.css'],
   content: {
     build: {
       markdown: {
