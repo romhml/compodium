@@ -17,7 +17,7 @@
     "dist"
   ],
   "scripts": {
-    "dev:prepare": "tailwindcss -i src/assets/base.css -o src/assets/index.css && unbuild",
+    "dev:prepare": "tailwindcss -i src/assets/ui/base.css -o src/assets/ui/index.css && unbuild",
     "dev": "unbuild --watch",
     "prepack": "unbuild"
   },

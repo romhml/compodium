@@ -5,25 +5,30 @@ import { useColorMode } from '@vueuse/core'
 import { joinURL } from 'ufo'
 import type { Hookable } from 'hookable'
 
-import '@compodium/examples/assets/index.css'
-
 // @ts-expect-error virtual module
 import PreviewComponent from 'virtual:compodium:preview'
 
 const props = shallowRef()
 const component = shallowRef()
+const wrapper = shallowRef()
 
 const combo = shallowRef<{ value: string, options: string[] }[]>([])
 
-async function onUpdateComponent(payload: { path: string, props: Record<string, any> }) {
+async function importComponent(path: string) {
+  if ((window as any)?.__buildAssetsURL) {
+    return await import(/* @vite-ignore */ (window as any)?.__buildAssetsURL(path)).then(c => c.default)
+  }
+  return await import(/* @vite-ignore */ joinURL('/@fs/' + path)).then(c => c.default)
+}
+async function onUpdateComponent(payload: { path: string, props: Record<string, any>, wrapper?: string }) {
   combo.value = []
   component.value = null
+  wrapper.value = null
   props.value = payload.props
 
-  if ((window as any)?.__buildAssetsURL) {
-    component.value = await import(/* @vite-ignore */ (window as any)?.__buildAssetsURL(payload.path)).then(c => c.default)
-  } else {
-    component.value = await import(/* @vite-ignore */ joinURL('/@fs/' + payload.path)).then(c => c.default)
+  component.value = await importComponent(payload.path)
+  if (payload.wrapper) {
+    wrapper.value = await importComponent(payload.wrapper)
   }
 }
 
@@ -64,38 +69,40 @@ onMounted(() => {
       :style="{ position: 'relative', minWidth: '100vw', minHeight: '100vh' }"
     >
       <PreviewComponent>
-        <template v-if="combo?.length">
-          <template v-if="component">
-            <div
-              v-for="combo1 in combo[0]?.options ?? [undefined]"
-              :key="combo1"
-              :style="{ display: 'flex', flexDirection: 'column', gap: '8px', margin: '4px' }"
-            >
+        <component :is="wrapper ? wrapper : 'div'">
+          <template v-if="combo?.length">
+            <template v-if="component">
               <div
-                v-for="combo2 in combo[1]?.options ?? [undefined]"
-                :key="combo2"
-                :style="{ display: 'flex', alignContent: 'center', justifyContent: 'center' }"
+                v-for="combo1 in combo[0]?.options ?? [undefined]"
+                :key="combo1"
+                :style="{ display: 'flex', flexDirection: 'column', gap: '8px', margin: '4px' }"
               >
-                <component
-                  :is="component"
-                  v-bind="{
-                    ...props,
-                    [combo[0]?.value]: combo1,
-                    [combo[1]?.value]: combo2
-                  }"
-                />
+                <div
+                  v-for="combo2 in combo[1]?.options ?? [undefined]"
+                  :key="combo2"
+                  :style="{ display: 'flex', alignContent: 'center', justifyContent: 'center' }"
+                >
+                  <component
+                    :is="component"
+                    v-bind="{
+                      ...props,
+                      [combo[0]?.value]: combo1,
+                      [combo[1]?.value]: combo2
+                    }"
+                  />
+                </div>
               </div>
-            </div>
+            </template>
           </template>
-        </template>
 
-        <template v-else>
-          <component
-            :is="component"
-            v-if="component"
-            v-bind="props"
-          />
-        </template>
+          <template v-else>
+            <component
+              :is="component"
+              v-if="component"
+              v-bind="props"
+            />
+          </template>
+        </component>
       </PreviewComponent>
 
       <div

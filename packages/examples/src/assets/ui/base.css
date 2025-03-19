@@ -1,6 +1,6 @@
 @import "tailwindcss/theme" source(none);
 @import "tailwindcss/utilities" source(none);
-@source '../examples/ui/';
+@source '../../examples/ui/';
 
 .placeholder {
   position: relative;

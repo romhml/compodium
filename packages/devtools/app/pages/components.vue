@@ -108,7 +108,8 @@ async function updateComponent() {
 
   await hooks.callHook('renderer:update-component', {
     path: component.value.realPath,
-    props: props.value
+    props: props.value,
+    wrapper: component.value?.wrapperComponent
   })
 
   await hooks.callHook('renderer:update-combo', { props: comboProps.value?.filter(Boolean) as ComboItem[] ?? [] })
