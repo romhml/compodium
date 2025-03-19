@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, shallowRef, ref } from 'vue'
 import type { CompodiumHooks } from '@compodium/core'
-import { useColorMode } from '@vueuse/core'
+import { useColorMode, createReusableTemplate } from '@vueuse/core'
 import { joinURL } from 'ufo'
 import type { Hookable } from 'hookable'
 
@@ -60,49 +60,58 @@ onMounted(() => {
 onMounted(() => {
   window.addEventListener('keydown', e => window.parent.dispatchEvent(new KeyboardEvent('keydown', e)))
 })
+
+const [DefineTemplate, ReuseTemplate] = createReusableTemplate()
 </script>
 
 <template>
+  <DefineTemplate>
+    <template v-if="combo?.length">
+      <template v-if="component">
+        <div
+          v-for="combo1 in combo[0]?.options ?? [undefined]"
+          :key="combo1"
+          :style="{ display: 'flex', flexDirection: 'column', gap: '8px', margin: '4px' }"
+        >
+          <div
+            v-for="combo2 in combo[1]?.options ?? [undefined]"
+            :key="combo2"
+            :style="{ display: 'flex', alignContent: 'center', justifyContent: 'center' }"
+          >
+            <component
+              :is="component"
+              v-bind="{
+                ...props,
+                [combo[0]?.value]: combo1,
+                [combo[1]?.value]: combo2
+              }"
+            />
+          </div>
+        </div>
+      </template>
+    </template>
+
+    <template v-else>
+      <component
+        :is="component"
+        v-if="component"
+        v-bind="props"
+      />
+    </template>
+  </DefineTemplate>
   <Suspense>
     <div
       id="__compodium-root"
       :style="{ position: 'relative', minWidth: '100vw', minHeight: '100vh' }"
     >
       <PreviewComponent>
-        <component :is="wrapper ? wrapper : 'div'">
-          <template v-if="combo?.length">
-            <template v-if="component">
-              <div
-                v-for="combo1 in combo[0]?.options ?? [undefined]"
-                :key="combo1"
-                :style="{ display: 'flex', flexDirection: 'column', gap: '8px', margin: '4px' }"
-              >
-                <div
-                  v-for="combo2 in combo[1]?.options ?? [undefined]"
-                  :key="combo2"
-                  :style="{ display: 'flex', alignContent: 'center', justifyContent: 'center' }"
-                >
-                  <component
-                    :is="component"
-                    v-bind="{
-                      ...props,
-                      [combo[0]?.value]: combo1,
-                      [combo[1]?.value]: combo2
-                    }"
-                  />
-                </div>
-              </div>
-            </template>
-          </template>
-
-          <template v-else>
-            <component
-              :is="component"
-              v-if="component"
-              v-bind="props"
-            />
-          </template>
+        <component
+          :is="wrapper"
+          v-if="wrapper"
+        >
+          <ReuseTemplate />
         </component>
+        <ReuseTemplate v-else />
       </PreviewComponent>
 
       <div
