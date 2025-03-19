@@ -15,8 +15,6 @@ A plug and play component playground for Nuxt.
   <img alt="Compodium" src="https://github.com/user-attachments/assets/e743a4c6-4845-4320-9cef-437e3890f05b">
 </picture>
 
-
-[Try it live!](https://codesandbox.io/p/devbox/compodium-jkxt32)
 </div>
 
 > [!WARNING]

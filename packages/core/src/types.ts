@@ -91,6 +91,7 @@ export type PropertyMeta = Omit<VuePropertyMeta, 'schema'> & {
 
 export type Component = Pick<NuxtComponent, 'pascalName' | 'kebabName' | 'filePath' | 'priority' | 'mode'> & {
   realPath: string
+  wrapperComponent?: string
   docUrl?: string
   examples?: ComponentExample[]
 }
@@ -109,6 +110,7 @@ export type Collection = {
   ignore?: string[]
   dirs: ComponentsDir[]
   exampleDir: ComponentsDir
+  wrapperComponent?: string
   getDocUrl?: (componentName: string) => string
 }
 
@@ -147,7 +149,7 @@ export interface CompodiumHooks {
   'renderer:mounted': () => void
 
   // Update the renderer component
-  'renderer:update-component': (payload: { path: string, props: Record<string, any> }) => void
+  'renderer:update-component': (payload: { path: string, props: Record<string, any>, wrapper?: string }) => void
 
   // Update the renderer props
   'renderer:update-props': (payload: { props: Record<string, any> }) => void
