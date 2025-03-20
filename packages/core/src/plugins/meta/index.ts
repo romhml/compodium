@@ -23,6 +23,7 @@ export function metaPlugin(config: PluginConfig): VitePlugin {
         try {
           const url = new URL(req.url!, `http://${req.headers.host}`)
           const componentPath = url.searchParams.get('component')
+          const exportName = url.searchParams.get('exportName')
 
           if (!componentPath) {
             res.statusCode = 400
@@ -30,7 +31,7 @@ export function metaPlugin(config: PluginConfig): VitePlugin {
             return
           }
 
-          const meta = checker.getComponentMeta(componentPath)
+          const meta = checker.getComponentMeta(componentPath, exportName ?? 'default')
 
           if (!meta) {
             res.statusCode = 404
@@ -40,8 +41,9 @@ export function metaPlugin(config: PluginConfig): VitePlugin {
 
           res.setHeader('Content-Type', 'application/json')
           res.end(JSON.stringify(meta))
-        } catch {
+        } catch (err) {
           res.statusCode = 500
+          console.log(err)
           res.end(JSON.stringify({ error: 'Failed to fetch metadata' }))
         }
       })

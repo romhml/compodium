@@ -36,8 +36,8 @@ export function createChecker(dirs: ComponentsDir[]) {
 
   const checker = {
     ...metaChecker,
-    getComponentMeta: (componentPath: string): CompodiumMeta => {
-      const meta = metaChecker.getComponentMeta(componentPath)
+    getComponentMeta: (componentPath: string, exportName: string = 'default'): CompodiumMeta => {
+      const meta = metaChecker.getComponentMeta(componentPath, exportName)
       return {
         props: meta.props
           .filter((sch: any) => !sch.global)

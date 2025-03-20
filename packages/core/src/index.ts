@@ -45,12 +45,12 @@ export const compodium = /* #__PURE__ */ (options: PluginOptions) => {
             exampleDir: {
               ...typeof dir === 'string' ? {} : dir,
               path: collection.exampleDir,
-              pattern: '**/*.{vue,tsx}'
+              pattern: '**/*.{vue}'
             },
             dirs: [{
+              pattern: '**/*.{vue,tsx,mjs}',
               ...typeof dir === 'string' ? {} : dir,
               path,
-              pattern: '**/*.{vue,tsx}',
               ignore: collection.ignore
             }]
           }

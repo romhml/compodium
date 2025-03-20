@@ -27,6 +27,7 @@ export function collectionsPlugin(config: PluginConfig): VitePlugin {
               return {
                 ...component,
                 wrapperComponent: col.wrapperComponent,
+                exportName: col.getExportName?.(c.pascalName) ?? 'default',
                 docUrl: col.getDocUrl?.(c.pascalName),
                 examples: componentExamples.filter(e => e.pascalName !== mainExample?.pascalName)
               }

@@ -10,6 +10,7 @@ const items = computed(() =>
   props.collections?.map(col => ({
     id: col.name,
     ...col,
+    label: col.name,
     items: col.components.flatMap((comp) => {
       const label = comp?.isExample ? comp.pascalName.replace(/Example$/, '') : comp.pascalName
       return [

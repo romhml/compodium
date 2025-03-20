@@ -67,8 +67,12 @@ function evalPropValue(meta: Partial<PropertyMeta>) {
 
 const { data: componentMeta, refresh: refreshMeta } = useAsyncData('__compodium-fetch-meta', async () => {
   if (!component.value) return
-  const meta = await $fetch<CompodiumMeta>('/api/meta', { baseURL: '/__compodium__', query: {
-    component: component.value?.componentPath ?? component.value?.filePath }
+  const meta = await $fetch<CompodiumMeta>('/api/meta', {
+    baseURL: '/__compodium__',
+    query: {
+      component: component.value?.componentPath ?? component.value?.filePath,
+      exportName: component.value?.exportName
+    }
   })
   return meta
 }, { watch: [component] })
