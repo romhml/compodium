@@ -53,7 +53,7 @@ const features = [
       description="Compodium streamlines Vue and Nuxt component development with direct code analysis, devtools integration, and effortless setup."
       orientation="vertical"
       :links="[
-        { label: 'Get started', to: '/getting-started', trailingIcon: 'i-lucide-arrow-right', size: 'lg', color: 'neutral' }
+        { label: 'Get started', to: '/getting-started/installation', trailingIcon: 'i-lucide-arrow-right', size: 'lg', color: 'neutral' }
       ]"
       :ui="{ container: 'relative', description: 'max-w-5xl mx-auto' }"
     />
