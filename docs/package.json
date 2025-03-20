@@ -21,6 +21,5 @@
     "nuxt": "catalog:",
     "nuxt-llms": "0.1.0",
     "nuxt-og-image": "^5.0.0"
-  },
-  "packageManager": "pnpm@10.6.2"
+  }
 }

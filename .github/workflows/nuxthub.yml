@@ -18,10 +18,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
         with:
-          version: 9
+          run_install: false
 
       - name: Install Node.js
         uses: actions/setup-node@v4
@@ -37,6 +37,8 @@ jobs:
 
       - name: Build application
         run: pnpm build
+        env:
+          NUXT_UI_PRO_LICENSE: ${{ secrets.NUXT_UI_PRO_LICENSE }}
 
       - name: Deploy to NuxtHub
         uses: nuxt-hub/action@v1
