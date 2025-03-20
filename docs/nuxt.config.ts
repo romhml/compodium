@@ -1,7 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   modules: [
-    '../packages/nuxt/src/module',
     '@nuxt/image',
     '@nuxt/ui-pro',
     '@nuxt/content',
