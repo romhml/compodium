@@ -20,12 +20,6 @@ const props = withDefaults(defineProps<{
   height: 1000
 })
 
-extendCompodiumMeta({
-  defaultProps: {
-    class: 'w-full h-full'
-  }
-})
-
 const dots = ref<Dot[]>([])
 
 const breakpoints = useBreakpoints(breakpointsTailwind)

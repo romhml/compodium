@@ -4,13 +4,6 @@ const props = withDefaults(defineProps<{ title?: string, description?: string, h
   description: 'description'
 })
 
-extendCompodiumMeta({
-  defaultProps: {
-    title: 'Compodium',
-    description: 'Build Vue components faster.'
-  }
-})
-
 const title = computed(() => (props.title || '').slice(0, 60))
 const description = computed(() => (props.description || '').slice(0, 200))
 </script>
