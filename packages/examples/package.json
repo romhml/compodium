@@ -3,6 +3,7 @@
   "version": "0.1.0-beta.5",
   "description": "Third party library examples for Compodium",
   "type": "module",
+  "license": "MIT",
   "repository": {
     "url": "romhml/compodium",
     "directory": "packages/examples"
@@ -21,8 +22,6 @@
     "dev": "unbuild --watch",
     "prepack": "unbuild"
   },
-  "license": "MIT",
-  "packageManager": "pnpm@10.5.2",
   "dependencies": {
     "pathe": "^2.0.3",
     "scule": "^1.3.0"

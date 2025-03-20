@@ -4,21 +4,40 @@ import type { Hookable } from 'hookable'
 import type { InputSchema } from './plugins/meta/infer'
 
 export type PluginOptions = {
+  /**
+   * Project root directory.
+   * @defaultValue `process.cwd()`
+   */
   rootDir: string
 
+  /**
+   * Customize the directories where components are discovered
+   * @defaultValue `[{ path: './src/components', pathPrefix: false }]`
+   */
   componentDirs: (ComponentsDir | string)[]
 
-  /* Whether to include default collections for third-party libraries. */
+  /**
+   * Whether to include default collections for third-party libraries.
+   * @defaultValue `true`
+   */
   includeLibraryCollections?: boolean
 
-  /* Customize compodium's base directory. Defaults to 'compodium/' */
+  /**
+   * Customize compodium's base directory.
+   * @defaultValue `'compodium'`
+   */
   dir: string
 
-  /* List of glob patterns to ignore components */
+  /**
+   * List of glob patterns to ignore components
+   */
   ignore?: string[]
 
   extras?: {
-    /* Customize Compodium's UI Colors. */
+    /**
+     * Customize Compodium's UI Colors.
+     * See: https://ui.nuxt.com/getting-started/theme#colors for acceptable values
+     */
     colors?: {
       primary?: string
       neutral?: string

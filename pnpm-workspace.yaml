@@ -1,4 +1,5 @@
 packages:
+  - ./docs/
   - "./packages/*"
   - "./playgrounds/*"
 
@@ -8,3 +9,6 @@ catalog:
   "@nuxt/schema": "^3.16.0"
   "@nuxt/ui": "^3.0.0"
   vue: latest
+
+onlyBuiltDependencies:
+  - better-sqlite3
