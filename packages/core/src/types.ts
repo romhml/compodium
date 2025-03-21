@@ -44,6 +44,12 @@ export type PluginOptions = {
     }
   }
 
+  /**
+   * Configure your application's mainPath
+   * @defaultValue `'src/main.ts'`
+   */
+  mainPath?: string
+
   /* Internal */
   _nuxt?: boolean
 }

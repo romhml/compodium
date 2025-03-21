@@ -11,7 +11,8 @@ export const compodium = /* #__PURE__ */ (opts?: Partial<Omit<PluginOptions, '_n
   const options = defu(opts, {
     rootDir: './',
     dir: './compodium',
-    includeLibraryCollections: true
+    includeLibraryCollections: true,
+    mainFile: 'src/main.ts'
   }) as PluginOptions
 
   options.componentDirs ??= [
