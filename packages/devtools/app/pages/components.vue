@@ -82,11 +82,6 @@ const { data: exampleMeta, refresh: refreshExampleMeta } = useAsyncData('__compo
 
 watch([componentMeta, exampleMeta], async ([newComponentMeta, newExampleMeta]) => {
   if (!newComponentMeta) return
-  combo.value = [...(
-    newExampleMeta?.compodium?.combo
-    ?? newComponentMeta?.compodium?.combo as any
-    ?? []
-  )]
 
   compodiumDefaultProps.value = { ...(newExampleMeta?.compodium?.defaultProps ?? newComponentMeta?.compodium?.defaultProps) }
   defaultProps.value = {
@@ -95,6 +90,12 @@ watch([componentMeta, exampleMeta], async ([newComponentMeta, newExampleMeta]) =
 
   if (!touched.value) {
     props.value = { ...defaultProps.value, ...compodiumDefaultProps.value }
+
+    combo.value = [...(
+      newExampleMeta?.compodium?.combo
+      ?? newComponentMeta?.compodium?.combo as any
+      ?? []
+    )]
   }
 
   await updateComponent()
@@ -233,6 +234,7 @@ watch(component, () => propsSearchTerm.value = '')
             v-if="comboItems?.length"
             v-model="comboProps"
             :items="comboItems"
+            @update:model-value="touched = true"
           />
         </div>
 
