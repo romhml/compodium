@@ -22,7 +22,7 @@ A plug and play component playground for Vue and Nuxt.
 
 ## Features
 
-- Effortless Setup: Simple setup process and minimal maintenance, allowing you to focus on building components.
+- **Effortless Setup**: Simple setup process and minimal maintenance, allowing you to focus on building components.
 - **No Stories Required**: Analyzes your component code directly, eliminating the need to write stories.
 - **Fast**: Built on top of Vite for rapid development and instant feedback, enhancing productivity.
 - **DevTools Integration**: Integrates with Vue and Nuxt devtools for a cohesive development experience.
