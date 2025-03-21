@@ -33,30 +33,8 @@ A plug and play component playground for Vue and Nuxt.
 
 ### Nuxt
 
-1. Install `@compodium/nuxt`
-
 ```bash [pnpm]
-pnpm add @compodium/nuxt
-```
-
-```bash [yarn]
-yarn add @compodium/nuxt
-```
-
-```bash [npm]
-npm install @compodium/nuxt
-```
-
-```bash [bun]
-bun add @compodium/nuxt
-```
-
-2. Add the compodium module in your `nuxt.config.ts`:
-
-```ts [nuxt.config.ts]
-export default defineNuxtConfig({
-  modules: ['@compodium/nuxt']
-})
+nuxi module add -D @compodium/nuxt
 ```
 
 ### Vue
@@ -64,19 +42,19 @@ export default defineNuxtConfig({
 1. Install `@compodium/vue`
 
 ```bash [pnpm]
-pnpm add @compodium/vue
+pnpm add -D @compodium/vue
 ```
 
 ```bash [yarn]
-yarn add @compodium/vue
+yarn add -D @compodium/vue
 ```
 
 ```bash [npm]
-npm install @compodium/vue
+npm install -D @compodium/vue
 ```
 
 ```bash [bun]
-bun add @compodium/vue
+bun add -D @compodium/vue
 ```
 Add the Nuxt UI Vite plugin in your `vite.config.ts`:
 
