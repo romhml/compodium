@@ -10,12 +10,10 @@ const rendererMounted = ref(false)
 
 hooks.hook('renderer:mounted', () => {
   rendererMounted.value = true
-
   hooks.hook('component:changed', async (path: string) => {
     if (
       (component.value?.filePath && path.endsWith(component.value?.filePath))
       || (component.value?.componentPath && path.endsWith(component.value?.componentPath))) {
-      console.log('refreshed', component.value)
       await Promise.all([refreshMeta(), refreshExampleMeta()])
     }
   })

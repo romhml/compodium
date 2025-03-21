@@ -34,7 +34,6 @@ async function onUpdateComponent(payload: { path: string, props: Record<string, 
 
 if (import.meta.hot) {
   import.meta.hot.on('compodium:hmr', (data) => {
-    console.log('hmr', data)
     hooks.value?.callHook(data.event, data.path)
   })
 }
