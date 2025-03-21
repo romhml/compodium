@@ -7,7 +7,7 @@
 [![License][license-src]][license-href]
 [![Nuxt][nuxt-src]][nuxt-href]
 
-A plug and play component playground for Nuxt.
+A plug and play component playground for Vue and Nuxt.
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://github.com/user-attachments/assets/7e354f8f-72cb-43ee-bbc3-857bb665e841">
@@ -22,132 +22,17 @@ A plug and play component playground for Nuxt.
 
 ## Features
 
-- **Easy Setup and Use:** Easily integrates into your Nuxt app with minimal configuration. Customize only when needed by creating examples or defining default props.
-- **HMR Support:** Enables real-time updates with HMR for faster development.
-- **Default UI Collections:** Comes with pre-configured collections for your UI libraries.
-
-## Quick Setup
-
-Install the module to your Nuxt application with one command:
-
-```bash
-npx nuxi module add compodium
-```
-
-That's it! You can now access Compodium from the nuxt devtools or `/__compodium__/devtools`.
-
-## Configuration
-
-Configure Compodium in your Nuxt project by customizing the settings in your `nuxt.config.ts` file. Below is the default configuration, which you can modify to suit your needs:
-
-```ts
-export default defineNuxtConfig({
-  compodium: {
-    /* Customize compodium's base directory */
-    dir: 'compodium/',
-
-    /* List of glob patterns to exclude components */
-    exclude: [],
-
-    /* Whether to include default collections for third-party libraries. */
-    includeLibraryCollections: true,
-
-    extras: {
-      ui: {
-        /* If true, Compodium's UI will match your Nuxt UI color theme */
-        matchColors: true
-      }
-    }
-  }
-})
-```
-
-### Preview Component
-
-Compodium renders your components in an isolated preview component that is mounted into your Nuxt application. You can customize this preview component by creating your own in `compodium/preview.vue`.
-
-Here's the default preview component you can start from:
-
-```vue
-<template>
-  <div id="compodium-preview">
-    <slot />
-  </div>
-</template>
-
-<style>
-html {
-  background: var(--ui-bg, white);
-}
-
-html.dark {
-  background: var(--ui-bg, #18181b);
-}
-
-body {
-  margin: 0;
-  padding: 0;
-}
-
-#compodium-preview {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  width: 100vw;
-  padding: 20px;
-}
-</style>
-```
-
-> [!NOTE]
-> Compodium renders outside of your `app.vue` component. This is useful if you need to inject CSS or provide parent components.
-
-### Component Examples
-
-You can provide examples for your components in the `compodium/examples/` folder. Examples will be matched to components based on the filename. Each example must be named after its corresponding component, followed by the `Example` keyword and an optional label.
-
-```bash
-compodium
-└── examples
-    ├── BaseInputExampleDisabled.vue    # Will be added to the BaseInput component.
-    ├── BaseButtonExample.vue           # Will be the main example for the BaseButton component.
-    └── BaseButtonExampleWithLabel.vue  # Will be added to the BaseButton component.
-```
-
-### Default Props
-
-You can use the `extendCompodiumMeta` in your component or in examples to pass default values for required properties:
-```ts
-const props = defineProps<{ label: string }>()
-
-extendCompodiumMeta({
-  defaultProps: {
-    label: 'Click me!'
-  }
-})
-```
-> [!WARNING]
-> `extendCompodiumMeta` is a macro that is evaluated at compile time. As such, you can only use literal values, and can't reference variables.
-
-Alternatively, you can specify default properties for your components in your `app.config.ts` file:
-
-```ts
-export default defineAppConfig({
-  compodium: {
-    components: {
-      baseButton: {
-        label: 'Click me!'
-      }
-    }
-  }
-})
-```
+- Effortless Setup: Simple setup process and minimal maintenance, allowing you to focus on building components.
+- **No Stories Required**: Analyzes your component code directly, eliminating the need to write stories.
+- **Fast**: Built on top of Vite for rapid development and instant feedback, enhancing productivity.
+- **DevTools Integration**: Integrates with Vue and Nuxt devtools for a cohesive development experience.
+- **Code generation**: Generates up-to-date template code based on component props, ready to copy and use instantly.
+- **UI Library Integrations**: Integrates with popular UI libraries, showcasing examples for locally installed components.
 
 ## Contribution
 Contributions are welcome! ♥️
 
-Currently, one way you can contribute is by adding examples for your favorite component library. You can find the Nuxt UI collection and examples [here](https://github.com/romhml/compodium/tree/main/src/runtime/libs).
+Currently, one way you can contribute is by adding examples for your favorite component library. You can find the Nuxt UI collection and examples [here](https://github.com/romhml/compodium/tree/main/packages/examples/src/index.ts).
 
 **Local development**
 
@@ -169,9 +54,7 @@ pnpm typechecks
 
 # Run Vitest
 pnpm test
-pnpm test:watch
 ```
-
 
 <!-- Badges -->
 [npm-version-src]: https://img.shields.io/npm/v/compodium/latest.svg?style=flat&colorA=020420&colorB=00DC82
