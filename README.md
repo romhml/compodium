@@ -9,12 +9,6 @@
 
 A plug and play component playground for Vue and Nuxt.
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/user-attachments/assets/7e354f8f-72cb-43ee-bbc3-857bb665e841">
-  <source media="(prefers-color-scheme: light)" srcset="https://github.com/user-attachments/assets/e743a4c6-4845-4320-9cef-437e3890f05b">
-  <img alt="Compodium" src="https://github.com/user-attachments/assets/e743a4c6-4845-4320-9cef-437e3890f05b">
-</picture>
-
 [Documentation](https://compodium.dev/getting-started)
 
 </div>
