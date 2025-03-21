@@ -25,9 +25,15 @@ onMounted(() => window.__COMPODIUM_HOOKS__ = hooks)
       <USeparator class="my-2">
         or
       </USeparator>
-      <p class="bg-(--ui-bg-muted) rounded-md font-mono p-0.5">
-        nuxi module add @nuxt/ui@next
-      </p>
+      <UButton
+        icon="lineicons:nuxt"
+        variant="ghost"
+        block
+        label="Get started with Nuxt UI"
+        to="https://ui.nuxt.com/getting-started/installation"
+        target="_blank"
+        external
+      />
     </div>
   </div>
 </template>
