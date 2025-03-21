@@ -29,6 +29,71 @@ A plug and play component playground for Vue and Nuxt.
 - **Code generation**: Generates up-to-date template code based on component props, ready to copy and use instantly.
 - **UI Library Integrations**: Integrates with popular UI libraries, showcasing examples for locally installed components.
 
+## Installation
+
+### Nuxt
+
+1. Install `@compodium/nuxt`
+
+```bash [pnpm]
+pnpm add @compodium/nuxt
+```
+
+```bash [yarn]
+yarn add @compodium/nuxt
+```
+
+```bash [npm]
+npm install @compodium/nuxt
+```
+
+```bash [bun]
+bun add @compodium/nuxt
+```
+
+2. Add the compodium module in your `nuxt.config.ts`:
+
+```ts [nuxt.config.ts]
+export default defineNuxtConfig({
+  modules: ['@compodium/nuxt']
+})
+```
+
+### Vue
+
+1. Install `@compodium/vue`
+
+```bash [pnpm]
+pnpm add @compodium/vue
+```
+
+```bash [yarn]
+yarn add @compodium/vue
+```
+
+```bash [npm]
+npm install @compodium/vue
+```
+
+```bash [bun]
+bun add @compodium/vue
+```
+Add the Nuxt UI Vite plugin in your `vite.config.ts`:
+
+```ts [vite.config.ts]
+import { defineConfig } from 'vite'
+import vue from '@vitejs/plugin-vue'
+import vueDevTools from 'vite-plugin-vue-devtools'
+import { compodium } from '@compodium/vue'
+
+export default defineConfig({
+  plugins: [
+    vue(),
+    vueDevTools(),
+    compodium()
+  ]
+})
+```
 ## Contribution
 Contributions are welcome! ♥️
 
