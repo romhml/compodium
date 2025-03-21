@@ -1,7 +1,7 @@
 import type { VitePlugin } from 'unplugin'
 import type { PluginOptions } from '@compodium/core'
 import { readFileSync, existsSync } from 'node:fs'
-import { resolve } from 'node:path'
+import { dirname, resolve } from 'node:path'
 
 export function rendererPlugin(options: PluginOptions): VitePlugin {
   return {
@@ -42,13 +42,17 @@ export function rendererPlugin(options: PluginOptions): VitePlugin {
           throw new Error(`[Compodium] failed to resolve main file ${options.mainPath}.`)
         }
 
+        const mainDir = dirname(mainPath)
         const mainContent: string = readFileSync(mainPath, 'utf-8').replace(
           /createApp\([^)]*\)/,
           'createApp(CompodiumRoot)'
         ).replace(
           /\.mount\([^)]*\)/,
           '.mount("#compodium")'
-        ).replace(/'.\//g, '\'@/')
+        ).replace(/(from|import)\s+(['"])([./])/g, (match, keyword, quote, path) => {
+        // Resolve the relative import based on the main directory
+          return `${keyword} ${quote}${resolve(mainDir, path)}/`
+        })
 
         return `import CompodiumRoot from '${import.meta.resolve('@compodium/core/runtime/root.vue')}';\n${mainContent}`
       }
