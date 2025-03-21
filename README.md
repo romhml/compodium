@@ -15,6 +15,8 @@ A plug and play component playground for Vue and Nuxt.
   <img alt="Compodium" src="https://github.com/user-attachments/assets/e743a4c6-4845-4320-9cef-437e3890f05b">
 </picture>
 
+[Documentation](https://compodium.dev/getting-started)
+
 </div>
 
 > [!WARNING]
@@ -26,8 +28,9 @@ A plug and play component playground for Vue and Nuxt.
 - **No Stories Required**: Analyzes your component code directly, eliminating the need to write stories.
 - **Fast**: Built on top of Vite for rapid development and instant feedback, enhancing productivity.
 - **DevTools Integration**: Integrates with Vue and Nuxt devtools for a cohesive development experience.
-- **Code generation**: Generates up-to-date template code based on component props, ready to copy and use instantly.
 - **UI Library Integrations**: Integrates with popular UI libraries, showcasing examples for locally installed components.
+- **Code generation**: Generates up-to-date template code based on component props, ready to copy and use instantly.
+
 
 ## Installation
 
