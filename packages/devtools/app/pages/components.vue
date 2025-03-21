@@ -12,7 +12,7 @@ hooks.hook('renderer:mounted', () => {
   rendererMounted.value = true
 
   hooks.hook('component:changed', async (path: string) => {
-    if (path === component.value?.filePath || path === component.value?.componentPath) {
+    if (path.endsWith(component.value?.filePath) || path.endsWith(component.value?.componentPath)) {
       await Promise.all([refreshMeta(), refreshExampleMeta()])
     }
   })
