@@ -11,10 +11,11 @@ const rendererMounted = ref(false)
 hooks.hook('renderer:mounted', () => {
   rendererMounted.value = true
 
-  hooks.hook('component:changed', async (_path: string) => {
-    // if (path.endsWith(component.value!.filePath) || (component.value?.componentPath && path.endsWith(component.value!.componentPath))) {
-    await Promise.all([refreshMeta(), refreshExampleMeta()])
-    // }
+  hooks.hook('component:changed', async (path: string) => {
+    console.log('changed', path, component.value?.filePath)
+    if (path.endsWith(component.value!.filePath) || (component.value?.componentPath && path.endsWith(component.value!.componentPath))) {
+      await Promise.all([refreshMeta(), refreshExampleMeta()])
+    }
   })
 
   hooks.hook('component:removed', useDebounceFn(async () => {
