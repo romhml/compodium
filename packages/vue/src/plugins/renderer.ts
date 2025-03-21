@@ -36,10 +36,10 @@ export function rendererPlugin(options: PluginOptions): VitePlugin {
     load(id) {
       if (id === '\0renderer.ts') {
         // Read the user's main entrypoint file
-        const mainPath = resolve(options.rootDir, options.mainFile)
+        const mainPath = resolve(options.rootDir, options.mainPath ?? 'src/main.ts')
 
         if (!existsSync(mainPath)) {
-          throw new Error(`[Compodium] failed to resolve main file ${options.mainFile}.`)
+          throw new Error(`[Compodium] failed to resolve main file ${options.mainPath}.`)
         }
 
         const mainContent: string = readFileSync(mainPath, 'utf-8').replace(

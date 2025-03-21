@@ -113,7 +113,7 @@ export async function scanComponents(dirs: ComponentsDir[], srcDir: string): Pro
 
       const kebabName = kebabCase(componentNameSegments)
 
-      const component: Component = {
+      const component: Partial<Component> = {
         mode,
         filePath,
         realPath: await realpath(filePath),
@@ -135,7 +135,7 @@ export async function scanComponents(dirs: ComponentsDir[], srcDir: string): Pro
 
         // Replace component if priority is higher
         if (newPriority > existingPriority) {
-          components.splice(components.indexOf(existingComponent), 1, component)
+          components.splice(components.indexOf(existingComponent), 1, component as Component)
         }
         // Warn if a user-defined (or prioritized) component conflicts with a previously scanned component
         if (newPriority > 0 && newPriority === existingPriority) {
@@ -145,7 +145,7 @@ export async function scanComponents(dirs: ComponentsDir[], srcDir: string): Pro
         continue
       }
 
-      components.push(component)
+      components.push(component as Component)
     }
     scannedPaths.push(dir.path)
   }

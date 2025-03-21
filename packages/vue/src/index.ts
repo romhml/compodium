@@ -12,7 +12,7 @@ export const compodium = /* #__PURE__ */ (opts?: Partial<Omit<PluginOptions, '_n
     rootDir: './',
     dir: './compodium',
     includeLibraryCollections: true,
-    mainFile: 'src/main.ts'
+    mainPath: 'src/main.ts'
   }) as PluginOptions
 
   options.componentDirs ??= [

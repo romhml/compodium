@@ -1,4 +1,3 @@
-import type { ScanDir, Component as NuxtComponent } from '@nuxt/schema'
 import type { PropertyMeta as VuePropertyMeta } from '@compodium/meta'
 import type { Hookable } from 'hookable'
 import type { InputSchema } from './plugins/meta/infer'
@@ -73,7 +72,29 @@ type FilterStringLiteral<T> = {
 type ComboItem<T> = keyof FilterStringLiteral<T> | undefined
 type Combo<T> = [ComboItem<T>, ComboItem<T>] | [ComboItem<T>]
 
-export type ComponentsDir = Pick<ScanDir, 'path' | 'pattern' | 'ignore' | 'prefix' | 'pathPrefix'>
+export type ComponentsDir = {
+  /**
+   * Path (absolute or relative) to the directory containing your components.
+   * You can use Nuxt aliases (~ or @) to refer to directories inside project or directly use an npm package path similar to require.
+   */
+  path: string
+  /**
+   * Accept Pattern that will be run against specified path.
+   */
+  pattern?: string | string[]
+  /**
+   * Ignore patterns that will be run against specified path.
+   */
+  ignore?: string[]
+  /**
+   * Prefix all matched components.
+   */
+  prefix?: string
+  /**
+   * Prefix component name by its path.
+   */
+  pathPrefix?: boolean
+}
 
 export type CompodiumMeta<T = Record<string, any>> = {
   compodium?: {
@@ -95,7 +116,14 @@ export type PropertyMeta = Omit<VuePropertyMeta, 'schema'> & {
   schema: PropSchema[]
 }
 
-export type Component = Pick<NuxtComponent, 'pascalName' | 'kebabName' | 'filePath' | 'priority' | 'mode'> & {
+export type Component = {
+  pascalName: string
+  kebabName: string
+  export: string
+  filePath: string
+  shortPath: string
+  mode?: 'client' | 'server' | 'all'
+  priority?: number
   realPath: string
   wrapperComponent?: string
   docUrl?: string
@@ -122,23 +150,6 @@ export type Collection = {
 
 export type ComponentCollection = Collection & {
   components: (Component & Partial<ComponentExample>)[]
-}
-
-declare module 'nuxt/schema' {
-  interface AppConfigInput {
-    compodium?: {
-      defaultProps?: Record<string, any>
-    }
-  }
-
-  interface AppConfig {
-    compodium: {
-      componentsPath: string
-      collections: Collection[]
-      defaultProps?: Record<string, any>
-      matchUIColors?: boolean
-    }
-  }
 }
 
 export interface CompodiumHooks {
