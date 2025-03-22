@@ -12,12 +12,12 @@
   },
   "dependencies": {
     "@compodium/vue": "workspace:^",
-    "@nuxt/ui": "3.0.0",
+    "@nuxt/ui": "3.0.1",
     "vue": "catalog:"
   },
   "devDependencies": {
     "@tsconfig/node22": "^22.0.0",
-    "@types/node": "^22.13.10",
+    "@types/node": "^22.13.11",
     "@vitejs/plugin-vue": "^5.2.3",
     "@vue/tsconfig": "^0.7.0",
     "npm-run-all2": "^7.0.2",
