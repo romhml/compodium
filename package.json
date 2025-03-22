@@ -26,7 +26,7 @@
     "unbuild": "^3.5.0",
     "vite": "^6.2.2",
     "vitest": "^3.0.9",
-    "wrangler": "^4.3.0"
+    "wrangler": "^4.4.0"
   },
   "resolutions": {
     "@compodium/core": "workspace:^",
