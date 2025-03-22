@@ -43,16 +43,17 @@ pnpm add -D @compodium/vue
 ```
 
 ```bash [yarn]
-yarn add -D @compodium/vue
+yarn add --dev @compodium/vue
 ```
 
 ```bash [npm]
-npm install -D @compodium/vue
+npm install --save-dev @compodium/vue
 ```
 
 ```bash [bun]
 bun add -D @compodium/vue
 ```
+
 Add the Nuxt UI Vite plugin in your `vite.config.ts`:
 
 ```ts [vite.config.ts]
