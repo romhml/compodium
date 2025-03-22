@@ -54,7 +54,7 @@ npm install --save-dev @compodium/vue
 bun add -D @compodium/vue
 ```
 
-Add the Nuxt UI Vite plugin in your `vite.config.ts`:
+2. Add the Compodium plugin in your `vite.config.ts`:
 
 ```ts [vite.config.ts]
 import { defineConfig } from 'vite'
@@ -70,6 +70,20 @@ export default defineConfig({
   ]
 })
 ```
+
+3. Include compodium types in your `tsconfig.app.json`
+
+```json [tsconfig.app.json]{6}
+{
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "node_modules/@compodium/vue/dist/index.d.ts"
+  ],
+}
+```
+
 ## Contribution
 Contributions are welcome! ♥️
 
