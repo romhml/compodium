@@ -40,12 +40,14 @@ export const compodium = /* #__PURE__ */ (options: PluginOptions) => {
         ...collection,
         exampleDir: {
           path: collection.exampleDir,
-          pattern: '**/*.{vue,tsx}'
+          pattern: '**/*.{vue,tsx}',
+          prefix: collection.prefix
         },
         dirs: [{
           path: collection.path,
           pattern: '**/*.{vue,tsx}',
-          ignore: collection.ignore
+          ignore: collection.ignore,
+          prefix: collection.prefix
         }]
       }))
     : []
