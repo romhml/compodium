@@ -11,7 +11,10 @@ export default defineNuxtConfig({
   devtools: { enabled: false },
 
   app: {
-    baseURL: '/__compodium__/devtools'
+    baseURL: '/__compodium__/devtools',
+    head: {
+      link: [{ rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }]
+    }
   },
   css: ['~/assets/css/main.css'],
   spaLoadingTemplate: true,

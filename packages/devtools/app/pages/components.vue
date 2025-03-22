@@ -10,9 +10,10 @@ const rendererMounted = ref(false)
 
 hooks.hook('renderer:mounted', () => {
   rendererMounted.value = true
-
   hooks.hook('component:changed', async (path: string) => {
-    if (path.endsWith(component.value!.filePath) || (component.value?.componentPath && path.endsWith(component.value!.componentPath))) {
+    if (
+      (component.value?.filePath && path.endsWith(component.value?.filePath))
+      || (component.value?.componentPath && path.endsWith(component.value?.componentPath))) {
       await Promise.all([refreshMeta(), refreshExampleMeta()])
     }
   })
@@ -81,11 +82,6 @@ const { data: exampleMeta, refresh: refreshExampleMeta } = useAsyncData('__compo
 
 watch([componentMeta, exampleMeta], async ([newComponentMeta, newExampleMeta]) => {
   if (!newComponentMeta) return
-  combo.value = [...(
-    newExampleMeta?.compodium?.combo
-    ?? newComponentMeta?.compodium?.combo as any
-    ?? []
-  )]
 
   compodiumDefaultProps.value = { ...(newExampleMeta?.compodium?.defaultProps ?? newComponentMeta?.compodium?.defaultProps) }
   defaultProps.value = {
@@ -94,6 +90,12 @@ watch([componentMeta, exampleMeta], async ([newComponentMeta, newExampleMeta]) =
 
   if (!touched.value) {
     props.value = { ...defaultProps.value, ...compodiumDefaultProps.value }
+
+    combo.value = [...(
+      newExampleMeta?.compodium?.combo
+      ?? newComponentMeta?.compodium?.combo as any
+      ?? []
+    )]
   }
 
   await updateComponent()
@@ -232,6 +234,7 @@ watch(component, () => propsSearchTerm.value = '')
             v-if="comboItems?.length"
             v-model="comboProps"
             :items="comboItems"
+            @update:model-value="touched = true"
           />
         </div>
 

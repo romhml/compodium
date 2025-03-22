@@ -39,7 +39,7 @@ export function vueDevtoolsPlugin(_options: PluginOptions): VitePlugin {
           addCustomTab({
             name: 'compodium',
             title: 'Compodium',
-            icon: 'baseline-collections-bookmark',
+            icon: '/__compodium__/devtools/favicon.svg',
             view: {
               type: 'iframe',
               src: '/__compodium__/devtools'
