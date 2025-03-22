@@ -1,6 +1,6 @@
 {
   "name": "@compodium/nuxt",
-  "version": "0.1.0-beta.5",
+  "version": "0.1.0-beta.6",
   "description": "A plug an play component playground for Nuxt.",
   "repository": {
     "url": "romhml/compodium",
