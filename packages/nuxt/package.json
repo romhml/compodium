@@ -1,6 +1,6 @@
 {
   "name": "@compodium/nuxt",
-  "version": "0.1.0-beta.5",
+  "version": "0.1.0-beta.6",
   "description": "A plug an play component playground for Nuxt.",
   "repository": {
     "url": "romhml/compodium",
@@ -24,8 +24,7 @@
     "prepack": "nuxt-module-build build",
     "dev:prepare": "nuxt-module-build build --stub && nuxt-module-build prepare",
     "release": "pnpm run lint && pnpm run test && pnpm run prepack && changelogen --release && pnpm publish && git push --follow-tags",
-    "typecheck": "vue-tsc --noEmit",
-    "test": "vitest run ."
+    "typecheck": "vue-tsc --noEmit"
   },
   "dependencies": {
     "@compodium/core": "workspace:^",

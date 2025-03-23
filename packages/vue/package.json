@@ -1,7 +1,7 @@
 {
   "name": "@compodium/vue",
   "type": "module",
-  "version": "0.1.0-beta.5",
+  "version": "0.1.0-beta.6",
   "description": "A plug and play component playground for Vue and Nuxt.",
   "license": "MIT",
   "repository": {
@@ -9,7 +9,7 @@
     "directory": "packages/vue"
   },
   "keywords": [
-    "nuxt",
+    "vue",
     "components",
     "documentation"
   ],
@@ -42,6 +42,6 @@
     "consola": "^3.4.2",
     "defu": "^6.1.4",
     "pathe": "^2.0.3",
-    "unplugin": "^2.2.1"
+    "unplugin": "^2.2.2"
   }
 }

@@ -1,7 +1,7 @@
 {
   "name": "@compodium/core",
   "type": "module",
-  "version": "0.1.0-beta.5",
+  "version": "0.1.0-beta.6",
   "description": "A plug and play component playground for Vue and Nuxt.",
   "license": "MIT",
   "repository": {
@@ -10,6 +10,8 @@
   },
   "keywords": [
     "nuxt",
+    "vue",
+    "vite",
     "components",
     "documentation"
   ],
@@ -27,13 +29,12 @@
     "dist"
   ],
   "scripts": {
-    "dev:prepare": "unbuild",
+    "dev:prepare": "unbuild && pnpm --filter devtools generate",
     "dev": "unbuild --watch",
     "prepack": "unbuild && pnpm --filter devtools generate",
     "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
-    "@nuxt/schema": ">=3.16.1",
     "vite": ">=3.2.11",
     "vue": ">=3.5.13"
   },
@@ -53,7 +54,7 @@
     "sirv": "^3.0.1",
     "tinyglobby": "^0.2.12",
     "ufo": "^1.5.4",
-    "unplugin": "^2.2.1",
+    "unplugin": "^2.2.2",
     "unplugin-ast": "^0.14.4",
     "zod": "^3.24.2"
   }

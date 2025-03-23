@@ -27,7 +27,7 @@ const items = computed(() =>
         })) ?? [])
       ]
     })
-  }))
+  })).filter(col => col.items?.length > 0)
 )
 
 defineShortcuts({

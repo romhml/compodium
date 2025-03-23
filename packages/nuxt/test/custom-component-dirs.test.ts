@@ -1,11 +1,14 @@
-import { resolve } from 'pathe'
+import { dirname } from 'pathe'
 import { describe, it, expect } from 'vitest'
 import { setup, $fetch } from '@nuxt/test-utils/e2e'
 import type { ComponentCollection } from '@compodium/core'
+import { joinURL } from 'ufo'
+import { fileURLToPath } from 'node:url'
 
 describe('custom components dirs', async () => {
+  const rootDir = fileURLToPath(joinURL(dirname(import.meta.url), './fixtures/custom-component-dirs'))
   await setup({
-    rootDir: resolve('./test/fixtures/custom-component-dirs'),
+    rootDir,
     dev: true
   })
 

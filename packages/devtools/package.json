@@ -6,8 +6,7 @@
     "dev:prepare": "nuxi prepare",
     "typecheck": "nuxi typecheck",
     "dev": "nuxi dev -p 4242",
-    "generate": "nuxt generate",
-    "test": "vitest run ."
+    "generate": "nuxt generate"
   },
   "dependencies": {
     "@nuxt/ui": "catalog:",
@@ -29,7 +28,7 @@
   "devDependencies": {
     "@compodium/core": "workspace:^",
     "@compodium/meta": "workspace:^",
-    "@iconify-json/lucide": "^1.2.31",
+    "@iconify-json/lucide": "^1.2.32",
     "@iconify/types": "^2.0.0",
     "@types/deep-eql": "^4.0.2"
   }

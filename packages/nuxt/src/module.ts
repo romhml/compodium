@@ -7,7 +7,7 @@ import { version } from '../package.json'
 import { compodium } from '@compodium/core'
 import type { PluginOptions } from '@compodium/core'
 
-export type ModuleOptions = Omit<PluginOptions, 'componentDirs' | 'rootDir' | '_nuxt'>
+export type ModuleOptions = Omit<PluginOptions, 'mainPath' | 'componentDirs' | 'rootDir' | '_nuxt'>
 
 export default defineNuxtModule<ModuleOptions>({
   meta: {
@@ -53,7 +53,7 @@ export default defineNuxtModule<ModuleOptions>({
     addCustomTab({
       name: 'compodium',
       title: 'Compodium',
-      icon: 'ic:baseline-collections-bookmark',
+      icon: '/__compodium__/devtools/favicon.svg',
       view: {
         type: 'iframe',
         src: '/__compodium__/devtools'

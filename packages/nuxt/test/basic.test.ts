@@ -1,11 +1,12 @@
-import { resolve } from 'pathe'
 import { describe, it, expect, beforeEach } from 'vitest'
 import { setup, $fetch } from '@nuxt/test-utils/e2e'
 import type { ComponentCollection, CompodiumMeta } from '@compodium/core'
 import { joinURL } from 'ufo'
+import { fileURLToPath } from 'node:url'
+import { dirname } from 'pathe'
 
 describe('basic', async () => {
-  const rootDir = resolve('./test/fixtures/basic')
+  const rootDir = fileURLToPath(joinURL(dirname(import.meta.url), './fixtures/basic'))
 
   await setup({
     rootDir,

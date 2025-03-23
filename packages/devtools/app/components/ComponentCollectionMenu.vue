@@ -26,7 +26,7 @@ const treeItems = computed(() => {
         }
       }))
     }))
-  }))
+  })).filter(col => col.children?.length > 0)
 })
 </script>
 
