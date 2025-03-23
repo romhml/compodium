@@ -13,7 +13,7 @@
     "dev:docs": "COMPODIUM_DEVTOOLS_URL=http://localhost:4242 pnpm --color --parallel --filter devtools --filter docs dev",
     "lint": "eslint .",
     "typecheck": "pnpm -r --color typecheck",
-    "test": "pnpm -r --color test",
+    "test": "vitest",
     "bump": "jiti ./scripts/bump.ts"
   },
   "devDependencies": {
