@@ -112,11 +112,11 @@ pnpm test
 ```
 
 <!-- Badges -->
-[npm-version-src]: https://img.shields.io/npm/v/compodium/latest.svg?style=flat&colorA=020420&colorB=00DC82
-[npm-version-href]: https://npmjs.com/package/compodium
+[npm-version-src]: https://img.shields.io/npm/v/%40compodium%2Fcore/latest.svg?style=flat&colorA=020420&colorB=00DC82
+[npm-version-href]: https://npmjs.com/package/%40compodium%2Fcore
 
 [npm-downloads-src]: https://img.shields.io/npm/dm/compodium.svg?style=flat&colorA=020420&colorB=00DC82
-[npm-downloads-href]: https://npm.chart.dev/compodium
+[npm-downloads-href]: https://npm.chart.dev/%40compodium%2Fcore
 
 [license-src]: https://img.shields.io/npm/l/compodium.svg?style=flat&colorA=020420&colorB=00DC82
 [license-href]: https://npmjs.com/package/compodium
