@@ -23,6 +23,6 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  padding: 24px
+  padding: 24px;
 }
 </style>

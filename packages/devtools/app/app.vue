@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { onKeyStroke } from '@vueuse/core'
+
 // Disable devtools in component renderer iframe
 // @ts-expect-error - Nuxt Devtools internal value
 window.__NUXT_DEVTOOLS_DISABLE__ = true
@@ -11,12 +13,11 @@ useAsyncData('__compodium-fetch-colors', async () => {
   return true
 })
 
-onMounted(() => {
-  // Forward keyboard events to the devtools window so shortcuts like Meta+K works in Compodium.
-  if (window?.parent) {
-    window.addEventListener('keydown', e => window.parent.dispatchEvent(new KeyboardEvent('keydown', e)))
-  }
-})
+if (window.parent) {
+  onKeyStroke(true, (e) => {
+    window.parent.dispatchEvent(new KeyboardEvent('keydown', e))
+  }, { dedupe: true, eventName: 'keydown' })
+}
 </script>
 
 <template>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Component, ComponentCollection, ComponentExample } from '@compodium/core'
+import { onKeyStroke } from '@vueuse/core'
 
 const props = defineProps<{ collections: ComponentCollection[] }>()
 const modelValue = defineModel<Component | ComponentExample>()
@@ -30,11 +31,11 @@ const items = computed(() =>
   })).filter(col => col.items?.length > 0)
 )
 
-defineShortcuts({
-  meta_b: () => {
-    modalState.value = true
+onKeyStroke(['b'], (e) => {
+  if (e.metaKey || e.ctrlKey) {
+    modalState.value = !modalState.value
   }
-})
+}, { dedupe: true })
 </script>
 
 <template>

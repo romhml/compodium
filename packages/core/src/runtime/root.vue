@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, shallowRef, ref } from 'vue'
 import type { CompodiumHooks } from '@compodium/core'
-import { useColorMode, createReusableTemplate } from '@vueuse/core'
+import { useColorMode, createReusableTemplate, onKeyStroke } from '@vueuse/core'
 import { joinURL } from 'ufo'
 import type { Hookable } from 'hookable'
 
@@ -60,7 +60,11 @@ onMounted(() => {
 })
 
 onMounted(() => {
-  window.addEventListener('keydown', e => window.parent.dispatchEvent(new KeyboardEvent('keydown', e)))
+  if (window.parent) {
+    onKeyStroke(true, (e) => {
+      window.parent.dispatchEvent(new KeyboardEvent('keydown', e))
+    }, { dedupe: true, eventName: 'keydown' })
+  }
 })
 
 const [DefineTemplate, ReuseTemplate] = createReusableTemplate()
