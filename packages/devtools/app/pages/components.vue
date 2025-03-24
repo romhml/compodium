@@ -220,7 +220,7 @@ watch(component, () => propsSearchTerm.value = '')
 <template>
   <div
     ref="container"
-    class="relative flex w-screen h-screen overflow-y-scroll"
+    class="relative flex w-screen h-screen"
   >
     <ComponentCollectionMenu
       v-if="collections?.length"
@@ -334,7 +334,7 @@ watch(component, () => propsSearchTerm.value = '')
         :ui="{ content: 'grow relative overflow-y-scroll' }"
       >
         <template #props>
-          <div class="overflow-y-scroll h-full">
+          <div class="h-full">
             <div class="bg-(--ui-bg) p-0.5 border-y border-(--ui-border) sticky top-0 z-1 flex gap-0.5">
               <UInput
                 v-model="propsSearchTerm"
