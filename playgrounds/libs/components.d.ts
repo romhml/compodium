@@ -17,8 +17,15 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     TheWelcome: typeof import('./src/components/TheWelcome.vue')['default']
-    UApp: typeof import('./../../node_modules/.pnpm/@nuxt+ui@3.0.0_@babel+parser@7.26.10_change-case@5.4.4_db0@0.3.1_better-sqlite3@11.9.1__e4243b0408e77d814faf6df209197610/node_modules/@nuxt/ui/dist/runtime/components/App.vue')['default']
-    ULinkBase: typeof import('./../../node_modules/.pnpm/@nuxt+ui@3.0.0_@babel+parser@7.26.10_change-case@5.4.4_db0@0.3.1_better-sqlite3@11.9.1__e4243b0408e77d814faf6df209197610/node_modules/@nuxt/ui/dist/runtime/components/LinkBase.vue')['default']
+    UAccordion: typeof import('./../../node_modules/.pnpm/@nuxt+ui@3.0.1_@babel+parser@7.26.10_change-case@5.4.4_db0@0.3.1_better-sqlite3@11.9.1__74e16b93b086ec0c3c8def6acb05b83a/node_modules/@nuxt/ui/dist/runtime/components/Accordion.vue')['default']
+    UAlert: typeof import('./../../node_modules/.pnpm/@nuxt+ui@3.0.1_@babel+parser@7.26.10_change-case@5.4.4_db0@0.3.1_better-sqlite3@11.9.1__74e16b93b086ec0c3c8def6acb05b83a/node_modules/@nuxt/ui/dist/runtime/components/Alert.vue')['default']
+    UApp: typeof import('./../../node_modules/.pnpm/@nuxt+ui@3.0.1_@babel+parser@7.26.10_change-case@5.4.4_db0@0.3.1_better-sqlite3@11.9.1__74e16b93b086ec0c3c8def6acb05b83a/node_modules/@nuxt/ui/dist/runtime/components/App.vue')['default']
+    UAvatar: typeof import('./../../node_modules/.pnpm/@nuxt+ui@3.0.1_@babel+parser@7.26.10_change-case@5.4.4_db0@0.3.1_better-sqlite3@11.9.1__74e16b93b086ec0c3c8def6acb05b83a/node_modules/@nuxt/ui/dist/runtime/components/Avatar.vue')['default']
+    UButton: typeof import('./../../node_modules/.pnpm/@nuxt+ui@3.0.1_@babel+parser@7.26.10_change-case@5.4.4_db0@0.3.1_better-sqlite3@11.9.1__74e16b93b086ec0c3c8def6acb05b83a/node_modules/@nuxt/ui/dist/runtime/components/Button.vue')['default']
+    UCarousel: typeof import('./../../node_modules/.pnpm/@nuxt+ui@3.0.1_@babel+parser@7.26.10_change-case@5.4.4_db0@0.3.1_better-sqlite3@11.9.1__74e16b93b086ec0c3c8def6acb05b83a/node_modules/@nuxt/ui/dist/runtime/components/Carousel.vue')['default']
+    ULinkBase: typeof import('./../../node_modules/.pnpm/@nuxt+ui@3.0.1_@babel+parser@7.26.10_change-case@5.4.4_db0@0.3.1_better-sqlite3@11.9.1__74e16b93b086ec0c3c8def6acb05b83a/node_modules/@nuxt/ui/dist/runtime/components/LinkBase.vue')['default']
+    UPagination: typeof import('./../../node_modules/.pnpm/@nuxt+ui@3.0.1_@babel+parser@7.26.10_change-case@5.4.4_db0@0.3.1_better-sqlite3@11.9.1__74e16b93b086ec0c3c8def6acb05b83a/node_modules/@nuxt/ui/dist/runtime/components/Pagination.vue')['default']
+    UStepper: typeof import('./../../node_modules/.pnpm/@nuxt+ui@3.0.1_@babel+parser@7.26.10_change-case@5.4.4_db0@0.3.1_better-sqlite3@11.9.1__74e16b93b086ec0c3c8def6acb05b83a/node_modules/@nuxt/ui/dist/runtime/components/Stepper.vue')['default']
     WelcomeItem: typeof import('./src/components/WelcomeItem.vue')['default']
   }
 }
