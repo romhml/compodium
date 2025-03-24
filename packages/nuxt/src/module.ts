@@ -3,7 +3,7 @@ import { defineNuxtModule, createResolver, addTemplate, addVitePlugin, logger, a
 import { colors } from 'consola/utils'
 import { joinURL } from 'ufo'
 import { version } from '../package.json'
-
+import { defu } from 'defu'
 import { compodium } from '@compodium/core'
 import type { PluginOptions } from '@compodium/core'
 
@@ -40,6 +40,10 @@ export default defineNuxtModule<ModuleOptions>({
     nuxt.hooks.hookOnce('pages:extend', (pages) => {
       if (pages.length) pages.push({ path: '/__compodium__/renderer', file: resolve('./runtime/renderer-placeholder.vue') })
     })
+
+    if (nuxt.options.experimental?.typedPages) {
+      nuxt.options.routeRules = defu(nuxt.options.routeRules, { '/__compodium__/**': { ssr: false } })
+    }
 
     nuxt.hooks.hookOnce('components:dirs', async (dirs) => {
       addVitePlugin(compodium({
