@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Component, ComponentExample, CompodiumMeta, ComponentCollection, PropertyMeta } from '@compodium/core'
-import { useColorMode, useDebounceFn } from '@vueuse/core'
+import { StorageSerializers, useColorMode, useDebounceFn, useStorage } from '@vueuse/core'
 import { useFuse } from '@vueuse/integrations/useFuse'
 import type { ComboItem } from '../components/ComboInput.vue'
 import { getEnumOptions } from '~/utils/enum'
@@ -31,17 +31,27 @@ hooks.hook('renderer:mounted', () => {
 
 const { data: collections, refresh: refreshCollections } = useAsyncData(async () => {
   const collections = await $fetch<ComponentCollection[]>('/api/collections', { baseURL: '/__compodium__' })
-  if (!component.value) {
-    const fallbackCollection = collections?.find(c => c.components?.length > 0)
+
+  const isComponentFound = component.value && collections.some(col =>
+    col.components.some(comp =>
+      comp.pascalName === component.value.pascalName
+      || comp.examples?.some(ex => ex.pascalName === component.value.pascalName)
+    )
+  )
+
+  if (!isComponentFound) {
+    const fallbackCollection = collections.find(c => c.components.length > 0)
     component.value = fallbackCollection?.components?.[0]
     if (!component.value) {
       await navigateTo(`/welcome`)
     }
   }
+
   return collections
 })
 
-const component = shallowRef<(Component & Partial<ComponentExample>) | undefined>()
+const component = useStorage<(Component & Partial<ComponentExample>) | undefined>('__compodium-component', null, undefined, { serializer: StorageSerializers.object })
+
 const props = useState<Record<string, any>>('__component_state', () => ref({}))
 const defaultProps = shallowRef({})
 const compodiumDefaultProps = shallowRef({})
