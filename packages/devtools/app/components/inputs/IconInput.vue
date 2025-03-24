@@ -53,7 +53,7 @@ const visibleIcons = computed(() => {
 </script>
 
 <template>
-  <UPopover>
+  <UPopover mode="hover">
     <UButtonGroup>
       <UButton
         :icon="modelValue"

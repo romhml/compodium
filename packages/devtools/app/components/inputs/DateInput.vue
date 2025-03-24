@@ -21,7 +21,7 @@ const calendarDate = computed({
 </script>
 
 <template>
-  <UPopover>
+  <UPopover mode="hover">
     <UButton
       color="neutral"
       variant="subtle"

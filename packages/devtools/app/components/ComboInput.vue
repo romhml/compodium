@@ -30,7 +30,10 @@ function updateValue(item: ComboItem) {
 </script>
 
 <template>
-  <UPopover :ui="{ content: 'flex flex-wrap justify-center p-2 max-w-64' }">
+  <UPopover
+    :ui="{ content: 'flex flex-wrap justify-center p-2 max-w-64' }"
+    mode="hover"
+  >
     <UButton
       variant="link"
       color="neutral"
