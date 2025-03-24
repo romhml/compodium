@@ -40,7 +40,10 @@ export default defineNuxtModule<ModuleOptions>({
     nuxt.hooks.hookOnce('pages:extend', (pages) => {
       if (pages.length) pages.push({ path: '/__compodium__/renderer', file: resolve('./runtime/renderer-placeholder.vue') })
     })
-    nuxt.options.routeRules = defu(nuxt.options.routeRules, { '/__compodium__/**': { ssr: false } })
+
+    if (nuxt.options.experimental?.typedPages) {
+      nuxt.options.routeRules = defu(nuxt.options.routeRules, { '/__compodium__/**': { ssr: false } })
+    }
 
     nuxt.hooks.hookOnce('components:dirs', async (dirs) => {
       addVitePlugin(compodium({
