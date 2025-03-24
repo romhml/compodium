@@ -10,6 +10,13 @@ useAsyncData('__compodium-fetch-colors', async () => {
   if (colors) appConfig.ui!.colors = { ...appConfig.ui!.colors, ...colors as any }
   return true
 })
+
+onMounted(() => {
+  // Forward keyboard events to the devtools window so shortcuts like Meta+K works in Compodium.
+  if (window?.parent) {
+    window.addEventListener('keydown', e => window.parent.dispatchEvent(new KeyboardEvent('keydown', e)))
+  }
+})
 </script>
 
 <template>
