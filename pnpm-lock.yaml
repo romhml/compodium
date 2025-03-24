@@ -306,8 +306,6 @@ importers:
         specifier: '>=3.2.11'
         version: 6.2.2(@types/node@22.13.12)(jiti@2.4.2)(lightningcss@1.29.2)(terser@5.39.0)(yaml@2.7.0)
 
-  playground: {}
-
   playgrounds/nuxt:
     dependencies:
       '@compodium/nuxt':
