@@ -1,5 +1,78 @@
 # Changelog
 
+## v0.1.0-beta.7
+
+[compare changes](https://github.com/romhml/compodium/compare/v0.1.0-beta.4...v0.1.0-beta.7)
+
+### 🚀 Enhancements
+
+- Vue support ([#29](https://github.com/romhml/compodium/pull/29))
+- **examples:** Add library specific wrapper component ([9a6b589](https://github.com/romhml/compodium/commit/9a6b589))
+- **vue:** Add `mainPath` config ([c1514de](https://github.com/romhml/compodium/commit/c1514de))
+- **core:** Remove peerDependency to @nuxt/schema ([f7cfb59](https://github.com/romhml/compodium/commit/f7cfb59))
+- **devtools:** Update welcome screen ([f0628f5](https://github.com/romhml/compodium/commit/f0628f5))
+- **devtools:** Update logo ([1aa72de](https://github.com/romhml/compodium/commit/1aa72de))
+
+### 🩹 Fixes
+
+- Remove global style in renderer ([#24](https://github.com/romhml/compodium/pull/24))
+- Separate component default props from compodium's defaults ([8826767](https://github.com/romhml/compodium/commit/8826767))
+- Module types ([3a70907](https://github.com/romhml/compodium/commit/3a70907))
+- Vue-tsc resolution ([376d795](https://github.com/romhml/compodium/commit/376d795))
+- Module build ([541212c](https://github.com/romhml/compodium/commit/541212c))
+- **docs:** Use black as primary color ([d3e1b3d](https://github.com/romhml/compodium/commit/d3e1b3d))
+- **vue:** Relative import resolution in virtual renderer ([3465f14](https://github.com/romhml/compodium/commit/3465f14))
+- **devtools:** Add collection name in search menu ([662d420](https://github.com/romhml/compodium/commit/662d420))
+- **devtools:** Hmr meta reload ([7b48357](https://github.com/romhml/compodium/commit/7b48357))
+- **devtools:** Hide empty collections ([91e7e73](https://github.com/romhml/compodium/commit/91e7e73))
+- Typechecks ([c8a771e](https://github.com/romhml/compodium/commit/c8a771e))
+- **vue:** Expose global types ([c37f00c](https://github.com/romhml/compodium/commit/c37f00c))
+- **vue:** HMR meta refresh issues on production build ([#40](https://github.com/romhml/compodium/pull/40))
+- **devtools:** Include combo input in touched check ([a77b211](https://github.com/romhml/compodium/commit/a77b211))
+- Ui library detection ([bd39839](https://github.com/romhml/compodium/commit/bd39839))
+- **core:** Include library collection prefix ([10ec477](https://github.com/romhml/compodium/commit/10ec477))
+- Generate devtools before tests ([0994740](https://github.com/romhml/compodium/commit/0994740))
+
+### 📖 Documentation
+
+- Remove broken demo link ([389737c](https://github.com/romhml/compodium/commit/389737c))
+- Init ([#38](https://github.com/romhml/compodium/pull/38))
+- Tweaks ([c14781e](https://github.com/romhml/compodium/commit/c14781e))
+- Tweaks ([9ce5f81](https://github.com/romhml/compodium/commit/9ce5f81))
+- Tweaks ([bd9f7d1](https://github.com/romhml/compodium/commit/bd9f7d1))
+- Update readme ([#41](https://github.com/romhml/compodium/pull/41))
+- Update readme badges ([7a10b53](https://github.com/romhml/compodium/commit/7a10b53))
+- Add demo ([df14cb8](https://github.com/romhml/compodium/commit/df14cb8))
+- **vue:** Remove deprecated settings ([99320b8](https://github.com/romhml/compodium/commit/99320b8))
+
+### 🏡 Chore
+
+- Improve monorepo and remove bundled dependencies ([#23](https://github.com/romhml/compodium/pull/23))
+- **release:** V0.1.0-beta.5 ([5da2446](https://github.com/romhml/compodium/commit/5da2446))
+- Remove tailwind resolutions ([2db8999](https://github.com/romhml/compodium/commit/2db8999))
+- Update resolutions ([249a03c](https://github.com/romhml/compodium/commit/249a03c))
+- Fix module build ([0784cc0](https://github.com/romhml/compodium/commit/0784cc0))
+- Upgrade to nuxt 3.16 and use pnpm catalog ([7d869d8](https://github.com/romhml/compodium/commit/7d869d8))
+- Init doc folder ([353407a](https://github.com/romhml/compodium/commit/353407a))
+- **vue:** Remove rootDir option ([47f5254](https://github.com/romhml/compodium/commit/47f5254))
+- **release:** V0.1.0-beta.6 ([9d300f9](https://github.com/romhml/compodium/commit/9d300f9))
+- Setup vitest workspace ([9d52ba7](https://github.com/romhml/compodium/commit/9d52ba7))
+- Increase test timeout ([4d636f5](https://github.com/romhml/compodium/commit/4d636f5))
+- Increase test timeout ([ec2b0e8](https://github.com/romhml/compodium/commit/ec2b0e8))
+
+### ✅ Tests
+
+- Remove nuxt-ui test ([502f69b](https://github.com/romhml/compodium/commit/502f69b))
+
+### 🤖 CI
+
+- Add nuxthub workflow ([3bf347e](https://github.com/romhml/compodium/commit/3bf347e))
+
+### ❤️ Contributors
+
+- Romhml ([@romhml](https://github.com/romhml))
+- Romain Hamel ([@romhml](https://github.com/romhml))
+
 ## v0.1.0-beta.6
 
 [compare changes](https://github.com/romhml/compodium/compare/v0.1.0-beta.4...v0.1.0-beta.6)
