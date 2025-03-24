@@ -34,8 +34,8 @@ const { data: collections, refresh: refreshCollections } = useAsyncData(async ()
 
   const isComponentFound = component.value && collections.some(col =>
     col.components.some(comp =>
-      comp.pascalName === component.value.pascalName
-      || comp.examples?.some(ex => ex.pascalName === component.value.pascalName)
+      comp.pascalName === component.value?.pascalName
+      || comp.examples?.some(ex => ex.pascalName === component.value?.pascalName)
     )
   )
 
