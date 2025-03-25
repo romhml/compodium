@@ -105,7 +105,7 @@ pnpm dev
 pnpm lint
 
 # Run typechecks 
-pnpm typechecks 
+pnpm typecheck
 
 # Run Vitest
 pnpm test
