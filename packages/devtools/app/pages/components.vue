@@ -215,6 +215,25 @@ const { results: fuseResults } = useFuse<PropertyMeta>(propsSearchTerm, componen
 
 const visibleProps = computed(() => new Set(fuseResults.value?.map(result => result.item.name)))
 watch(component, () => propsSearchTerm.value = '')
+
+const iframe = ref(null)
+function preventIframeNavigationListener() {
+  const iframeDoc = iframe.value?.contentDocument
+  if (!iframeDoc) return
+
+  iframeDoc.addEventListener('click', (event) => {
+    const anchor = (event.target as HTMLElement).closest('a')
+    if (anchor && anchor.getAttribute('href')) {
+      event.preventDefault()
+    }
+  })
+}
+
+onMounted(() => {
+  if (iframe.value) {
+    iframe.value.addEventListener('load', preventIframeNavigationListener)
+  }
+})
 </script>
 
 <template>
@@ -314,6 +333,7 @@ watch(component, () => propsSearchTerm.value = '')
       <div class="absolute inset-0 flex justify-center items-center">
         <iframe
           v-show="rendererMounted"
+          ref="iframe"
           class="w-full h-full"
           src="/__compodium__/renderer"
         />
