@@ -4,6 +4,7 @@ const _props = defineProps<{
   string?: string
   number?: number
   boolean?: boolean
+  date?: Date
   primitiveUnion?: string | number | boolean
 
   // Arrays

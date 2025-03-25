@@ -21,10 +21,10 @@ const calendarDate = computed({
 </script>
 
 <template>
-  <UPopover mode="hover">
+  <UPopover>
     <UButton
       color="neutral"
-      variant="subtle"
+      variant="outline"
       icon="i-lucide-calendar"
     >
       {{ modelValue ? df.format(modelValue) : 'Select a date' }}
