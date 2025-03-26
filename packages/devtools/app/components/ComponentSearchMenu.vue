@@ -35,7 +35,7 @@ onKeyStroke(['b'], (e) => {
   if (e.metaKey || e.ctrlKey) {
     modalState.value = !modalState.value
   }
-}, { dedupe: true })
+}, { dedupe: true, eventName: 'keydown' })
 </script>
 
 <template>
