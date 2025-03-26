@@ -12,5 +12,11 @@
     "tailwindcss",
     "@tailwindcss/vite"
   ],
-  "postUpdateOptions": ["pnpmDedupe"]
+  "postUpdateOptions": ["pnpmDedupe"],
+  "packageRules": [
+    {
+      "matchDepTypes": ["peerDependencies"],
+      "enabled": false
+    }
+  ]
 }
