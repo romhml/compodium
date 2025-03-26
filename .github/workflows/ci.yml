@@ -40,7 +40,7 @@ jobs:
         run: pnpm test --testTimeout 5000
 
       - name: Bump version
-        run: pnpm jiti ./scripts/bump.ts {{ github.sha }}
+        run: pnpm jiti ./scripts/bump.ts 0.0.0-${{ github.sha }}
 
       - name: Publish
         run: pnpx pkg-pr-new publish --no-template --pnpm './packages/*'
