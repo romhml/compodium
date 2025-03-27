@@ -1,7 +1,7 @@
 import type { BuildConfig } from 'unbuild'
 
 export default {
-  clean: true,
+  clean: false,
   rollup: {
     esbuild: {
       target: 'esnext'

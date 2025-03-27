@@ -14,7 +14,6 @@ const treeItems = computed(() => {
     children: col.components?.map(comp => ({
       label: comp?.isExample ? comp.pascalName.replace(/Example$/, '') : comp.pascalName,
       active: modelValue.value?.pascalName === comp.pascalName,
-      defaultOpen: true,
       onSelect() {
         modelValue.value = comp
       },

@@ -8,6 +8,8 @@ import { getEnumOptions } from '~/utils/enum'
 const { hooks } = useCompodiumClient()
 const rendererMounted = ref(false)
 
+const events = ref<{ name: string, data?: any }[]>([])
+
 hooks.hook('renderer:mounted', () => {
   rendererMounted.value = true
   hooks.hook('component:changed', async (path: string) => {
@@ -25,6 +27,10 @@ hooks.hook('renderer:mounted', () => {
   hooks.hook('component:added', useDebounceFn(async () => {
     await refreshCollections()
   }, 300))
+
+  hooks.hook('component:event', async (payload) => {
+    events.value.unshift(payload)
+  })
 
   updateComponent()
 })
@@ -57,7 +63,10 @@ const defaultProps = shallowRef({})
 const compodiumDefaultProps = shallowRef({})
 const touched = ref(false)
 
-watch(component, () => touched.value = false)
+watch(component, () => {
+  touched.value = false
+  events.value = []
+})
 
 function getDefaultProps(meta: CompodiumMeta): Record<string, any> {
   return meta.props?.reduce((acc: Record<string, any>, prop: any) => {
@@ -121,7 +130,8 @@ async function updateComponent() {
   await hooks.callHook('renderer:update-component', {
     path: component.value.realPath,
     props: props.value,
-    wrapper: component.value?.wrapperComponent
+    wrapper: component.value?.wrapperComponent,
+    events: componentMeta.value?.events
   })
 
   await hooks.callHook('renderer:update-combo', { props: comboProps.value?.filter(Boolean) as ComboItem[] ?? [] })
@@ -187,6 +197,7 @@ const isDark = computed({
 const tabs = computed(() => {
   return [
     { label: 'Props', slot: 'props', icon: 'lucide:settings' },
+    { label: 'Events', slot: 'events', icon: 'lucide:chart-no-axes-gantt' },
     { label: 'Code', slot: 'code', icon: 'lucide:code' }
   ]
 })
@@ -434,6 +445,10 @@ onMounted(() => {
               />
             </div>
           </div>
+        </template>
+
+        <template #events>
+          <ComponentEvents :events="events" />
         </template>
 
         <template #code>

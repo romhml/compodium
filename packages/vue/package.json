@@ -33,7 +33,7 @@
     "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
-    "vite": ">=3.2.11"
+    "vite": ">=6"
   },
   "dependencies": {
     "@compodium/core": "workspace:^",

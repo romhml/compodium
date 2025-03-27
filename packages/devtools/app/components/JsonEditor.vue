@@ -2,9 +2,16 @@
 import JsonEditorVue from 'json-editor-vue'
 import { Mode } from 'vanilla-jsoneditor'
 
+defineProps<{
+  readonly?: boolean
+}>()
+
 const modelValue = defineModel<Record<string, any>>({ default: () => {} })
 
+watch(modelValue, () => jsonValue.value = modelValue.value)
+
 const jsonValue = shallowRef(modelValue.value)
+
 watch(jsonValue, (value) => {
   if (value && typeof value === 'object') {
     modelValue.value = value
@@ -24,6 +31,7 @@ watch(jsonValue, (value) => {
       :status-bar="false"
       :indentation="2"
       :tab-size="2"
+      :read-only="readonly"
     />
   </div>
 </template>
@@ -40,7 +48,7 @@ watch(jsonValue, (value) => {
   /* over all fonts, sizes, and colors */
   --jse-theme-color: var(--ui-primary);
   --jse-theme-color-highlight: var(--ui-primary);
-  --jse-background-color: var(--ui-bg);
+  --jse-background-color: rgba(var(--ui-bg-elevated), 0.5);
   --jse-text-color: var(--ui-text);
   --jse-text-color-inverse: var(--ui-text-inverted);
 
@@ -163,7 +171,16 @@ watch(jsonValue, (value) => {
   --jse-delimiter-color: #89DDFF; /* Delimiter color */
 }
 
+.json-editor .cm-gutters {
+  visibility: hidden;
+  width: 0px;
+}
+
 .json-editor .cm-gutter-lint {
+  width: 0px;
+}
+
+.json-editor .cm-gutter {
   visibility: hidden;
   width: 0px;
 }

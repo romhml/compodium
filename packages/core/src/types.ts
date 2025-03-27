@@ -102,6 +102,7 @@ export type CompodiumMeta<T = Record<string, any>> = {
     defaultProps?: Partial<T>
   }
   props: PropertyMeta[]
+  events: string[]
 }
 
 export type PropSchema = {
@@ -162,11 +163,14 @@ export interface CompodiumHooks {
   // Triggered when a component has been deleted
   'component:removed': (path: string) => void
 
+  // Triggered when a component event is triggered
+  'component:event': (payload: { name: string, data: any }) => void
+
   // Called after the renderer has mounted
   'renderer:mounted': () => void
 
   // Update the renderer component
-  'renderer:update-component': (payload: { path: string, props: Record<string, any>, wrapper?: string }) => void
+  'renderer:update-component': (payload: { path: string, props: Record<string, any>, events?: string[], wrapper?: string }) => void
 
   // Update the renderer props
   'renderer:update-props': (payload: { props: Record<string, any> }) => void
