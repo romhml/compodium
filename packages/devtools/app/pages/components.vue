@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { Component, ComponentExample, CompodiumMeta, ComponentCollection, PropertyMeta } from '@compodium/core'
 import { StorageSerializers, useColorMode, useDebounceFn, useStorage } from '@vueuse/core'
-import { useFuse } from '@vueuse/integrations/useFuse'
 import type { ComboItem } from '../components/ComboInput.vue'
 import { getEnumOptions } from '~/utils/enum'
 
@@ -201,31 +200,6 @@ const tabs = computed(() => {
     { label: 'Code', slot: 'code', icon: 'lucide:code' }
   ]
 })
-
-const isRotated = ref(false)
-function onResetState() {
-  if (isRotated.value) return
-  setTimeout(() => isRotated.value = false, 500)
-  isRotated.value = true
-  props.value = { ...defaultProps.value, ...compodiumDefaultProps.value }
-  touched.value = false
-  updatePropsDebounced()
-}
-
-const componentProps = computed(() => componentMeta.value?.props ?? [])
-const propsSearchTerm = ref()
-
-const { results: fuseResults } = useFuse<PropertyMeta>(propsSearchTerm, componentProps, {
-  fuseOptions: {
-    ignoreLocation: true,
-    threshold: 0.1,
-    keys: ['name', 'description']
-  },
-  matchAllWhenSearchEmpty: true
-})
-
-const visibleProps = computed(() => new Set(fuseResults.value?.map(result => result.item.name)))
-watch(component, () => propsSearchTerm.value = '')
 </script>
 
 <template>
@@ -345,86 +319,16 @@ watch(component, () => propsSearchTerm.value = '')
         :ui="{ content: 'grow relative overflow-y-scroll' }"
       >
         <template #props>
-          <div class="h-full">
-            <div class="bg-(--ui-bg) p-0.5 border-y border-(--ui-border) sticky top-0 z-1 flex gap-0.5">
-              <UInput
-                v-model="propsSearchTerm"
-                placeholder="Search props..."
-                icon="lucide:search"
-                variant="none"
-                class="w-full ml-1"
-              />
-              <UTooltip
-                text="Reset props"
-                :content="{ side: 'left' }"
-                title="JSON Editor"
-              >
-                <USlideover
-                  ref="modal"
-                  class="rounded"
-                  close-icon="i-lucide-arrow-right"
-                  :ui="{
-                    body: 'p-0 sm:p-0',
-                    header: 'px-4 py-1.5 sm:py-1.5 sm:px-4 min-h-8 flex justify-between',
-                    close: 'top-1'
-                  }"
-                  :overlay="false"
-                  title="JSON Editor"
-                >
-                  <template #close>
-                    <UButton
-                      size="sm"
-                      icon="i-lucide-arrow-right"
-                      color="neutral"
-                      variant="ghost"
-                    />
-                  </template>
-                  <UButton
-                    icon="lucide:braces"
-                    variant="link"
-                    color="neutral"
-                    size="sm"
-                  />
-                  <template #body>
-                    <JsonEditor
-                      v-model="props"
-                      class="h-full"
-                      @update:model-value="updatePropsDebounced()"
-                    />
-                  </template>
-                </USlideover>
-                <UButton
-                  icon="lucide:rotate-cw"
-                  variant="link"
-                  color="neutral"
-                  class="rounded-full"
-                  size="sm"
-                  :class="{ 'animate-rotate': isRotated }"
-                  @click="onResetState"
-                />
-              </UTooltip>
-            </div>
-            <div
-              v-for="prop in componentMeta?.props"
-              v-show="visibleProps.has(prop.name)"
-              :key="prop.name"
-              class="grow px-3 py-2 border-b border-(--ui-border)"
-            >
-              <ComponentPropInput
-                v-model="props[prop.name]"
-                :schema="prop.schema"
-                :name="prop.name"
-                :description="prop.description"
-                inline
-                class="p-3 rounded"
-                :disabled="combo.includes(prop.name)"
-                @update:model-value="() => {
-                  touched = true
-                  updatePropsDebounced()
-                }"
-              />
-            </div>
-          </div>
+          <ComponentProps
+            v-model="props"
+            :meta="componentMeta"
+            :disabled="combo"
+            :default-value="{ ...defaultProps, ...compodiumDefaultProps }"
+            @update:model-value="() => {
+              touched = true
+              updatePropsDebounced()
+            }"
+          />
         </template>
 
         <template #events>
