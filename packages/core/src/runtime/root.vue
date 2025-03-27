@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, shallowRef, ref } from 'vue'
+import { onMounted, shallowRef, ref, computed, toRaw } from 'vue'
 import type { CompodiumHooks } from '@compodium/core'
 import { useColorMode, createReusableTemplate, onKeyStroke } from '@vueuse/core'
 import { joinURL } from 'ufo'
@@ -12,6 +12,17 @@ const props = shallowRef()
 const component = shallowRef()
 const wrapper = shallowRef()
 
+const events = shallowRef<string[]>()
+
+const eventHandlers = computed(() => {
+  return {
+    ...events.value?.reduce((acc, event) => {
+      acc[event] = (data: any) => hooks.value?.callHook('component:event', { name: event, data: toRaw(data) })
+      return acc
+    }, {} as Record<string, any>)
+  }
+})
+
 const combo = shallowRef<{ value: string, options: string[] }[]>([])
 
 async function importComponent(path: string) {
@@ -20,11 +31,12 @@ async function importComponent(path: string) {
   }
   return await import(/* @vite-ignore */ joinURL('/@fs/' + path)).then(c => c.default)
 }
-async function onUpdateComponent(payload: { path: string, props: Record<string, any>, wrapper?: string }) {
+async function onUpdateComponent(payload: Parameters<CompodiumHooks['renderer:update-component']>[0]) {
   combo.value = []
   component.value = null
   wrapper.value = null
   props.value = payload.props
+  events.value = payload.events
 
   component.value = await importComponent(payload.path)
   if (payload.wrapper) {
@@ -91,6 +103,7 @@ const [DefineTemplate, ReuseTemplate] = createReusableTemplate()
                 [combo[0]?.value]: combo1,
                 [combo[1]?.value]: combo2
               }"
+              v-on="eventHandlers"
             />
           </div>
         </div>
@@ -102,6 +115,7 @@ const [DefineTemplate, ReuseTemplate] = createReusableTemplate()
         :is="component"
         v-if="component"
         v-bind="props"
+        v-on="eventHandlers"
       />
     </template>
   </DefineTemplate>

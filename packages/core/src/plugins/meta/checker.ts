@@ -44,8 +44,8 @@ export function createChecker(dirs: ComponentsDir[]) {
           .map((sch: any) => stripeTypeScriptInternalTypesSchema(sch, true))
           .map(inferPropTypes),
 
-        compodium: meta.compodium
-        // events: meta.events.map(sch => stripeTypeScriptInternalTypesSchema(sch, true)),
+        compodium: meta.compodium,
+        events: meta.events.map((sch: any) => sch.name)
         // exposed: meta.exposed.map(sch => stripeTypeScriptInternalTypesSchema(sch, true)),
         // slots: meta.slots.map(sch => stripeTypeScriptInternalTypesSchema(sch, true))
       }
