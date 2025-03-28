@@ -1,5 +1,46 @@
 # Changelog
 
+## v0.1.0-beta.8
+
+[compare changes](https://github.com/romhml/compodium/compare/v0.1.0-beta.7...v0.1.0-beta.8)
+
+### 🚀 Enhancements
+
+- **devtools:** Close components navigation menu by default ([0477554](https://github.com/romhml/compodium/commit/0477554))
+- Add component events tab ([eefc5d8](https://github.com/romhml/compodium/commit/eefc5d8))
+- **examples:** Improve ui form and slider examples ([c2edfa5](https://github.com/romhml/compodium/commit/c2edfa5))
+
+### 🩹 Fixes
+
+- Persist current component between page refresh ([95dd658](https://github.com/romhml/compodium/commit/95dd658))
+- Typechecks ([4ae4b36](https://github.com/romhml/compodium/commit/4ae4b36))
+- **devtools:** Removed useless overflow css ([326ebdd](https://github.com/romhml/compodium/commit/326ebdd))
+- **devtools:** Forward keyboard events to main devtools window ([916ffee](https://github.com/romhml/compodium/commit/916ffee))
+- **devtools:** Change popover mode to hover ([1333fb1](https://github.com/romhml/compodium/commit/1333fb1))
+- **nuxt:** Disable ssr on component renderer ([#45](https://github.com/romhml/compodium/pull/45))
+- **devtools:** Keyboard shortcuts ([fa4d151](https://github.com/romhml/compodium/commit/fa4d151))
+- **core:** Default preview overflow ([4f25b6f](https://github.com/romhml/compodium/commit/4f25b6f))
+- **devtools:** Component input styles ([c7472d0](https://github.com/romhml/compodium/commit/c7472d0))
+- **devtools:** Component search menu shortcut ([0b224fb](https://github.com/romhml/compodium/commit/0b224fb))
+- **devtools:** Remove parent keyboard forward ([068c0c9](https://github.com/romhml/compodium/commit/068c0c9))
+- **devtools:** Forward keyboard events to iframe parent ([2eed358](https://github.com/romhml/compodium/commit/2eed358))
+
+### 💅 Refactors
+
+- **devtools:** Enable pre-rendering and remove spaLoadingTemplate ([cef1a20](https://github.com/romhml/compodium/commit/cef1a20))
+- **devtools:** Move props tab to a component ([45e5b96](https://github.com/romhml/compodium/commit/45e5b96))
+
+### 🏡 Chore
+
+- Bump version before pkg.pr.new publish ([aadfc35](https://github.com/romhml/compodium/commit/aadfc35))
+- Bump version before pkg.pr.new publish ([185ece2](https://github.com/romhml/compodium/commit/185ece2))
+- **renovate:** Ignore peerDependencies ([d096bdf](https://github.com/romhml/compodium/commit/d096bdf))
+
+### ❤️ Contributors
+
+- Romhml ([@romhml](https://github.com/romhml))
+- Romain Hamel ([@romhml](https://github.com/romhml))
+
 ## v0.1.0-beta.7
 
 [compare changes](https://github.com/romhml/compodium/compare/v0.1.0-beta.4...v0.1.0-beta.7)
