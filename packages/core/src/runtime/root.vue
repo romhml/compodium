@@ -75,7 +75,7 @@ onMounted(() => {
   if (window.parent) {
     onKeyStroke(true, (e) => {
       window.parent.dispatchEvent(new KeyboardEvent('keydown', e))
-    }, { dedupe: true, eventName: 'keydown' })
+    }, { eventName: 'keydown' })
   }
 })
 
