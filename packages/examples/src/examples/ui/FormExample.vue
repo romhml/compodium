@@ -27,7 +27,10 @@ function validate(data: Partial<typeof state>) {
       name="password"
       label="Password"
     >
-      <UInput v-model="state.password" />
+      <UInput
+        v-model="state.password"
+        type="password"
+      />
     </UFormField>
     <UButton type="submit">
       Submit

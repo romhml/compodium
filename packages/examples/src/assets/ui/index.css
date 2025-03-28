@@ -52,6 +52,9 @@
 .w-xs {
   width: var(--container-xs);
 }
+.min-w-56 {
+  min-width: calc(var(--spacing) * 56);
+}
 .min-w-60 {
   min-width: calc(var(--spacing) * 60);
 }
