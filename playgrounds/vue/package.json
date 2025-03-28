@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@compodium/vue": "workspace:^",
-    "@nuxt/ui": "3.0.1",
+    "@nuxt/ui": "3.0.2",
     "vue": "catalog:"
   },
   "devDependencies": {
