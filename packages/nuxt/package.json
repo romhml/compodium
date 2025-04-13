@@ -36,10 +36,10 @@
     "@nuxt/kit": "catalog:",
     "consola": "^3.4.2",
     "defu": "^6.1.4",
-    "ufo": "^1.5.4"
+    "ufo": "^1.6.1"
   },
   "devDependencies": {
-    "@nuxt/module-builder": "^1.0.0",
+    "@nuxt/module-builder": "^1.0.1",
     "@nuxt/schema": "catalog:",
     "nuxt": "catalog: ",
     "pathe": "^2.0.3"
