@@ -29,6 +29,7 @@ overrides:
   '@compodium/nuxt': workspace:^
   '@compodium/vue': workspace:^
   typescript: 5.6.3
+  unplugin-ast: 0.14.4
   vue-tsc: 2.2.0
 
 importers:
@@ -135,8 +136,8 @@ importers:
         specifier: ^2.3.2
         version: 2.3.2
       unplugin-ast:
-        specifier: ^0.14.6
-        version: 0.14.6
+        specifier: 0.14.4
+        version: 0.14.4
       vite:
         specifier: '>=6'
         version: 6.2.6(@types/node@22.14.1)(jiti@2.4.2)(lightningcss@1.29.2)(terser@5.39.0)(yaml@2.7.1)
@@ -4249,8 +4250,8 @@ packages:
     resolution: {integrity: sha512-ub9iytsEbT7Yw/Pd29mSo/cNQpaEu67zR1VVcXDiYjSFwzeBxNdTd0FMnSslLQXiRj8uGPzwsaoefrMD5XAmdw==}
     engines: {node: '>=16.14.0'}
 
-  magic-string-ast@0.9.1:
-    resolution: {integrity: sha512-18dv2ZlSSgJ/jDWlZGKfnDJx56ilNlYq9F7NnwuWTErsmYmqJ2TWE4l1o2zlUHBYUGBy3tIhPCC1gxq8M5HkMA==}
+  magic-string-ast@0.8.0:
+    resolution: {integrity: sha512-e9eH6YOYl2OuDd3fNt2ciFhj/l2vxJmGeWLLcY+0NcW6k0Xitq7XIxN2++QVVhswXeJLy95SjF8oVKRyJC95GQ==}
     engines: {node: '>=20.18.0'}
 
   magic-string@0.30.17:
@@ -5803,8 +5804,8 @@ packages:
     resolution: {integrity: sha512-gptHNQghINnc/vTGIk0SOFGFNXw7JVrlRUtConJRlvaw6DuX0wO5Jeko9sWrMBhh+PsYAZ7oXAiOnf/UKogyiw==}
     engines: {node: '>= 10.0.0'}
 
-  unplugin-ast@0.14.6:
-    resolution: {integrity: sha512-HdntpxAN8fWyJ28n8iRkRrez9UrxTPda27XzdEkI8tz0Cn0+fLrnN+8qHqHlzRWXxSPVP7M9eEJ5MeMwbbhy4g==}
+  unplugin-ast@0.14.4:
+    resolution: {integrity: sha512-9EWJqy9PblRP/7/6Fl2YSAXEuzkJmTMSmoWEd+NBlqHETDaYgd2hGrRNC2gHmz4Ec7lUVxeWKtowYmYuC+lJng==}
     engines: {node: '>=18.12.0'}
 
   unplugin-auto-import@19.1.2:
@@ -10781,7 +10782,7 @@ snapshots:
     dependencies:
       magic-string: 0.30.17
 
-  magic-string-ast@0.9.1:
+  magic-string-ast@0.8.0:
     dependencies:
       magic-string: 0.30.17
 
@@ -12992,12 +12993,13 @@ snapshots:
 
   universalify@2.0.1: {}
 
-  unplugin-ast@0.14.6:
+  unplugin-ast@0.14.4:
     dependencies:
       '@babel/generator': 7.27.0
       ast-kit: 1.4.2
-      magic-string-ast: 0.9.1
+      magic-string-ast: 0.8.0
       unplugin: 2.3.2
+      unplugin-utils: 0.2.4
 
   unplugin-auto-import@19.1.2(@nuxt/kit@3.16.2(magicast@0.3.5))(@vueuse/core@13.1.0(vue@3.5.13(typescript@5.6.3))):
     dependencies:
