@@ -29,7 +29,6 @@ overrides:
   '@compodium/nuxt': workspace:^
   '@compodium/vue': workspace:^
   typescript: 5.6.3
-  unplugin-ast: 0.14.4
   vue-tsc: 2.2.0
 
 importers:

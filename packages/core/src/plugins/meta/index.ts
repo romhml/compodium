@@ -6,26 +6,22 @@ import type { VitePlugin } from 'unplugin'
 import { resolve } from 'pathe'
 
 import AST from 'unplugin-ast/vite'
-import type { Transformer } from 'unplugin-ast'
-import type { CallExpression } from '@babel/types'
-
-const RemoveFunction = (
-  functionNames: string[]
-): Transformer<CallExpression> => ({
-  onNode: node =>
-    node.type === 'CallExpression'
-    && node.callee.type === 'Identifier'
-    && functionNames.includes(node.callee.name),
-
-  transform() {
-    return null
-  }
-})
 
 export function extendMetaPlugin(_config: PluginConfig): VitePlugin {
   return AST({
     include: [/\.[jt]sx?$/, /\.vue$/],
-    transformer: [RemoveFunction(['extendCompodiumMeta'])]
+    transformer: [
+      {
+        onNode(node) {
+          return node.type === 'CallExpression'
+            && node.callee.type === 'Identifier'
+            && node.callee.name === 'extendCompodiumMeta'
+        },
+        transform() {
+          return null
+        }
+      }
+    ]
   })
 }
 
