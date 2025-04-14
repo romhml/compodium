@@ -26,6 +26,8 @@ const inputTypes: Record<PropInputType, Component> = {
 
 <script setup lang="ts">
 const props = defineProps<{ name?: string, schema: PropSchema[], description?: string, disabled?: boolean, inline?: boolean, hideLabel?: boolean }>()
+
+const items = computed(() => props.schema?.map(s => s.type))
 const modelValue = defineModel<any>()
 
 const currentType = ref()
@@ -74,11 +76,9 @@ const [DefineDescription, ReuseDescription] = createReusableTemplate()
       <USelect
         v-if="schema?.length > 1"
         v-model="currentType"
+        :items="items"
         variant="none"
         size="sm"
-        :items="schema"
-        label-key="type"
-        value-key="type"
         :trailing-icon="undefined"
         class="font-medium text-ellipsis truncate max-w-50 py-0.5 px-1.5 font-mono bg-(--ui-bg-elevated)/50 border border-(--ui-border)"
         @update:model-value="modelValue = undefined"
