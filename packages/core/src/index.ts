@@ -1,6 +1,7 @@
 import { joinURL } from 'ufo'
 import AST from 'unplugin-ast/vite'
-import { RemoveWrapperFunction } from 'unplugin-ast/transformers'
+import type { Transformer } from 'unplugin-ast'
+import type { CallExpression } from '@babel/types'
 
 import { libraryCollections as libraryCollectionsConfig } from '@compodium/examples'
 import { collectionsPlugin } from './plugins/collections'
@@ -13,6 +14,19 @@ import { iconifyPlugin } from './plugins/iconify'
 import type { Collection, PluginConfig, PluginOptions } from './types'
 
 export * from './types'
+
+const RemoveFunction = (
+  functionNames: string[]
+): Transformer<CallExpression> => ({
+  onNode: node =>
+    node.type === 'CallExpression'
+    && node.callee.type === 'Identifier'
+    && functionNames.includes(node.callee.name),
+
+  transform() {
+    return null
+  }
+})
 
 export const compodium = /* #__PURE__ */ (options: PluginOptions) => {
   const exampleDir = {
@@ -66,8 +80,8 @@ export const compodium = /* #__PURE__ */ (options: PluginOptions) => {
     iconifyPlugin(config),
     colorsPlugin(config),
     AST({
-      include: [/\.[jt]sx?$/, /\.vue$/],
-      transformer: [RemoveWrapperFunction(['extendCompodiumMeta'])]
+      include: [/\.[jt]sx?$/],
+      transformer: [RemoveFunction(['extendCompodiumMeta'])]
     })
   ]
 }
