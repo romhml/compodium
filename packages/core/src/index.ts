@@ -2,7 +2,7 @@ import { joinURL } from 'ufo'
 
 import { libraryCollections as libraryCollectionsConfig } from '@compodium/examples'
 import { collectionsPlugin } from './plugins/collections'
-import { metaPlugin } from './plugins/meta'
+import { extendMetaPlugin, metaPlugin } from './plugins/meta'
 import { examplePlugin } from './plugins/examples'
 import { devtoolsPlugin } from './plugins/devtools'
 import { colorsPlugin } from './plugins/colors'
@@ -59,6 +59,7 @@ export const compodium = /* #__PURE__ */ (options: PluginOptions) => {
   return [
     collectionsPlugin(config),
     metaPlugin(config),
+    extendMetaPlugin(config),
     devtoolsPlugin(config),
     examplePlugin(config),
     iconifyPlugin(config),

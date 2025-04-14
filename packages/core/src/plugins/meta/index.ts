@@ -22,7 +22,14 @@ const RemoveFunction = (
   }
 })
 
-export function metaPlugin(config: PluginConfig): VitePlugin[] {
+export function extendMetaPlugin(_config: PluginConfig): VitePlugin {
+  return AST({
+    include: [/\.[jt]sx?$/, /\.vue$/],
+    transformer: [RemoveFunction(['extendCompodiumMeta'])]
+  })
+}
+
+export function metaPlugin(config: PluginConfig): VitePlugin {
   const checkerDirs = [
     ...config.componentCollection.dirs,
     config.componentCollection.exampleDir,
@@ -32,74 +39,67 @@ export function metaPlugin(config: PluginConfig): VitePlugin[] {
 
   const checker = createChecker(checkerDirs)
 
-  return [
-    AST({
-      include: [/\.[jt]sx?$/, /\.vue$/],
-      transformer: [RemoveFunction(['extendCompodiumMeta'])]
-    }),
+  return {
+    name: 'compodium:meta',
 
-    {
-      name: 'compodium:meta',
+    configureServer(server) {
+      server.middlewares.use('/__compodium__/api/meta', async (req, res) => {
+        try {
+          const url = new URL(req.url!, `http://${req.headers.host}`)
+          const componentPath = url.searchParams.get('component')
 
-      configureServer(server) {
-        server.middlewares.use('/__compodium__/api/meta', async (req, res) => {
-          try {
-            const url = new URL(req.url!, `http://${req.headers.host}`)
-            const componentPath = url.searchParams.get('component')
-
-            if (!componentPath) {
-              res.statusCode = 400
-              res.end(JSON.stringify({ error: 'Component path is required' }))
-              return
-            }
-
-            const meta = checker.getComponentMeta(componentPath)
-
-            if (!meta) {
-              res.statusCode = 404
-              res.end(JSON.stringify({ error: 'Component not found' }))
-              return
-            }
-
-            res.setHeader('Content-Type', 'application/json')
-            res.end(JSON.stringify(meta))
-          } catch {
-            res.statusCode = 500
-            res.end(JSON.stringify({ error: 'Failed to fetch metadata' }))
+          if (!componentPath) {
+            res.statusCode = 400
+            res.end(JSON.stringify({ error: 'Component path is required' }))
+            return
           }
-        })
 
-        const watchedPaths = [
-          ...config.componentCollection.dirs,
-          config.componentCollection.exampleDir
-        ].map(d => resolve(config.rootDir, d.path))
+          const meta = checker.getComponentMeta(componentPath)
 
-        // Watch for changes in example directory
-        const watcher = watch(watchedPaths, {
-          persistent: true,
-          awaitWriteFinish: {
-            stabilityThreshold: 200,
-            pollInterval: 100
+          if (!meta) {
+            res.statusCode = 404
+            res.end(JSON.stringify({ error: 'Component not found' }))
+            return
           }
-        })
 
-        watcher.on('add', async () => {
-          checker.reload()
-        })
+          res.setHeader('Content-Type', 'application/json')
+          res.end(JSON.stringify(meta))
+        } catch {
+          res.statusCode = 500
+          res.end(JSON.stringify({ error: 'Failed to fetch metadata' }))
+        }
+      })
 
-        watcher.on('change', async (filePath: string) => {
-          if (watchedPaths.find(p => filePath.startsWith(p))) {
-            const code = await readFile(filePath, 'utf-8')
-            checker.updateFile(filePath, code)
+      const watchedPaths = [
+        ...config.componentCollection.dirs,
+        config.componentCollection.exampleDir
+      ].map(d => resolve(config.rootDir, d.path))
 
-            server.ws.send({
-              type: 'custom',
-              event: 'compodium:hmr',
-              data: { path: filePath, event: 'component:changed' }
-            })
-          }
-        })
-      }
+      // Watch for changes in example directory
+      const watcher = watch(watchedPaths, {
+        persistent: true,
+        awaitWriteFinish: {
+          stabilityThreshold: 200,
+          pollInterval: 100
+        }
+      })
+
+      watcher.on('add', async () => {
+        checker.reload()
+      })
+
+      watcher.on('change', async (filePath: string) => {
+        if (watchedPaths.find(p => filePath.startsWith(p))) {
+          const code = await readFile(filePath, 'utf-8')
+          checker.updateFile(filePath, code)
+
+          server.ws.send({
+            type: 'custom',
+            event: 'compodium:hmr',
+            data: { path: filePath, event: 'component:changed' }
+          })
+        }
+      })
     }
-  ]
+  }
 }
