@@ -28,7 +28,7 @@
   "devDependencies": {
     "@compodium/core": "workspace:^",
     "@compodium/meta": "workspace:^",
-    "@iconify-json/lucide": "^1.2.36",
+    "@iconify-json/lucide": "^1.2.37",
     "@iconify/types": "^2.0.0",
     "@types/deep-eql": "^4.0.2"
   }
