@@ -5,6 +5,25 @@ import { watch } from 'chokidar'
 import type { VitePlugin } from 'unplugin'
 import { resolve } from 'pathe'
 
+import AST from 'unplugin-ast/vite'
+
+export function extendMetaPlugin(_config: PluginConfig): VitePlugin {
+  return AST({
+    include: [/\.[jt]sx?$/, /\.vue$/],
+    enforce: 'post',
+    transformer: [
+      {
+        onNode(node) {
+          return node.type === 'CallExpression'
+            && node.callee.type === 'Identifier'
+            && node.callee.name === 'extendCompodiumMeta'
+        },
+        transform: () => false
+      }
+    ]
+  })
+}
+
 export function metaPlugin(config: PluginConfig): VitePlugin {
   const checkerDirs = [
     ...config.componentCollection.dirs,
