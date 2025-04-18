@@ -3,7 +3,7 @@ import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueDevTools from 'vite-plugin-vue-devtools'
-import { compodium } from '@compodium/vue'
+import { compodium } from '../../packages/vue/src'
 import ui from '@nuxt/ui/vite'
 
 // https://vite.dev/config/
