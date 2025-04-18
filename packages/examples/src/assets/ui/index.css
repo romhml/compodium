@@ -1,5 +1,4 @@
-/*! tailwindcss v4.1.3 | MIT License | https://tailwindcss.com */
-@layer properties;
+/*! tailwindcss v4.0.14 | MIT License | https://tailwindcss.com */
 :root, :host {
   --spacing: 0.25rem;
   --container-xs: 20rem;
@@ -115,12 +114,4 @@
   syntax: "*";
   inherits: false;
   initial-value: solid;
-}
-@layer properties {
-  @supports ((-webkit-hyphens: none) and (not (margin-trim: inline))) or ((-moz-orient: inline) and (not (color:rgb(from red r g b)))) {
-    *, ::before, ::after, ::backdrop {
-      --tw-space-y-reverse: 0;
-      --tw-outline-style: solid;
-    }
-  }
 }
