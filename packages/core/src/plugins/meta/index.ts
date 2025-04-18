@@ -10,6 +10,7 @@ import AST from 'unplugin-ast/vite'
 export function extendMetaPlugin(_config: PluginConfig): VitePlugin {
   return AST({
     include: [/\.[jt]sx?$/, /\.vue$/],
+    enforce: 'post',
     transformer: [
       {
         onNode(node) {
@@ -17,9 +18,7 @@ export function extendMetaPlugin(_config: PluginConfig): VitePlugin {
             && node.callee.type === 'Identifier'
             && node.callee.name === 'extendCompodiumMeta'
         },
-        transform() {
-          return null
-        }
+        transform: () => false
       }
     ]
   })
