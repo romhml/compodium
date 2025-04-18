@@ -11,7 +11,7 @@
     "typecheck": "nuxt typecheck"
   },
   "dependencies": {
-    "@iconify-json/lucide": "^1.2.36",
+    "@iconify-json/lucide": "^1.2.37",
     "@iconify-json/simple-icons": "^1.2.32",
     "@iconify-json/vscode-icons": "^1.2.19",
     "@nuxt/content": "^3.4.0",
@@ -20,6 +20,6 @@
     "@nuxthub/core": "0.8.24",
     "nuxt": "catalog:",
     "nuxt-llms": "0.1.2",
-    "nuxt-og-image": "^5.1.1"
+    "nuxt-og-image": "^5.1.2"
   }
 }
