@@ -138,7 +138,7 @@ importers:
         specifier: ^2.3.2
         version: 2.3.2
       unplugin-ast:
-        specifier: 0.14.6
+        specifier: ^0.14.6
         version: 0.14.6
       vite:
         specifier: '>=6'
