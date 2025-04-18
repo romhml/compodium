@@ -37,7 +37,7 @@ jobs:
         run: pnpm typecheck
 
       - name: Test
-        run: pnpm test --testTimeout 10000
+        run: pnpm test --testTimeout 5000 --hookTimeout 20000
 
       - name: Bump version
         run: pnpm jiti ./scripts/bump.ts 0.0.0-${{ github.sha }}
