@@ -35,7 +35,8 @@
     "@compodium/meta": "workspace:^",
     "@compodium/nuxt": "workspace:^",
     "@compodium/vue": "workspace:^",
-    "vue-tsc": "2.2.0"
+    "vue-tsc": "2.2.0",
+    "typescript": "^5.7.3"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
