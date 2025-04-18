@@ -9,8 +9,7 @@ describe('custom components dirs', async () => {
   const rootDir = fileURLToPath(joinURL(dirname(import.meta.url), './fixtures/custom-component-dirs'))
   await setup({
     rootDir,
-    dev: true,
-    setupTimeout: 600_000
+    dev: true
   })
 
   describe('collections api', () => {

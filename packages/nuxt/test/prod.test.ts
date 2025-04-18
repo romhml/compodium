@@ -8,8 +8,7 @@ describe('prod', async () => {
   const rootDir = fileURLToPath(joinURL(dirname(import.meta.url), './fixtures/basic'))
   await setup({
     rootDir,
-    dev: false,
-    setupTimeout: 600_000
+    dev: false
   })
 
   it('renderer is not injected in production', async () => {

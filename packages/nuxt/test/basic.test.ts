@@ -11,7 +11,7 @@ describe('basic', async () => {
   await setup({
     rootDir,
     dev: true,
-    setupTimeout: 600_000
+    port: 4545
   })
 
   it('renders the index page', async () => {

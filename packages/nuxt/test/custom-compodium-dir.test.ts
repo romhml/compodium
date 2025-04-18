@@ -9,8 +9,7 @@ describe('custom compodium dir', async () => {
   const rootDir = fileURLToPath(joinURL(dirname(import.meta.url), './fixtures/custom-compodium-dir'))
   await setup({
     rootDir,
-    dev: true,
-    setupTimeout: 600_000
+    dev: true
   })
 
   describe('renderer', () => {
