@@ -1,6 +1,6 @@
 {
   "name": "@compodium/examples",
-  "version": "0.1.0-beta.8",
+  "version": "0.1.0-beta.9",
   "description": "Third party library examples for Compodium",
   "type": "module",
   "license": "MIT",
