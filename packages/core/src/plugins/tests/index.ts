@@ -48,6 +48,8 @@ export function testPlugin(config: PluginConfig): VitePlugin {
           name: 'compodium',
           include: [fileURLToPath(joinURL(dirname(import.meta.url), './compodium.spec.ts'))],
 
+          snapshotEnvironment: fileURLToPath(joinURL(dirname(import.meta.url), './snapshots.ts')),
+
           provide: {
             config: JSON.parse(JSON.stringify(config)),
             collections: JSON.parse(JSON.stringify(collections))

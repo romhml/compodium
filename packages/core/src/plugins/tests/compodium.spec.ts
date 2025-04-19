@@ -1,11 +1,11 @@
 import { describe, expect, inject, test } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { createChecker } from '../meta/checker'
-import type { PluginConfig } from '../../types'
+import type { ComponentCollection, PluginConfig } from '../../types'
 import { h } from 'vue'
 
 describe('Compodium', () => {
-  const collections = inject('collections')
+  const collections: ComponentCollection[] = inject('collections')
   const config: PluginConfig = inject('config')
 
   const checkerDirs = [
