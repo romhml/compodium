@@ -4,19 +4,27 @@ import { createChecker } from '../meta/checker'
 import type { ComponentCollection, PluginConfig } from '../../types'
 import { h } from 'vue'
 
-describe('Compodium', () => {
-  const collections: ComponentCollection[] = inject('collections')
-  const config: PluginConfig = inject('config')
+declare module 'vitest' {
+  interface ProvidedContext {
+    collections: ComponentCollection[]
+    config: PluginConfig
+    root: string
+  }
+}
 
-  const checkerDirs = [
-    ...config.componentCollection.dirs,
-    config.componentCollection.exampleDir,
-    ...config.libraryCollections.flatMap(c => c.dirs),
-    ...config.libraryCollections.map(c => c.exampleDir)
-  ]
+const collections = inject('collections')
+const config = inject('config')
 
-  const checker = createChecker(checkerDirs)
+const checkerDirs = [
+  ...config.componentCollection.dirs,
+  config.componentCollection.exampleDir,
+  ...config.libraryCollections.flatMap(c => c.dirs),
+  ...config.libraryCollections.map(c => c.exampleDir)
+]
 
+const checker = createChecker(checkerDirs)
+
+describe.skipIf(!config.tests || (typeof config.tests === 'object' && !config.tests?.snapshots))('Snapshots', () => {
   describe.each(collections.map(c => [c.name, c]))('%s', (_, col) => {
     describe.each(col.components.map(c => [c.pascalName, c]))('%s', (_, comp) => {
       // Read meta properties, render component and take snapshot

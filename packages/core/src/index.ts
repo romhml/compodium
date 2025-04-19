@@ -8,7 +8,6 @@ import { devtoolsPlugin } from './plugins/devtools'
 import { colorsPlugin } from './plugins/colors'
 import { iconifyPlugin } from './plugins/iconify'
 import { testPlugin } from './plugins/tests'
-
 import type { Collection, PluginConfig, PluginOptions } from './types'
 
 export * from './types'

@@ -11,6 +11,8 @@ export function testPlugin(config: PluginConfig): VitePlugin {
     name: 'compodium:tests',
     enforce: 'post',
     async configureVitest({ project, injectTestProjects }) {
+      if (!config.tests) return
+
       const collections = await Promise.all([config.componentCollection, ...config.libraryCollections].map(async (col) => {
         const components = await scanComponents(col.dirs, config.rootDir)
         const examples = await scanComponents([col.exampleDir], config.rootDir)
@@ -46,18 +48,19 @@ export function testPlugin(config: PluginConfig): VitePlugin {
 
         test: {
           name: 'compodium',
-          include: [fileURLToPath(joinURL(dirname(import.meta.url), './compodium.spec.ts'))],
+          include: [fileURLToPath(joinURL(dirname(import.meta.url), './spec.ts'))],
 
           snapshotEnvironment: fileURLToPath(joinURL(dirname(import.meta.url), './snapshots.ts')),
 
           provide: {
             config: JSON.parse(JSON.stringify(config)),
-            collections: JSON.parse(JSON.stringify(collections))
+            collections: JSON.parse(JSON.stringify(collections)),
+            root: joinURL(project.vite.config.root, config.dir)
           },
 
           globals: true,
           environment: 'happy-dom',
-          root: fileURLToPath(new URL('./', import.meta.url)),
+          root: joinURL(project.vite.config.root, config.dir),
 
           server: {
             deps: {

@@ -36,10 +36,11 @@
   },
   "peerDependencies": {
     "vite": ">=6",
+    "vitest": ">=3.1",
     "vue": ">=3"
   },
   "peerDependenciesMeta": {
-    "vite": {
+    "vitest": {
       "optional": true
     }
   },

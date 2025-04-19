@@ -1,14 +1,14 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Compodium > Components > CompodiumWelcomeExample > CompodiumWelcomeExample 1`] = `"<compodiumwelcome bounceit="true"></compodiumwelcome>"`;
+exports[`Snapshots > Components > CompodiumWelcomeExample > CompodiumWelcomeExample 1`] = `"<compodiumwelcome bounceit="true"></compodiumwelcome>"`;
 
-exports[`Compodium > Components > CompodiumWelcomeExample > CompodiumWelcomeExampleWithShake 1`] = `"<compodiumwelcome shakeit="true"></compodiumwelcome>"`;
+exports[`Snapshots > Components > CompodiumWelcomeExample > CompodiumWelcomeExampleWithShake 1`] = `"<compodiumwelcome shakeit="true"></compodiumwelcome>"`;
 
-exports[`Compodium > Components > CompodiumWelcomeExample > CompodiumWelcomeExampleWithSpin 1`] = `"<compodiumwelcome spinit="true"></compodiumwelcome>"`;
+exports[`Snapshots > Components > CompodiumWelcomeExample > CompodiumWelcomeExampleWithSpin 1`] = `"<compodiumwelcome spinit="true"></compodiumwelcome>"`;
 
-exports[`Compodium > Components > SupportedProps > SupportedProps 1`] = `"<p>Supported prop types</p>"`;
+exports[`Snapshots > Components > SupportedProps > SupportedProps 1`] = `"<p>Supported prop types</p>"`;
 
-exports[`Compodium > Nuxt UI > UAccordionExample > UAccordionExample 1`] = `
+exports[`Snapshots > Nuxt UI > UAccordionExample > UAccordionExample 1`] = `
 "<div class="w-full">
   <div data-state="closed" data-orientation="vertical" class="border-b border-(--ui-border) last:border-b-0">
     <h3 data-orientation="vertical" data-state="closed" class="flex"><button type="button" aria-controls="" aria-expanded="false" data-state="closed" id="reka-accordion-trigger-v-0" data-reka-collection-item="" data-orientation="vertical" class="group flex-1 flex items-center gap-1.5 font-medium text-sm py-3.5 focus-visible:outline-(--ui-primary) min-w-0"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="shrink-0 size-5" width="1em" height="1em" viewBox="0 0 16 16"></svg><span class="text-start break-words">Getting Started</span><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="shrink-0 size-5 ms-auto group-data-[state=open]:rotate-180 transition-transform duration-200" width="1em" height="1em" viewBox="0 0 16 16"></svg></button></h3>
@@ -32,7 +32,7 @@ exports[`Compodium > Nuxt UI > UAccordionExample > UAccordionExample 1`] = `
 <!---->"
 `;
 
-exports[`Compodium > Nuxt UI > UAlertExample > UAlertExample 1`] = `
+exports[`Snapshots > Nuxt UI > UAlertExample > UAlertExample 1`] = `
 "<div data-orientation="vertical" class="relative overflow-hidden w-full rounded-[calc(var(--ui-radius)*2)] p-4 flex gap-2.5 items-start bg-(--ui-primary) text-(--ui-bg)">
   <!--v-if-->
   <div class="min-w-0 flex-1 flex flex-col">
@@ -45,25 +45,25 @@ exports[`Compodium > Nuxt UI > UAlertExample > UAlertExample 1`] = `
 <!---->"
 `;
 
-exports[`Compodium > Nuxt UI > UAvatarExample > UAvatarExample 1`] = `
+exports[`Snapshots > Nuxt UI > UAvatarExample > UAvatarExample 1`] = `
 "<span class="inline-flex items-center justify-center shrink-0 select-none overflow-hidden rounded-full align-middle bg-(--ui-bg-elevated) size-8 text-base"><img role="img" src="https://avatars.githubusercontent.com/u/739984?v=4" alt="Benjamin Canac" width="32" height="32" class="h-full w-full rounded-[inherit] object-cover"></span>
 <!---->"
 `;
 
-exports[`Compodium > Nuxt UI > UAvatarGroupExample > UAvatarGroupExample 1`] = `
+exports[`Snapshots > Nuxt UI > UAvatarGroupExample > UAvatarGroupExample 1`] = `
 "<div class="inline-flex flex-row-reverse justify-end">
   <!--v-if--><span class="inline-flex items-center justify-center shrink-0 select-none overflow-hidden align-middle bg-(--ui-bg-elevated) size-8 text-base relative rounded-full ring-(--ui-bg) first:me-0 ring-2 -me-1.5"><img role="img" src="https://github.com/noook.png" alt="Neil Richter" width="32" height="32" class="h-full w-full rounded-[inherit] object-cover"></span><span class="inline-flex items-center justify-center shrink-0 select-none overflow-hidden align-middle bg-(--ui-bg-elevated) size-8 text-base relative rounded-full ring-(--ui-bg) first:me-0 ring-2 -me-1.5"><img role="img" src="https://github.com/romhml.png" alt="Romain Hamel" width="32" height="32" class="h-full w-full rounded-[inherit] object-cover"></span><span class="inline-flex items-center justify-center shrink-0 select-none overflow-hidden align-middle bg-(--ui-bg-elevated) size-8 text-base relative rounded-full ring-(--ui-bg) first:me-0 ring-2 -me-1.5"><img role="img" src="https://github.com/benjamincanac.png" alt="Benjamin Canac" width="32" height="32" class="h-full w-full rounded-[inherit] object-cover"></span>
 </div>
 <!---->"
 `;
 
-exports[`Compodium > Nuxt UI > UBadgeExample > UBadgeExample 1`] = `
+exports[`Snapshots > Nuxt UI > UBadgeExample > UBadgeExample 1`] = `
 "<span class="font-medium inline-flex items-center text-xs px-2 py-1 gap-1 rounded-[calc(var(--ui-radius)*1.5)] bg-(--ui-primary) text-(--ui-bg)"><!--v-if--><span class="truncate">Badge</span>
 <!--v-if--></span>
 <!---->"
 `;
 
-exports[`Compodium > Nuxt UI > UBreadcrumbExample > UBreadcrumbExample 1`] = `
+exports[`Snapshots > Nuxt UI > UBreadcrumbExample > UBreadcrumbExample 1`] = `
 "<nav aria-label="breadcrumb" class="relative min-w-0">
   <ol class="flex items-center gap-1.5">
     <li class="flex min-w-0"><a href="/" class="group relative flex items-center gap-1.5 text-sm min-w-0 focus-visible:outline-(--ui-primary) text-(--ui-text-muted) font-medium hover:text-(--ui-text) transition-colors">
@@ -83,7 +83,7 @@ exports[`Compodium > Nuxt UI > UBreadcrumbExample > UBreadcrumbExample 1`] = `
 <!---->"
 `;
 
-exports[`Compodium > Nuxt UI > UButtonExample > UButtonExample 1`] = `
+exports[`Snapshots > Nuxt UI > UButtonExample > UButtonExample 1`] = `
 "<button type="button" class="rounded-[calc(var(--ui-radius)*1.5)] font-medium inline-flex items-center disabled:cursor-not-allowed aria-disabled:cursor-not-allowed disabled:opacity-75 aria-disabled:opacity-75 transition-colors px-2.5 py-1.5 text-sm gap-1.5 text-(--ui-bg) bg-(--ui-primary) hover:bg-(--ui-primary)/75 disabled:bg-(--ui-primary) aria-disabled:bg-(--ui-primary) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--ui-primary)">
   <!--v-if--><span class="truncate">Click me!</span>
   <!--v-if-->
@@ -91,7 +91,7 @@ exports[`Compodium > Nuxt UI > UButtonExample > UButtonExample 1`] = `
 <!---->"
 `;
 
-exports[`Compodium > Nuxt UI > UButtonGroupExample > UButtonGroupExample 1`] = `
+exports[`Snapshots > Nuxt UI > UButtonGroupExample > UButtonGroupExample 1`] = `
 "<div class="relative inline-flex -space-x-px">
   <div class="relative inline-flex items-center group"><input type="text" placeholder="Search..." class="w-full rounded-[calc(var(--ui-radius)*1.5)] border-0 placeholder:text-(--ui-text-dimmed) focus:outline-none disabled:cursor-not-allowed disabled:opacity-75 transition-colors group-not-only:group-first:rounded-e-none group-not-only:group-last:rounded-s-none group-not-last:group-not-first:rounded-none px-2.5 py-1.5 text-sm gap-1.5 text-(--ui-text-highlighted) bg-(--ui-bg) ring ring-inset ring-(--ui-border-accented) focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-(--ui-primary)" autocomplete="off">
     <!--v-if-->
@@ -104,7 +104,7 @@ exports[`Compodium > Nuxt UI > UButtonGroupExample > UButtonGroupExample 1`] = `
 <!---->"
 `;
 
-exports[`Compodium > Nuxt UI > UCalendar > UCalendar 1`] = `
+exports[`Snapshots > Nuxt UI > UCalendar > UCalendar 1`] = `
 "<div role="application" aria-label="Event Date, April 2025" dir="ltr">
   <div class="flex items-center justify-between"><button type="button" aria-label="Previous year" class="rounded-[calc(var(--ui-radius)*1.5)] font-medium inline-flex items-center disabled:cursor-not-allowed aria-disabled:cursor-not-allowed disabled:opacity-75 aria-disabled:opacity-75 transition-colors text-sm gap-1.5 text-(--ui-text) hover:bg-(--ui-bg-elevated) focus:outline-none focus-visible:bg-(--ui-bg-elevated) hover:disabled:bg-transparent dark:hover:disabled:bg-transparent hover:aria-disabled:bg-transparent dark:hover:aria-disabled:bg-transparent p-1.5"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="shrink-0 size-5" width="1em" height="1em" viewBox="0 0 16 16"></svg>
       <!--v-if-->
@@ -283,7 +283,7 @@ exports[`Compodium > Nuxt UI > UCalendar > UCalendar 1`] = `
 <!---->"
 `;
 
-exports[`Compodium > Nuxt UI > UCardExample > UCardExample 1`] = `
+exports[`Snapshots > Nuxt UI > UCardExample > UCardExample 1`] = `
 "<div class="rounded-[calc(var(--ui-radius)*2)] bg-(--ui-bg) ring ring-(--ui-border) divide-y divide-(--ui-border) w-96">
   <!--v-if-->
   <div class="p-4 sm:p-6">
@@ -294,7 +294,7 @@ exports[`Compodium > Nuxt UI > UCardExample > UCardExample 1`] = `
 <!---->"
 `;
 
-exports[`Compodium > Nuxt UI > UCarouselExample > UCarouselExample 1`] = `
+exports[`Snapshots > Nuxt UI > UCarouselExample > UCarouselExample 1`] = `
 "<div role="region" aria-roledescription="carousel" tabindex="0" class="relative focus:outline-none w-xs h-xs">
   <div class="overflow-hidden">
     <div class="flex items-start flex-row -ms-4" style="transform: translate3d(NaNpx,0px,0px);">
@@ -308,7 +308,7 @@ exports[`Compodium > Nuxt UI > UCarouselExample > UCarouselExample 1`] = `
 <!---->"
 `;
 
-exports[`Compodium > Nuxt UI > UCheckboxExample > UCheckboxExample 1`] = `
+exports[`Snapshots > Nuxt UI > UCheckboxExample > UCheckboxExample 1`] = `
 "<div class="relative flex items-start">
   <div class="flex items-center h-5"><button class="shrink-0 flex items-center justify-center rounded-(--ui-radius) text-(--ui-bg) ring ring-inset ring-(--ui-border-accented) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--ui-primary) size-4" id="v-0" role="checkbox" type="button" aria-checked="false" aria-required="false" data-state="unchecked">
       <!---->
@@ -321,12 +321,12 @@ exports[`Compodium > Nuxt UI > UCheckboxExample > UCheckboxExample 1`] = `
 <!---->"
 `;
 
-exports[`Compodium > Nuxt UI > UChipExample > UChipExample 1`] = `
+exports[`Snapshots > Nuxt UI > UChipExample > UChipExample 1`] = `
 "<div class="relative inline-flex items-center justify-center shrink-0"><span class="inline-flex items-center justify-center shrink-0 select-none overflow-hidden rounded-full align-middle bg-(--ui-bg-elevated) size-8 text-base"><img role="img" src="https://avatars.githubusercontent.com/u/739984?v=4" width="32" height="32" class="h-full w-full rounded-[inherit] object-cover"></span><span class="rounded-full ring ring-(--ui-bg) flex items-center justify-center text-(--ui-bg) font-medium whitespace-nowrap bg-(--ui-primary) h-[8px] min-w-[8px] text-[8px] top-0 right-0 absolute -translate-y-1/2 translate-x-1/2 transform"></span></div>
 <!---->"
 `;
 
-exports[`Compodium > Nuxt UI > UCollapsibleExample > UCollapsibleExample 1`] = `
+exports[`Snapshots > Nuxt UI > UCollapsibleExample > UCollapsibleExample 1`] = `
 "<div data-state="closed" class="w-48"><button type="button" aria-controls="" aria-expanded="false" data-state="closed" class="rounded-[calc(var(--ui-radius)*1.5)] font-medium inline-flex items-center disabled:cursor-not-allowed aria-disabled:cursor-not-allowed disabled:opacity-75 aria-disabled:opacity-75 transition-colors px-2.5 py-1.5 text-sm gap-1.5 w-full justify-center ring ring-inset ring-(--ui-border-accented) text-(--ui-text) bg-(--ui-bg) hover:bg-(--ui-bg-elevated) disabled:bg-(--ui-bg) aria-disabled:bg-(--ui-bg) focus:outline-none focus-visible:ring-2 focus-visible:ring-(--ui-border-inverted)">
     <!--v-if--><span class="truncate">Open Collapse</span>
     <!--v-if-->
@@ -338,23 +338,23 @@ exports[`Compodium > Nuxt UI > UCollapsibleExample > UCollapsibleExample 1`] = `
 <!---->"
 `;
 
-exports[`Compodium > Nuxt UI > UColorPicker > UColorPicker 1`] = `
-"<div data-v-7db478da="" class="data-[disabled]:opacity-75">
-  <div data-v-7db478da="" class="flex gap-4">
-    <div data-v-7db478da="" class="rounded-[calc(var(--ui-radius)*1.5)] w-42 h-42" style="background-color: #FF0000;">
-      <div data-v-7db478da="" class="w-full h-full relative rounded-[calc(var(--ui-radius)*1.2)]" data-color-picker-background="">
-        <div data-v-7db478da="" class="-translate-y-1/2 -translate-x-1/2 absolute size-4 ring-2 ring-(--color-white) rounded-full cursor-pointer data-[disabled]:cursor-not-allowed" style="background-color: #FFFFFF; left: 0%; top: 0%;"></div>
+exports[`Snapshots > Nuxt UI > UColorPicker > UColorPicker 1`] = `
+"<div data-v-a5ee3dad="" class="data-[disabled]:opacity-75">
+  <div data-v-a5ee3dad="" class="flex gap-4">
+    <div data-v-a5ee3dad="" class="rounded-[calc(var(--ui-radius)*1.5)] w-42 h-42" style="background-color: #FF0000;">
+      <div data-v-a5ee3dad="" class="w-full h-full relative rounded-[calc(var(--ui-radius)*1.2)]" data-color-picker-background="">
+        <div data-v-a5ee3dad="" class="-translate-y-1/2 -translate-x-1/2 absolute size-4 ring-2 ring-(--color-white) rounded-full cursor-pointer data-[disabled]:cursor-not-allowed" style="background-color: #FFFFFF; left: 0%; top: 0%;"></div>
       </div>
     </div>
-    <div data-v-7db478da="" class="w-[8px] relative rounded-[calc(var(--ui-radius)*1.5)] h-42" data-color-picker-track="">
-      <div data-v-7db478da="" class="absolute transform -translate-y-1/2 -translate-x-[4px] rtl:translate-x-[4px] size-4 rounded-full ring-2 ring-(--color-white) cursor-pointer data-[disabled]:cursor-not-allowed" style="background-color: #FF0000; top: 0%;"></div>
+    <div data-v-a5ee3dad="" class="w-[8px] relative rounded-[calc(var(--ui-radius)*1.5)] h-42" data-color-picker-track="">
+      <div data-v-a5ee3dad="" class="absolute transform -translate-y-1/2 -translate-x-[4px] rtl:translate-x-[4px] size-4 rounded-full ring-2 ring-(--color-white) cursor-pointer data-[disabled]:cursor-not-allowed" style="background-color: #FF0000; top: 0%;"></div>
     </div>
   </div>
 </div>
 <!---->"
 `;
 
-exports[`Compodium > Nuxt UI > UCommandPaletteExample > UCommandPaletteExample 1`] = `
+exports[`Snapshots > Nuxt UI > UCommandPaletteExample > UCommandPaletteExample 1`] = `
 "<div dir="ltr" class="flex flex-col min-h-0 min-w-0 divide-y divide-(--ui-border)">
   <div class="relative inline-flex items-center [&amp;>input]:h-12"><input type="text" placeholder="Type a command or search..." class="w-full rounded-[calc(var(--ui-radius)*1.5)] border-0 placeholder:text-(--ui-text-dimmed) focus:outline-none disabled:cursor-not-allowed disabled:opacity-75 transition-colors px-3 py-2 text-sm gap-2 text-(--ui-text-highlighted) bg-transparent ps-10" autocomplete="off" aria-disabled="false" value=""><span class="absolute inset-y-0 start-0 flex items-center ps-3"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="shrink-0 text-(--ui-text-dimmed) size-5" width="1em" height="1em" viewBox="0 0 16 16"></svg></span>
     <!--v-if-->
@@ -377,20 +377,20 @@ exports[`Compodium > Nuxt UI > UCommandPaletteExample > UCommandPaletteExample 1
 <!---->"
 `;
 
-exports[`Compodium > Nuxt UI > UContainerExample > UContainerExample 1`] = `
+exports[`Snapshots > Nuxt UI > UContainerExample > UContainerExample 1`] = `
 "<div class="w-full max-w-(--ui-container) mx-auto px-4 sm:px-6 lg:px-8">
   <div class="placeholder w-72 aspect-video"> Container </div>
 </div>
 <!---->"
 `;
 
-exports[`Compodium > Nuxt UI > UContextMenuExample > UContextMenuExample 1`] = `
+exports[`Snapshots > Nuxt UI > UContextMenuExample > UContextMenuExample 1`] = `
 "<div class="placeholder aspect-video w-72" data-state="closed" style="pointer-events: auto;"> Right click here </div>
 <!---->
 <!---->"
 `;
 
-exports[`Compodium > Nuxt UI > UDrawerExample > UDrawerExample 1`] = `
+exports[`Snapshots > Nuxt UI > UDrawerExample > UDrawerExample 1`] = `
 "<button type="button" aria-haspopup="dialog" aria-expanded="false" data-state="closed" class="rounded-[calc(var(--ui-radius)*1.5)] font-medium inline-flex items-center disabled:cursor-not-allowed aria-disabled:cursor-not-allowed disabled:opacity-75 aria-disabled:opacity-75 transition-colors px-2.5 py-1.5 text-sm gap-1.5 ring ring-inset ring-(--ui-border-accented) text-(--ui-text) bg-(--ui-bg) hover:bg-(--ui-bg-elevated) disabled:bg-(--ui-bg) aria-disabled:bg-(--ui-bg) focus:outline-none focus-visible:ring-2 focus-visible:ring-(--ui-border-inverted)">
   <!--v-if--><span class="truncate">Open Drawer</span>
   <!--v-if-->
@@ -399,7 +399,7 @@ exports[`Compodium > Nuxt UI > UDrawerExample > UDrawerExample 1`] = `
 <!---->"
 `;
 
-exports[`Compodium > Nuxt UI > UDropdownMenuExample > UDropdownMenuExample 1`] = `
+exports[`Snapshots > Nuxt UI > UDropdownMenuExample > UDropdownMenuExample 1`] = `
 "<button type="button" id="reka-dropdown-menu-trigger-v-0" aria-haspopup="menu" aria-expanded="false" data-state="closed" class="rounded-[calc(var(--ui-radius)*1.5)] font-medium inline-flex items-center disabled:cursor-not-allowed aria-disabled:cursor-not-allowed disabled:opacity-75 aria-disabled:opacity-75 transition-colors px-2.5 py-1.5 text-sm gap-1.5 ring ring-inset ring-(--ui-border-accented) text-(--ui-text) bg-(--ui-bg) hover:bg-(--ui-bg-elevated) disabled:bg-(--ui-bg) aria-disabled:bg-(--ui-bg) focus:outline-none focus-visible:ring-2 focus-visible:ring-(--ui-border-inverted)">
   <!--v-if--><span class="truncate">Open Menu</span>
   <!--v-if-->
@@ -408,7 +408,7 @@ exports[`Compodium > Nuxt UI > UDropdownMenuExample > UDropdownMenuExample 1`] =
 <!---->"
 `;
 
-exports[`Compodium > Nuxt UI > UFormExample > UFormExample 1`] = `
+exports[`Snapshots > Nuxt UI > UFormExample > UFormExample 1`] = `
 "<form id="v-0" class="space-y-4">
   <div class="text-sm">
     <div class="">
@@ -447,7 +447,7 @@ exports[`Compodium > Nuxt UI > UFormExample > UFormExample 1`] = `
 <!---->"
 `;
 
-exports[`Compodium > Nuxt UI > UFormFieldExample > UFormFieldExample 1`] = `
+exports[`Snapshots > Nuxt UI > UFormFieldExample > UFormFieldExample 1`] = `
 "<div class="text-sm">
   <div class="">
     <div class="flex content-center items-center justify-between"><label for="v-0" class="block font-medium text-(--ui-text)">Label</label>
@@ -466,12 +466,12 @@ exports[`Compodium > Nuxt UI > UFormFieldExample > UFormFieldExample 1`] = `
 <!---->"
 `;
 
-exports[`Compodium > Nuxt UI > UIconExample > UIconExample 1`] = `
+exports[`Snapshots > Nuxt UI > UIconExample > UIconExample 1`] = `
 "<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 16 16"></svg>
 <!---->"
 `;
 
-exports[`Compodium > Nuxt UI > UInput > UInput 1`] = `
+exports[`Snapshots > Nuxt UI > UInput > UInput 1`] = `
 "<div class="relative inline-flex items-center"><input type="text" class="w-full rounded-[calc(var(--ui-radius)*1.5)] border-0 placeholder:text-(--ui-text-dimmed) focus:outline-none disabled:cursor-not-allowed disabled:opacity-75 transition-colors px-2.5 py-1.5 text-sm gap-1.5 text-(--ui-text-highlighted) bg-(--ui-bg) ring ring-inset ring-(--ui-border-accented) focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-(--ui-primary)" autocomplete="off">
   <!--v-if-->
   <!--v-if-->
@@ -479,7 +479,7 @@ exports[`Compodium > Nuxt UI > UInput > UInput 1`] = `
 <!---->"
 `;
 
-exports[`Compodium > Nuxt UI > UInputMenuExample > UInputMenuExample 1`] = `
+exports[`Snapshots > Nuxt UI > UInputMenuExample > UInputMenuExample 1`] = `
 "<div dir="ltr" class="relative inline-flex items-center"><input aria-disabled="false" type="text" aria-expanded="false" aria-controls="" aria-autocomplete="list" role="combobox" autocomplete="false" class="rounded-[calc(var(--ui-radius)*1.5)] transition-colors px-2.5 py-1.5 text-sm gap-1.5 text-(--ui-text-highlighted) bg-(--ui-bg) ring ring-inset ring-(--ui-border-accented) w-full border-0 placeholder:text-(--ui-text-dimmed) focus:outline-none disabled:cursor-not-allowed disabled:opacity-75 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-(--ui-primary) pe-9" value="">
   <!--v-if--><button type="button" tabindex="-1" aria-label="Show popup" aria-haspopup="listbox" aria-expanded="false" aria-controls="" data-state="closed" aria-disabled="false" class="group absolute inset-y-0 end-0 flex items-center disabled:cursor-not-allowed disabled:opacity-75 pe-2.5"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="shrink-0 text-(--ui-text-dimmed) size-5" width="1em" height="1em" viewBox="0 0 16 16"></svg></button>
   <!---->
@@ -488,7 +488,7 @@ exports[`Compodium > Nuxt UI > UInputMenuExample > UInputMenuExample 1`] = `
 <!---->"
 `;
 
-exports[`Compodium > Nuxt UI > UInputNumber > UInputNumber 1`] = `
+exports[`Snapshots > Nuxt UI > UInputNumber > UInputNumber 1`] = `
 "<div class="relative inline-flex items-center" role="group"><input role="spinbutton" type="text" tabindex="0" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" aria-roledescription="Number field" class="w-full rounded-[calc(var(--ui-radius)*1.5)] border-0 placeholder:text-(--ui-text-dimmed) focus:outline-none disabled:cursor-not-allowed disabled:opacity-75 transition-colors py-1.5 text-sm gap-1.5 text-(--ui-text-highlighted) bg-(--ui-bg) ring ring-inset ring-(--ui-border-accented) text-center focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-(--ui-primary) px-9" value="">
   <div class="absolute flex items-center inset-y-0 end-0 pe-1"><button type="button" aria-label="Increment" tabindex="-1" class="rounded-[calc(var(--ui-radius)*1.5)] font-medium inline-flex items-center disabled:cursor-not-allowed aria-disabled:cursor-not-allowed disabled:opacity-75 aria-disabled:opacity-75 transition-colors text-sm gap-1.5 text-(--ui-primary) hover:text-(--ui-primary)/75 disabled:text-(--ui-primary) aria-disabled:text-(--ui-primary) focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-(--ui-primary) p-1.5"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="shrink-0 size-5" width="1em" height="1em" viewBox="0 0 16 16"></svg>
       <!--v-if-->
@@ -503,17 +503,17 @@ exports[`Compodium > Nuxt UI > UInputNumber > UInputNumber 1`] = `
 <!---->"
 `;
 
-exports[`Compodium > Nuxt UI > UKbdExample > UKbdExample 1`] = `
+exports[`Snapshots > Nuxt UI > UKbdExample > UKbdExample 1`] = `
 "<kbd class="inline-flex items-center justify-center px-1 rounded-(--ui-radius) font-medium font-sans bg-(--ui-bg) text-(--ui-text-highlighted) ring ring-inset ring-(--ui-border-accented) h-5 min-w-[20px] text-[11px]">K</kbd>
 <!---->"
 `;
 
-exports[`Compodium > Nuxt UI > ULinkExample > ULinkExample 1`] = `
+exports[`Snapshots > Nuxt UI > ULinkExample > ULinkExample 1`] = `
 "<button type="button" class="focus-visible:outline-(--ui-primary) text-(--ui-text-muted) hover:text-(--ui-text) transition-colors"> Link </button>
 <!---->"
 `;
 
-exports[`Compodium > Nuxt UI > UModalExample > UModalExample 1`] = `
+exports[`Snapshots > Nuxt UI > UModalExample > UModalExample 1`] = `
 "<button type="button" aria-haspopup="dialog" aria-expanded="false" data-state="closed" class="rounded-[calc(var(--ui-radius)*1.5)] font-medium inline-flex items-center disabled:cursor-not-allowed aria-disabled:cursor-not-allowed disabled:opacity-75 aria-disabled:opacity-75 transition-colors px-2.5 py-1.5 text-sm gap-1.5 ring ring-inset ring-(--ui-border-accented) text-(--ui-text) bg-(--ui-bg) hover:bg-(--ui-bg-elevated) disabled:bg-(--ui-bg) aria-disabled:bg-(--ui-bg) focus:outline-none focus-visible:ring-2 focus-visible:ring-(--ui-border-inverted)">
   <!--v-if--><span class="truncate">Open Modal</span>
   <!--v-if-->
@@ -522,7 +522,7 @@ exports[`Compodium > Nuxt UI > UModalExample > UModalExample 1`] = `
 <!---->"
 `;
 
-exports[`Compodium > Nuxt UI > UNavigationMenuExample > UNavigationMenuExample 1`] = `
+exports[`Snapshots > Nuxt UI > UNavigationMenuExample > UNavigationMenuExample 1`] = `
 "<nav aria-label="Main" data-orientation="horizontal" dir="ltr" data-reka-navigation-menu="" data-collapsed="false" class="relative flex gap-1.5 [&amp;>div]:min-w-0 items-center justify-between">
   <div style="position: relative;">
     <ul class="isolate min-w-0 flex items-center" data-orientation="horizontal">
@@ -555,7 +555,7 @@ exports[`Compodium > Nuxt UI > UNavigationMenuExample > UNavigationMenuExample 1
 <!---->"
 `;
 
-exports[`Compodium > Nuxt UI > UPaginationExample > UPaginationExample 1`] = `
+exports[`Snapshots > Nuxt UI > UPaginationExample > UPaginationExample 1`] = `
 "<nav>
   <div class="flex items-center gap-1"><button type="button" disabled="" aria-label="First Page" class="rounded-[calc(var(--ui-radius)*1.5)] font-medium inline-flex items-center disabled:cursor-not-allowed aria-disabled:cursor-not-allowed disabled:opacity-75 aria-disabled:opacity-75 transition-colors text-sm gap-1.5 ring ring-inset ring-(--ui-border-accented) text-(--ui-text) bg-(--ui-bg) hover:bg-(--ui-bg-elevated) disabled:bg-(--ui-bg) aria-disabled:bg-(--ui-bg) focus:outline-none focus-visible:ring-2 focus-visible:ring-(--ui-border-inverted) p-1.5"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="shrink-0 size-5" width="1em" height="1em" viewBox="0 0 16 16"></svg>
       <!--v-if-->
@@ -589,12 +589,12 @@ exports[`Compodium > Nuxt UI > UPaginationExample > UPaginationExample 1`] = `
 <!---->"
 `;
 
-exports[`Compodium > Nuxt UI > UPinInput > UPinInput 1`] = `
+exports[`Snapshots > Nuxt UI > UPinInput > UPinInput 1`] = `
 "<div class="relative inline-flex items-center gap-1.5" dir="ltr" data-complete=""><input autocapitalize="none" autocomplete="false" type="text" inputmode="text" placeholder="" data-complete="" aria-label="pin input 1 of 0" class="rounded-[calc(var(--ui-radius)*1.5)] border-0 placeholder:text-(--ui-text-dimmed) text-center focus:outline-none disabled:cursor-not-allowed disabled:opacity-75 transition-colors size-8 text-sm text-(--ui-text-highlighted) bg-(--ui-bg) ring ring-inset ring-(--ui-border-accented) focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-(--ui-primary)"><input autocapitalize="none" autocomplete="false" type="text" inputmode="text" placeholder="" data-complete="" aria-label="pin input 2 of 0" class="rounded-[calc(var(--ui-radius)*1.5)] border-0 placeholder:text-(--ui-text-dimmed) text-center focus:outline-none disabled:cursor-not-allowed disabled:opacity-75 transition-colors size-8 text-sm text-(--ui-text-highlighted) bg-(--ui-bg) ring ring-inset ring-(--ui-border-accented) focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-(--ui-primary)"><input autocapitalize="none" autocomplete="false" type="text" inputmode="text" placeholder="" data-complete="" aria-label="pin input 3 of 0" class="rounded-[calc(var(--ui-radius)*1.5)] border-0 placeholder:text-(--ui-text-dimmed) text-center focus:outline-none disabled:cursor-not-allowed disabled:opacity-75 transition-colors size-8 text-sm text-(--ui-text-highlighted) bg-(--ui-bg) ring ring-inset ring-(--ui-border-accented) focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-(--ui-primary)"><input autocapitalize="none" autocomplete="false" type="text" inputmode="text" placeholder="" data-complete="" aria-label="pin input 4 of 0" class="rounded-[calc(var(--ui-radius)*1.5)] border-0 placeholder:text-(--ui-text-dimmed) text-center focus:outline-none disabled:cursor-not-allowed disabled:opacity-75 transition-colors size-8 text-sm text-(--ui-text-highlighted) bg-(--ui-bg) ring ring-inset ring-(--ui-border-accented) focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-(--ui-primary)"><input autocapitalize="none" autocomplete="false" type="text" inputmode="text" placeholder="" data-complete="" aria-label="pin input 5 of 0" class="rounded-[calc(var(--ui-radius)*1.5)] border-0 placeholder:text-(--ui-text-dimmed) text-center focus:outline-none disabled:cursor-not-allowed disabled:opacity-75 transition-colors size-8 text-sm text-(--ui-text-highlighted) bg-(--ui-bg) ring ring-inset ring-(--ui-border-accented) focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-(--ui-primary)"><input aria-hidden="true" tabindex="-1" style="position: absolute; border: 0px; width: 1px; height: 1px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); clip-path: inset(50%); white-space: nowrap; word-wrap: normal;" name="" value=""></div>
 <!---->"
 `;
 
-exports[`Compodium > Nuxt UI > UPopoverExample > UPopoverExample 1`] = `
+exports[`Snapshots > Nuxt UI > UPopoverExample > UPopoverExample 1`] = `
 "<button type="button" id="reka-popover-trigger-v-0" aria-haspopup="dialog" aria-expanded="false" aria-controls="" data-state="closed" class="rounded-[calc(var(--ui-radius)*1.5)] font-medium inline-flex items-center disabled:cursor-not-allowed aria-disabled:cursor-not-allowed disabled:opacity-75 aria-disabled:opacity-75 transition-colors px-2.5 py-1.5 text-sm gap-1.5 ring ring-inset ring-(--ui-border-accented) text-(--ui-text) bg-(--ui-bg) hover:bg-(--ui-bg-elevated) disabled:bg-(--ui-bg) aria-disabled:bg-(--ui-bg) focus:outline-none focus-visible:ring-2 focus-visible:ring-(--ui-border-inverted)">
   <!--v-if--><span class="truncate">Open Popover</span>
   <!--v-if-->
@@ -603,7 +603,7 @@ exports[`Compodium > Nuxt UI > UPopoverExample > UPopoverExample 1`] = `
 <!---->"
 `;
 
-exports[`Compodium > Nuxt UI > UProgress > UProgress 1`] = `
+exports[`Snapshots > Nuxt UI > UProgress > UProgress 1`] = `
 "<div class="gap-2 w-full flex flex-col">
   <!--v-if-->
   <div aria-valuemax="100" aria-valuemin="0" aria-valuetext="0%" aria-label="0%" role="progressbar" data-state="indeterminate" data-max="100" class="relative overflow-hidden rounded-full bg-(--ui-bg-accented) w-full h-2" style="transform: translateZ(0);">
@@ -614,7 +614,7 @@ exports[`Compodium > Nuxt UI > UProgress > UProgress 1`] = `
 <!---->"
 `;
 
-exports[`Compodium > Nuxt UI > URadioGroupExample > URadioGroupExample 1`] = `
+exports[`Snapshots > Nuxt UI > URadioGroupExample > URadioGroupExample 1`] = `
 "<div role="radiogroup" aria-orientation="vertical" aria-required="false" dir="ltr" tabindex="-1" data-orientation="vertical" style="outline-color: none; outline-style: none; outline-width: initial;" id="v-0" class="relative">
   <fieldset class="flex flex-col gap-1">
     <!--v-if-->
@@ -651,7 +651,7 @@ exports[`Compodium > Nuxt UI > URadioGroupExample > URadioGroupExample 1`] = `
 <!---->"
 `;
 
-exports[`Compodium > Nuxt UI > USelectExample > USelectExample 1`] = `
+exports[`Snapshots > Nuxt UI > USelectExample > USelectExample 1`] = `
 "<button role="combobox" type="button" aria-controls="reka-select-content-v-0" aria-expanded="false" aria-required="false" aria-autocomplete="none" dir="ltr" data-state="closed" class="relative group rounded-[calc(var(--ui-radius)*1.5)] inline-flex items-center focus:outline-none disabled:cursor-not-allowed disabled:opacity-75 transition-colors px-2.5 py-1.5 text-sm gap-1.5 text-(--ui-text-highlighted) bg-(--ui-bg) ring ring-inset ring-(--ui-border-accented) focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-(--ui-primary) pe-9">
   <!--v-if--><span class="truncate pointer-events-none">Option 1</span><span class="absolute inset-y-0 end-0 flex items-center pe-2.5"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="shrink-0 text-(--ui-text-dimmed) size-5" width="1em" height="1em" viewBox="0 0 16 16"></svg></span>
 </button>
@@ -660,7 +660,7 @@ exports[`Compodium > Nuxt UI > USelectExample > USelectExample 1`] = `
 <!---->"
 `;
 
-exports[`Compodium > Nuxt UI > USelectMenuExample > USelectMenuExample 1`] = `
+exports[`Snapshots > Nuxt UI > USelectMenuExample > USelectMenuExample 1`] = `
 "<button type="button" tabindex="0" aria-label="Show popup" aria-haspopup="listbox" aria-expanded="false" aria-controls="" data-state="closed" aria-disabled="false" class="relative group rounded-[calc(var(--ui-radius)*1.5)] inline-flex items-center focus:outline-none disabled:cursor-not-allowed disabled:opacity-75 transition-colors px-2.5 py-1.5 text-sm gap-1.5 text-(--ui-text-highlighted) bg-(--ui-bg) ring ring-inset ring-(--ui-border-accented) focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-(--ui-primary) pe-9" dir="ltr">
   <!--v-if--><span class="truncate text-(--ui-text-dimmed)">&nbsp;</span><span class="absolute inset-y-0 end-0 flex items-center pe-2.5"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="shrink-0 text-(--ui-text-dimmed) size-5" width="1em" height="1em" viewBox="0 0 16 16"></svg></span>
 </button>
@@ -669,7 +669,7 @@ exports[`Compodium > Nuxt UI > USelectMenuExample > USelectMenuExample 1`] = `
 <!---->"
 `;
 
-exports[`Compodium > Nuxt UI > USeparator > USeparator 1`] = `
+exports[`Snapshots > Nuxt UI > USeparator > USeparator 1`] = `
 "<div data-orientation="horizontal" role="separator" class="flex items-center align-center text-center w-full flex-row">
   <div class="border-(--ui-border) w-full border-solid border-t"></div>
   <!--v-if-->
@@ -677,12 +677,12 @@ exports[`Compodium > Nuxt UI > USeparator > USeparator 1`] = `
 <!---->"
 `;
 
-exports[`Compodium > Nuxt UI > USkeletonExample > USkeletonExample 1`] = `
+exports[`Snapshots > Nuxt UI > USkeletonExample > USkeletonExample 1`] = `
 "<div class="animate-pulse rounded-[calc(var(--ui-radius)*1.5)] bg-(--ui-bg-elevated) h-32 w-96"></div>
 <!---->"
 `;
 
-exports[`Compodium > Nuxt UI > USlideoverExample > USlideoverExample 1`] = `
+exports[`Snapshots > Nuxt UI > USlideoverExample > USlideoverExample 1`] = `
 "<button type="button" aria-haspopup="dialog" aria-expanded="false" data-state="closed" class="rounded-[calc(var(--ui-radius)*1.5)] font-medium inline-flex items-center disabled:cursor-not-allowed aria-disabled:cursor-not-allowed disabled:opacity-75 aria-disabled:opacity-75 transition-colors px-2.5 py-1.5 text-sm gap-1.5 ring ring-inset ring-(--ui-border-accented) text-(--ui-text) bg-(--ui-bg) hover:bg-(--ui-bg-elevated) disabled:bg-(--ui-bg) aria-disabled:bg-(--ui-bg) focus:outline-none focus-visible:ring-2 focus-visible:ring-(--ui-border-inverted)">
   <!--v-if--><span class="truncate">Open Slideover</span>
   <!--v-if-->
@@ -691,13 +691,13 @@ exports[`Compodium > Nuxt UI > USlideoverExample > USlideoverExample 1`] = `
 <!---->"
 `;
 
-exports[`Compodium > Nuxt UI > USliderExample > USliderExample 1`] = `
+exports[`Snapshots > Nuxt UI > USliderExample > USliderExample 1`] = `
 "<span data-slider-impl="" dir="ltr" data-orientation="horizontal" style="--reka-slider-thumb-transform: translateX(-50%);" class="relative flex items-center select-none touch-none w-full min-w-56" aria-disabled="false"><span data-orientation="horizontal" class="relative bg-(--ui-bg-accented) overflow-hidden rounded-full grow h-[8px]"><span data-orientation="horizontal" style="left: 0%; right: 67%;" class="absolute rounded-full bg-(--ui-primary) h-full"></span></span><span class="rounded-full bg-(--ui-bg) ring-2 focus-visible:outline-2 focus-visible:outline-offset-2 ring-(--ui-primary) focus-visible:outline-(--ui-primary)/50 size-4" role="slider" tabindex="0" data-orientation="horizontal" aria-valuemin="0" aria-valuemax="100" aria-orientation="horizontal" style="transform: var(--reka-slider-thumb-transform); position: absolute; left: calc(0% + 0px); display: none;" data-reka-collection-item=""></span>
 <!----></span>
 <!---->"
 `;
 
-exports[`Compodium > Nuxt UI > UStepperExample > UStepperExample 1`] = `
+exports[`Snapshots > Nuxt UI > UStepperExample > UStepperExample 1`] = `
 "<div role="group" aria-label="progress" data-linear="" data-orientation="horizontal" class="flex gap-4 flex-col">
   <div class="flex">
     <div aria-current="true" data-state="active" data-orientation="horizontal" class="group text-center relative w-full">
@@ -740,7 +740,7 @@ exports[`Compodium > Nuxt UI > UStepperExample > UStepperExample 1`] = `
 <!---->"
 `;
 
-exports[`Compodium > Nuxt UI > USwitchExample > USwitchExample 1`] = `
+exports[`Snapshots > Nuxt UI > USwitchExample > USwitchExample 1`] = `
 "<div class="relative flex items-start">
   <div class="flex items-center h-5"><button class="inline-flex items-center shrink-0 rounded-full border-2 border-transparent focus-visible:outline-2 focus-visible:outline-offset-2 data-[state=unchecked]:bg-(--ui-bg-accented) transition-[background] duration-200 data-[state=checked]:bg-(--ui-primary) focus-visible:outline-(--ui-primary) w-9" id="v-0" role="switch" type="button" aria-checked="false" aria-required="false" data-state="unchecked" value="on"><span data-state="unchecked" class="group pointer-events-none rounded-full bg-(--ui-bg) shadow-lg ring-0 transition-transform duration-200 data-[state=unchecked]:translate-x-0 data-[state=unchecked]:rtl:-translate-x-0 flex items-center justify-center size-4 data-[state=checked]:translate-x-4 data-[state=checked]:rtl:-translate-x-4"></span>
       <!---->
@@ -752,7 +752,7 @@ exports[`Compodium > Nuxt UI > USwitchExample > USwitchExample 1`] = `
 <!---->"
 `;
 
-exports[`Compodium > Nuxt UI > UTableExample > UTableExample 1`] = `
+exports[`Snapshots > Nuxt UI > UTableExample > UTableExample 1`] = `
 "<div class="relative overflow-auto flex-1">
   <table class="min-w-full overflow-clip">
     <!--v-if-->
@@ -812,7 +812,7 @@ exports[`Compodium > Nuxt UI > UTableExample > UTableExample 1`] = `
 <!---->"
 `;
 
-exports[`Compodium > Nuxt UI > UTabsExample > UTabsExample 1`] = `
+exports[`Snapshots > Nuxt UI > UTabsExample > UTabsExample 1`] = `
 "<div dir="ltr" data-orientation="horizontal" class="flex items-center gap-2 flex-col">
   <div role="tablist" aria-orientation="horizontal" tabindex="-1" data-orientation="horizontal" dir="ltr" style="outline-color: none; outline-style: none; outline-width: initial;" class="relative flex p-1 group bg-(--ui-bg-elevated) rounded-[calc(var(--ui-radius)*2)] w-full">
     <!----><button id="reka-tabs-v-0-trigger-0" role="tab" type="button" aria-selected="true" aria-controls="reka-tabs-v-0-content-0" data-state="active" data-orientation="horizontal" tabindex="-1" data-active="" class="group relative inline-flex items-center min-w-0 data-[state=inactive]:text-(--ui-text-muted) hover:data-[state=inactive]:not-disabled:text-(--ui-text) font-medium rounded-[calc(var(--ui-radius)*1.5)] disabled:cursor-not-allowed disabled:opacity-75 transition-colors flex-1 w-full justify-center px-3 py-1.5 text-sm gap-1.5 data-[state=active]:text-(--ui-bg) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--ui-primary)" data-reka-collection-item=""><span class="inline-flex items-center justify-center select-none overflow-hidden rounded-full align-middle bg-(--ui-bg-elevated) size-5 text-[10px] shrink-0"><img role="img" src="https://avatars.githubusercontent.com/u/739984?v=4" width="20" height="20" class="h-full w-full rounded-[inherit] object-cover"></span><span class="truncate">Tab 1</span></button><button id="reka-tabs-v-0-trigger-1" role="tab" type="button" aria-selected="false" aria-controls="reka-tabs-v-0-content-1" data-state="inactive" data-orientation="horizontal" tabindex="-1" class="group relative inline-flex items-center min-w-0 data-[state=inactive]:text-(--ui-text-muted) hover:data-[state=inactive]:not-disabled:text-(--ui-text) font-medium rounded-[calc(var(--ui-radius)*1.5)] disabled:cursor-not-allowed disabled:opacity-75 transition-colors flex-1 w-full justify-center px-3 py-1.5 text-sm gap-1.5 data-[state=active]:text-(--ui-bg) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--ui-primary)" data-reka-collection-item=""><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="shrink-0 size-5" width="1em" height="1em" viewBox="0 0 16 16"></svg><span class="truncate">Tab 2</span></button><button id="reka-tabs-v-0-trigger-2" role="tab" type="button" aria-selected="false" aria-controls="reka-tabs-v-0-content-2" data-state="inactive" data-orientation="horizontal" tabindex="-1" class="group relative inline-flex items-center min-w-0 data-[state=inactive]:text-(--ui-text-muted) hover:data-[state=inactive]:not-disabled:text-(--ui-text) font-medium rounded-[calc(var(--ui-radius)*1.5)] disabled:cursor-not-allowed disabled:opacity-75 transition-colors flex-1 w-full justify-center px-3 py-1.5 text-sm gap-1.5 data-[state=active]:text-(--ui-bg) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--ui-primary)" data-reka-collection-item=""><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="shrink-0 size-5" width="1em" height="1em" viewBox="0 0 16 16"></svg><span class="truncate">Tab 3</span></button>
@@ -828,12 +828,12 @@ exports[`Compodium > Nuxt UI > UTabsExample > UTabsExample 1`] = `
 <!---->"
 `;
 
-exports[`Compodium > Nuxt UI > UTextarea > UTextarea 1`] = `
+exports[`Snapshots > Nuxt UI > UTextarea > UTextarea 1`] = `
 "<div class="relative inline-flex items-center"><textarea rows="3" class="w-full rounded-[calc(var(--ui-radius)*1.5)] border-0 placeholder:text-(--ui-text-dimmed) focus:outline-none disabled:cursor-not-allowed disabled:opacity-75 transition-colors px-2.5 py-1.5 text-sm gap-1.5 text-(--ui-text-highlighted) bg-(--ui-bg) ring ring-inset ring-(--ui-border-accented) focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-(--ui-primary)"></textarea></div>
 <!---->"
 `;
 
-exports[`Compodium > Nuxt UI > UToasterExample > UToasterExample 1`] = `
+exports[`Snapshots > Nuxt UI > UToasterExample > UToasterExample 1`] = `
 "<button type="button" class="rounded-[calc(var(--ui-radius)*1.5)] font-medium inline-flex items-center disabled:cursor-not-allowed aria-disabled:cursor-not-allowed disabled:opacity-75 aria-disabled:opacity-75 transition-colors px-2.5 py-1.5 text-sm gap-1.5 ring ring-inset ring-(--ui-border-accented) text-(--ui-text) bg-(--ui-bg) hover:bg-(--ui-bg-elevated) disabled:bg-(--ui-bg) aria-disabled:bg-(--ui-bg) focus:outline-none focus-visible:ring-2 focus-visible:ring-(--ui-border-inverted)">
   <!--v-if--><span class="truncate">Open Toast</span>
   <!--v-if-->
@@ -841,7 +841,7 @@ exports[`Compodium > Nuxt UI > UToasterExample > UToasterExample 1`] = `
 <!---->"
 `;
 
-exports[`Compodium > Nuxt UI > UTooltipExample > UTooltipExample 1`] = `
+exports[`Snapshots > Nuxt UI > UTooltipExample > UTooltipExample 1`] = `
 "<button type="button" data-state="closed" data-grace-area-trigger="" class="rounded-[calc(var(--ui-radius)*1.5)] font-medium inline-flex items-center disabled:cursor-not-allowed aria-disabled:cursor-not-allowed disabled:opacity-75 aria-disabled:opacity-75 transition-colors px-2.5 py-1.5 text-sm gap-1.5 ring ring-inset ring-(--ui-border-accented) text-(--ui-text) bg-(--ui-bg-elevated) hover:bg-(--ui-bg-accented)/75 disabled:bg-(--ui-bg-elevated) aria-disabled:bg-(--ui-bg-elevated) focus:outline-none focus-visible:ring-2 focus-visible:ring-(--ui-border-inverted)">
   <!--v-if--><span class="truncate">Show Tooltip</span>
   <!--v-if-->
@@ -850,7 +850,7 @@ exports[`Compodium > Nuxt UI > UTooltipExample > UTooltipExample 1`] = `
 <!---->"
 `;
 
-exports[`Compodium > Nuxt UI > UTreeExample > UTreeExample 1`] = `
+exports[`Snapshots > Nuxt UI > UTreeExample > UTreeExample 1`] = `
 "<ul role="tree" tabindex="-1" data-orientation="vertical" dir="ltr" style="outline-color: none; outline-style: none; outline-width: initial;" class="relative isolate">
   <li class=""><button class="relative group w-full flex items-center before:absolute before:inset-y-px before:inset-x-0 before:z-[-1] before:rounded-[calc(var(--ui-radius)*1.5)] focus:outline-none focus-visible:outline-none focus-visible:before:ring-inset focus-visible:before:ring-2 focus-visible:before:ring-(--ui-primary) px-2.5 py-1.5 text-sm gap-1.5 hover:not-disabled:text-(--ui-text-highlighted) hover:not-disabled:before:bg-(--ui-bg-elevated)/50 transition-colors before:transition-colors" role="treeitem" aria-selected="false" aria-expanded="true" aria-level="0" data-indent="0" data-expanded="" tabindex="-1" data-orientation="vertical" data-reka-collection-item=""><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="shrink-0 size-5" width="1em" height="1em" viewBox="0 0 16 16"></svg><span class="truncate">app</span><span class="ms-auto inline-flex gap-1.5 items-center"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="shrink-0 transform transition-transform duration-200 group-data-expanded:rotate-180 size-5" width="1em" height="1em" viewBox="0 0 16 16"></svg></span></button>
     <ul class="ms-4.5 border-s border-(--ui-border)">

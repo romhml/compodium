@@ -51,6 +51,14 @@ export type PluginOptions = {
 
   /* Internal */
   _nuxt?: boolean
+
+  /**
+   * Compodium test configuration
+   */
+  tests?: boolean | {
+    /** Enable snapshots tests */
+    snapshots?: boolean
+  }
 }
 
 export type PluginConfig = PluginOptions & {
