@@ -22,7 +22,7 @@ export default defineNuxtModule<ModuleOptions>({
   async setup(options, nuxt) {
     addImports({ name: 'extendCompodiumMeta', from: '@compodium/core/runtime/composables/extendCompodiumMeta' })
 
-    if (!nuxt.options.dev) return
+    if (!nuxt.options.dev && !nuxt.options.test) return
 
     const { resolve } = createResolver(import.meta.url)
 

@@ -1,5 +1,5 @@
 import type { CompodiumMeta, PluginOptions } from '@compodium/core'
-import { compodium as core } from '../../core/src'
+import { compodium as core } from '@compodium/core'
 import { rendererPlugin } from './plugins/renderer'
 import { vueDevtoolsPlugin } from './plugins/vueDevtools'
 import { defu } from 'defu'

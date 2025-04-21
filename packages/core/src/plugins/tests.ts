@@ -1,6 +1,6 @@
 /// <reference types="vitest" />
-import type { PluginConfig } from '../../types'
-import { scanComponents } from '../utils'
+import type { PluginConfig } from '../types'
+import { scanComponents } from './utils'
 import type { VitePlugin } from 'unplugin'
 import { resolve, dirname } from 'pathe'
 import { fileURLToPath } from 'node:url'
@@ -48,9 +48,9 @@ export function testPlugin(config: PluginConfig): VitePlugin {
 
         test: {
           name: 'compodium',
-          include: [fileURLToPath(joinURL(dirname(import.meta.url), './spec.ts'))],
-
-          snapshotEnvironment: fileURLToPath(joinURL(dirname(import.meta.url), './snapshots.ts')),
+          include: [fileURLToPath(joinURL(dirname(import.meta.url), './runtime/tests/spec.ts'))],
+          exclude: [],
+          snapshotEnvironment: fileURLToPath(joinURL(dirname(import.meta.url), './runtime/tests/snapshots.ts')),
 
           provide: {
             config: JSON.parse(JSON.stringify(config)),
@@ -59,7 +59,7 @@ export function testPlugin(config: PluginConfig): VitePlugin {
           },
 
           globals: true,
-          environment: 'happy-dom',
+          environment: config._nuxt ? 'nuxt' : 'happy-dom',
           root: joinURL(project.vite.config.root, config.dir),
 
           server: {
