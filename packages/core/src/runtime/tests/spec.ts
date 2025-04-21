@@ -13,9 +13,9 @@ declare module 'vitest' {
 
 const collections = inject('collections')
 const config = inject('config')
-const rootDir = inject('root')
 
 function createChecker(dirs: any[]) {
+  const rootDir = process.cwd()
   const metaChecker = createCheckerByJson(
     rootDir,
     {
