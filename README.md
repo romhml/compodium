@@ -30,9 +30,25 @@ A plug and play component playground for Vue and Nuxt.
 
 ### Nuxt
 
-```bash [pnpm]
-nuxi module add -D @compodium/nuxt
+1. Install `@compodium/nuxt`
+
+```bash [npm]
+npx nuxi@latest module add compodium
 ```
+
+```bash [pnpm]
+pnpm dlx nuxi@latest module add compodium
+```
+
+```bash [yarn]
+yarn dlx nuxi@latest module add compodium
+```
+
+```bash [bun]
+bunx nuxi@latest module add compodium
+```
+
+this will install and add `@compodium/nuxt` to `nuxt.config.ts` automatically
 
 ### Vue
 
