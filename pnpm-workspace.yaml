@@ -7,7 +7,7 @@ catalog:
   nuxt: "^3.17.1"
   "@nuxt/kit": "^3.17.1"
   "@nuxt/schema": "^3.17.1"
-  "@nuxt/ui": "^3.0.2"
+  "@nuxt/ui": "^3.1.1"
   vue: latest
 
 onlyBuiltDependencies:
