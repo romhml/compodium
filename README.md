@@ -30,8 +30,8 @@ A plug and play component playground for Vue and Nuxt.
 
 ### Nuxt
 
-```bash [pnpm]
-nuxi module add -D @compodium/nuxt
+```bash
+npx nuxi@latest module add -D @compodium/nuxt
 ```
 
 ### Vue
