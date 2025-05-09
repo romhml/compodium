@@ -4,8 +4,7 @@ import config from '../../build.config'
 export default defineBuildConfig({
   ...config,
   entries: [
-    'src/index',
-    { builder: 'copy', input: '../../', pattern: 'LICENSE.md|README.md' }
+    'src/index'
   ],
   externals: ['typescript']
 })
