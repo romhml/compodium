@@ -45,7 +45,7 @@ const { copy, copied } = useClipboard()
 </script>
 
 <template>
-  <div class="relative h-full text-wrap overflow-y-auto bg-(--ui-bg-elevated)/50">
+  <div class="relative h-full text-wrap overflow-y-auto bg-elevated/50">
     <!-- eslint-disable vue/no-v-html -->
     <pre
       class="p-4 text-sm rounded-lg"
