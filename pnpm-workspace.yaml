@@ -4,9 +4,9 @@ packages:
   - "./playgrounds/*"
 
 catalog:
-  nuxt: "^3.17.1"
-  "@nuxt/kit": "^3.17.1"
-  "@nuxt/schema": "^3.17.1"
+  nuxt: "^3.17.2"
+  "@nuxt/kit": "^3.17.2"
+  "@nuxt/schema": "^3.17.2"
   "@nuxt/ui": "^3.1.1"
   vue: latest
 
