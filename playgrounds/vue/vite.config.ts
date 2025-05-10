@@ -18,6 +18,9 @@ export default defineConfig({
           primary: 'green',
           neutral: 'slate'
         }
+      },
+      tests: {
+        snapshots: true
       }
     })
   ],
