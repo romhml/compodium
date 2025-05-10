@@ -31,7 +31,7 @@ A plug and play component playground for Vue and Nuxt.
 ### Nuxt
 
 ```bash
-npx nuxi@latest module add -D @compodium/nuxt
+npx nuxi@latest module add --dev compodium
 ```
 
 ### Vue
