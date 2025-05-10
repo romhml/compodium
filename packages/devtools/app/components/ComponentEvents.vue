@@ -29,8 +29,8 @@ watch(() => props.events?.length, () => currentEventIndex.value = 0)
         >
           {{ e.name }}
           <template v-if="e.data !== undefined">
-            <span class="text-(--ui-text-dimmed)"> ⦁ </span>
-            <span class="truncate text-(--ui-text-dimmed)">
+            <span class="text-dimmed"> ⦁ </span>
+            <span class="truncate text-dimmed">
               {{ isJsonable(e.data) ? JSON.stringify(e.data) : e.data }}
             </span>
           </template>
@@ -38,7 +38,7 @@ watch(() => props.events?.length, () => currentEventIndex.value = 0)
       </div>
       <div
         v-if="event?.data !== undefined"
-        class="shrink-0 min-h-20 max-h-1/2 border-t border-(--ui-border) p-4 bg-(--ui-bg-elevated)/50 overflow-y-scroll"
+        class="shrink-0 min-h-20 max-h-1/2 border-t border-default p-4 bg-elevated/50 overflow-y-scroll"
       >
         <JsonEditor
           v-if="isJsonable(event?.data)"
@@ -56,7 +56,7 @@ watch(() => props.events?.length, () => currentEventIndex.value = 0)
   </template>
   <div
     v-else
-    class="text-(--ui-text-dimmed) text-center p-8"
+    class="text-dimmed text-center p-8"
   >
     <UIcon
       name="lucide:squirrel"

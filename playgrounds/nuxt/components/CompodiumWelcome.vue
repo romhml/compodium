@@ -24,7 +24,7 @@ extendCompodiumMeta<typeof _props>({
     :class="{ shaker: shakeIt }"
   >
     <div
-      class="border border-(--ui-border) p-4 rounded-lg w-sm"
+      class="border border-default p-4 rounded-lg w-sm"
     >
       <p class="text-center font-bold mb-4">
         {{ title }}

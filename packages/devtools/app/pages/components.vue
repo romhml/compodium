@@ -211,7 +211,7 @@ const tabs = computed(() => {
       v-if="collections?.length"
       v-model="component"
       :collections="collections"
-      class="pt-1 border-r border-(--ui-border) hidden xl:block xl:w-xs overflow-y-scroll"
+      class="pt-1 border-r border-default hidden xl:block xl:w-xs overflow-y-scroll"
     />
 
     <div class="grow relative">
@@ -279,7 +279,7 @@ const tabs = computed(() => {
                 }"
               />
 
-              <p class="text-(--ui-text-muted) text-right text-xs mt-1">
+              <p class="text-muted text-right text-xs mt-1">
                 {{ gridGap }}px
               </p>
             </template>
@@ -305,13 +305,13 @@ const tabs = computed(() => {
         <UIcon
           v-if="!rendererMounted"
           name="lucide:loader-circle"
-          class="m-auto animate-rotate text-(--ui-bg-accented)"
+          class="m-auto animate-rotate text-accented"
           size="20"
         />
       </div>
     </div>
 
-    <div class="bg-(--ui-bg) w-md border-l border-(--ui-border)">
+    <div class="bg-neutral w-md border-l border-default">
       <UTabs
         variant="link"
         :items="tabs"

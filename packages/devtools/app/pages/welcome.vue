@@ -17,7 +17,7 @@ onMounted(() => window.__COMPODIUM_HOOKS__ = hooks)
       class="hidden"
     />
 
-    <div class="border border-(--ui-border) p-6 rounded-lg w-sm text-center flex flex-col">
+    <div class="border border-default p-6 rounded-lg w-sm text-center flex flex-col">
       <p class="text-center font-bold text-xl mb-4">
         Welcome to Compodium!
       </p>

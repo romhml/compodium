@@ -57,7 +57,7 @@ const visibleProps = computed(() => new Set(fuseResults.value?.map(result => res
     </UButton>
 
     <template #body>
-      <div class="bg-(--ui-bg) p-0.5 border-y border-(--ui-border) sticky top-0 z-1 flex gap-2">
+      <div class="bg-default p-0.5 border-y border-default sticky top-0 z-1 flex gap-2">
         <UInput
           v-model="propsSearchTerm"
           placeholder="Search attributes..."
@@ -76,7 +76,7 @@ const visibleProps = computed(() => new Set(fuseResults.value?.map(result => res
         :description="attr.description"
         :default-value="attr.default"
         inline
-        class="px-6 py-4 not-last:border-b border-(--ui-border)"
+        class="px-6 py-4 not-last:border-b border-default"
         @update:model-value="(value: any) => {
           if (!modelValue) modelValue ||= {}
           else modelValue = { ...modelValue, [attr.name]: value }

@@ -1,7 +1,7 @@
 {
   "name": "@compodium/core",
   "type": "module",
-  "version": "0.1.0-beta.8",
+  "version": "0.1.0-beta.9",
   "description": "A plug and play component playground for Vue and Nuxt.",
   "license": "MIT",
   "repository": {
@@ -55,10 +55,10 @@
     "pathe": "^2.0.3",
     "scule": "^1.3.0",
     "sirv": "^3.0.1",
-    "tinyglobby": "^0.2.12",
+    "tinyglobby": "^0.2.13",
     "ufo": "^1.6.1",
     "unplugin": "^2.3.2",
-    "unplugin-ast": "^0.14.6",
-    "zod": "^3.24.3"
+    "unplugin-ast": "^0.15.0",
+    "zod": "^3.24.4"
   }
 }

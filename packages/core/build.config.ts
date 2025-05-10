@@ -5,7 +5,6 @@ export default defineBuildConfig({
   ...config,
   entries: [
     'src/index',
-    { builder: 'copy', input: './src/runtime', outDir: './dist/runtime' },
-    { builder: 'copy', input: '../../', pattern: 'LICENSE.md|README.md' }
+    { builder: 'copy', input: './src/runtime', outDir: './dist/runtime' }
   ]
 })

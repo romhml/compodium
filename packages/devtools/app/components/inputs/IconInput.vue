@@ -112,7 +112,7 @@ const visibleIcons = computed(() => {
         </div>
         <div
           v-else
-          class="flex flex-col text-center justify-center w-full h-[196px] text-(--ui-text-muted)"
+          class="flex flex-col text-center justify-center w-full h-[196px] text-muted"
         >
           <UIcon
             name="lucide:x"

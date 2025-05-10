@@ -1,6 +1,6 @@
 {
   "name": "@compodium/meta",
-  "version": "0.1.0-beta.8",
+  "version": "0.1.0-beta.9",
   "repository": {
     "url": "romhml/compodium",
     "directory": "packages/meta"
@@ -27,11 +27,11 @@
     "dev": "unbuild --watch"
   },
   "dependencies": {
-    "@volar/typescript": "^2.4.12",
-    "@vue/language-core": "2.2.8",
+    "@volar/typescript": "^2.4.13",
+    "@vue/language-core": "2.2.10",
     "pathe": "^2.0.3",
-    "vue-component-meta": "^2.2.8",
-    "vue-component-type-helpers": "^2.2.8"
+    "vue-component-meta": "^2.2.10",
+    "vue-component-type-helpers": "^2.2.10"
   },
   "peerDependencies": {
     "typescript": "*"

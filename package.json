@@ -1,6 +1,6 @@
 {
   "name": "@compodium",
-  "version": "0.1.0-beta.8",
+  "version": "0.1.0-beta.9",
   "private": true,
   "repository": "romhml/compodium",
   "license": "MIT",
@@ -18,16 +18,16 @@
   },
   "devDependencies": {
     "@nuxt/eslint-config": "^1.3.0",
-    "@nuxt/test-utils": "^3.17.2",
-    "@types/node": "^22.14.1",
+    "@nuxt/test-utils": "^3.18.0",
+    "@types/node": "^22.15.17",
     "changelogen": "^0.6.1",
-    "eslint": "^9.24.0",
+    "eslint": "^9.26.0",
     "happy-dom": "^17.4.4",
     "typescript": "5.6.3",
     "unbuild": "^3.5.0",
-    "vite": "^6.3.2",
-    "vitest": "^3.1.1",
-    "wrangler": "^4.12.0"
+    "vite": "^6.3.5",
+    "vitest": "^3.1.3",
+    "wrangler": "^4.14.4"
   },
   "resolutions": {
     "@compodium/core": "workspace:^",
@@ -43,5 +43,5 @@
       "better-sqlite3"
     ]
   },
-  "packageManager": "pnpm@10.8.1"
+  "packageManager": "pnpm@10.10.0"
 }

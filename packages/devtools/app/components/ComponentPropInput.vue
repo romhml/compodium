@@ -59,7 +59,7 @@ function inferDefaultInput(value?: any, types?: PropSchema[]): PropSchema | unde
 }
 
 const description = computed(() => {
-  return props.description?.replace(/`([^`]+)`/g, '<code class="text-xs font-medium bg-[var(--ui-bg-elevated)] px-1 py-0.5 rounded">$1</code>')
+  return props.description?.replace(/`([^`]+)`/g, '<code class="text-xs font-medium bg-elevated px-1 py-0.5 rounded">$1</code>')
 })
 
 const isArray = computed(() => currentInput.value?.inputType === 'array')
@@ -80,7 +80,7 @@ const [DefineDescription, ReuseDescription] = createReusableTemplate()
         variant="none"
         size="sm"
         :trailing-icon="undefined"
-        class="font-medium text-ellipsis truncate max-w-50 py-0.5 px-1.5 font-mono bg-(--ui-bg-elevated)/50 border border-(--ui-border)"
+        class="font-medium text-ellipsis truncate max-w-50 py-0.5 px-1.5 font-mono bg-elevated/50 border border-default"
         @update:model-value="modelValue = undefined"
       />
     </DefineSelect>
@@ -110,7 +110,7 @@ const [DefineDescription, ReuseDescription] = createReusableTemplate()
       <!-- eslint-disable vue/no-v-html -->
       <p
         v-if="description"
-        class="text-(--ui-text-muted) text-sm"
+        class="text-muted text-sm"
         v-html="description"
       />
     </DefineDescription>

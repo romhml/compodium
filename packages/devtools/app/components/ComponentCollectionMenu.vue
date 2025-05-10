@@ -33,6 +33,6 @@ const treeItems = computed(() => {
   <UNavigationMenu
     :items="treeItems"
     orientation="vertical"
-    class="px-1 bg-(--ui-bg-elevated)/50"
+    class="px-1 bg-elevated/50"
   />
 </template>

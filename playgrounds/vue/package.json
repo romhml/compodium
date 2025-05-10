@@ -5,25 +5,22 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
-    "build-only": "vite build",
+    "build": "vite build",
     "typecheck": "vue-tsc --noEmit"
   },
   "dependencies": {
     "@compodium/vue": "workspace:^",
-    "@nuxt/ui": "3.0.2",
+    "@nuxt/ui": "3.1.1",
     "vue": "catalog:"
   },
   "devDependencies": {
     "@tsconfig/node22": "^22.0.1",
-    "@types/node": "^22.14.1",
-    "@vitejs/plugin-vue": "^5.2.3",
-    "@vue/test-utils": "^2.4.6",
+    "@types/node": "^22.15.17",
+    "@vitejs/plugin-vue": "^5.2.4",
     "@vue/tsconfig": "^0.7.0",
-    "npm-run-all2": "^7.0.2",
-    "vite": "^6.3.2",
-    "vite-plugin-vue-devtools": "^7.7.5",
+    "vite": "^6.3.5",
+    "vite-plugin-vue-devtools": "^7.7.6",
     "vitest": "^3.1.1",
     "vue-tsc": "^2.2.2"
   }

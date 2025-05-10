@@ -36,7 +36,7 @@ function onResetState() {
 
 <template>
   <div>
-    <div class="bg-(--ui-bg) p-0.5 border-y border-(--ui-border) sticky top-0 z-1 flex gap-0.5">
+    <div class="bg-default p-0.5 border-y border-default sticky top-0 z-1 flex gap-0.5">
       <UInput
         v-model="propsSearchTerm"
         placeholder="Search props..."
@@ -97,7 +97,7 @@ function onResetState() {
       v-for="prop in componentProps"
       v-show="visibleProps.has(prop.name)"
       :key="prop.name"
-      class="grow px-3 py-2 border-b border-(--ui-border)"
+      class="grow px-3 py-2 border-b border-default"
     >
       <ComponentPropInput
         :model-value="modelValue[prop.name]"
