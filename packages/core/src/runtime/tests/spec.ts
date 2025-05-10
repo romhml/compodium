@@ -67,7 +67,7 @@ const checkerDirs = [
 
 const checker = createChecker(checkerDirs)
 
-const mount = config._nuxt ? await import('@nuxt/test-utils/runtime').then(e => e.mountSuspended) : await import('@vue/test-utils').then(e => e.mount)
+const mount: any = config._nuxt ? await import('@nuxt/test-utils/runtime').then(e => e.mountSuspended) : await import('@vue/test-utils').then(e => e.mount)
 
 describe.skipIf(!config.tests || (typeof config.tests === 'object' && !config.tests?.snapshots))('Snapshots', () => {
   describe.each(collections.map(c => [c.name, c]))('%s', (_, col) => {

@@ -1,6 +1,12 @@
 <script setup lang="ts">
 // @ts-expect-error this is auto imported
-const devtoolsClient = useNuxtDevTools()
+let devtoolsClient = null
+
+try {
+  devtoolsClient = useNuxtDevTools?.()
+} catch {
+
+}
 
 const _props = withDefaults(defineProps<{
   title?: string
