@@ -1,5 +1,81 @@
 # Changelog
 
+## v0.1.0-beta.10
+
+[compare changes](https://github.com/romhml/compodium/compare/v0.1.0-beta.7...v0.1.0-beta.10)
+
+### 🚀 Enhancements
+
+- **devtools:** Close components navigation menu by default ([0477554](https://github.com/romhml/compodium/commit/0477554))
+- Add component events tab ([eefc5d8](https://github.com/romhml/compodium/commit/eefc5d8))
+- **examples:** Improve ui form and slider examples ([c2edfa5](https://github.com/romhml/compodium/commit/c2edfa5))
+- Update logo ([f828c04](https://github.com/romhml/compodium/commit/f828c04))
+
+### 🩹 Fixes
+
+- Persist current component between page refresh ([95dd658](https://github.com/romhml/compodium/commit/95dd658))
+- Typechecks ([4ae4b36](https://github.com/romhml/compodium/commit/4ae4b36))
+- **devtools:** Removed useless overflow css ([326ebdd](https://github.com/romhml/compodium/commit/326ebdd))
+- **devtools:** Forward keyboard events to main devtools window ([916ffee](https://github.com/romhml/compodium/commit/916ffee))
+- **devtools:** Change popover mode to hover ([1333fb1](https://github.com/romhml/compodium/commit/1333fb1))
+- **nuxt:** Disable ssr on component renderer ([#45](https://github.com/romhml/compodium/pull/45))
+- **devtools:** Keyboard shortcuts ([fa4d151](https://github.com/romhml/compodium/commit/fa4d151))
+- **core:** Default preview overflow ([4f25b6f](https://github.com/romhml/compodium/commit/4f25b6f))
+- **devtools:** Component input styles ([c7472d0](https://github.com/romhml/compodium/commit/c7472d0))
+- **devtools:** Component search menu shortcut ([0b224fb](https://github.com/romhml/compodium/commit/0b224fb))
+- **devtools:** Remove parent keyboard forward ([068c0c9](https://github.com/romhml/compodium/commit/068c0c9))
+- **devtools:** Forward keyboard events to iframe parent ([2eed358](https://github.com/romhml/compodium/commit/2eed358))
+- **meta:** Set typescript as required peerDependency ([e505a28](https://github.com/romhml/compodium/commit/e505a28))
+- **devtools:** Typings for component input type select ([4f692ee](https://github.com/romhml/compodium/commit/4f692ee))
+- **core:** Unplugin-ast parse error ([#59](https://github.com/romhml/compodium/pull/59))
+- **docs:** Vite.config.ts installation highlights ([5c25878](https://github.com/romhml/compodium/commit/5c25878))
+- **core:** Icon input schema type ([185d5de](https://github.com/romhml/compodium/commit/185d5de))
+- **examples:** UContainer styles ([0f45067](https://github.com/romhml/compodium/commit/0f45067))
+
+### 💅 Refactors
+
+- **devtools:** Enable pre-rendering and remove spaLoadingTemplate ([cef1a20](https://github.com/romhml/compodium/commit/cef1a20))
+- **devtools:** Move props tab to a component ([45e5b96](https://github.com/romhml/compodium/commit/45e5b96))
+- New ui utility classes ([0239e25](https://github.com/romhml/compodium/commit/0239e25))
+- Renderer and root component injections ([5deb0e4](https://github.com/romhml/compodium/commit/5deb0e4))
+
+### 📖 Documentation
+
+- Improve installation method ([7d1342d](https://github.com/romhml/compodium/commit/7d1342d))
+- Update readme ([8132ba9](https://github.com/romhml/compodium/commit/8132ba9))
+- Update logo ([34fcf20](https://github.com/romhml/compodium/commit/34fcf20))
+
+### 🏡 Chore
+
+- Bump version before pkg.pr.new publish ([aadfc35](https://github.com/romhml/compodium/commit/aadfc35))
+- Bump version before pkg.pr.new publish ([185ece2](https://github.com/romhml/compodium/commit/185ece2))
+- **renovate:** Ignore peerDependencies ([d096bdf](https://github.com/romhml/compodium/commit/d096bdf))
+- **release:** V0.1.0-beta.8 ([a506379](https://github.com/romhml/compodium/commit/a506379))
+- Add happy-dom to devDependencies ([03436ea](https://github.com/romhml/compodium/commit/03436ea))
+- Deploy on nuxt hub on main only ([cff6efa](https://github.com/romhml/compodium/commit/cff6efa))
+- Remove tailwind theme(static) ([3a81727](https://github.com/romhml/compodium/commit/3a81727))
+- Remove unplugin-ast pin ([de84877](https://github.com/romhml/compodium/commit/de84877))
+- Increase ci test timeout ([b8272cf](https://github.com/romhml/compodium/commit/b8272cf))
+- Increase test hook timeout ([003e65f](https://github.com/romhml/compodium/commit/003e65f))
+- **release:** V0.1.0-beta.9 ([b9fbec6](https://github.com/romhml/compodium/commit/b9fbec6))
+- Remove npm-run-all2 ([2a7f0df](https://github.com/romhml/compodium/commit/2a7f0df))
+- Add release script ([564d751](https://github.com/romhml/compodium/commit/564d751))
+- Remove README and LICENSE export from build.config ([13caf51](https://github.com/romhml/compodium/commit/13caf51))
+- Drop cjs build ([257b1f4](https://github.com/romhml/compodium/commit/257b1f4))
+- Unbuild passive watchers setup ([2ceac5b](https://github.com/romhml/compodium/commit/2ceac5b))
+- Strip dev env variables from build ([7546ee1](https://github.com/romhml/compodium/commit/7546ee1))
+- **test:** Increase setup timeout ([ab9422c](https://github.com/romhml/compodium/commit/ab9422c))
+
+### ✅ Tests
+
+- Skip devtools plugin during tests ([3cd31ee](https://github.com/romhml/compodium/commit/3cd31ee))
+- **nuxt:** Increase setup timeout ([4f0e2e8](https://github.com/romhml/compodium/commit/4f0e2e8))
+
+### ❤️ Contributors
+
+- Romain Hamel ([@romhml](https://github.com/romhml))
+- Romhml ([@romhml](https://github.com/romhml))
+
 ## v0.1.0-beta.9
 
 [compare changes](https://github.com/romhml/compodium/compare/v0.1.0-beta.7...v0.1.0-beta.9)
