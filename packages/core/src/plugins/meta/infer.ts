@@ -91,17 +91,17 @@ const arrayInputSchema = z.object({
 export type ArrayInputSchema = z.infer<typeof arrayInputSchema>
 export type InputSchema = StringInputSchema | BooleanInputSchema | NumberInputSchema | ObjectInputSchema | DateInputSchema | ArrayInputSchema | PrimitiveArrayInputSchema
 
-const IconInputSchema = z.object({
+const iconInputSchema = z.object({
   schema: z.any(),
   type: z.literal('IconifyIcon'),
   default: z.any()
 })
 
-export type IconInputSchema = z.infer<typeof stringInputSchema>
+export type IconInputSchema = z.infer<typeof iconInputSchema>
 
 // List of available inputs
 const propResolvers: PropSchemaResolver<ZodSchema>[] = [
-  { inputType: 'icon', schema: IconInputSchema },
+  { inputType: 'icon', schema: iconInputSchema },
   { inputType: 'string', schema: stringInputSchema },
   { inputType: 'number', schema: numberInputSchema },
   { inputType: 'boolean', schema: booleanInputSchema },
