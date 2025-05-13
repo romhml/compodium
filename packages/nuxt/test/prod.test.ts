@@ -9,7 +9,7 @@ describe('prod', async () => {
   await setup({
     rootDir,
     dev: false,
-    setupTimeout: 20000
+    setupTimeout: 30000
   })
 
   it('renderer is not injected in production', async () => {

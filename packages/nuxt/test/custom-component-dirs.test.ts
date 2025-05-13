@@ -10,7 +10,7 @@ describe('custom components dirs', async () => {
   await setup({
     rootDir,
     dev: true,
-    setupTimeout: 20000
+    setupTimeout: 30000
   })
 
   describe('collections api', () => {

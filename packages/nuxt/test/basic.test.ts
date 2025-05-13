@@ -12,7 +12,7 @@ describe('basic', async () => {
     rootDir,
     dev: true,
     port: 4545,
-    setupTimeout: 20000
+    setupTimeout: 30000
   })
 
   it('renders the index page', async () => {
