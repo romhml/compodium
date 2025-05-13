@@ -3,8 +3,9 @@ import sirv from 'sirv'
 import type { PluginConfig } from '../types'
 import { resolve, dirname } from 'pathe'
 import { fileURLToPath } from 'node:url'
-import { existsSync, readFileSync } from 'node:fs'
+import { existsSync } from 'node:fs'
 import { joinURL } from 'ufo'
+import { resolvePathSync } from 'mlly'
 
 export function devtoolsPlugin(config: PluginConfig): VitePlugin {
   const userPreview = resolve(joinURL(config.rootDir, config.dir, 'preview.vue'))
@@ -39,16 +40,7 @@ export function devtoolsPlugin(config: PluginConfig): VitePlugin {
         if (existsSync(userPreview)) {
           return userPreview
         }
-        return '\0virtual:compodium:preview'
-      }
-    },
-
-    load(id) {
-      if (id === '\0virtual:compodium:preview') {
-        if (existsSync(userPreview)) {
-          return readFileSync(userPreview, 'utf-8')
-        }
-        return `export { default } from '@compodium/core/runtime/preview.vue'`
+        return resolvePathSync('../runtime/preview.vue', { extensions: ['.vue'], url: import.meta.url })
       }
     }
   }
