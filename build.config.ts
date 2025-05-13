@@ -5,9 +5,7 @@ export default {
   rollup: {
     esbuild: {
       target: 'esnext'
-    },
-    emitCJS: true,
-    cjsBridge: true
+    }
   },
   declaration: true
 } satisfies BuildConfig
