@@ -533,7 +533,7 @@ ${commandLine.vueOptions.target < 3 ? vue2TypeHelpersCode : typeHelpersCode}
     for (const symbol of exportedSymbols) {
       const [declaration] = symbol.getDeclarations() ?? []
 
-      if (ts.isExportAssignment(declaration)) {
+      if (declaration && ts.isExportAssignment(declaration)) {
         symbolNode = declaration.expression
       }
     }
@@ -656,12 +656,12 @@ function createSchemaResolvers(
     }
   }
   function resolveEventSignature(call: ts.Signature): EventMeta {
-    const subtype = typeChecker.getTypeOfSymbolAtLocation(call.parameters[1], symbolNode)
+    const subtype = typeChecker.getTypeOfSymbolAtLocation(call.parameters[1] as ts.Symbol, symbolNode)
     let schema: PropertyMetaSchema[]
     let declarations: Declaration[]
 
     return {
-      name: (typeChecker.getTypeOfSymbolAtLocation(call.parameters[0], symbolNode) as ts.StringLiteralType).value,
+      name: (typeChecker.getTypeOfSymbolAtLocation(call.parameters[0] as ts.Symbol, symbolNode) as ts.StringLiteralType).value,
       description: ts.displayPartsToString(call.getDocumentationComment(typeChecker)),
       tags: call.getJsDocTags().map(tag => ({
         name: tag.name,
@@ -687,7 +687,7 @@ function createSchemaResolvers(
       get schema() {
         return schema ??= signature.parameters.length > 0
           ? typeChecker
-              .getTypeArguments(typeChecker.getTypeOfSymbolAtLocation(signature.parameters[0], symbolNode) as ts.TypeReference)
+              .getTypeArguments(typeChecker.getTypeOfSymbolAtLocation(signature.parameters[0] as ts.Symbol, symbolNode) as ts.TypeReference)
               .map(resolveSchema)
           : undefined
       }
@@ -733,7 +733,7 @@ function createSchemaResolvers(
         }
       }
     } else if (subtype.getCallSignatures().length === 1) {
-      return resolveCallbackSchema(subtype.getCallSignatures()[0])
+      return resolveCallbackSchema(subtype.getCallSignatures()[0] as ts.Signature)
     }
 
     return type
@@ -927,7 +927,7 @@ function readTsComponentDefaultProps(
       else if (ts.isCallExpression(component)) {
         if (component.arguments.length) {
           const arg = component.arguments[0]
-          if (ts.isObjectLiteralExpression(arg)) {
+          if (arg && ts.isObjectLiteralExpression(arg)) {
             return arg
           }
         }

@@ -26,8 +26,7 @@
     "dist"
   ],
   "scripts": {
-    "dev:prepare": "unbuild",
-    "dev": "unbuild --watch",
+    "dev:prepare": "unbuild --stub",
     "prepack": "unbuild",
     "typecheck": "tsc --noEmit"
   },

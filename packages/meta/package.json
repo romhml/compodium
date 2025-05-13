@@ -20,10 +20,9 @@
     "dist/"
   ],
   "scripts": {
-    "dev:prepare": "unbuild",
+    "dev:prepare": "unbuild --stub",
     "typecheck": "tsc --noEmit",
-    "prepack": "unbuild",
-    "dev": "unbuild --watch"
+    "prepack": "unbuild"
   },
   "dependencies": {
     "@volar/typescript": "^2.4.13",

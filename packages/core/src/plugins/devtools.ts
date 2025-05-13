@@ -48,7 +48,7 @@ export function devtoolsPlugin(config: PluginConfig): VitePlugin {
         if (existsSync(userPreview)) {
           return readFileSync(userPreview, 'utf-8')
         }
-        return `export { default } from '${import.meta.resolve('@compodium/core/runtime/preview.vue')}'`
+        return `export { default } from '@compodium/core/runtime/preview.vue'`
       }
     }
   }

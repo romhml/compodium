@@ -28,8 +28,7 @@
     "dist"
   ],
   "scripts": {
-    "dev:prepare": "unbuild && pnpm --filter devtools generate",
-    "dev": "unbuild --watch",
+    "dev:prepare": "unbuild --stub && pnpm --filter devtools generate",
     "prepack": "unbuild && pnpm --filter devtools generate",
     "typecheck": "tsc --noEmit"
   },
