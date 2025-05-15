@@ -2,6 +2,7 @@ import type { VitePlugin } from 'unplugin'
 import type { PluginOptions } from '@compodium/core'
 import { readFileSync, existsSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
+import { resolvePathSync } from 'mlly'
 
 export function rendererPlugin(options: PluginOptions): VitePlugin {
   return {
@@ -49,12 +50,12 @@ export function rendererPlugin(options: PluginOptions): VitePlugin {
         ).replace(
           /\.mount\([^)]*\)/,
           '.mount("#compodium")'
-        ).replace(/(from|import)\s+(['"])([./])/g, (match, keyword, quote, path) => {
-        // Resolve the relative import based on the main directory
+        ).replace(/(from|import)\s+(['"])([./])/g, (_match, keyword, quote, path) => {
+          // Resolve the relative import based on the main directory
           return `${keyword} ${quote}${resolve(mainDir, path)}/`
         })
 
-        return `import CompodiumRoot from '${import.meta.resolve('@compodium/core/runtime/root.vue')}';\n${mainContent}`
+        return `import CompodiumRoot from '${resolvePathSync('./runtime/root.vue', { extensions: ['.vue'], url: import.meta.resolve('@compodium/core') })}';\n${mainContent}`
       }
     }
   }

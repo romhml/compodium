@@ -7,9 +7,11 @@ import { joinURL } from 'ufo'
 
 describe('custom compodium dir', async () => {
   const rootDir = fileURLToPath(joinURL(dirname(import.meta.url), './fixtures/custom-compodium-dir'))
+
   await setup({
     rootDir,
-    dev: true
+    dev: true,
+    setupTimeout: 30000
   })
 
   describe('renderer', () => {

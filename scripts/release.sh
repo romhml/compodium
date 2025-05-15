@@ -1,53 +1,40 @@
 #!/bin/bash
 
-# The MIT License (MIT)
-#
-# Copyright (c) 2016-present - Nuxt Team
-#
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-#
-# The above copyright notice and this permission notice shall be included in all
-# copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-# SOFTWARE.
-
-# https://github.com/nuxt/nuxt/blob/main/scripts/release.sh
+# Inspired by: https://github.com/nuxt/nuxt/blob/main/scripts/release.sh
 
 set -e
 
-# Build all once to ensure things are nice
 pnpm -r prepack
 
 REPO_ROOT=$(pwd)
 
+# Function to publish a package
+publish_package() {
+  local pkg=$1
+  local tag="latest"
+
+  echo "⚡ Publishing $pkg with tag $tag"
+
+  if [[ $pkg != "packages/meta" ]]; then
+    cp "$REPO_ROOT/LICENSE" .
+    cp "$REPO_ROOT/README.md" .
+  fi
+
+  pnpm publish --access public --no-git-checks --tag "$tag"
+
+  if [[ $pkg != "packages/meta" ]]; then
+    rm LICENSE
+    rm README.md
+  fi
+}
+
 # Release packages
 for PKG in packages/*; do
-  if [[ $PKG == "packages/meta" ]] ; then
+  if [[ $PKG == "packages/devtools" ]]; then
     continue
   fi
 
-  pushd $PKG
-  TAG="latest"
-  echo "⚡ Publishing $PKG with tag $TAG"
-
-  cp $REPO_ROOT/LICENSE .
-  cp $REPO_ROOT/README.md .
-
-  pnpm publish --access public --no-git-checks --tag $TAG
-
-  rm LICENSE
-  rm README.md
-
+  pushd "$PKG" > /dev/null
+  publish_package "$PKG"
   popd > /dev/null
 done

@@ -1,6 +1,6 @@
 {
   "name": "@compodium/meta",
-  "version": "0.1.0-beta.9",
+  "version": "0.1.0-beta.10",
   "repository": {
     "url": "romhml/compodium",
     "directory": "packages/meta"
@@ -9,22 +9,20 @@
   "type": "commonjs",
   "exports": {
     ".": {
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.cjs"
+      "import": "./dist/index.mjs"
     },
     "./*": "./dist/*"
   },
-  "main": "dist/index.cjs",
+  "main": "dist/index.mjs",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "files": [
     "dist/"
   ],
   "scripts": {
-    "dev:prepare": "unbuild",
+    "dev:prepare": "unbuild --stub",
     "typecheck": "tsc --noEmit",
-    "prepack": "unbuild",
-    "dev": "unbuild --watch"
+    "prepack": "unbuild"
   },
   "dependencies": {
     "@volar/typescript": "^2.4.13",

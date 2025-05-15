@@ -47,8 +47,12 @@ const { header } = useAppConfig()
       v-else
       #left
     >
-      <NuxtLink :to="header?.to || '/'">
-        <AppLogo class="w-auto h-6 shrink-0" />
+      <NuxtLink
+        :to="header?.to || '/'"
+        class="flex items-center gap-1"
+      >
+        <AppLogo class="w-auto h-6 shrink-0 inline" />
+        <span class="font-bold text-lg"> Compodium </span>
       </NuxtLink>
     </template>
 

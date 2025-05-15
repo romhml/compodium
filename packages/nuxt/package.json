@@ -1,6 +1,6 @@
 {
   "name": "@compodium/nuxt",
-  "version": "0.1.0-beta.9",
+  "version": "0.1.0-beta.10",
   "description": "A plug an play component playground for Nuxt.",
   "repository": {
     "url": "romhml/compodium",
@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "@compodium/core": "workspace:^",
-    "@nuxt/devtools-kit": "^2.4.0",
+    "@nuxt/devtools-kit": "^2.4.1",
     "@nuxt/kit": "catalog:",
     "consola": "^3.4.2",
     "defu": "^6.1.4",
