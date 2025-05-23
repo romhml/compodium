@@ -25,7 +25,7 @@
     "prepack": "unbuild"
   },
   "dependencies": {
-    "@volar/typescript": "^2.4.13",
+    "@volar/typescript": "^2.4.14",
     "@vue/language-core": "2.2.10",
     "pathe": "^2.0.3",
     "vue-component-meta": "^2.2.10",
