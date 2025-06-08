@@ -127,7 +127,7 @@ export function baseCreate(
       }
     }
   )
-  const { languageServiceHost } = createLanguageServiceHost(ts, ts.sys, language, s => s, projectHost)
+  const { languageServiceHost } = createLanguageServiceHost(ts, ts.sys, language as any, s => s, projectHost)
   const tsLs = ts.createLanguageService(languageServiceHost)
 
   const directoryExists = languageServiceHost.directoryExists?.bind(languageServiceHost)
@@ -748,7 +748,7 @@ function createSchemaResolvers(
     const fileName = declaration.getSourceFile().fileName
     const sourceScript = language.scripts.get(fileName)
     if (sourceScript?.generated) {
-      const script = sourceScript.generated.languagePlugin.typescript?.getServiceScript(sourceScript.generated.root)
+      const script = (sourceScript.generated.languagePlugin as any).typescript?.getServiceScript(sourceScript.generated.root)
       if (script) {
         for (const [sourceScript, map] of language.maps.forEach(script.code)) {
           for (const [start] of map.toSourceLocation(declaration.getStart())) {

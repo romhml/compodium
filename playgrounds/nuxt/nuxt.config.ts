@@ -14,6 +14,7 @@ export default defineNuxtConfig({
 
   compodium: {
     tests: true,
+    includeLibraryCollections: false,
     extras: {
       colors: {
         primary: 'blue',

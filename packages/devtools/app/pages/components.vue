@@ -200,6 +200,10 @@ const tabs = computed(() => {
     { label: 'Code', slot: 'code', icon: 'lucide:code' }
   ]
 })
+
+async function runTests() {
+  await $fetch('/api/test')
+}
 </script>
 
 <template>
@@ -207,12 +211,27 @@ const tabs = computed(() => {
     ref="container"
     class="relative flex w-screen h-screen"
   >
-    <ComponentCollectionMenu
-      v-if="collections?.length"
-      v-model="component"
-      :collections="collections"
-      class="pt-1 border-r border-default hidden xl:block xl:w-xs overflow-y-scroll"
-    />
+    <div class="relative h-full">
+      <ComponentCollectionMenu
+        v-if="collections?.length"
+        v-model="component"
+        :collections="collections"
+        class="pt-1 border-r border-default hidden xl:block xl:w-xs overflow-y-scroll h-full"
+      />
+      <div class="absolute bottom-2 w-full p-2">
+        <UButton
+          variant="subtle"
+          class="w-full"
+          block
+          icon="lucide:circle-play"
+          trailing
+          loading-auto
+          @click="runTests"
+        >
+          Run tests
+        </UButton>
+      </div>
+    </div>
 
     <div class="grow relative">
       <div class="grid grid-cols-3 absolute inset-x-0 p-2 z-1">

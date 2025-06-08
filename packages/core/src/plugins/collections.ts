@@ -18,7 +18,8 @@ export function collectionsPlugin(config: PluginConfig): VitePlugin {
               const componentExamples = examples?.filter(e => e.pascalName.startsWith(`${c.pascalName}Example`)).map(e => ({
                 ...e,
                 isExample: true,
-                componentPath: resolve(config.rootDir, c.filePath)
+                componentPath: resolve(config.rootDir, c.filePath),
+                filePath: resolve(config.rootDir, e.filePath)
               }))
 
               const mainExample = componentExamples.find(e => e.pascalName === `${c.pascalName}Example`)
@@ -26,6 +27,7 @@ export function collectionsPlugin(config: PluginConfig): VitePlugin {
 
               return {
                 ...component,
+                filePath: resolve(config.rootDir, component.filePath),
                 wrapperComponent: col.wrapperComponent,
                 docUrl: col.getDocUrl?.(c.pascalName),
                 examples: componentExamples.filter(e => e.pascalName !== mainExample?.pascalName)

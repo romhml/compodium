@@ -31,7 +31,11 @@
     "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
-    "vite": ">=6"
+    "vite": ">=6",
+    "vitest": ">=3.1",
+    "vue": ">=3",
+    "@vue/test-utils": ">=2",
+    "@nuxt/test-utils": ">=3"
   },
   "dependencies": {
     "@compodium/core": "workspace:^",

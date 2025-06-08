@@ -5,6 +5,7 @@ export default defineBuildConfig({
   ...config,
   entries: [
     'src/index',
+    'src/testing',
     { builder: 'copy', input: './src/runtime', outDir: './dist/runtime' }
   ],
   replace: {

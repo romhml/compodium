@@ -19,6 +19,9 @@
     ".": {
       "import": "./dist/index.mjs"
     },
+    "./testing": {
+      "import": "./dist/testing.mjs"
+    },
     "./*": "./dist/*"
   },
   "main": "dist/index.mjs",
@@ -33,11 +36,11 @@
     "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
+    "@nuxt/test-utils": ">=3",
+    "@vue/test-utils": ">=2",
     "vite": ">=6",
     "vitest": ">=3.1",
-    "vue": ">=3",
-    "@vue/test-utils": ">=2",
-    "@nuxt/test-utils": ">=3"
+    "vue": ">=3"
   },
   "peerDependenciesMeta": {
     "vitest": {
