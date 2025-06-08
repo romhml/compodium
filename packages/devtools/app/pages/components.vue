@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Component, ComponentExample, CompodiumMeta, ComponentCollection, PropertyMeta } from '@compodium/core'
+import type { Component, ComponentExample, CompodiumMeta, ComponentCollection, PropertyMeta, CompodiumTestResult } from '@compodium/core'
 import { StorageSerializers, useColorMode, useDebounceFn, useStorage } from '@vueuse/core'
 import type { ComboItem } from '../components/ComboInput.vue'
 import { getEnumOptions } from '~/utils/enum'
@@ -200,6 +200,28 @@ const tabs = computed(() => {
     { label: 'Code', slot: 'code', icon: 'lucide:code' }
   ]
 })
+
+// TODO:
+// Refactor data structure to make it easier to access component / collection test status
+// Improve test status UI (Display general metrics, add watch mode, better loading states)
+// Test result tab
+// Take snapshot and display it
+// Show diff with previous snapshot
+// How to add custom tests for a component?
+const testRunning = ref(false)
+
+async function runTests() {
+  testRunning.value = true
+  testStatus.value = {}
+  await $fetch('/api/test')
+  testRunning.value = false
+}
+
+const testStatus = ref<Record<string, CompodiumTestResult>>({})
+
+hooks.hook('compodium:test:result', (result) => {
+  testStatus.value[result.name] = result
+})
 </script>
 
 <template>
@@ -207,12 +229,32 @@ const tabs = computed(() => {
     ref="container"
     class="relative flex w-screen h-screen"
   >
-    <ComponentCollectionMenu
+    <div
       v-if="collections?.length"
-      v-model="component"
-      :collections="collections"
-      class="pt-1 border-r border-default hidden xl:block xl:w-xs overflow-y-scroll"
-    />
+      class="relative h-full"
+    >
+      <ComponentCollectionMenu
+        v-model="component"
+        :collections="collections"
+        :test-status="testStatus"
+        :test-running="testRunning"
+        class="pt-1 border-r border-default hidden xl:block xl:w-xs overflow-y-scroll h-full"
+      />
+
+      <div class="absolute bottom-2 w-full p-2">
+        <UButton
+          variant="subtle"
+          class="w-full"
+          block
+          icon="lucide:circle-play"
+          trailing
+          loading-auto
+          @click="runTests"
+        >
+          Run tests
+        </UButton>
+      </div>
+    </div>
 
     <div class="grow relative">
       <div class="grid grid-cols-3 absolute inset-x-0 p-2 z-1">

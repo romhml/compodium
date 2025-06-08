@@ -1,3 +1,4 @@
+/// <reference types="vitest/config" />
 import { fileURLToPath, URL } from 'node:url'
 
 import { defineConfig } from 'vite'
@@ -10,24 +11,33 @@ import ui from '@nuxt/ui/vite'
 export default defineConfig({
   plugins: [
     vue(),
-    vueDevTools(),
+    process.env.VITEST ? undefined : vueDevTools(),
     ui(),
     compodium({
+      includeLibraryCollections: false,
       extras: {
         colors: {
           primary: 'green',
           neutral: 'slate'
         }
       },
-      tests: {
-        snapshots: true
-      }
+      tests: { snapshots: false }
     })
   ],
 
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
+    }
+  },
+
+  test: {
+    silent: false,
+    globals: true,
+    server: {
+      deps: {
+        inline: ['@nuxt/ui']
+      }
     }
   }
 })
