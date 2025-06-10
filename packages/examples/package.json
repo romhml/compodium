@@ -8,18 +8,22 @@
     "url": "romhml/compodium",
     "directory": "packages/examples"
   },
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist"],
   "exports": {
-    ".": "./dist/index.mjs",
-    "./*": "./dist/*"
+    ".": {
+      "default": "./dist/index.js",
+      "@compodium/dev": "./src/index.ts"
+    },
+    "./*": {
+      "default": "./dist/*",
+      "@compodium/dev": "./src/*"
+    }
   },
-  "lib": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
   "scripts": {
-    "dev:prepare": "unbuild --stub",
-    "prepack": "tailwindcss -i src/assets/ui/base.css -o src/assets/ui/index.css && unbuild"
+    "prepack": "tailwindcss -i src/assets/ui/base.css -o src/assets/ui/index.css && tsdown"
   },
   "dependencies": {
     "pathe": "^2.0.3",

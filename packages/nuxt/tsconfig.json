@@ -6,6 +6,7 @@
     "test"
   ],
   "compilerOptions": {
+    "customConditions": ["@compodium/dev"],
     "types": ["vite/client"]
   }
 }

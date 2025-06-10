@@ -13,21 +13,22 @@
     "components",
     "documentation"
   ],
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist"],
   "exports": {
     ".": {
-      "import": "./dist/index.mjs"
+      "import": "./dist/index.js",
+      "@compodium/dev": "./src/index.ts"
     },
-    "./*": "./dist/*"
+    "./*": {
+      "import": "./dist/*",
+      "@compodium/dev": "./src/*"
+    }
   },
-  "main": "dist/index.mjs",
-  "module": "dist/index.mjs",
-  "types": "dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
   "scripts": {
-    "dev:prepare": "unbuild --stub",
-    "prepack": "unbuild",
+    "prepack": "tsdown",
     "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {

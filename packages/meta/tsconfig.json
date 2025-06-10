@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
+    "customConditions": ["@compodium/dev"],
     "outDir": "./dist",
     "declaration": true,
     "emitDeclarationOnly": false,
-    "declarationMap": true,
     "target": "esnext",
     "module": "NodeNext",
     "strict": true,

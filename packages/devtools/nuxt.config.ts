@@ -29,5 +29,13 @@ export default defineNuxtConfig({
     output: {
       publicDir: resolve(__dirname, '../core/dist/client/devtools')
     }
+  },
+
+  typescript: {
+    tsConfig: {
+      compilerOptions: {
+        customConditions: ['@compodium/dev']
+      }
+    }
   }
 })

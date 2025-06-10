@@ -7,22 +7,23 @@
   },
   "license": "MIT",
   "type": "commonjs",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist"],
   "exports": {
     ".": {
-      "import": "./dist/index.mjs"
+      "import": "./dist/index.mjs",
+      "@compodium/dev": "./src/index.ts"
     },
-    "./*": "./dist/*"
+    "./*": {
+      "import": "./dist/*",
+      "@compodium/dev": "./src/*"
+    }
   },
-  "main": "dist/index.mjs",
-  "module": "dist/index.mjs",
-  "types": "dist/index.d.ts",
-  "files": [
-    "dist/"
-  ],
   "scripts": {
-    "dev:prepare": "unbuild --stub",
     "typecheck": "tsc --noEmit",
-    "prepack": "unbuild"
+    "prepack": "tsdown"
   },
   "dependencies": {
     "@volar/typescript": "^2.4.14",

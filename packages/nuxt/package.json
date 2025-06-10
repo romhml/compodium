@@ -8,10 +8,12 @@
   },
   "license": "MIT",
   "type": "module",
+  "files": ["dist"],
   "exports": {
     ".": {
       "types": "./dist/types.d.mts",
-      "import": "./dist/module.mjs"
+      "import": "./dist/module.mjs",
+      "@compodium/dev": "./src/module.ts"
     }
   },
   "typesVersions": {
@@ -21,9 +23,6 @@
       ]
     }
   },
-  "files": [
-    "dist"
-  ],
   "scripts": {
     "prepack": "nuxt-module-build build",
     "dev:prepare": "nuxt-module-build build --stub && nuxt-module-build prepare",
