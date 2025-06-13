@@ -7,18 +7,16 @@
   },
   "license": "MIT",
   "type": "commonjs",
-  "main": "dist/index.js",
-  "module": "dist/index.js",
-  "types": "dist/index.d.ts",
   "files": ["dist"],
   "exports": {
     ".": {
+      "@compodium/dev": "./src/index.ts",
       "import": "./dist/index.mjs",
-      "@compodium/dev": "./src/index.ts"
+      "types": "./dist/index.d.ts"
     },
     "./*": {
-      "import": "./dist/*",
-      "@compodium/dev": "./src/*"
+      "@compodium/dev": "./src/*",
+      "import": "./dist/*"
     }
   },
   "scripts": {

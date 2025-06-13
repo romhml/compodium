@@ -21,12 +21,12 @@
   "files": ["dist"],
   "exports": {
     ".": {
-      "import": "./dist/index.js",
-      "@compodium/dev": "./src/index.ts"
+      "@compodium/dev": "./src/index.ts",
+      "import": "./dist/index.js"
     },
     "./*": {
-      "import": "./dist/*",
-      "@compodium/dev": "./src/*"
+      "@compodium/dev": "./src/*",
+      "import": "./dist/*"
     }
   },
   "scripts": {

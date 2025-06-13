@@ -13,18 +13,14 @@
     "components",
     "documentation"
   ],
-  "main": "dist/index.js",
-  "module": "dist/index.js",
-  "types": "dist/index.d.ts",
   "files": ["dist"],
   "exports": {
     ".": {
       "import": "./dist/index.js",
-      "@compodium/dev": "./src/index.ts"
+      "types": "./dist/index.d.ts"
     },
     "./*": {
-      "import": "./dist/*",
-      "@compodium/dev": "./src/*"
+      "import": "./dist/*"
     }
   },
   "scripts": {

@@ -22,6 +22,7 @@ export default defineConfig({
     })
   ],
   resolve: {
+    conditions: ['@compodium/dev'],
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }

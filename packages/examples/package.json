@@ -8,18 +8,16 @@
     "url": "romhml/compodium",
     "directory": "packages/examples"
   },
-  "main": "dist/index.js",
-  "module": "dist/index.js",
-  "types": "dist/index.d.ts",
   "files": ["dist"],
   "exports": {
     ".": {
-      "default": "./dist/index.js",
-      "@compodium/dev": "./src/index.ts"
+      "@compodium/dev": "./src/index.ts",
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
     },
     "./*": {
-      "default": "./dist/*",
-      "@compodium/dev": "./src/*"
+      "@compodium/dev": "./src/*",
+      "import": "./dist/*"
     }
   },
   "scripts": {

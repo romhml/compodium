@@ -4,6 +4,12 @@ export default defineNuxtConfig({
   css: ['~/assets/css/main.css'],
   compatibilityDate: '2025-02-12',
 
+  vite: {
+    resolve: {
+      conditions: ['@compodium/dev', 'development']
+    }
+  },
+
   compodium: {
     extras: {
       colors: {
