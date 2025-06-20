@@ -4,19 +4,22 @@ import NuxtRoot from '#build/compodium/root.mjs'
 import CompodiumRoot from '@compodium/core/runtime/root.vue'
 
 import { useNuxtApp } from '#imports'
+import { joinURL } from 'ufo'
 
 const nuxtApp = useNuxtApp()
 const url = import.meta.server ? nuxtApp.ssrContext?.url : window.location.pathname
+const app = useNuxtApp()
 
-if (url?.startsWith('/__compodium__/renderer')) {
+const rendererUrl = joinURL(app.$config.app.baseURL, '/__compodium__/renderer')
+
+if (url?.startsWith(rendererUrl)) {
   // Silence Nuxt warnings on unused pages / layouts
-  const app = useNuxtApp()
   app._isNuxtPageUsed = true
   app._isNuxtLayoutUsed = true
 }
 </script>
 
 <template>
-  <CompodiumRoot v-if="url?.startsWith('/__compodium__/renderer')" />
+  <CompodiumRoot v-if="url?.startsWith(rendererUrl)" />
   <NuxtRoot v-else />
 </template>

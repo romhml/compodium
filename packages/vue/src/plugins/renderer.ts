@@ -1,10 +1,11 @@
 import type { VitePlugin } from 'unplugin'
-import type { PluginOptions } from '@compodium/core'
+import type { PluginConfig } from '@compodium/core'
 import { readFileSync, existsSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { resolvePathSync } from 'mlly'
+import { joinURL } from 'ufo'
 
-export function rendererPlugin(options: PluginOptions): VitePlugin {
+export function rendererPlugin(config: PluginConfig): VitePlugin {
   return {
     name: 'compodium:renderer',
     enforce: 'pre',
@@ -12,13 +13,13 @@ export function rendererPlugin(options: PluginOptions): VitePlugin {
       server.middlewares.use('/__compodium__/renderer', async (_req, res) => {
         try {
           // TODO: Should read the user's index.html and replace the body.
-          const indexPath = resolve(options.rootDir, 'index.html')
+          const indexPath = resolve(config.rootDir, 'index.html')
           let index = readFileSync(indexPath, 'utf-8')
           index = index.replace(
             /<body[^>]*>[\s\S]*<\/body>/i,
             `<body>
               <div id="compodium"></div>
-              <script type="module" src="/@compodium/renderer.ts"></script>
+              <script type="module" src="${joinURL(config.baseUrl, '/@compodium/renderer.ts')}"></script>
             </body>`
           )
           res.setHeader('Content-Type', 'text/html')
@@ -37,10 +38,10 @@ export function rendererPlugin(options: PluginOptions): VitePlugin {
     load(id) {
       if (id === '\0renderer.ts') {
         // Read the user's main entrypoint file
-        const mainPath = resolve(options.rootDir, options.mainPath ?? 'src/main.ts')
+        const mainPath = resolve(config.rootDir, config.mainPath ?? 'src/main.ts')
 
         if (!existsSync(mainPath)) {
-          throw new Error(`[Compodium] failed to resolve main file ${options.mainPath}.`)
+          throw new Error(`[Compodium] failed to resolve main file ${config.mainPath}.`)
         }
 
         const mainDir = dirname(mainPath)
