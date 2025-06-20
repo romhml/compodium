@@ -11,15 +11,15 @@
     "typecheck": "nuxt typecheck"
   },
   "dependencies": {
-    "@iconify-json/lucide": "^1.2.45",
-    "@iconify-json/simple-icons": "^1.2.37",
-    "@iconify-json/vscode-icons": "^1.2.22",
-    "@nuxt/content": "^3.5.1",
+    "@iconify-json/lucide": "^1.2.51",
+    "@iconify-json/simple-icons": "^1.2.39",
+    "@iconify-json/vscode-icons": "^1.2.23",
+    "@nuxt/content": "^3.6.1",
     "@nuxt/image": "^1.10.0",
     "@nuxt/ui-pro": "3.1.3",
-    "@nuxthub/core": "0.8.27",
+    "@nuxthub/core": "0.9.0",
     "nuxt": "catalog:",
-    "nuxt-llms": "0.1.2",
-    "nuxt-og-image": "^5.1.5"
+    "nuxt-llms": "0.1.3",
+    "nuxt-og-image": "^5.1.7"
   }
 }
