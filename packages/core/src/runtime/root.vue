@@ -29,8 +29,9 @@ async function importComponent(path: string) {
   if ((window as any)?.__buildAssetsURL) {
     return await import(/* @vite-ignore */ (window as any)?.__buildAssetsURL(path)).then(c => c.default)
   }
-  return await import(/* @vite-ignore */ joinURL('/@fs/' + path)).then(c => c.default)
+  return await import(/* @vite-ignore */ joinURL(import.meta.env.BASE_URL, '/@fs/', path)).then(c => c.default)
 }
+
 async function onUpdateComponent(payload: Parameters<CompodiumHooks['renderer:update-component']>[0]) {
   combo.value = []
   component.value = null

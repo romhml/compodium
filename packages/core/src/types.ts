@@ -56,6 +56,7 @@ export type PluginOptions = {
 export type PluginConfig = PluginOptions & {
   libraryCollections: Collection[]
   componentCollection: Collection
+  baseUrl: string
 }
 
 export type IconifyIcon = string & {}

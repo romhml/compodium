@@ -12,7 +12,7 @@ import type { Collection, PluginConfig, PluginOptions } from './types'
 
 export * from './types'
 
-export const compodium = /* #__PURE__ */ (options: PluginOptions) => {
+export function resolveConfig(options: PluginOptions): PluginConfig {
   const exampleDir = {
     path: joinURL(options.rootDir, options.dir, 'examples'),
     pattern: '**/*.{vue,tsx}'
@@ -50,11 +50,16 @@ export const compodium = /* #__PURE__ */ (options: PluginOptions) => {
       }))
     : []
 
-  const config: PluginConfig = {
+  return {
     ...options,
     libraryCollections,
-    componentCollection
+    componentCollection,
+    baseUrl: '/'
   }
+}
+
+export const compodium = /* #__PURE__ */ (options: PluginOptions) => {
+  const config = resolveConfig(options)
 
   return [
     collectionsPlugin(config),
