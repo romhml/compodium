@@ -30,10 +30,12 @@
     "release": "pnpm run lint && pnpm run test && pnpm run prepack && changelogen --release && pnpm publish && git push --follow-tags",
     "typecheck": "vue-tsc --noEmit"
   },
+  "peerDependencies": {
+    "@nuxt/kit": ">=3.15"
+  },
   "dependencies": {
     "@compodium/core": "workspace:^",
     "@nuxt/devtools-kit": "^2.5.0",
-    "@nuxt/kit": "catalog:",
     "consola": "^3.4.2",
     "defu": "^6.1.4",
     "ufo": "^1.6.1"
