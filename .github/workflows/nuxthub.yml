@@ -36,17 +36,10 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Ensure NuxtHub module is installed
-        run: pnpx nuxthub@latest ensure
-
-      - name: Build application
-        run: pnpm build
-        env:
-          NUXT_UI_PRO_LICENSE: ${{ secrets.NUXT_UI_PRO_LICENSE }}
-
-      - name: Deploy to NuxtHub
+      - name: Build & Deploy to NuxtHub
         uses: nuxt-hub/action@v2
-        id: deploy
         with:
           project-key: compodium-yt6s
-          directory: docs/dist
+          directory: docs/
+        env:
+          NUXT_UI_PRO_LICENSE: ${{ secrets.NUXT_UI_PRO_LICENSE }}
