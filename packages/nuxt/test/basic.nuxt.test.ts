@@ -101,7 +101,7 @@ describe('basic', async () => {
     it('works for basic component', async () => {
       const component = await $fetch(`/__compodium__/api/meta`, {
         query: {
-          component: joinURL(rootDir, '/components/BasicComponent.vue')
+          component: joinURL(rootDir, '/app/components/BasicComponent.vue')
         }
       })
 
@@ -131,7 +131,7 @@ describe('basic', async () => {
     it('works', async () => {
       const component = await $fetch<CompodiumMeta>('/__compodium__/api/meta', {
         query: {
-          component: joinURL(rootDir, '/components/ExtendMeta.vue')
+          component: joinURL(rootDir, '/app/components/ExtendMeta.vue')
         }
       })
       expect(component.compodium).toMatchObject({
@@ -150,7 +150,7 @@ describe('basic', async () => {
     it('filters variables', async () => {
       const component = await $fetch<CompodiumMeta>('/__compodium__/api/meta', {
         query: {
-          component: joinURL(rootDir, '/components/ExtendMetaWithVars.vue')
+          component: joinURL(rootDir, '/app/components/ExtendMetaWithVars.vue')
         }
       })
       expect(component.compodium).toEqual({ defaultProps: {} })
@@ -159,7 +159,7 @@ describe('basic', async () => {
     it('ignores if invalid param', async () => {
       const component = await $fetch<CompodiumMeta>('/__compodium__/api/meta', {
         query: {
-          component: joinURL(rootDir, '/components/ExtendMetaBad.vue')
+          component: joinURL(rootDir, '/app/components/ExtendMetaBad.vue')
         }
       })
       expect(component.compodium).toBeUndefined()
@@ -172,7 +172,7 @@ describe('basic', async () => {
     beforeEach(async () => {
       const component = await $fetch<CompodiumMeta>('/__compodium__/api/meta', {
         query: {
-          component: joinURL(rootDir, '/components/ComplexComponent.vue')
+          component: joinURL(rootDir, '/app/components/ComplexComponent.vue')
         }
       })
       props = component.props

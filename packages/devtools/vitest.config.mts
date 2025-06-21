@@ -1,11 +1,8 @@
-import { defineVitestConfig } from '@nuxt/test-utils/config'
-import { defaultExclude } from 'vitest/config'
+import { defineConfig } from 'vitest/config'
 
-export default defineVitestConfig({
+export default defineConfig({
   test: {
     globals: true,
-    silent: true,
-    exclude: [...defaultExclude, './test/vue/**.spec.ts'],
-    environment: 'nuxt'
+    silent: true
   }
 })

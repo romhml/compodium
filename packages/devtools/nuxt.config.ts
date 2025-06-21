@@ -19,12 +19,6 @@ export default defineNuxtConfig({
 
   css: ['~/assets/css/main.css'],
 
-  future: {
-    compatibilityVersion: 4
-  },
-
-  compatibilityDate: '2024-04-03',
-
   nitro: {
     output: {
       publicDir: resolve(__dirname, '../core/dist/client/devtools')
