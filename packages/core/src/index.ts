@@ -9,6 +9,7 @@ import { colorsPlugin } from './plugins/colors'
 import { iconifyPlugin } from './plugins/iconify'
 
 import type { Collection, PluginConfig, PluginOptions } from './types'
+import { resolve } from 'pathe'
 
 export * from './types'
 
@@ -23,6 +24,7 @@ export function resolveConfig(options: PluginOptions): PluginConfig {
     return {
       pattern: '**/*.{vue,tsx}',
       ...componentDir,
+      path: resolve(options.rootDir, componentDir.path),
       ignore: (componentDir.ignore ?? []).concat(options.ignore ?? [])
     }
   }).filter(collection => !collection.path?.includes('node_modules/'))

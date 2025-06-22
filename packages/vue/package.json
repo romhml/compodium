@@ -39,7 +39,6 @@
     "@vue/devtools-kit": "^7.7.7",
     "consola": "^3.4.2",
     "defu": "^6.1.4",
-    "mlly": "^1.7.4",
     "pathe": "^2.0.3",
     "ufo": "^1.6.1",
     "unplugin": "^2.3.5"
