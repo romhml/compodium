@@ -1,7 +1,7 @@
 {
   "name": "@compodium/core",
   "type": "module",
-  "version": "0.1.0-beta.10",
+  "version": "0.1.0-beta.11",
   "description": "A plug and play component playground for Vue and Nuxt.",
   "license": "MIT",
   "repository": {

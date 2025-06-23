@@ -4,27 +4,14 @@
 
 set -e
 
-pnpm -r prepack
-
 REPO_ROOT=$(pwd)
 
 # Function to publish a package
-publish_package() {
+sync_package() {
   local pkg=$1
-  local tag="latest"
-
-  echo "⚡ Publishing $pkg with tag $tag"
-
   if [[ $pkg != "packages/meta" ]]; then
     cp "$REPO_ROOT/LICENSE" .
     cp "$REPO_ROOT/README.md" .
-  fi
-
-  pnpm publish --access public --no-git-checks --tag "$tag"
-
-  if [[ $pkg != "packages/meta" ]]; then
-    rm LICENSE
-    rm README.md
   fi
 }
 
@@ -35,6 +22,6 @@ for PKG in packages/*; do
   fi
 
   pushd "$PKG" > /dev/null
-  publish_package "$PKG"
+  sync_package "$PKG"
   popd > /dev/null
 done

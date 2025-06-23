@@ -1,5 +1,41 @@
 # Changelog
 
+## v0.1.0-beta.11
+
+[compare changes](https://github.com/romhml/compodium/compare/v0.1.0-beta.10...v0.1.0-beta.11)
+
+### 🚀 Enhancements
+
+- **devtools:** Add button to clear input values ([#94](https://github.com/romhml/compodium/pull/94))
+- **core:** Hide third party components if no example is found ([9d437b2](https://github.com/romhml/compodium/commit/9d437b2))
+- **examples:** Add example for CheckboxGroup (`@nuxt/ui`) ([4d678b9](https://github.com/romhml/compodium/commit/4d678b9))
+
+### 🩹 Fixes
+
+- Respect vite and nuxt's `base` url configuration ([#87](https://github.com/romhml/compodium/pull/87))
+- **devtools:** Trigger reactivity for array mutations in ArrayInput ([#93](https://github.com/romhml/compodium/pull/93))
+- **devtools:** Infinite recursion on keyboard event ([aed8cb6](https://github.com/romhml/compodium/commit/aed8cb6))
+- Runtime resolutions errors ([646f507](https://github.com/romhml/compodium/commit/646f507))
+
+### 💅 Refactors
+
+- **core:** Renderer root component ([#92](https://github.com/romhml/compodium/pull/92))
+
+### 🏡 Chore
+
+- Update release script ([27d19d1](https://github.com/romhml/compodium/commit/27d19d1))
+- Upgrade to nuxt 4 ([#88](https://github.com/romhml/compodium/pull/88))
+- Migrate nuxthub action ([3c723bb](https://github.com/romhml/compodium/commit/3c723bb))
+- **playground-vue:** Ignore component.d.ts updates ([63eeb56](https://github.com/romhml/compodium/commit/63eeb56))
+
+### ✅ Tests
+
+- **vue:** Setup ([#91](https://github.com/romhml/compodium/pull/91))
+
+### ❤️ Contributors
+
+- Romain Hamel ([@romhml](https://github.com/romhml))
+
 ## v0.1.0-beta.10
 
 [compare changes](https://github.com/romhml/compodium/compare/v0.1.0-beta.7...v0.1.0-beta.10)
@@ -74,7 +110,6 @@
 ### ❤️ Contributors
 
 - Romain Hamel ([@romhml](https://github.com/romhml))
-- Romhml ([@romhml](https://github.com/romhml))
 
 ## v0.1.0-beta.9
 
@@ -125,7 +160,6 @@
 ### ❤️ Contributors
 
 - Romain Hamel ([@romhml](https://github.com/romhml))
-- Romhml ([@romhml](https://github.com/romhml))
 
 ## v0.1.0-beta.8
 
@@ -165,7 +199,6 @@
 
 ### ❤️ Contributors
 
-- Romhml ([@romhml](https://github.com/romhml))
 - Romain Hamel ([@romhml](https://github.com/romhml))
 
 ## v0.1.0-beta.7
@@ -238,7 +271,6 @@
 
 ### ❤️ Contributors
 
-- Romhml ([@romhml](https://github.com/romhml))
 - Romain Hamel ([@romhml](https://github.com/romhml))
 
 ## v0.1.0-beta.6
@@ -372,7 +404,6 @@
 ### ❤️ Contributors
 
 - Romain Hamel ([@romhml](https://github.com/romhml))
-- Romhml ([@romhml](https://github.com/romhml))
 
 ## v0.1.0-beta.3
 
@@ -400,7 +431,6 @@
 
 ### ❤️ Contributors
 
-- Romhml ([@romhml](https://github.com/romhml))
 - Romain Hamel ([@romhml](https://github.com/romhml))
 
 ## v0.1.0-beta.2
@@ -421,7 +451,7 @@
 
 ### ❤️ Contributors
 
-- Romhml ([@romhml](http://github.com/romhml))
+- Romain Hamel ([@romhml](http://github.com/romhml))
 
 ## v0.0.1-alpha.18
 
@@ -441,7 +471,6 @@
 
 ### ❤️ Contributors
 
-- Romhml ([@romhml](http://github.com/romhml))
 - Romain Hamel ([@romhml](http://github.com/romhml))
 
 ## v0.0.1-alpha.16
@@ -454,7 +483,7 @@
 
 ### ❤️ Contributors
 
-- Romhml ([@romhml](http://github.com/romhml))
+- Romain Hamel ([@romhml](http://github.com/romhml))
 
 ## v0.0.1-alpha.15
 
@@ -466,7 +495,7 @@
 
 ### ❤️ Contributors
 
-- Romhml ([@romhml](http://github.com/romhml))
+- Romain Hamel ([@romhml](http://github.com/romhml))
 
 ## v0.0.1-alpha.14
 
@@ -484,7 +513,6 @@
 ### ❤️ Contributors
 
 - Romain Hamel ([@romhml](http://github.com/romhml))
-- Romhml ([@romhml](http://github.com/romhml))
 
 ## v0.0.1-alpha.13
 
@@ -505,7 +533,7 @@
 
 ### ❤️ Contributors
 
-- Romhml ([@romhml](http://github.com/romhml))
+- Romain Hamel ([@romhml](http://github.com/romhml))
 
 ## v0.0.1-alpha.12
 
@@ -521,7 +549,7 @@
 
 ### ❤️ Contributors
 
-- Romhml ([@romhml](http://github.com/romhml))
+- Romain Hamel ([@romhml](http://github.com/romhml))
 
 ## v0.0.1-alpha.11
 
@@ -562,7 +590,7 @@
 
 ### ❤️ Contributors
 
-- Romhml ([@romhml](http://github.com/romhml))
+- Romain Hamel ([@romhml](http://github.com/romhml))
 
 ## v0.0.1-alpha.10
 
@@ -584,7 +612,7 @@
 
 ### ❤️ Contributors
 
-- Romhml ([@romhml](http://github.com/romhml))
+- Romain Hamel ([@romhml](http://github.com/romhml))
 
 ## v0.0.1-alpha.9
 
@@ -600,7 +628,7 @@
 
 ### ❤️ Contributors
 
-- Romhml ([@romhml](http://github.com/romhml))
+- Romain Hamel ([@romhml](http://github.com/romhml))
 
 ## v0.0.1-alpha.8
 
@@ -627,7 +655,7 @@
 
 ### ❤️ Contributors
 
-- Romhml ([@romhml](http://github.com/romhml))
+- Romain Hamel ([@romhml](http://github.com/romhml))
 
 ## v0.0.1-alpha.7
 
@@ -652,7 +680,7 @@
 
 ### ❤️ Contributors
 
-- Romhml ([@romhml](http://github.com/romhml))
+- Romain Hamel ([@romhml](http://github.com/romhml))
 
 ## v0.0.1-alpha.6
 
@@ -664,7 +692,7 @@
 
 ### ❤️ Contributors
 
-- Romhml ([@romhml](http://github.com/romhml))
+- Romain Hamel ([@romhml](http://github.com/romhml))
 
 ## v0.0.1-alpha.5
 
@@ -676,7 +704,7 @@
 
 ### ❤️ Contributors
 
-- Romhml ([@romhml](http://github.com/romhml))
+- Romain Hamel ([@romhml](http://github.com/romhml))
 
 ## v0.0.1-alpha.4
 
@@ -705,7 +733,7 @@
 
 ### ❤️ Contributors
 
-- Romhml ([@romhml](http://github.com/romhml))
+- Romain Hamel ([@romhml](http://github.com/romhml))
 
 ## v0.0.1-alpha.3
 
@@ -718,7 +746,7 @@
 
 ### ❤️ Contributors
 
-- Romhml ([@romhml](http://github.com/romhml))
+- Romain Hamel ([@romhml](http://github.com/romhml))
 
 ## v0.0.1-alpha.2
 
@@ -794,7 +822,6 @@
 
 ### ❤️ Contributors
 
-- Romhml ([@romhml](http://github.com/romhml))
 - Romain Hamel ([@romhml](http://github.com/romhml))
 
 ## v0.0.1-alpha.1

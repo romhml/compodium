@@ -1,6 +1,6 @@
 {
   "name": "@compodium/meta",
-  "version": "0.1.0-beta.10",
+  "version": "0.1.0-beta.11",
   "repository": {
     "url": "romhml/compodium",
     "directory": "packages/meta"
