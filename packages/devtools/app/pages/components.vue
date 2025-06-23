@@ -107,7 +107,7 @@ watch([componentMeta, exampleMeta], async ([newComponentMeta, newExampleMeta]) =
   }
 
   if (!touched.value) {
-    props.value = { ...defaultProps.value, ...compodiumDefaultProps.value }
+    props.value = structuredClone({ ...defaultProps.value, ...compodiumDefaultProps.value })
 
     combo.value = [...(
       newExampleMeta?.compodium?.combo

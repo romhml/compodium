@@ -30,7 +30,7 @@ function onResetState() {
   if (isRotated.value) return
   setTimeout(() => isRotated.value = false, 500)
   isRotated.value = true
-  modelValue.value = { ...props.defaultValue }
+  modelValue.value = structuredClone(props.defaultValue ?? {})
 }
 </script>
 
