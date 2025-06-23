@@ -1,19 +1,25 @@
 <script setup lang="ts">
 import { onMounted, shallowRef, ref, computed, toRaw } from 'vue'
 import type { CompodiumHooks } from '@compodium/core'
-import { useColorMode, createReusableTemplate, onKeyStroke } from '@vueuse/core'
+import { onKeyStroke, useColorMode } from '@vueuse/core'
 import { joinURL } from 'ufo'
 import type { Hookable } from 'hookable'
 
+import RendererGrid from './components/RendererGrid.vue'
+import type { ComboOption } from './components/RendererCombo.vue'
+import RendererCombo from './components/RendererCombo.vue'
+import RendererWrapper from './components/RendererWrapper.vue'
+
 // @ts-expect-error virtual module
 import PreviewComponent from 'virtual:compodium:preview'
+
+const isNuxt = !!(window as any)?.__buildAssetsURL
 
 const props = shallowRef()
 const component = shallowRef()
 const wrapper = shallowRef()
 
 const events = shallowRef<string[]>()
-
 const eventHandlers = computed(() => {
   return {
     ...events.value?.reduce((acc, event) => {
@@ -23,12 +29,10 @@ const eventHandlers = computed(() => {
   }
 })
 
-const combo = shallowRef<{ value: string, options: string[] }[]>([])
+const combo = shallowRef<ComboOption[]>([])
 
 async function importComponent(path: string) {
-  if ((window as any)?.__buildAssetsURL) {
-    return await import(/* @vite-ignore */ (window as any)?.__buildAssetsURL(path)).then(c => c.default)
-  }
+  if (isNuxt) return await import(/* @vite-ignore */ (window as any)?.__buildAssetsURL(path)).then(c => c.default)
   return await import(/* @vite-ignore */ joinURL(import.meta.env.BASE_URL, '/@fs/', path)).then(c => c.default)
 }
 
@@ -46,9 +50,7 @@ async function onUpdateComponent(payload: Parameters<CompodiumHooks['renderer:up
 }
 
 if (import.meta.hot) {
-  import.meta.hot.on('compodium:hmr', (data) => {
-    hooks.value?.callHook(data.event, data.path)
-  })
+  import.meta.hot.on('compodium:hmr', data => hooks.value?.callHook(data.event, data.path))
 }
 
 const showGrid = ref(false)
@@ -59,6 +61,7 @@ const hooks = shallowRef<Hookable<CompodiumHooks>>()
 
 onMounted(() => {
   hooks.value = window.parent.__COMPODIUM_HOOKS__ as Hookable<CompodiumHooks>
+  if (!hooks.value) return
 
   hooks.value.hook('renderer:update-component', onUpdateComponent)
   hooks.value.hook('renderer:update-props', payload => props.value = { ...payload.props })
@@ -79,75 +82,34 @@ onMounted(() => {
     }, { eventName: 'keydown' })
   }
 })
-
-const [DefineTemplate, ReuseTemplate] = createReusableTemplate()
 </script>
 
 <template>
-  <DefineTemplate>
-    <template v-if="combo?.length">
-      <template v-if="component">
-        <div
-          v-for="combo1 in combo[0]?.options ?? [undefined]"
-          :key="combo1"
-          :style="{ display: 'flex', flexDirection: 'column', gap: '8px', margin: '4px' }"
-        >
-          <div
-            v-for="combo2 in combo[1]?.options ?? [undefined]"
-            :key="combo2"
-            :style="{ display: 'flex', alignContent: 'center', justifyContent: 'center' }"
-          >
-            <component
-              :is="component"
-              v-bind="{
-                ...props,
-                [combo[0]?.value as string]: combo1,
-                [combo[1]?.value as string]: combo2
-              }"
-              v-on="eventHandlers"
-            />
-          </div>
-        </div>
-      </template>
-    </template>
-
-    <template v-else>
-      <component
-        :is="component"
-        v-if="component"
-        v-bind="props"
-        v-on="eventHandlers"
-      />
-    </template>
-  </DefineTemplate>
   <Suspense>
     <div
       id="__compodium-root"
       :style="{ position: 'relative', minWidth: '100vw', minHeight: '100vh' }"
     >
       <PreviewComponent>
-        <component
-          :is="wrapper"
-          v-if="wrapper"
-        >
-          <ReuseTemplate />
-        </component>
-        <ReuseTemplate v-else />
+        <RendererWrapper :wrapper="wrapper">
+          <RendererCombo
+            :combo="combo"
+            :props
+            #="{ props: comboProps }"
+          >
+            <component
+              :is="component"
+              v-if="component"
+              v-bind="comboProps"
+              v-on="eventHandlers"
+            />
+          </RendererCombo>
+        </RendererWrapper>
       </PreviewComponent>
 
-      <div
+      <RendererGrid
         v-if="showGrid"
-        class="grid-background absolute z-50 inset-0"
-        :style="{
-          position: 'absolute',
-          inset: 0,
-          zIndex: 99999,
-          backgroundImage: 'linear-gradient(to right, var(--ui-border-accented, #71717b) 1px, transparent 1px), linear-gradient(to bottom, var(--ui-border-accented, #71717b) 1px, transparent 1px)',
-          opacity: '50%',
-          backgroundPosition: 'center',
-          backgroundSize: `${gridGap}px ${gridGap}px`,
-          pointerEvents: 'none'
-        }"
+        v-model:gap="gridGap"
       />
     </div>
   </Suspense>

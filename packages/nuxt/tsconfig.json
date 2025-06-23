@@ -3,7 +3,7 @@
   "exclude": [
     "dist",
     "node_modules",
-    "test"
+    "test/fixtures"
   ],
   "compilerOptions": {
     "types": ["vite/client"]
