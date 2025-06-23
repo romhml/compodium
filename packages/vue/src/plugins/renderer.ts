@@ -2,10 +2,12 @@ import type { VitePlugin } from 'unplugin'
 import type { PluginConfig } from '@compodium/core'
 import { readFileSync, existsSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
-import { resolvePathSync } from 'mlly'
 import { joinURL } from 'ufo'
+import { createRequire } from 'node:module'
 
 export function rendererPlugin(config: PluginConfig): VitePlugin {
+  const require = createRequire(import.meta.url)
+
   return {
     name: 'compodium:renderer',
     enforce: 'pre',
@@ -32,14 +34,13 @@ export function rendererPlugin(config: PluginConfig): VitePlugin {
     },
     resolveId(id) {
       if (id === '/@compodium/renderer.ts') {
-        return '\0renderer.ts'
+        return '\0@compodium/renderer.ts'
       }
     },
     load(id) {
-      if (id === '\0renderer.ts') {
+      if (id === '\0@compodium/renderer.ts') {
         // Read the user's main entrypoint file
         const mainPath = resolve(config.rootDir, config.mainPath ?? 'src/main.ts')
-
         if (!existsSync(mainPath)) {
           throw new Error(`[Compodium] failed to resolve main file ${config.mainPath}.`)
         }
@@ -56,7 +57,8 @@ export function rendererPlugin(config: PluginConfig): VitePlugin {
           return `${keyword} ${quote}${resolve(mainDir, path)}/`
         })
 
-        return `import CompodiumRoot from '${resolvePathSync('./runtime/root.vue', { extensions: ['.vue'], url: import.meta.resolve('@compodium/core') })}';\n${mainContent}`
+        const rootVuePath = require.resolve('@compodium/core/runtime/root.vue')
+        return `import CompodiumRoot from '${rootVuePath}';\n${mainContent}`
       }
     }
   }

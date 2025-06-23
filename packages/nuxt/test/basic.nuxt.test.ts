@@ -31,53 +31,26 @@ describe('basic', async () => {
   describe('collections api', () => {
     it('works', async () => {
       const collections = await $fetch<ComponentCollection[]>('/__compodium__/api/collections')
-      expect(collections).toEqual(
-        expect.arrayContaining([
-          expect.objectContaining({
-            name: 'Components',
-            components: expect.arrayContaining([
-              expect.objectContaining({
-                pascalName: 'BasicComponentExample'
-              })
-            ])
-          })
-        ])
-      )
+      expect(collections).toContainComponent({
+        pascalName: 'BasicComponentExample'
+      })
     })
 
     it('assigns component examples', async () => {
       const collections = await $fetch<ComponentCollection[]>('/__compodium__/api/collections')
-      expect(collections).toEqual(
-        expect.arrayContaining([
-          expect.objectContaining({
-            name: 'Components',
-            components: expect.arrayContaining([
-              expect.objectContaining({
-                pascalName: 'BasicComponentExample',
-                examples: expect.arrayContaining([
-                  expect.objectContaining({ pascalName: 'BasicComponentExampleWithSuffix' })
-                ])
-              })
-            ])
-          })
+      expect(collections).toContainComponent({
+        pascalName: 'BasicComponentExample',
+        examples: expect.arrayContaining([
+          expect.objectContaining({ pascalName: 'BasicComponentExampleWithSuffix' })
         ])
-      )
+      })
     })
 
     it('ignores excluded components', async () => {
       const collections = await $fetch<ComponentCollection[]>('/__compodium__/api/collections')
-      expect(collections).toEqual(
-        expect.arrayContaining([
-          expect.objectContaining({
-            name: 'Components',
-            components: expect.not.arrayContaining([
-              expect.objectContaining({
-                pascalName: 'ExcludedComponent'
-              })
-            ])
-          })
-        ])
-      )
+      expect(collections).not.toContainComponent({
+        pascalName: 'ExcludedComponent'
+      })
     })
   })
 

@@ -12,6 +12,7 @@
     "skipLibCheck": true
   },
   "exclude": [
-    "dist"
+    "dist",
+    "test/fixtures"
   ]
 }
