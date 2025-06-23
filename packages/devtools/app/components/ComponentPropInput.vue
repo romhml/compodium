@@ -58,6 +58,10 @@ function inferDefaultInput(value?: any, types?: PropSchema[]): PropSchema | unde
   })
 }
 
+function clearValue() {
+  modelValue.value = undefined
+}
+
 const description = computed(() => {
   return props.description?.replace(/`([^`]+)`/g, '<code class="text-xs font-medium bg-elevated px-1 py-0.5 rounded">$1</code>')
 })
@@ -81,7 +85,7 @@ const [DefineDescription, ReuseDescription] = createReusableTemplate()
         size="sm"
         :trailing-icon="undefined"
         class="font-medium text-ellipsis truncate max-w-50 py-0.5 px-1.5 font-mono bg-elevated/50 border border-default"
-        @update:model-value="modelValue = undefined"
+        @update:model-value="clearValue()"
       />
     </DefineSelect>
 
@@ -95,6 +99,18 @@ const [DefineDescription, ReuseDescription] = createReusableTemplate()
         :name="name"
         :disabled="disabled"
       />
+      <slot name="actions">
+        <UButton
+          v-if="currentInput?.component && modelValue !== undefined && currentInput?.inputType !== 'boolean'"
+          variant="outline"
+          color="neutral"
+          icon="i-lucide-x"
+          size="sm"
+          class="p-2"
+          square
+          @click="clearValue()"
+        />
+      </slot>
     </DefineInput>
 
     <DefineLabel>
@@ -132,7 +148,6 @@ const [DefineDescription, ReuseDescription] = createReusableTemplate()
 
         <div class="flex gap-2 justify-center">
           <ReuseInput />
-          <slot name="actions" />
         </div>
       </UFormField>
     </template>
@@ -156,7 +171,6 @@ const [DefineDescription, ReuseDescription] = createReusableTemplate()
         </template>
         <div class="flex w-full gap-2">
           <ReuseInput />
-          <slot name="actions" />
         </div>
       </UFormField>
       <div class="mt-2">
