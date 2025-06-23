@@ -8,6 +8,7 @@ const modelValue = defineModel<Array<any>>()
 function removeArrayItem(index: number) {
   if (!modelValue.value) return
   modelValue.value.splice(index, 1)
+  modelValue.value = [...modelValue.value]
 }
 
 function addArrayItem() {
@@ -15,6 +16,7 @@ function addArrayItem() {
     modelValue.value = [null]
   } else {
     modelValue.value.push(null)
+    modelValue.value = [...modelValue.value]
   }
   openedItem.value = modelValue.value?.length - 1
 }
