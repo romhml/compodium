@@ -12,7 +12,15 @@ export default defineConfig({
     vue(),
     vueDevTools(),
     ui({ ui: { colors: { neutral: 'zinc' } } }),
-    compodium()
+    compodium(),
+    // Ignore components.d.ts updates to avoid reloading the page
+    // when importing a new component in compodium.
+    {
+      name: 'ignore-components-dts-hmr',
+      handleHotUpdate(ctx) {
+        if (ctx.file.endsWith('components.d.ts')) return []
+      }
+    }
   ],
 
   resolve: {
