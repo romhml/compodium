@@ -23,17 +23,8 @@ describe('custom compodium dir', async () => {
 
   it('resolves examples', async () => {
     const collections = await $fetch<Record<string, ComponentCollection>>('/__compodium__/api/collections')
-    expect(collections).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          name: 'Components',
-          components: expect.arrayContaining([
-            expect.objectContaining({
-              pascalName: 'BasicComponentExample'
-            })
-          ])
-        })
-      ])
-    )
+    expect(collections).toContainComponent({
+      pascalName: 'BasicComponentExample'
+    })
   })
 })

@@ -99,9 +99,11 @@ const [DefineTemplate, ReuseTemplate] = createReusableTemplate()
           >
             <component
               :is="component"
-              :[combo[0]?.value]="combo1"
-              :[combo[1]?.value]="combo2"
-              v-bind="props"
+              v-bind="{
+                ...props,
+                [combo[0]?.value as string]: combo1,
+                [combo[1]?.value as string]: combo2
+              }"
               v-on="eventHandlers"
             />
           </div>

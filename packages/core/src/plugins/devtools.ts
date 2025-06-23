@@ -5,9 +5,10 @@ import { resolve, dirname } from 'pathe'
 import { fileURLToPath } from 'node:url'
 import { existsSync } from 'node:fs'
 import { joinURL } from 'ufo'
-import { resolvePathSync } from 'mlly'
+import { createRequire } from 'node:module'
 
 export function devtoolsPlugin(config: PluginConfig): VitePlugin {
+  const require = createRequire(import.meta.url)
   const userPreview = resolve(joinURL(config.rootDir, config.dir, 'preview.vue'))
 
   return {
@@ -40,7 +41,7 @@ export function devtoolsPlugin(config: PluginConfig): VitePlugin {
         if (existsSync(userPreview)) {
           return userPreview
         }
-        return resolvePathSync('../runtime/preview.vue', { extensions: ['.vue'], url: import.meta.url })
+        return require.resolve('../runtime/preview.vue')
       }
     }
   }

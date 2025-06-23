@@ -11,15 +11,8 @@ export default defineConfig({
   plugins: [
     vue(),
     vueDevTools(),
-    ui(),
-    compodium({
-      extras: {
-        colors: {
-          primary: 'green',
-          neutral: 'slate'
-        }
-      }
-    })
+    ui({ ui: { colors: { neutral: 'zinc' } } }),
+    compodium()
   ],
 
   resolve: {
