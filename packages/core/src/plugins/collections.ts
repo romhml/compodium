@@ -14,7 +14,7 @@ export function collectionsPlugin(config: PluginConfig): VitePlugin {
             const components = await scanComponents(col.dirs, config.rootDir)
             const examples = await scanComponents([col.exampleDir], config.rootDir)
 
-            const collectionComponents = components.map((c) => {
+            const collectionComponents = components.flatMap((c) => {
               const componentExamples = examples?.filter(e => e.pascalName.startsWith(`${c.pascalName}Example`)).map(e => ({
                 ...e,
                 isExample: true,
@@ -24,12 +24,15 @@ export function collectionsPlugin(config: PluginConfig): VitePlugin {
               const mainExample = componentExamples.find(e => e.pascalName === `${c.pascalName}Example`)
               const component = mainExample ?? c
 
-              return {
+              // Hides third party library components if no example can be found.
+              if (col.name !== 'Components' && !mainExample) return []
+
+              return [{
                 ...component,
                 wrapperComponent: col.wrapperComponent,
                 docUrl: col.getDocUrl?.(c.pascalName),
                 examples: componentExamples.filter(e => e.pascalName !== mainExample?.pascalName)
-              }
+              }]
             })
 
             return {
