@@ -3,11 +3,9 @@ import type { PluginConfig } from '@compodium/core'
 import { readFileSync, existsSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { joinURL } from 'ufo'
-import { createRequire } from 'node:module'
+import { resolvePathSync } from 'mlly'
 
 export function rendererPlugin(config: PluginConfig): VitePlugin {
-  const require = createRequire(import.meta.url)
-
   return {
     name: 'compodium:renderer',
     enforce: 'pre',
@@ -57,7 +55,7 @@ export function rendererPlugin(config: PluginConfig): VitePlugin {
           return `${keyword} ${quote}${resolve(mainDir, path)}/`
         })
 
-        const rootVuePath = require.resolve('@compodium/core/runtime/root.vue')
+        const rootVuePath = resolvePathSync('@compodium/core/runtime/root.vue', { extensions: ['.vue'], url: import.meta.url })
         return `import CompodiumRoot from '${rootVuePath}';\n${mainContent}`
       }
     }
