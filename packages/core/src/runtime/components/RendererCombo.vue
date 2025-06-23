@@ -30,7 +30,7 @@ export interface ComboOption {
 }
 
 const _props = defineProps<{
-  combo?: [ComboOption | undefined, ComboOption | undefined]
+  combo?: ComboOption[]
   props: any
 }>()
 

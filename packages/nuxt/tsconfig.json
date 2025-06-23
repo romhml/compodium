@@ -1,5 +1,10 @@
 {
   "extends": "./.nuxt/tsconfig.json",
+  "exclude": [
+    "dist",
+    "node_modules",
+    "test/fixtures"
+  ],
   "compilerOptions": {
     "types": ["vite/client"]
   }

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, shallowRef, ref, computed, toRaw, defineAsyncComponent } from 'vue'
+import { onMounted, shallowRef, ref, computed, toRaw } from 'vue'
 import type { CompodiumHooks } from '@compodium/core'
 import { onKeyStroke, useColorMode } from '@vueuse/core'
 import { joinURL } from 'ufo'
@@ -15,18 +15,9 @@ import PreviewComponent from 'virtual:compodium:preview'
 
 const isNuxt = !!(window as any)?.__buildAssetsURL
 
-const url = import.meta.server ? useNuxtApp().ssrContext?.url : window.location.href
-const query = new URL(url, 'http://localhost')
-const queryParams = query.searchParams
-
-const queryComponent = queryParams.get('component')
-
-const queryWrapper = queryParams.get('wrapper')
-const queryProps = queryParams.get('props')
-
-const props = shallowRef(queryProps ? JSON.parse(queryProps) : undefined)
-const component = shallowRef(queryComponent ? defineAsyncComponent(() => importComponent(queryComponent)) : undefined)
-const wrapper = shallowRef(queryWrapper ? defineAsyncComponent(() => importComponent(queryWrapper)) : undefined)
+const props = shallowRef()
+const component = shallowRef()
+const wrapper = shallowRef()
 
 const events = shallowRef<string[]>()
 const eventHandlers = computed(() => {
@@ -38,11 +29,11 @@ const eventHandlers = computed(() => {
   }
 })
 
-const combo = shallowRef<[ComboOption | undefined, ComboOption | undefined]>([])
+const combo = shallowRef<ComboOption[]>([])
 
 async function importComponent(path: string) {
   if (isNuxt) return await import(/* @vite-ignore */ (window as any)?.__buildAssetsURL(path)).then(c => c.default)
-  return await import(/* @vite-ignore */ joinURL('/@fs/', path)).then(c => c.default)
+  return await import(/* @vite-ignore */ joinURL(import.meta.env.BASE_URL, '/@fs/', path)).then(c => c.default)
 }
 
 async function onUpdateComponent(payload: Parameters<CompodiumHooks['renderer:update-component']>[0]) {
@@ -60,7 +51,6 @@ async function onUpdateComponent(payload: Parameters<CompodiumHooks['renderer:up
 
 if (import.meta.hot) {
   import.meta.hot.on('compodium:hmr', data => hooks.value?.callHook(data.event, data.path))
-  import.meta.hot.on('compodium:test:result', data => hooks.value?.callHook('compodium:test:result', data))
 }
 
 const showGrid = ref(false)
