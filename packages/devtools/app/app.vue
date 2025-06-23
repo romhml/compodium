@@ -14,7 +14,7 @@ useAsyncData('__compodium-fetch-colors', async () => {
 })
 
 onMounted(() => {
-  if (window.parent) {
+  if (window.parent && !window.parent.location.pathname.includes('/__compodium__/devtools')) {
     onKeyStroke(true, (e) => {
       window.parent.dispatchEvent(new KeyboardEvent('keydown', e))
     }, { eventName: 'keydown' })
