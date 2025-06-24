@@ -10,10 +10,8 @@ import type { VitePlugin } from 'unplugin'
 
 export const compodium = /* #__PURE__ */ (opts?: Partial<Omit<PluginOptions, '_nuxt' | 'rootDir'>>) => {
   const options = defu(opts, {
-    rootDir: './',
     dir: './compodium',
-    includeLibraryCollections: true,
-    mainPath: 'src/main.ts'
+    includeLibraryCollections: true
   }) as PluginOptions
 
   options.componentDirs ??= [
@@ -31,6 +29,7 @@ export const compodium = /* #__PURE__ */ (opts?: Partial<Omit<PluginOptions, '_n
     {
       configResolved(viteConfig) {
         config.baseUrl = viteConfig.base
+        config.rootDir = viteConfig.root
       }
     } as VitePlugin,
 
