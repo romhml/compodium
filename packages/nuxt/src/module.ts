@@ -7,7 +7,7 @@ import { defu } from 'defu'
 import { compodium } from '@compodium/core'
 import type { PluginOptions } from '@compodium/core'
 
-export type ModuleOptions = Omit<PluginOptions, 'mainPath' | 'componentDirs' | 'rootDir' | '_nuxt'>
+export type ModuleOptions = Omit<PluginOptions, 'mainPath' | 'componentDirs' | 'rootDir' | '_nuxt' | 'baseUrl'>
 
 export default defineNuxtModule<ModuleOptions>({
   meta: {
@@ -20,8 +20,6 @@ export default defineNuxtModule<ModuleOptions>({
   },
 
   async setup(options, nuxt) {
-    // addImports({ name: 'extendCompodiumMeta', from: '@compodium/core/runtime/composables/extendCompodiumMeta' })
-
     if (!nuxt.options.dev) return
 
     const { resolve } = createResolver(import.meta.url)
@@ -49,6 +47,7 @@ export default defineNuxtModule<ModuleOptions>({
       addVitePlugin(compodium({
         componentDirs: dirs,
         rootDir: nuxt.options.rootDir,
+        baseUrl: nuxt.options.app.baseURL,
         _nuxt: true,
         ...options
       }))

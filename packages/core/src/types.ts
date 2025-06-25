@@ -5,9 +5,13 @@ import type { InputSchema } from './plugins/meta/infer'
 export type PluginOptions = {
   /**
    * Project root directory.
-   * @defaultValue `process.cwd()`
    */
-  rootDir: string
+  rootDir?: string
+
+  /**
+   * Project base url.
+   */
+  baseUrl?: string
 
   /**
    * Customize the directories where components are discovered
@@ -51,12 +55,6 @@ export type PluginOptions = {
 
   /* Internal */
   _nuxt?: boolean
-}
-
-export type PluginConfig = PluginOptions & {
-  libraryCollections: Collection[]
-  componentCollection: Collection
-  baseUrl: string
 }
 
 export type IconifyIcon = string & {}

@@ -43,10 +43,9 @@ export function resolveComponentNameSegments(fileName: string, prefixParts: stri
  * Scan the components inside different components folders
  * and return a unique list of components
  * @param dirs all folders where components are defined
- * @param srcDir src path of your app
  * @returns {Promise} Component found promise
  */
-export async function scanComponents(dirs: ComponentsDir[], srcDir: string): Promise<Component[]> {
+export async function scanComponents(dirs: ComponentsDir[]): Promise<Component[]> {
   // All scanned components
   const components: Component[] = []
 
@@ -123,7 +122,7 @@ export async function scanComponents(dirs: ComponentsDir[], srcDir: string): Pro
 
       // Ignore files like `~/components/index.vue` which end up not having a name at all
       if (!pascalName) {
-        console.warn(`[Compodium] Component did not resolve to a file name in \`~/${relative(srcDir, filePath)}\`.`)
+        console.warn(`[Compodium] Component did not resolve to a file name in \`${filePath}\`.`)
         continue
       }
 

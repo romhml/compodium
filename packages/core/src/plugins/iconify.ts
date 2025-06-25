@@ -1,11 +1,11 @@
 import type { VitePlugin } from 'unplugin'
-import type { PluginConfig } from '../types'
+import type { PluginOptions } from '../types'
 import { joinURL } from 'ufo'
 
-export function iconifyPlugin(_config: PluginConfig): VitePlugin {
+export function iconifyPlugin(_options: PluginOptions): VitePlugin {
   return {
     name: 'compodium:iconify',
-
+    apply: 'serve',
     configureServer(server) {
       server.middlewares.use('/__compodium__/api/iconify', async (req, res) => {
         try {

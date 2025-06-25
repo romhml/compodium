@@ -58,7 +58,7 @@ describe('basic', async () => {
     it('works', async () => {
       const example = await $fetch(`/__compodium__/api/example`, {
         query: {
-          path: joinURL(rootDir, '/compodium/examples/BasicComponentExample.vue')
+          path: joinURL(rootDir, './compodium/examples/BasicComponentExample.vue')
         }
       })
       expect(example).toMatchInlineSnapshot(`

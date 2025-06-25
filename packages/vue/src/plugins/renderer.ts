@@ -1,5 +1,5 @@
 import type { VitePlugin } from 'unplugin'
-import type { PluginConfig } from '@compodium/core'
+import type { PluginOptions } from '@compodium/core'
 import { readFileSync, existsSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { joinURL } from 'ufo'
@@ -19,19 +19,25 @@ export function inferMainPath(indexContent: string) {
   }
 }
 
-export function rendererPlugin(config: PluginConfig): VitePlugin {
-  const indexPath = resolve(config.rootDir, 'index.html')
-  const index = readFileSync(indexPath, 'utf-8')
-
-  const inferredMainPath = inferMainPath(index)
-  const mainPath = resolve(config.rootDir, (config.mainPath ?? inferredMainPath) as string)
-  if (!config.mainPath && !inferredMainPath) {
-    throw new Error('[Compodium] Could not infer main script path. Use the mainPath option to specify the path to your Vue script file containing createApp().')
-  }
+export function rendererPlugin(options: PluginOptions): VitePlugin {
+  let rootDir: string
+  let index: string
+  let mainPath: string
+  let baseUrl: string
 
   return {
     name: 'compodium:renderer',
     enforce: 'pre',
+    apply: 'serve',
+    configResolved(viteConfig) {
+      rootDir = options.rootDir ?? viteConfig.root
+      baseUrl = options.baseUrl ?? viteConfig.base
+
+      index = readFileSync(resolve(rootDir, 'index.html'), 'utf-8')
+      const inferredMainPath = inferMainPath(index)
+      mainPath = resolve(rootDir, (options.mainPath ?? inferredMainPath) as string)
+    },
+
     configureServer(server) {
       server.middlewares.use('/__compodium__/renderer', async (_req, res) => {
         try {
@@ -39,7 +45,7 @@ export function rendererPlugin(config: PluginConfig): VitePlugin {
             /<body[^>]*>[\s\S]*<\/body>/i,
             `<body>
               <div id="compodium"></div>
-              <script type="module" src="${joinURL(config.baseUrl, '/@compodium/renderer.ts')}"></script>
+              <script type="module" src="${joinURL(baseUrl, '/@compodium/renderer.ts')}"></script>
             </body>`
           )
           res.setHeader('Content-Type', 'text/html')
@@ -58,6 +64,9 @@ export function rendererPlugin(config: PluginConfig): VitePlugin {
     load(id) {
       if (id === '\0@compodium/renderer.ts') {
         // Read the user's main entrypoint file
+        if (!mainPath) {
+          throw new Error('[Compodium] Could not infer main script path. Use the mainPath option to specify the path to your Vue script file containing createApp().')
+        }
 
         if (!existsSync(mainPath)) {
           throw new Error(`[Compodium] failed to resolve main file ${mainPath}. Use the mainPath option to specify the path to your Vue script file containing createApp().`)
