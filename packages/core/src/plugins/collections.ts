@@ -1,24 +1,83 @@
-import type { PluginConfig } from '../types'
+import { libraryCollections as libraryCollectionsConfig } from '@compodium/examples'
+import type { PluginOptions, Collection } from '../types'
 import { scanComponents } from './utils'
 import { watch } from 'chokidar'
 import type { VitePlugin } from 'unplugin'
 import { resolve } from 'pathe'
+import { joinURL } from 'ufo'
+import type { ResolvedConfig } from 'vite'
 
-export function collectionsPlugin(config: PluginConfig): VitePlugin {
+export function resolveCollections(options: PluginOptions, viteConfig: ResolvedConfig): Collection[] {
+  const rootDir = options.rootDir ?? viteConfig.root
+
+  const exampleDir = {
+    path: joinURL(rootDir, options.dir, 'examples'),
+    pattern: '**/*.{vue,tsx}'
+  }
+
+  const componentDirs = options?.componentDirs.map((dir) => {
+    const componentDir = typeof dir === 'string' ? { path: dir } : dir
+    return {
+      pattern: '**/*.{vue,tsx}',
+      ...componentDir,
+      path: resolve(rootDir, componentDir.path),
+      ignore: (componentDir.ignore ?? []).concat(options.ignore ?? [])
+    }
+  }).filter(collection => !collection.path?.includes('node_modules/'))
+
+  const componentCollection: Collection = {
+    name: 'Components',
+    exampleDir,
+    dirs: componentDirs
+  }
+
+  const libraryCollections = options.includeLibraryCollections
+    ? libraryCollectionsConfig.map(collection => ({
+        ...collection,
+        exampleDir: {
+          path: collection.exampleDir,
+          pattern: '**/*.{vue,tsx}',
+          prefix: collection.prefix
+        },
+        dirs: [{
+          path: collection.path,
+          pattern: '**/*.{vue,tsx}',
+          ignore: collection.ignore,
+          prefix: collection.prefix
+        }]
+      }))
+    : []
+
+  return [
+    componentCollection,
+    ...libraryCollections
+  ]
+}
+
+export function collectionsPlugin(options: PluginOptions): VitePlugin {
+  let collections: Collection[]
+
   return {
     name: 'compodium:collections',
+    apply: 'serve',
+    enforce: 'post',
+
+    configResolved(viteConfig) {
+      collections = resolveCollections(options, viteConfig)
+    },
+
     configureServer(server) {
       server.middlewares.use('/__compodium__/api/collections', async (_, res) => {
         try {
-          const collections = await Promise.all([config.componentCollection, ...config.libraryCollections].map(async (col) => {
-            const components = await scanComponents(col.dirs, config.rootDir)
-            const examples = await scanComponents([col.exampleDir], config.rootDir)
+          const result = await Promise.all(collections.map(async (col) => {
+            const components = await scanComponents(col.dirs)
+            const examples = await scanComponents([col.exampleDir])
 
             const collectionComponents = components.flatMap((c) => {
               const componentExamples = examples?.filter(e => e.pascalName.startsWith(`${c.pascalName}Example`)).map(e => ({
                 ...e,
                 isExample: true,
-                componentPath: resolve(config.rootDir, c.filePath)
+                componentPath: c.filePath
               }))
 
               const mainExample = componentExamples.find(e => e.pascalName === `${c.pascalName}Example`)
@@ -42,7 +101,7 @@ export function collectionsPlugin(config: PluginConfig): VitePlugin {
           }))
 
           res.setHeader('Content-Type', 'application/json')
-          res.write(JSON.stringify(collections))
+          res.write(JSON.stringify(result))
           res.end()
         } catch {
           res.statusCode = 500
@@ -50,10 +109,12 @@ export function collectionsPlugin(config: PluginConfig): VitePlugin {
         }
       })
 
+      const componentCollection = collections.find(c => c.name === 'Components') as Collection
+
       const watchedPaths = [
-        ...config.componentCollection.dirs,
-        config.componentCollection.exampleDir
-      ].map(d => resolve(config.rootDir, d.path))
+        ...componentCollection.dirs,
+        componentCollection.exampleDir
+      ].map(d => d.path)
 
       // Watch for changes in example directory
       const watcher = watch(watchedPaths, {

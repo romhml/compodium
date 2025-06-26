@@ -1,13 +1,13 @@
 import { readFile } from 'node:fs/promises'
-import type { PluginConfig } from '../../types'
+import type { Collection, PluginOptions } from '../../types'
 import { createChecker } from './checker'
 import { watch } from 'chokidar'
 import type { VitePlugin } from 'unplugin'
-import { resolve } from 'pathe'
 
 import AST from 'unplugin-ast/vite'
+import { resolveCollections } from '../collections'
 
-export function extendMetaPlugin(_config: PluginConfig): VitePlugin {
+export function extendMetaPlugin(_options: PluginOptions): VitePlugin {
   return AST({
     include: [/\.[jt]sx?$/, /\.vue$/],
     enforce: 'post',
@@ -24,20 +24,25 @@ export function extendMetaPlugin(_config: PluginConfig): VitePlugin {
   })
 }
 
-export function metaPlugin(config: PluginConfig): VitePlugin {
-  const checkerDirs = [
-    ...config.componentCollection.dirs,
-    config.componentCollection.exampleDir,
-    ...config.libraryCollections.flatMap(c => c.dirs),
-    ...config.libraryCollections.map(c => c.exampleDir)
-  ]
-
-  const checker = createChecker(checkerDirs)
+export function metaPlugin(options: PluginOptions): VitePlugin {
+  let collections: Collection[]
 
   return {
     name: 'compodium:meta',
+    enforce: 'pre',
+    apply: 'serve',
+
+    configResolved(viteConfig) {
+      collections = resolveCollections(options, viteConfig)
+    },
 
     configureServer(server) {
+      const checkerDirs = collections.flatMap(c => [
+        ...c.dirs,
+        c.exampleDir
+      ])
+      const checker = createChecker(checkerDirs)
+
       server.middlewares.use('/__compodium__/api/meta', async (req, res) => {
         try {
           const url = new URL(req.url!, `http://${req.headers.host}`)
@@ -65,10 +70,12 @@ export function metaPlugin(config: PluginConfig): VitePlugin {
         }
       })
 
+      const componentCollection = collections.find(c => c.name === 'Components') as Collection
+
       const watchedPaths = [
-        ...config.componentCollection.dirs,
-        config.componentCollection.exampleDir
-      ].map(d => resolve(config.rootDir, d.path))
+        ...componentCollection.dirs,
+        componentCollection.exampleDir
+      ].map(d => d.path)
 
       // Watch for changes in example directory
       const watcher = watch(watchedPaths, {

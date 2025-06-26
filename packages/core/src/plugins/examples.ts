@@ -1,18 +1,21 @@
 import fs from 'node:fs/promises'
 import type { VitePlugin } from 'unplugin'
-import type { PluginConfig } from '../types'
-import { resolve } from 'node:path'
+import type { Collection, PluginOptions } from '../types'
+import { resolveCollections } from './collections'
 
-export function examplePlugin(config: PluginConfig): VitePlugin {
+export function examplePlugin(options: PluginOptions): VitePlugin {
+  let collections: Collection[]
+
   return {
     name: 'compodium:examples',
+    apply: 'serve',
+
+    configResolved(viteConfig) {
+      collections = resolveCollections(options, viteConfig)
+    },
 
     configureServer(server) {
-      const paths = [
-        config.componentCollection.exampleDir,
-        ...config.libraryCollections.map(c => c.exampleDir)
-      ].map(d => resolve(config.rootDir, d.path))
-
+      const allowedPaths = collections.map(c => c.exampleDir.path)
       server.middlewares.use('/__compodium__/api/example', async (req, res) => {
         try {
           const url = new URL(req.url!, `http://${req.headers.host}`)
@@ -24,9 +27,9 @@ export function examplePlugin(config: PluginConfig): VitePlugin {
             return
           }
 
-          if (!paths.find(p => path.startsWith(p))) {
+          if (!allowedPaths.find(p => path.startsWith(p))) {
             res.statusCode = 403
-            res.end(JSON.stringify({ error: 'Forbidden' }))
+            res.end(JSON.stringify({ error: 'Forbidden', message: `${allowedPaths}\n ${path}` }))
             return
           }
 
@@ -35,7 +38,7 @@ export function examplePlugin(config: PluginConfig): VitePlugin {
           let result = exampleCode.toString()
             .replace(/extendCompodiumMeta\s*\([\s\S]*?\)\s*;?/g, '')
 
-          if (config._nuxt) {
+          if (options._nuxt) {
             result = result
               .replace(/import .* from 'vue'/, '')
           }

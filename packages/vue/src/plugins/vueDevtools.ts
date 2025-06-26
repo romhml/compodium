@@ -1,12 +1,19 @@
 import type { VitePlugin } from 'unplugin'
-import type { PluginConfig } from '@compodium/core'
+import type { PluginOptions } from '@compodium/core'
 import { colors } from 'consola/utils'
 import { version } from '../../package.json'
 import { joinURL } from 'ufo'
 
-export function vueDevtoolsPlugin(config: PluginConfig): VitePlugin {
+export function vueDevtoolsPlugin(_config: PluginOptions): VitePlugin {
+  let baseUrl = '/'
   return {
     name: 'compodium:devtools:vue',
+    apply: 'serve',
+
+    configResolved(viteConfig) {
+      baseUrl = viteConfig.base
+    },
+
     configureServer(server) {
       const _printUrls = server.printUrls
 
@@ -59,7 +66,7 @@ export function vueDevtoolsPlugin(config: PluginConfig): VitePlugin {
             injectTo: 'head-prepend' as const,
             attrs: {
               type: 'module',
-              src: joinURL(config.baseUrl, `/@id/virtual:compodium:devtools`)
+              src: joinURL(baseUrl, `/@id/virtual:compodium:devtools`)
             }
           }
         ]

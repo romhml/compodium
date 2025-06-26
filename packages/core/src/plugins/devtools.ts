@@ -1,17 +1,22 @@
 import type { VitePlugin } from 'unplugin'
 import sirv from 'sirv'
-import type { PluginConfig } from '../types'
+import type { PluginOptions } from '../types'
 import { resolve, dirname } from 'pathe'
 import { fileURLToPath } from 'node:url'
 import { existsSync } from 'node:fs'
 import { joinURL } from 'ufo'
 import { resolvePathSync } from 'mlly'
 
-export function devtoolsPlugin(config: PluginConfig): VitePlugin {
-  const userPreview = resolve(joinURL(config.rootDir, config.dir, 'preview.vue'))
+export function devtoolsPlugin(options: PluginOptions): VitePlugin {
+  let userPreview: string
 
   return {
     name: 'compodium:devtools',
+    apply: 'serve',
+
+    configResolved(viteConfig) {
+      userPreview = resolve(joinURL(options.rootDir ?? viteConfig.root, options.dir, 'preview.vue'))
+    },
     config(config) {
       if (process.env.COMPODIUM_DEVTOOLS_URL) {
         config.server ||= {}
