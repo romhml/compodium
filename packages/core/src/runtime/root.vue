@@ -3,7 +3,7 @@ import { onMounted, shallowRef, ref, computed, toRaw } from 'vue'
 import type { CompodiumHooks } from '@compodium/core'
 import { onKeyStroke, useColorMode } from '@vueuse/core'
 import { joinURL } from 'ufo'
-import type { Hookable } from 'hookable'
+import { createHooks, type Hookable } from 'hookable'
 
 import RendererGrid from './components/RendererGrid.vue'
 import type { ComboOption } from './components/RendererCombo.vue'
@@ -60,8 +60,8 @@ const colorMode = useColorMode()
 const hooks = shallowRef<Hookable<CompodiumHooks>>()
 
 onMounted(() => {
-  hooks.value = window.parent.__COMPODIUM_HOOKS__ as Hookable<CompodiumHooks>
-  if (!hooks.value) return
+  hooks.value = window.parent.__COMPODIUM_HOOKS__ as Hookable<CompodiumHooks> ?? createHooks<CompodiumHooks>()
+  window.__COMPODIUM_HOOKS__ = hooks.value
 
   hooks.value.hook('renderer:update-component', onUpdateComponent)
   hooks.value.hook('renderer:update-props', payload => props.value = { ...payload.props })

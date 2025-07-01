@@ -20,7 +20,7 @@ export default defineNuxtModule<ModuleOptions>({
   },
 
   async setup(options, nuxt) {
-    if (!nuxt.options.dev) return
+    if (!nuxt.options.dev && !nuxt.options.test) return
 
     const { resolve } = createResolver(import.meta.url)
 

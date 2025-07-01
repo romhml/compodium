@@ -1,7 +1,7 @@
 {
   "name": "@compodium/vue",
   "type": "module",
-  "version": "0.1.0-beta.11",
+  "version": "0.1.0-beta.10",
   "description": "A plug and play component playground for Vue and Nuxt.",
   "license": "MIT",
   "repository": {
@@ -31,7 +31,23 @@
     "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
-    "vite": ">=6"
+    "@vitest/browser": ">=3",
+    "@vue/test-utils": ">=2",
+    "playwright": ">=1",
+    "vite": ">=6",
+    "vitest": ">=3.1",
+    "vue": ">=3"
+  },
+  "peerDependenciesMeta": {
+    "@vue/test-utils": {
+      "optional": true
+    },
+    "playwright": {
+      "optional": true
+    },
+    "vitest": {
+      "optional": true
+    }
   },
   "dependencies": {
     "@compodium/core": "workspace:^",
@@ -42,6 +58,9 @@
     "mlly": "^1.7.4",
     "pathe": "^2.0.3",
     "ufo": "^1.6.1",
-    "unplugin": "^2.3.5"
+    "unplugin": "^2.3.4"
+  },
+  "devDependencies": {
+    "playwright": "^1.53.1"
   }
 }

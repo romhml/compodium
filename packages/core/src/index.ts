@@ -5,6 +5,7 @@ import { devtoolsPlugin } from './plugins/devtools'
 import { colorsPlugin } from './plugins/colors'
 import { iconifyPlugin } from './plugins/iconify'
 import type { PluginOptions } from './types'
+import { testPlugin } from './plugins/tests'
 
 export * from './types'
 
@@ -16,6 +17,7 @@ export const compodium = /* #__PURE__ */ (options: PluginOptions) => {
     devtoolsPlugin(options),
     examplePlugin(options),
     iconifyPlugin(options),
-    colorsPlugin(options)
+    colorsPlugin(options),
+    testPlugin(options)
   ]
 }

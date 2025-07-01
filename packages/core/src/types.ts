@@ -1,6 +1,8 @@
 import type { PropertyMeta as VuePropertyMeta } from '@compodium/meta'
 import type { Hookable } from 'hookable'
 import type { InputSchema } from './plugins/meta/infer'
+import type { TestDiagnostic, TestResult } from 'vitest/node'
+import type { TaskMeta } from 'vitest'
 
 export type PluginOptions = {
   /**
@@ -152,6 +154,15 @@ export type ComponentCollection = Collection & {
   components: (Component & Partial<ComponentExample>)[]
 }
 
+export type CompodiumTestResult = {
+  name: string
+  id: string
+  ok: boolean
+  result: TestResult
+  diagnostic?: TestDiagnostic
+  meta: TaskMeta
+}
+
 export interface CompodiumHooks {
   // Triggered when the components code has been updated
   'component:changed': (path: string) => void
@@ -169,10 +180,10 @@ export interface CompodiumHooks {
   'renderer:mounted': () => void
 
   // Update the renderer component
-  'renderer:update-component': (payload: { path: string, props: Record<string, any>, events?: string[], wrapper?: string }) => void
+  'renderer:update-component': (payload: { path: string, props?: Record<string, any>, events?: string[], wrapper?: string }) => void
 
   // Update the renderer props
-  'renderer:update-props': (payload: { props: Record<string, any> }) => void
+  'renderer:update-props': (payload: { props?: Record<string, any> }) => void
 
   // Update the renderer combo (displaying multiple variants)
   'renderer:update-combo': (payload: { props: { value: string, options: string[] }[] }) => void

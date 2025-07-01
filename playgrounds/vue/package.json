@@ -7,7 +7,8 @@
     "dev": "vite",
     "preview": "vite preview",
     "build": "vite build",
-    "typecheck": "vue-tsc --noEmit"
+    "typecheck": "vue-tsc --noEmit",
+    "test": "vitest"
   },
   "dependencies": {
     "@compodium/vue": "workspace:^",
@@ -18,6 +19,7 @@
     "@tsconfig/node22": "^22.0.2",
     "@types/node": "^22.15.32",
     "@vitejs/plugin-vue": "^5.2.4",
+    "@vitest/ui": "^3.2.4",
     "@vue/tsconfig": "^0.7.0",
     "vite": "^6.3.5",
     "vite-plugin-vue-devtools": "^7.7.7",

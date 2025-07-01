@@ -33,11 +33,20 @@
     "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
+    "@nuxt/test-utils": ">=3",
+    "@vue/test-utils": ">=2",
     "vite": ">=6",
+    "vitest": ">=3.1",
     "vue": ">=3"
   },
   "peerDependenciesMeta": {
-    "vite": {
+    "vitest": {
+      "optional": true
+    },
+   "@vue/test-utils": {
+      "optional": true
+    },
+   "@nuxt/test-utils": {
       "optional": true
     }
   },
