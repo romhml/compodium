@@ -21,6 +21,8 @@ export default class CompodiumReporter extends DefaultReporter {
       meta: testCase.meta()
     }
 
+    if (result.result.state === 'skipped') return
+
     this.ws.send('compodium:test:result', result)
   }
 }

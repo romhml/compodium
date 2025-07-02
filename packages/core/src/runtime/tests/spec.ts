@@ -1,11 +1,12 @@
 /// <reference lib="dom" />
 /// <reference types="@vitest/browser/providers/playwright" />
 
-import { afterAll, beforeAll, describe, inject, test } from 'vitest'
+import { afterAll, beforeAll, describe, inject, expect, test } from 'vitest'
 import { page, commands } from '@vitest/browser/context'
 import type { CompodiumHooks, ComponentCollection, PluginOptions, CompodiumMeta } from '../../types'
 import { joinURL } from 'ufo'
 import type { Hookable } from 'hookable'
+import resemble from 'resemblejs'
 
 declare global {
   interface Window {
@@ -86,6 +87,23 @@ describe.each(collections)(`$name`, async (collection) => {
 
     await commands.waitForNetworkIdle()
     const screenshotPath = joinURL(dir, `./__screenshots__/${component.pascalName}.png`)
-    await page.screenshot({ path: screenshotPath, element: page.getByTestId('component') })
+    const { base64: current } = await page.screenshot({ path: screenshotPath, element: page.getByTestId('component'), save: true, base64: true })
+
+    const stagedPath = joinURL(dir, `./__screenshots__/staged/${component.pascalName}.png`)
+    const staged = await commands.readFile(stagedPath, { encoding: 'base64' }).catch(_ => null)
+
+    if (staged) {
+      const diff: resemble.ComparisonResult = await new Promise(resolve => resemble(`data:image/png;base64,${staged}`).compareTo(`data:image/png;base64,${current}`).onComplete(data => resolve(data)))
+      if (diff.error) {
+        throw new Error(`[Compodium] Error while comparing screenshots:\n ${diff.error.toString()}`)
+      }
+
+      if (diff.rawMisMatchPercentage > 0.001) {
+        expect.fail(`Screenshot comparison failed.
+Difference: ${diff.rawMisMatchPercentage.toFixed(3)}`)
+      }
+    } else {
+      await commands.writeFile(stagedPath, current, { encoding: 'base64' })
+    }
   })
 })

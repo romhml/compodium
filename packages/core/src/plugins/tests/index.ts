@@ -9,6 +9,7 @@ import type { PluginOptions } from '../../types'
 import CompodiumReporter from './reporter'
 import type { WebSocketServer } from 'vite'
 import fs from 'node:fs/promises'
+import { dirname } from 'pathe'
 
 declare module '@vitest/browser/context' {
   interface BrowserCommands {
@@ -120,6 +121,39 @@ export function testPlugin(options: PluginOptions): VitePlugin {
           res.setHeader('Content-Type', 'image/png')
           res.setHeader('Content-Length', imageBuffer.length)
           res.end(imageBuffer)
+        } catch (err) {
+          res.statusCode = 500
+          console.error(err)
+          res.end(JSON.stringify(err))
+        }
+      })
+
+      server.middlewares.use('/__compodium__/devtools/api/accept-changes', async (req, res) => {
+        if (req.method !== 'PUT') {
+          res.statusCode = 405
+          res.end()
+        }
+
+        try {
+          const url = new URL(req.url!, `http://${req.headers.host}`)
+          const component = url.searchParams.get('component')
+          const screenshot = joinURL(rootDir, options.dir, `./__screenshots__/${component}.png`)
+          const stagedPath = joinURL(rootDir, options.dir, `./__screenshots__/staged/${component}.png`)
+
+          try {
+            await fs.access(screenshot)
+          } catch {
+            res.statusCode = 404
+            res.end('Screenshot not found')
+            return
+          }
+
+          await fs.mkdir(dirname(stagedPath), { recursive: true })
+          await fs.copyFile(screenshot, stagedPath)
+          await fs.rm(screenshot, { force: true })
+
+          res.statusCode = 200
+          res.end()
         } catch (err) {
           res.statusCode = 500
           console.error(err)
