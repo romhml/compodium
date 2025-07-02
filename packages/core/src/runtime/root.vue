@@ -101,6 +101,7 @@ onMounted(() => {
               :is="component"
               v-if="component"
               v-bind="comboProps"
+              data-testid="component"
               v-on="eventHandlers"
             />
           </RendererCombo>

@@ -197,9 +197,14 @@ const tabs = computed(() => {
   return [
     { label: 'Props', slot: 'props', icon: 'lucide:settings' },
     { label: 'Events', slot: 'events', icon: 'lucide:chart-no-axes-gantt' },
+    { label: 'Tests', slot: 'tests', icon: 'lucide:flask-conical' },
     { label: 'Code', slot: 'code', icon: 'lucide:code' }
   ]
 })
+
+async function runTests() {
+  await $fetch('/api/test')
+}
 </script>
 
 <template>
@@ -207,12 +212,32 @@ const tabs = computed(() => {
     ref="container"
     class="relative flex w-screen h-screen"
   >
-    <ComponentCollectionMenu
-      v-if="collections?.length"
-      v-model="component"
-      :collections="collections"
-      class="pt-1 border-r border-default hidden xl:block xl:w-xs overflow-y-scroll"
-    />
+    <div class="hidden xl:flex xl:w-xs h-full flex-col justify-between pt-1 border-r border-default bg-elevated/50">
+      <ComponentCollectionMenu
+        v-if="collections?.length"
+        v-model="component"
+        :collections="collections"
+        class="overflow-y-scroll"
+      />
+      <div
+        v-if="collections?.length"
+        class="w-full p-2"
+      >
+        <div class="rounded bg-elevated/50">
+          <UButton
+            variant="subtle"
+            icon="lucide:circle-play"
+            class="w-full"
+            block
+            trailing
+            loading-auto
+            @click="runTests"
+          >
+            Run tests
+          </UButton>
+        </div>
+      </div>
+    </div>
 
     <div class="grow relative">
       <div class="grid grid-cols-3 absolute inset-x-0 p-2 z-1">
@@ -333,6 +358,10 @@ const tabs = computed(() => {
 
         <template #events>
           <ComponentEvents :events="events" />
+        </template>
+
+        <template #tests>
+          <ComponentTests :component="component" />
         </template>
 
         <template #code>

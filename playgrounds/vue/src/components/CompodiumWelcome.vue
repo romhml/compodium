@@ -8,7 +8,6 @@ const _props = withDefaults(defineProps<{
 
 extendCompodiumMeta<typeof _props>({
   defaultProps: {
-    title: 'hello',
     bounceIt: true
   }
 })

@@ -60,7 +60,7 @@ export function collectionsPlugin(options: PluginOptions): VitePlugin {
   return {
     name: 'compodium:collections',
     apply: 'serve',
-    enforce: 'post',
+    enforce: 'pre',
 
     configResolved(viteConfig) {
       collections = resolveCollections(options, viteConfig)
