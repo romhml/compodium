@@ -64,7 +64,7 @@ afterAll(() => {
   }
 })
 
-describe.each(collections)(`$name`, async (collection) => {
+describe.each(collections.map(c => [c.name, c]))(`%s`, async (_, collection) => {
   // Disable animations using DOM manipulation
   const style = window.document.createElement('style')
   style.textContent = `
@@ -75,7 +75,7 @@ describe.each(collections)(`$name`, async (collection) => {
   `
   const testComponents = collection.components.flatMap(c => [c, ...(c.examples ?? [])])
 
-  test.each(testComponents)('$pascalName', async (component) => {
+  test.each(testComponents.map(c => [c.pascalName, c]))('%s', async (_, component) => {
     const meta = await fetch(`/__compodium__/api/meta?component=${component.filePath}`).then(async r => (await r.json()) as CompodiumMeta)
 
     await hooks?.callHook('renderer:update-component', {
@@ -93,11 +93,12 @@ describe.each(collections)(`$name`, async (collection) => {
     const staged = await commands.readFile(stagedPath, { encoding: 'base64' }).catch(_ => null)
 
     if (staged) {
+      await commands.writeFile(screenshotPath, current, { encoding: 'base64' })
+
       const diff: resemble.ComparisonResult = await new Promise(resolve => resemble(`data:image/png;base64,${staged}`).compareTo(`data:image/png;base64,${current}`).onComplete(data => resolve(data)))
       if (diff.error) {
         throw new Error(`[Compodium] Error while comparing screenshots:\n ${diff.error.toString()}`)
       }
-
       if (diff.rawMisMatchPercentage > 0.001) {
         expect.fail(`Screenshot comparison failed.
 Difference: ${diff.rawMisMatchPercentage.toFixed(3)}`)

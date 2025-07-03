@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Component, CompodiumTestResult } from '@compodium/core'
+import type { Component } from '@compodium/core'
 import resemble from 'resemblejs'
 
 const props = defineProps<{
@@ -42,47 +42,63 @@ const { data: screenshot, refresh, status } = await useAsyncData(
   }
 )
 
-async function runTests() {
+const { testResults, acceptChanges, runTests, testsRunning } = useCompodiumTests()
+const componentTestResults = computed(() => props.component && testResults.value[props.component.pascalName])
+
+const lazyTestResults = ref(componentTestResults.value)
+
+const accepting = ref(false)
+async function onAccept() {
   if (!props.component) return
-  await $fetch(`/api/test?component=${props.component.pascalName}`)
-  await refresh()
+  accepting.value = true
+
+  try {
+    await acceptChanges(props.component.pascalName)
+    await runTests(props.component.pascalName)
+  } finally {
+    accepting.value = false
+  }
 }
 
-async function acceptChanges() {
-  await $fetch(`/api/accept-changes?component=${props.component?.pascalName}`, { method: 'PUT' })
-  await refresh()
-}
+const loading = computed(() => testsRunning.value || accepting.value)
 
-const { hooks } = useCompodiumClient()
-const result = ref<CompodiumTestResult | null>(null)
-
-hooks.hook('test:result', async (payload) => {
-  if (payload.name !== `'${props.component?.pascalName}'`) return
-  result.value = payload
+watch(componentTestResults, async () => {
+  if (!componentTestResults.value || componentTestResults.value?.result.state === 'pending') return
   await refresh()
+  lazyTestResults.value = componentTestResults.value
 })
 </script>
 
 <template>
   <div class="bg-default p-0.5 border-t border-default sticky top-0 z-1 gap-0.5">
     <div
-      v-if="!result"
-      class="p-2 flex justify-between items-center"
+      v-if="!lazyTestResults"
+
+      class="text-dimmed text-center p-8"
     >
+      <UIcon
+        name="lucide:flask-conical-off"
+        size="20"
+      />
+
+      <p class="mt-1">
+        No test results available
+      </p>
+
       <UButton
-        variant="outline"
-        icon="lucide:arrow-right"
+        variant="subtle"
+        icon="lucide:circle-play"
         trailing
-        size="sm"
-        block
+        class="mt-3"
         loading-auto
+        :disabled="loading"
         @click="runTests()"
       >
         Run tests
       </UButton>
     </div>
     <div
-      v-else-if="result.ok"
+      v-else-if="lazyTestResults.ok"
       class="p-2 flex justify-between items-center"
     >
       <div
@@ -91,21 +107,20 @@ hooks.hook('test:result', async (payload) => {
         <p class="font-semibold text-sm text-muted">
           No changes
         </p>
-        <div class="rounded-full border-2 border-success size-3 flex items-center justify-center">
-          <UIcon
-            name="lucide:check"
-            stroke="2"
-            class="text-success stroke-4"
-          />
-        </div>
+        <UIcon
+          name="rivet-icons:check-circle-solid"
+          class="text-success size-3.5"
+        />
       </div>
       <UButton
-        variant="outline"
+        variant="ghost"
+        color="neutral"
         icon="lucide:refresh-ccw"
         trailing
         size="sm"
         loading-auto
-        @click="runTests()"
+        :disabled="loading"
+        @click="runTests(component?.pascalName)"
       />
     </div>
     <div
@@ -118,36 +133,40 @@ hooks.hook('test:result', async (payload) => {
         <p class="font-semibold text-sm text-muted">
           Changes found
         </p>
-        <div class="rounded-full border-2 border-error size-3 flex items-center justify-center">
-          <UIcon
-            name="lucide:minus"
-            stroke="2"
-            class="text-error stroke-2"
-          />
-        </div>
+        <UIcon
+          name="rivet-icons:minus-circle-solid"
+          class="text-error size-3.5"
+        />
       </div>
 
       <div class="flex gap-2">
         <UButton
+          variant="subtle"
           size="sm"
           icon="lucide:check"
           trailing
-          @click="acceptChanges()"
+          loading-auto
+          :disabled="loading"
+          @click="onAccept()"
         >
           Accept
         </UButton>
+
         <UButton
-          variant="outline"
+          variant="ghost"
+          color="neutral"
           icon="lucide:refresh-ccw"
           trailing
           size="sm"
           loading-auto
-          @click="runTests()"
+          :disabled="loading"
+          @click="runTests(component?.pascalName)"
         />
       </div>
     </div>
+
     <div
-      v-if="status !== 'pending'"
+      v-if="status !== 'pending' && lazyTestResults"
       class="p-2"
     >
       <img

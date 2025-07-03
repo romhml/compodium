@@ -58,8 +58,6 @@ export function vueDevtoolsPlugin(_config: PluginOptions): VitePlugin {
       }
     },
     transformIndexHtml(html) {
-      if (process.env.VITEST === 'true') return
-
       return {
         html,
         tags: [

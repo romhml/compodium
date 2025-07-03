@@ -25,8 +25,8 @@ const waitForNetworkIdle: BrowserCommand<[]> = async ({
   if (provider.name === 'playwright') {
     const f = await frame()
     // TODO: Add configurable timeout
-    f.waitForLoadState('networkidle', { timeout: 5000 })
-    f.waitForLoadState('domcontentloaded', { timeout: 5000 })
+    f.waitForLoadState('networkidle', { timeout: 10000 })
+    f.waitForLoadState('domcontentloaded', { timeout: 10000 })
   } else {
     throw new Error(`provider ${provider.name} is not supported`)
   }

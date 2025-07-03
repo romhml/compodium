@@ -12,7 +12,7 @@ export default defineConfig({
     vue(),
     vueDevTools(),
     ui({ ui: { colors: { neutral: 'zinc' } } }),
-    compodium({ includeLibraryCollections: true }),
+    compodium({ includeLibraryCollections: false }),
     // Ignore components.d.ts updates to avoid reloading the page
     // when importing a new component in compodium.
     {

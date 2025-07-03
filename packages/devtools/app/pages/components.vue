@@ -12,9 +12,7 @@ const events = ref<{ name: string, data?: any }[]>([])
 hooks.hook('renderer:mounted', () => {
   rendererMounted.value = true
   hooks.hook('component:changed', async (path: string) => {
-    if (
-      (component.value?.filePath && path.endsWith(component.value?.filePath))
-      || (component.value?.componentPath && path.endsWith(component.value?.componentPath))) {
+    if ((component.value?.filePath && path.endsWith(component.value?.filePath)) || (component.value?.componentPath && path.endsWith(component.value?.componentPath))) {
       await Promise.all([refreshMeta(), refreshExampleMeta()])
     }
   })
@@ -202,9 +200,7 @@ const tabs = computed(() => {
   ]
 })
 
-async function runTests() {
-  await $fetch('/api/test')
-}
+const { runTests } = useCompodiumTests()
 </script>
 
 <template>
@@ -231,7 +227,7 @@ async function runTests() {
             block
             trailing
             loading-auto
-            @click="runTests"
+            @click="runTests()"
           >
             Run tests
           </UButton>
