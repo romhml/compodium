@@ -203,6 +203,9 @@ importers:
       knitwork:
         specifier: ^1.2.0
         version: 1.2.0
+      motion-v:
+        specifier: ^1.4.0
+        version: 1.4.0(vue@3.5.17(typescript@5.6.3))
       nuxt:
         specifier: 'catalog:'
         version: 4.0.0-alpha.2(@parcel/watcher@2.5.1)(@types/node@22.15.32)(better-sqlite3@12.0.0)(db0@0.3.2(better-sqlite3@12.0.0))(eslint@9.29.0(jiti@2.4.2))(ioredis@5.6.1)(lightningcss@1.30.1)(magicast@0.3.5)(optionator@0.9.4)(rollup@4.44.0)(terser@5.43.1)(typescript@5.6.3)(vite@6.3.5(@types/node@22.15.32)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(yaml@2.8.0))(vue-tsc@2.2.0(typescript@5.6.3))(yaml@2.8.0)
@@ -4344,6 +4347,20 @@ packages:
   fraction.js@4.3.7:
     resolution: {integrity: sha512-ZsDfxO51wGAXREY55a7la9LScWpwv9RxIrYABrlvOFBlH/ShPnrtsXeuUIfXKKOVicNxQ+o8JTbJvjS4M89yew==}
 
+  framer-motion@12.22.0:
+    resolution: {integrity: sha512-qG07rR8/mboCNU34nORbrIbBXbJzP4aDqBdr67TAIVlMryDEOwh7LXjylWovlnPCMg78ExoY0Gn2F1fV+3DNIw==}
+    peerDependencies:
+      '@emotion/is-prop-valid': '*'
+      react: ^18.0.0 || ^19.0.0
+      react-dom: ^18.0.0 || ^19.0.0
+    peerDependenciesMeta:
+      '@emotion/is-prop-valid':
+        optional: true
+      react:
+        optional: true
+      react-dom:
+        optional: true
+
   fresh@2.0.0:
     resolution: {integrity: sha512-Rx/WycZ60HOaqLKAi6cHRKKI7zxWbJ31MhntmtwMoaTeF7XFH9hhBp8vITaMidfljRQ6eYWCKkaTK+ykVJHP2A==}
     engines: {node: '>= 0.8'}
@@ -4590,6 +4607,9 @@ packages:
   hex-rgb@4.3.0:
     resolution: {integrity: sha512-Ox1pJVrDCyGHMG9CFg1tmrRUMRPRsAWYc/PinY0XzJU4K7y7vjNoLKIQ7BR5UJMCxNN8EM1MNDmHWA/B3aZUuw==}
     engines: {node: '>=6'}
+
+  hey-listen@1.0.8:
+    resolution: {integrity: sha512-COpmrF2NOg4TBWUJ5UVyaCU2A88wEMkUPK4hNqyCkqHbxT92BbvfjoSozkAIIm6XhicGlJHhFdullInrdhwU8Q==}
 
   hookable@5.5.3:
     resolution: {integrity: sha512-Yc+BQe8SvoXH1643Qez1zqLRmbA5rCL+sSmk6TVos0LWVfNIB7PGncdlId77WzLGSIB5KaWgTaNTs2lNVEI6VQ==}
@@ -5462,6 +5482,17 @@ packages:
     resolution: {integrity: sha512-FeVc50FTfVVQnolk/WQT8MX+2WVcDnTGiq6Wo+/+lJ2ET1bRVi3HG3YlJUfqagNMc/kUlFSoR96AJkxGpKz13g==}
     engines: {node: '>=18'}
     hasBin: true
+
+  motion-dom@12.22.0:
+    resolution: {integrity: sha512-ooH7+/BPw9gOsL9VtPhEJHE2m4ltnhMlcGMhEqA0YGNhKof7jdaszvsyThXI6LVIKshJUZ9/CP6HNqQhJfV7kw==}
+
+  motion-utils@12.19.0:
+    resolution: {integrity: sha512-BuFTHINYmV07pdWs6lj6aI63vr2N4dg0vR+td0rtrdpWOhBzIkEklZyLcvKBoEtwSqx8Jg06vUB5RS0xDiUybw==}
+
+  motion-v@1.4.0:
+    resolution: {integrity: sha512-/kLBC6fJgsaL/M7/SRLVMEXU1f1ATEfLymzXFL3iT4zzCZfallVQxIuMgveb+WuBOdQfoxWZANBuK79uBQ+56g==}
+    peerDependencies:
+      vue: '>=3.0.0'
 
   mri@1.2.0:
     resolution: {integrity: sha512-tzzskb3bG8LvYGFF/mDTpq3jpI6Q9wc3LEmBaghu+DdCssd1FakN7Bc0hVNmEyGq1bq3RgfkCb3cmQLpNPOroA==}
@@ -12034,6 +12065,12 @@ snapshots:
 
   fraction.js@4.3.7: {}
 
+  framer-motion@12.22.0:
+    dependencies:
+      motion-dom: 12.22.0
+      motion-utils: 12.19.0
+      tslib: 2.8.1
+
   fresh@2.0.0: {}
 
   fs-constants@1.0.0: {}
@@ -12387,6 +12424,8 @@ snapshots:
   he@1.2.0: {}
 
   hex-rgb@4.3.0: {}
+
+  hey-listen@1.0.8: {}
 
   hookable@5.5.3: {}
 
@@ -13404,6 +13443,25 @@ snapshots:
     dependencies:
       ast-module-types: 6.0.1
       node-source-walk: 7.0.1
+
+  motion-dom@12.22.0:
+    dependencies:
+      motion-utils: 12.19.0
+
+  motion-utils@12.19.0: {}
+
+  motion-v@1.4.0(vue@3.5.17(typescript@5.6.3)):
+    dependencies:
+      '@vueuse/core': 10.11.1(vue@3.5.17(typescript@5.6.3))
+      framer-motion: 12.22.0
+      hey-listen: 1.0.8
+      motion-dom: 12.22.0
+      vue: 3.5.17(typescript@5.6.3)
+    transitivePeerDependencies:
+      - '@emotion/is-prop-valid'
+      - '@vue/composition-api'
+      - react
+      - react-dom
 
   mri@1.2.0: {}
 

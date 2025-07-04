@@ -85,7 +85,6 @@ describe.each(collections.map(c => [c.name, c]))(`%s`, async (_, collection) => 
       events: meta.events
     })
 
-    await commands.waitForNetworkIdle()
     const screenshotPath = joinURL(dir, `./__screenshots__/${component.pascalName}.png`)
     const { base64: current } = await page.screenshot({ path: screenshotPath, element: page.getByTestId('component'), save: true, base64: true })
 

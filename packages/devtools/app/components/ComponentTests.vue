@@ -43,7 +43,7 @@ const { data: screenshot, refresh, status } = await useAsyncData(
 )
 
 const { testResults, acceptChanges, runTests, testsRunning } = useCompodiumTests()
-const componentTestResults = computed(() => props.component && testResults.value[props.component.pascalName])
+const componentTestResults = computed(() => props.component && testResults.value?.[props.component?.pascalName])
 
 const lazyTestResults = ref(componentTestResults.value)
 
@@ -73,7 +73,6 @@ watch(componentTestResults, async () => {
   <div class="bg-default p-0.5 border-t border-default sticky top-0 z-1 gap-0.5">
     <div
       v-if="!lazyTestResults"
-
       class="text-dimmed text-center p-8"
     >
       <UIcon
@@ -169,15 +168,15 @@ watch(componentTestResults, async () => {
       v-if="status !== 'pending' && lazyTestResults"
       class="p-2"
     >
+      <ImageComparisonSlider
+        v-if="screenshot?.current && screenshot?.staged"
+        :src="screenshot.current"
+        :expected="screenshot.staged"
+      />
       <img
         v-if="screenshot?.diff"
         :src="screenshot.diff"
-        class="object-scale-down w-full bg-elevated/50 border border-default rounded"
-      >
-      <img
-        v-else-if="screenshot?.current || screenshot?.staged"
-        :src="screenshot.current ?? screenshot.staged as string"
-        class="object-scale-down w-full bg-elevated/50 border border-default rounded"
+        class="object-scale-down w-full bg-accented/50 border border-accented rounded mt-4"
       >
     </div>
   </div>

@@ -21,12 +21,13 @@ function _useCompodiumTests() {
     },
 
     async runTests(components?: string | string[]) {
+      testsRunning.value = true
+
       components = Array.isArray(components) ? components : components ? [components] : undefined
 
       if (!components) testResults.value = {}
       else components.forEach(c => testResults.value[c] = null)
 
-      testsRunning.value = true
       try {
         await $fetch('/api/test', { query: { component: components } })
       } finally {
