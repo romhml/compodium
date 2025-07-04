@@ -90,8 +90,8 @@ export function testPlugin(options: PluginOptions): VitePlugin {
 
         try {
           const url = new URL(req.url!, `http://${req.headers.host}`)
-          const component = url.searchParams.get('component')
-          await startVitest(component)
+          const components = url.searchParams.getAll('component')
+          await startVitest(components?.length ? components.join('|') : undefined)
           res.end()
         } catch (err) {
           res.statusCode = 500

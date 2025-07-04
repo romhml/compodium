@@ -20,13 +20,15 @@ function _useCompodiumTests() {
       await $fetch('/api/accept-changes', { method: 'PUT', query: { component } })
     },
 
-    async runTests(component?: string) {
-      if (!component) testResults.value = {}
-      else testResults.value[component] = null
+    async runTests(components?: string | string[]) {
+      components = Array.isArray(components) ? components : components ? [components] : undefined
+
+      if (!components) testResults.value = {}
+      else components.forEach(c => testResults.value[c] = null)
 
       testsRunning.value = true
       try {
-        await $fetch('/api/test', { query: { component: component } })
+        await $fetch('/api/test', { query: { component: components } })
       } finally {
         testsRunning.value = false
       }

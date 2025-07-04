@@ -9,11 +9,19 @@ const rendererMounted = ref(false)
 
 const events = ref<{ name: string, data?: any }[]>([])
 
+const { runTests } = useCompodiumTests()
+
 hooks.hook('renderer:mounted', () => {
   rendererMounted.value = true
   hooks.hook('component:changed', async (path: string) => {
     if ((component.value?.filePath && path.endsWith(component.value?.filePath)) || (component.value?.componentPath && path.endsWith(component.value?.componentPath))) {
       await Promise.all([refreshMeta(), refreshExampleMeta()])
+    }
+
+    const updatedComponent = components.value?.find(c => c.filePath === path)
+    if (updatedComponent) {
+      const componentsToTest = [updatedComponent, ...(updatedComponent?.examples ?? [])].map(c => c.pascalName)
+      await runTests(componentsToTest)
     }
   })
 
@@ -52,6 +60,8 @@ const { data: collections, refresh: refreshCollections } = useAsyncData(async ()
 
   return collections
 })
+
+const components = computed(() => collections.value?.flatMap(col => col.components.flatMap(c => [c, ...(c.examples ?? [])])))
 
 const component = useStorage<(Component & Partial<ComponentExample>) | undefined>('__compodium-component', null, undefined, { serializer: StorageSerializers.object })
 
@@ -199,8 +209,6 @@ const tabs = computed(() => {
     { label: 'Code', slot: 'code', icon: 'lucide:code' }
   ]
 })
-
-const { runTests } = useCompodiumTests()
 </script>
 
 <template>
