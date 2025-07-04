@@ -106,10 +106,7 @@ watch(componentTestResults, async () => {
         <p class="font-semibold text-sm text-muted">
           No changes
         </p>
-        <UIcon
-          name="rivet-icons:check-circle-solid"
-          class="text-success size-3.5"
-        />
+        <TestStatusIcon :status="componentTestResults?.result.state" />
       </div>
       <UButton
         variant="ghost"
@@ -132,10 +129,7 @@ watch(componentTestResults, async () => {
         <p class="font-semibold text-sm text-muted">
           Changes found
         </p>
-        <UIcon
-          name="rivet-icons:minus-circle-solid"
-          class="text-error size-3.5"
-        />
+        <TestStatusIcon :status="componentTestResults?.result.state" />
       </div>
 
       <div class="flex gap-2">

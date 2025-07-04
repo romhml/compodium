@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Component, ComponentCollection, ComponentExample } from '@compodium/core'
+import type { TestResult } from 'vitest/node'
 
 const props = defineProps<{ collections: ComponentCollection[] }>()
 const modelValue = defineModel<Component | ComponentExample>()
@@ -8,9 +9,9 @@ const { testResults, testsRunning } = useCompodiumTests()
 
 // Function to calculate aggregated test state
 function calculateAggregatedState(
-  ownState: string | undefined,
-  childrenStates: (string | undefined)[]
-): string | undefined {
+  ownState: TestResult['state'] | undefined,
+  childrenStates: (TestResult['state'] | undefined)[]
+): TestResult['state'] | undefined {
   if (childrenStates.includes('failed')) {
     return 'failed'
   }
@@ -106,22 +107,10 @@ const treeItems = computed(() => {
       <span v-else />
     </template>
     <template #item-trailing="{ item }">
-      <UIcon
-        v-if="item.testState === 'passed'"
-        class="size-2.5 bg-success"
-        name="rivet-icons:check-circle-solid"
+      <TestStatusIcon
+        v-if="item.testState"
+        :status="item.testState"
       />
-      <UIcon
-        v-else-if="item.testState === 'failed'"
-        class="size-2.5 bg-error"
-        name="rivet-icons:minus-circle-solid"
-      />
-      <span v-else-if="testsRunning || item.testState === 'pending'">
-        <span class="relative flex size-2">
-          <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-warning opacity-75" />
-          <span class="relative inline-flex size-2 rounded-full bg-warning" />
-        </span>
-      </span>
       <span v-else />
     </template>
   </UTree>
