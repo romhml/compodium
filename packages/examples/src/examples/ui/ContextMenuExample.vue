@@ -20,9 +20,11 @@ extendCompodiumMeta({
 </script>
 
 <template>
-  <UContextMenu>
-    <div class="placeholder aspect-video w-72">
-      Right click here
-    </div>
-  </UContextMenu>
+  <div>
+    <UContextMenu>
+      <div class="placeholder aspect-video w-72">
+        Right click here
+      </div>
+    </UContextMenu>
+  </div>
 </template>

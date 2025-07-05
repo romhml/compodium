@@ -9,7 +9,7 @@ const rendererMounted = ref(false)
 
 const events = ref<{ name: string, data?: any }[]>([])
 
-const { runTests } = useCompodiumTests()
+const { runTests, watchMode } = useCompodiumTests()
 
 hooks.hook('renderer:mounted', () => {
   rendererMounted.value = true
@@ -18,10 +18,12 @@ hooks.hook('renderer:mounted', () => {
       await Promise.all([refreshMeta(), refreshExampleMeta()])
     }
 
-    const updatedComponent = components.value?.find(c => c.filePath === path)
-    if (updatedComponent) {
-      const componentsToTest = [updatedComponent, ...(updatedComponent?.examples ?? [])].map(c => c.pascalName)
-      await runTests(componentsToTest)
+    if (watchMode.value) {
+      const updatedComponent = components.value?.find(c => c.filePath === path)
+      if (updatedComponent) {
+        const componentsToTest = [updatedComponent, ...(updatedComponent?.examples ?? [])].map(c => c.pascalName)
+        await runTests(componentsToTest)
+      }
     }
   })
 
@@ -223,24 +225,11 @@ const tabs = computed(() => {
         :collections="collections"
         class="overflow-y-scroll"
       />
-      <div
+
+      <TestMenu
         v-if="collections?.length"
-        class="w-full p-2"
-      >
-        <div class="rounded bg-elevated/50">
-          <UButton
-            variant="subtle"
-            icon="lucide:circle-play"
-            class="w-full"
-            block
-            trailing
-            loading-auto
-            @click="runTests()"
-          >
-            Run tests
-          </UButton>
-        </div>
-      </div>
+        class="border border-muted bg-elevated mx-2 mb-2 rounded"
+      />
     </div>
 
     <div class="grow relative">

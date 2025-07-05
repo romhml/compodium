@@ -43,10 +43,10 @@ async function onUpdateComponent(payload: Parameters<CompodiumHooks['renderer:up
   props.value = payload.props
   events.value = payload.events
 
-  component.value = await importComponent(payload.path)
   if (payload.wrapper) {
     wrapper.value = await importComponent(payload.wrapper)
   }
+  component.value = await importComponent(payload.path)
 }
 
 if (import.meta.hot) {
@@ -89,9 +89,9 @@ onMounted(() => {
   <Suspense>
     <div
       id="__compodium-root"
-      :style="{ position: 'relative', minWidth: '100vw', minHeight: '100vh' }"
+      :style="{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', minWidth: '100vw', minHeight: '100vh', padding: '48px' }"
     >
-      <PreviewComponent>
+      <PreviewComponent data-testid="preview">
         <RendererWrapper :wrapper="wrapper">
           <RendererCombo
             :combo="combo"
@@ -102,7 +102,6 @@ onMounted(() => {
               :is="component"
               v-if="component"
               v-bind="comboProps"
-              data-testid="component"
               v-on="eventHandlers"
             />
           </RendererCombo>

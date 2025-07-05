@@ -35,7 +35,7 @@ function onResetState() {
 </script>
 
 <template>
-  <div>
+  <template v-if="componentProps.length">
     <div class="bg-default p-0.5 border-y border-default sticky top-0 z-1 flex gap-0.5">
       <UInput
         v-model="propsSearchTerm"
@@ -110,5 +110,15 @@ function onResetState() {
         @update:model-value="(value) => modelValue = { ...modelValue, [prop.name]: value }"
       />
     </div>
+  </template>
+  <div
+    v-if="!componentProps?.length || !visibleProps?.size"
+    class="text-dimmed text-center p-8"
+  >
+    <UIcon
+      name="lucide:bird"
+      size="20"
+    />
+    <p>No props found</p>
   </div>
 </template>

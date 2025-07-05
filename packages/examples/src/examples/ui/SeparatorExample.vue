@@ -1,3 +1,3 @@
 <template>
-  <USeparator />
+  <USeparator class="w-60" />
 </template>

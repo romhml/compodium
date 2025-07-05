@@ -107,11 +107,7 @@ const treeItems = computed(() => {
       <span v-else />
     </template>
     <template #item-trailing="{ item }">
-      <TestStatusIcon
-        v-if="item.testState"
-        :status="item.testState"
-      />
-      <span v-else />
+      <TestStatusIcon :status="item.testState" />
     </template>
   </UTree>
 </template>

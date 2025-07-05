@@ -11,10 +11,12 @@ function _useCompodiumTests() {
   })
 
   const testsRunning = ref(false)
+  const watchMode = ref(true)
 
   return {
     testResults,
     testsRunning,
+    watchMode,
 
     async acceptChanges(component: string) {
       await $fetch('/api/accept-changes', { method: 'PUT', query: { component } })

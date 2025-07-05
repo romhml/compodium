@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { TestResult } from 'vitest/node'
 
+const { testsRunning } = useCompodiumTests()
 defineProps<{
   status?: TestResult['state']
 }>()
@@ -17,7 +18,7 @@ defineProps<{
     class="size-3 bg-error"
     name="rivet-icons:minus-circle-solid"
   />
-  <span v-else-if="status === 'pending'">
+  <span v-else-if="status === 'pending' || (status === undefined && testsRunning)">
     <span class="relative flex size-2.5 items-center justify-center">
       <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-warning opacity-75" />
       <span class="relative inline-flex size-2 rounded-full bg-warning" />

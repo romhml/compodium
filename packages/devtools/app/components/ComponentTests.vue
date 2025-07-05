@@ -160,17 +160,17 @@ watch(componentTestResults, async () => {
 
     <div
       v-if="status !== 'pending' && lazyTestResults"
-      class="p-2"
+      class="p-2 flex flex-col gap-4"
     >
       <ImageComparisonSlider
-        v-if="screenshot?.current && screenshot?.staged"
+        v-if="!lazyTestResults.ok && screenshot?.current && screenshot?.staged"
         :src="screenshot.current"
         :expected="screenshot.staged"
       />
       <img
         v-if="screenshot?.diff"
         :src="screenshot.diff"
-        class="object-scale-down w-full bg-accented/50 border border-accented rounded mt-4"
+        class="object-scale-down select-none w-full rounded bg-elevated border border-muted px-8 py-10"
       >
     </div>
   </div>

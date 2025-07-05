@@ -34,7 +34,7 @@ onMounted(() => {
 <template>
   <div
     ref="containerRef"
-    class="relative"
+    class="relative select-none"
   >
     <div class="relative bg-elevated border border-accented rounded overflow-hidden w-full block px-8 py-10">
       <motion.div>
@@ -47,7 +47,7 @@ onMounted(() => {
         >
       </motion.div>
       <motion.div
-        class="absolute inset-0 h-auto w-full bg-accented"
+        class="absolute inset-0 h-auto w-full bg-accented px-8 py-10"
         :style="{ clipPath }"
       >
         <div class="absolute top-2 right-2 bg-elevated border-muted px-2 py-1 rounded pointer-events-none text-xs font-bold">
