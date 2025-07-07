@@ -1,7 +1,7 @@
 <script setup lang="ts">
 extendCompodiumMeta({
   defaultProps: {
-    defaultValue: 2,
+    defaultValue: 1,
     items: [
       {
         date: 'Mar 15, 2025',
