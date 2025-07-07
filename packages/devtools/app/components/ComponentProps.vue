@@ -110,5 +110,15 @@ function onResetState() {
         @update:model-value="(value) => modelValue = { ...modelValue, [prop.name]: value }"
       />
     </div>
+    <div
+      v-if="!componentProps?.length || !visibleProps?.size"
+      class="text-dimmed text-center p-8"
+    >
+      <UIcon
+        name="lucide:bird"
+        size="20"
+      />
+      <p>No props found</p>
+    </div>
   </div>
 </template>
