@@ -10,8 +10,8 @@
   },
   "dependencies": {
     "@nuxt/ui": "catalog:",
-    "@vueuse/core": "^13.4.0",
-    "@vueuse/integrations": "^13.4.0",
+    "@vueuse/core": "^13.5.0",
+    "@vueuse/integrations": "^13.5.0",
     "deep-eql": "^5.0.2",
     "defu": "^6.1.4",
     "fuse.js": "^7.1.0",
@@ -20,7 +20,7 @@
     "knitwork": "^1.2.0",
     "nuxt": "catalog:",
     "pathe": "^2.0.3",
-    "prettier": "^3.5.3",
+    "prettier": "^3.6.2",
     "scule": "^1.3.0",
     "shiki": "^3.7.0",
     "vue": "catalog:"
@@ -29,7 +29,7 @@
     "@compodium/core": "workspace:^",
     "@compodium/meta": "workspace:^",
     "@iconify-json/lineicons": "^1.2.4",
-    "@iconify-json/lucide": "^1.2.51",
+    "@iconify-json/lucide": "^1.2.56",
     "@iconify/types": "^2.0.0",
     "@types/deep-eql": "^4.0.2"
   }

@@ -44,7 +44,7 @@
   "dependencies": {
     "@compodium/examples": "workspace:^",
     "@compodium/meta": "workspace:^",
-    "@vueuse/core": "^13.4.0",
+    "@vueuse/core": "^13.5.0",
     "chokidar": "^4.0.3",
     "hookable": "^5.5.3",
     "mlly": "^1.7.4",
@@ -55,6 +55,6 @@
     "ufo": "^1.6.1",
     "unplugin": "^2.3.5",
     "unplugin-ast": "^0.15.0",
-    "zod": "^3.25.67"
+    "zod": "^3.25.75"
   }
 }
