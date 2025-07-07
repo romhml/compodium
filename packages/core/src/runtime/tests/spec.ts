@@ -3,7 +3,7 @@
 
 import { afterAll, beforeAll, describe, inject, expect, test } from 'vitest'
 import { page, commands } from '@vitest/browser/context'
-import type { CompodiumHooks, ComponentCollection, PluginOptions, CompodiumMeta } from '../../types'
+import type { CompodiumHooks, ComponentCollection, PluginOptions, CompodiumMeta, ComponentExample, Component } from '../../types'
 import { joinURL } from 'ufo'
 import type { Hookable } from 'hookable'
 import resemble from 'resemblejs'
@@ -18,6 +18,13 @@ declare module 'vitest' {
   interface ProvidedContext {
     'compodium.options': PluginOptions
     'compodium.dir': string
+  }
+
+  interface TaskMeta {
+    compodium?: {
+      component?: string
+      diff?: boolean
+    }
   }
 }
 
@@ -75,7 +82,10 @@ describe.each(collections.map(c => [c.name, c]))(`%s`, async (_, collection) => 
   `
   const testComponents = collection.components.flatMap(c => [c, ...(c.examples ?? [])])
 
-  test.each(testComponents.map(c => [c.pascalName, c]))('%s', async (_, component) => {
+  test.for(testComponents.map(c => [c.pascalName, c] as [string, Component & Partial<ComponentExample>]))('%s', async ([_, component], { task }) => {
+    task.meta.compodium = {}
+    task.meta.compodium.component = component.pascalName
+
     const meta = await fetch(`/__compodium__/api/meta?component=${component.filePath}`).then(async r => (await r.json()) as CompodiumMeta)
 
     await hooks?.callHook('renderer:update-component', {
@@ -101,6 +111,7 @@ describe.each(collections.map(c => [c.name, c]))(`%s`, async (_, collection) => 
         throw new Error(`[Compodium] Error while comparing screenshots:\n ${diff.error.toString()}`)
       }
       if (diff.rawMisMatchPercentage > 0.001) {
+        task.meta.compodium.diff = true
         expect.fail(`Screenshot comparison failed.
 Difference: ${diff.rawMisMatchPercentage.toFixed(3)}`)
       }

@@ -19,5 +19,5 @@ extendCompodiumMeta({
 </script>
 
 <template>
-  <UAccordion />
+  <UAccordion class="w-96" />
 </template>

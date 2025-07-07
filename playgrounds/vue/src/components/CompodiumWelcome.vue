@@ -11,6 +11,10 @@ extendCompodiumMeta<typeof _props>({
     bounceIt: true
   }
 })
+
+function goToCompodium() {
+  window.location.href = '/__compodium__/devtools'
+}
 </script>
 
 <template>
@@ -32,7 +36,7 @@ extendCompodiumMeta<typeof _props>({
         color="neutral"
         icon="lucide:rocket"
         block
-        to="/__compodium__/devtools"
+        @click="goToCompodium()"
       >
         Go to Compodium
       </UButton>

@@ -4,18 +4,27 @@ import { createSharedComposable, useStorage } from '@vueuse/core'
 function _useCompodiumTests() {
   const { hooks } = useCompodiumClient()
 
+  const testStatus: Ref<undefined | 'running' | 'passed' | 'failed'> = ref()
   const testResults = useStorage<Record<string, CompodiumTestResult | null>>('compodium-tests', () => ({}))
+  const testStats = ref<{ took?: number } | undefined>()
 
   hooks.hook('test:result', async (payload) => {
-    testResults.value[payload.name] = payload
+    const component = payload.meta.compodium?.component
+    if (!component) return
+    testResults.value[component] = payload
   })
 
-  const testsRunning = ref(false)
+  hooks.hook('test:finished', async (payload) => {
+    testStats.value = payload
+  })
+
   const watchMode = ref(true)
 
   return {
+    testStatus,
     testResults,
-    testsRunning,
+    testStats,
+
     watchMode,
 
     async acceptChanges(component: string) {
@@ -23,7 +32,7 @@ function _useCompodiumTests() {
     },
 
     async runTests(components?: string | string[]) {
-      testsRunning.value = true
+      testStatus.value = 'running'
 
       components = Array.isArray(components) ? components : components ? [components] : undefined
 
@@ -33,7 +42,7 @@ function _useCompodiumTests() {
       try {
         await $fetch('/api/test', { query: { component: components } })
       } finally {
-        testsRunning.value = false
+        testStatus.value = Object.values(testResults.value).some(r => !!r && !r?.ok) ? 'failed' as const : 'passed' as const
       }
     }
   }

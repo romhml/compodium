@@ -1,5 +1,4 @@
 import { fileURLToPath, URL } from 'node:url'
-
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueDevTools from 'vite-plugin-vue-devtools'
@@ -13,6 +12,7 @@ export default defineConfig({
     vueDevTools(),
     ui({ ui: { colors: { neutral: 'zinc' } } }),
     compodium({ includeLibraryCollections: true }),
+
     // Ignore components.d.ts updates to avoid reloading the page
     // when importing a new component in compodium.
     {

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { runTests, watchMode } = useCompodiumTests()
+const { runTests, watchMode, testStatus, testStats } = useCompodiumTests()
 
 const open = ref(false)
 </script>
@@ -69,8 +69,34 @@ const open = ref(false)
 
     <template #content>
       <div class="p-1 border-t border-muted">
-        <div>
-          TODO: Display tests results here
+        <div v-if="testStatus === 'passed'">
+          <p class="text-sm font-muted">
+            Tests passed in {{ testStats?.took }}ms
+          </p>
+        </div>
+        <div v-else-if="testStatus === 'failed'">
+          <div class="flex justify-between items-center gap-2">
+            <p class="text-sm font-muted">
+              Tests failed
+            </p>
+            <UButton
+              size="xs"
+              variant="ghost"
+              icon="lucide:check"
+            >
+              Accept changes
+            </UButton>
+          </div>
+        </div>
+        <div v-else-if="testStatus === 'running'">
+          <p class="text-sm font-muted">
+            Running...
+          </p>
+        </div>
+        <div v-else>
+          <p class="text-sm font-muted">
+            No results available...
+          </p>
         </div>
       </div>
     </template>

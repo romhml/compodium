@@ -42,10 +42,11 @@ const { data: screenshot, refresh, status } = await useAsyncData(
   }
 )
 
-const { testResults, acceptChanges, runTests, testsRunning } = useCompodiumTests()
+const { testResults, acceptChanges, runTests, testStatus } = useCompodiumTests()
 const componentTestResults = computed(() => props.component && testResults.value?.[props.component?.pascalName])
 
 const lazyTestResults = ref(componentTestResults.value)
+const testMeta = computed(() => lazyTestResults.value?.meta?.compodium)
 
 const accepting = ref(false)
 async function onAccept() {
@@ -60,12 +61,16 @@ async function onAccept() {
   }
 }
 
-const loading = computed(() => testsRunning.value || accepting.value)
+const loading = computed(() => testStatus.value === 'running' || accepting.value)
 
-watch(componentTestResults, async () => {
-  if (!componentTestResults.value || componentTestResults.value?.result.state === 'pending') return
-  await refresh()
-  lazyTestResults.value = componentTestResults.value
+const { hooks } = useCompodiumClient()
+hooks.hook('test:result', async (payload) => {
+  if (!props.component?.pascalName || payload.meta?.compodium?.component !== props.component?.pascalName) return
+
+  if (payload.result.state === 'passed' || payload.result.state === 'failed') {
+    await refresh()
+    lazyTestResults.value = componentTestResults.value
+  }
 })
 </script>
 
@@ -91,7 +96,7 @@ watch(componentTestResults, async () => {
         class="mt-3"
         loading-auto
         :disabled="loading"
-        @click="runTests()"
+        @click="runTests(component?.pascalName)"
       >
         Run tests
       </UButton>
@@ -120,7 +125,7 @@ watch(componentTestResults, async () => {
       />
     </div>
     <div
-      v-else
+      v-else-if="testMeta?.diff"
       class="p-2 flex justify-between items-center"
     >
       <div
@@ -157,19 +162,56 @@ watch(componentTestResults, async () => {
         />
       </div>
     </div>
+    <div
+      v-else
+      class="p-2 flex flex-col gap-2"
+    >
+      <div
+        class="flex justify-between items-center"
+      >
+        <div class="flex gap-2 items-center">
+          <p class="font-semibold text-sm text-muted">
+            Unexpected error
+          </p>
+        </div>
+
+        <UButton
+          variant="ghost"
+          color="neutral"
+          icon="lucide:refresh-ccw"
+          trailing
+          size="sm"
+          loading-auto
+          :disabled="loading"
+          @click="runTests(component?.pascalName)"
+        />
+      </div>
+
+      <UAlert
+        variant="subtle"
+        class="w-full"
+        color="error"
+        :description="lazyTestResults.result.errors?.map(e => e.message).join('\n')"
+      />
+    </div>
 
     <div
       v-if="status !== 'pending' && lazyTestResults"
       class="p-2 flex flex-col gap-4"
     >
       <ImageComparisonSlider
-        v-if="!lazyTestResults.ok && screenshot?.current && screenshot?.staged"
+        v-if="testMeta?.diff && screenshot?.current && screenshot?.staged"
         :src="screenshot.current"
         :expected="screenshot.staged"
       />
       <img
-        v-if="screenshot?.diff"
+        v-if="testMeta?.diff && screenshot?.diff"
         :src="screenshot.diff"
+        class="object-scale-down select-none w-full rounded bg-elevated border border-muted px-8 py-10"
+      >
+      <img
+        v-else-if="screenshot?.current"
+        :src="screenshot.current"
         class="object-scale-down select-none w-full rounded bg-elevated border border-muted px-8 py-10"
       >
     </div>

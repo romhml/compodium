@@ -354,7 +354,10 @@ const tabs = computed(() => {
         </template>
 
         <template #tests>
-          <ComponentTests :component="component" />
+          <ComponentTests
+            :key="component?.pascalName"
+            :component="component"
+          />
         </template>
 
         <template #code>

@@ -6,9 +6,24 @@ import type { CompodiumTestResult } from '../../types'
 export default class CompodiumReporter extends DefaultReporter {
   ws: WebSocketServer
 
+  startTime?: number
+  endTime?: number
+
   constructor(ws: WebSocketServer) {
     super()
     this.ws = ws
+  }
+
+  override onTestRunStart(): void {
+    this.startTime = Date.now()
+  }
+
+  override onTestRunEnd(): void {
+    this.endTime = Date.now()
+
+    this.ws.send('compodium:test:finished', {
+      took: this.startTime ? this.endTime - this.startTime : undefined
+    })
   }
 
   override onTestCaseResult(testCase: TestCase): void {

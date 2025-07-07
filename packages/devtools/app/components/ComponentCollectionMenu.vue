@@ -5,7 +5,7 @@ import type { TestResult } from 'vitest/node'
 const props = defineProps<{ collections: ComponentCollection[] }>()
 const modelValue = defineModel<Component | ComponentExample>()
 
-const { testResults, testsRunning } = useCompodiumTests()
+const { testResults, testStatus } = useCompodiumTests()
 
 // Function to calculate aggregated test state
 function calculateAggregatedState(
@@ -19,7 +19,7 @@ function calculateAggregatedState(
   if (ownState === undefined) {
     if (childrenStates.length === 0) return undefined
     if (childrenStates.every(state => state === 'passed')) return 'passed'
-    if (childrenStates.includes('pending') || (childrenStates.includes(undefined) && testsRunning.value)) return 'pending'
+    if (childrenStates.includes('pending') || (childrenStates.includes(undefined) && testStatus.value === 'running')) return 'pending'
     return undefined
   }
 
@@ -30,7 +30,7 @@ function calculateAggregatedState(
     if (childrenStates.length === 0) return 'passed'
     if (childrenStates.every(state => state === 'passed')) return 'passed'
     if (childrenStates.includes('pending')) return 'pending'
-    if (childrenStates.includes('pending') || (childrenStates.includes(undefined) && testsRunning.value)) return 'pending'
+    if (childrenStates.includes('pending') || (childrenStates.includes(undefined) && testStatus.value === 'running')) return 'pending'
     return 'failed'
   }
 

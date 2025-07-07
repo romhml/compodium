@@ -194,8 +194,8 @@ export interface CompodiumHooks {
   // Toggle the renderer grid
   'renderer:grid': (payload: { enabled: boolean, gap: number }) => void
 
-  // Toggle the renderer grid
   'test:result': (payload: CompodiumTestResult) => void
+  'test:finished': (payload: { took?: number }) => void
 }
 
 declare global {
