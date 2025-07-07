@@ -27,9 +27,13 @@
   "dependencies": {
     "@volar/typescript": "^2.4.17",
     "@vue/language-core": "3.0.1",
+    "path-browserify": "^1.0.1",
     "pathe": "^2.0.3",
     "vue-component-meta": "^3.0.1",
     "vue-component-type-helpers": "^3.0.1"
+  },
+  "devDependencies": {
+    "@types/path-browserify": "^1.0.3"
   },
   "peerDependencies": {
     "typescript": "*"

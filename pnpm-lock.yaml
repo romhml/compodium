@@ -250,6 +250,9 @@ importers:
       '@vue/language-core':
         specifier: 3.0.1
         version: 3.0.1(typescript@5.6.3)
+      path-browserify:
+        specifier: ^1.0.1
+        version: 1.0.1
       pathe:
         specifier: ^2.0.3
         version: 2.0.3
@@ -262,6 +265,10 @@ importers:
       vue-component-type-helpers:
         specifier: ^3.0.1
         version: 3.0.1
+    devDependencies:
+      '@types/path-browserify':
+        specifier: ^1.0.3
+        version: 1.0.3
 
   packages/nuxt:
     dependencies:
@@ -2457,6 +2464,9 @@ packages:
   '@types/parse-path@7.1.0':
     resolution: {integrity: sha512-EULJ8LApcVEPbrfND0cRQqutIOdiIgJ1Mgrhpy755r14xMohPTEpkV/k28SJvuOs9bHRFW8x+KeDAEPiGQPB9Q==}
     deprecated: This is a stub types definition. parse-path provides its own type definitions, so you do not need this installed.
+
+  '@types/path-browserify@1.0.3':
+    resolution: {integrity: sha512-ZmHivEbNCBtAfcrFeBCiTjdIc2dey0l7oCGNGpSuRTy8jP6UVND7oUowlvDujBy8r2Hoa8bfFUOCiPWfmtkfxw==}
 
   '@types/resolve@1.20.2':
     resolution: {integrity: sha512-60BCwRFOZCQhDncwQdxxeOEEkbc5dIMccYLwbxsS4TUNeVECQ/pBJ0j09mrHOl/JJvpRPGwO9SvE4nR2Nb/a4Q==}
@@ -9758,6 +9768,8 @@ snapshots:
   '@types/parse-path@7.1.0':
     dependencies:
       parse-path: 7.1.0
+
+  '@types/path-browserify@1.0.3': {}
 
   '@types/resolve@1.20.2': {}
 
