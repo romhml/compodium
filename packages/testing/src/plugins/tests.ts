@@ -4,8 +4,9 @@
 import type { VitePlugin } from 'unplugin'
 import { joinURL } from 'ufo'
 import { resolvePathSync } from 'mlly'
-import { type BrowserCommand, type Vitest, createVitest } from 'vitest/node'
-import type { PluginOptions } from '../../types'
+import { createVitest } from 'vitest/node'
+import type { BrowserCommand, Vitest } from 'vitest/node'
+import type { PluginOptions } from '@compodium/core'
 import CompodiumReporter from './reporter'
 import type { WebSocketServer } from 'vite'
 import fs from 'node:fs/promises'
@@ -177,7 +178,7 @@ export function testPlugin(options: PluginOptions): VitePlugin {
         extends: project.vite.config.configFile,
         test: {
           name: 'compodium',
-          include: [resolvePathSync('../../runtime/tests/spec.ts', { url: import.meta.url })],
+          include: [resolvePathSync('../runtime/spec.ts', { url: import.meta.url })],
           exclude: [],
 
           provide: {
@@ -190,7 +191,7 @@ export function testPlugin(options: PluginOptions): VitePlugin {
           browser: {
             enabled: true,
             // TODO: Handle Nuxt and move index.html into @compodium/vue?
-            testerHtmlPath: options._nuxt ? undefined : resolvePathSync('../../runtime/tests/index.html', { url: import.meta.url }),
+            testerHtmlPath: options._nuxt ? undefined : resolvePathSync('../runtime/index.html', { url: import.meta.url }),
             headless: true,
             screenshotFailures: false,
             provider: 'playwright',

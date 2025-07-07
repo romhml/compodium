@@ -1,3 +1,4 @@
+import type { Plugin } from 'vite'
 import { collectionsPlugin } from './plugins/collections'
 import { extendMetaPlugin, metaPlugin } from './plugins/meta'
 import { examplePlugin } from './plugins/examples'
@@ -5,19 +6,32 @@ import { devtoolsPlugin } from './plugins/devtools'
 import { colorsPlugin } from './plugins/colors'
 import { iconifyPlugin } from './plugins/iconify'
 import type { PluginOptions } from './types'
-import { testPlugin } from './plugins/tests'
 
 export * from './types'
 
-export const compodium = /* #__PURE__ */ (options: PluginOptions) => {
-  return [
+export const compodium = /* #__PURE__ */ async (options: PluginOptions) => {
+  const plugins: (Plugin | Plugin[])[] = [
     collectionsPlugin(options),
     metaPlugin(options),
     extendMetaPlugin(options),
     devtoolsPlugin(options),
     examplePlugin(options),
     iconifyPlugin(options),
-    colorsPlugin(options),
-    testPlugin(options)
+    colorsPlugin(options)
   ]
+
+  if (options.testing?.enabled) {
+    try {
+      const { compodiumTesting } = await import('@compodium/testing/plugin')
+      plugins.push(compodiumTesting(options))
+    } catch (e) {
+      console.log(e)
+      throw new Error(
+        'The `@compodium/testing` package is required when tests are enabled. '
+        + 'Install it with: pnpm add -D @compodium/testing'
+      )
+    }
+  }
+
+  return plugins
 }

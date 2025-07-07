@@ -1,8 +1,6 @@
 import type { PropertyMeta as VuePropertyMeta } from '@compodium/meta'
 import type { Hookable } from 'hookable'
 import type { InputSchema } from './plugins/meta/infer'
-import type { TestDiagnostic, TestResult } from 'vitest/node'
-import type { TaskMeta } from 'vitest'
 
 export type PluginOptions = {
   /**
@@ -55,6 +53,16 @@ export type PluginOptions = {
    */
   mainPath?: string
 
+  /**
+   * Testing configuration.
+   */
+  testing?: {
+    /**
+     * Enables testing integrations.
+     * Note that it requires installing `@compodium/testing`.
+     */
+    enabled?: boolean
+  }
   /* Internal */
   _nuxt?: boolean
 }
@@ -154,15 +162,6 @@ export type ComponentCollection = Collection & {
   components: (Component & Partial<ComponentExample>)[]
 }
 
-export type CompodiumTestResult = {
-  name: string
-  id: string
-  ok: boolean
-  result: TestResult
-  diagnostic?: TestDiagnostic
-  meta: TaskMeta
-}
-
 export interface CompodiumHooks {
   // Triggered when the components code has been updated
   'component:changed': (path: string) => void
@@ -193,9 +192,6 @@ export interface CompodiumHooks {
 
   // Toggle the renderer grid
   'renderer:grid': (payload: { enabled: boolean, gap: number }) => void
-
-  'test:result': (payload: CompodiumTestResult) => void
-  'test:finished': (payload: { took?: number }) => void
 }
 
 declare global {

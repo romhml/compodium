@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { onMounted, shallowRef, ref, computed, toRaw } from 'vue'
 import type { CompodiumHooks } from '@compodium/core'
+import type { CompodiumTestingHooks } from '@compodium/testing'
 import { onKeyStroke, useColorMode } from '@vueuse/core'
 import { joinURL } from 'ufo'
-import { createHooks, type Hookable } from 'hookable'
+import { createHooks } from 'hookable'
+import type { Hookable } from 'hookable'
 
 import RendererGrid from './components/RendererGrid.vue'
 import type { ComboOption } from './components/RendererCombo.vue'
@@ -59,10 +61,10 @@ const showGrid = ref(false)
 const gridGap = ref(8)
 
 const colorMode = useColorMode()
-const hooks = shallowRef<Hookable<CompodiumHooks>>()
+const hooks = shallowRef<Hookable<CompodiumHooks & CompodiumTestingHooks>>()
 
 onMounted(() => {
-  hooks.value = window.parent.__COMPODIUM_HOOKS__ as Hookable<CompodiumHooks> ?? createHooks<CompodiumHooks>()
+  hooks.value = window.parent.__COMPODIUM_HOOKS__ as Hookable<CompodiumHooks & CompodiumTestingHooks> ?? createHooks<CompodiumHooks & CompodiumTestingHooks>()
   window.__COMPODIUM_HOOKS__ = hooks.value
 
   hooks.value.hook('renderer:update-component', onUpdateComponent)

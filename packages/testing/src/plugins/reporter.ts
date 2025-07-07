@@ -1,7 +1,7 @@
 import type { WebSocketServer } from 'vite'
 import type { TestCase } from 'vitest/node'
 import { DefaultReporter } from 'vitest/reporters'
-import type { CompodiumTestResult } from '../../types'
+import type { CompodiumTestResult } from '../types'
 
 export default class CompodiumReporter extends DefaultReporter {
   ws: WebSocketServer
@@ -24,6 +24,7 @@ export default class CompodiumReporter extends DefaultReporter {
     this.ws.send('compodium:test:finished', {
       took: this.startTime ? this.endTime - this.startTime : undefined
     })
+    super.onTestRunEnd()
   }
 
   override onTestCaseResult(testCase: TestCase): void {

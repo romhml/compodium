@@ -3,16 +3,10 @@
 
 import { afterAll, beforeAll, describe, inject, expect, test } from 'vitest'
 import { page, commands } from '@vitest/browser/context'
-import type { CompodiumHooks, ComponentCollection, PluginOptions, CompodiumMeta, ComponentExample, Component } from '../../types'
+import type { CompodiumHooks, ComponentCollection, PluginOptions, CompodiumMeta, ComponentExample, Component } from '@compodium/core'
 import { joinURL } from 'ufo'
 import type { Hookable } from 'hookable'
 import resemble from 'resemblejs'
-
-declare global {
-  interface Window {
-    __COMPODIUM_HOOKS__?: Hookable<CompodiumHooks>
-  }
-}
 
 declare module 'vitest' {
   interface ProvidedContext {

@@ -1,4 +1,4 @@
-import type { CompodiumTestResult } from '@compodium/core'
+import type { CompodiumTestResult } from '@compodium/testing'
 import { createSharedComposable } from '@vueuse/core'
 
 function _useCompodiumTests() {

@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import type { CompodiumHooks } from '@compodium/core'
+import type { CompodiumTestingHooks } from '@compodium/testing'
 import { createHooks } from 'hookable'
 
-const hooks = createHooks<CompodiumHooks>()
+const hooks = createHooks<CompodiumHooks & CompodiumTestingHooks>()
 hooks.hook('component:added', () => navigateTo('/components'))
 
 onMounted(() => window.__COMPODIUM_HOOKS__ = hooks)
