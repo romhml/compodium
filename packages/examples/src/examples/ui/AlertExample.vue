@@ -7,5 +7,5 @@ extendCompodiumMeta({
 </script>
 
 <template>
-  <UAlert />
+  <UAlert class="w-60" />
 </template>

@@ -3,9 +3,9 @@
     v-slot="{ item }"
     class="w-xs h-xs"
     :items="[
-      'https://picsum.photos/320/320?v=1',
-      'https://picsum.photos/320/320?v=2',
-      'https://picsum.photos/320/320?v=3'
+      'https://picsum.photos/id/240/320/320',
+      'https://picsum.photos/id/241/320/320',
+      'https://picsum.photos/id/242/320/320'
     ]"
   >
     <img
