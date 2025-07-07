@@ -41,6 +41,7 @@ export function createChecker(dirs: ComponentsDir[]) {
       return {
         props: meta.props
           .filter((sch: any) => !sch.global)
+          .filter(sch => !(/^on[A-Z]/.test(sch.name))) // Filter out event emitters (onXxx pattern)
           .map((sch: any) => stripeTypeScriptInternalTypesSchema(sch, true))
           .map(inferPropTypes),
 

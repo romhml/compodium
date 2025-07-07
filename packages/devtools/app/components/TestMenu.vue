@@ -1,5 +1,13 @@
 <script setup lang="ts">
 const { runTests, watchMode, testStatus, testStats } = useCompodiumTests()
+import { onKeyStroke } from '@vueuse/core'
+
+onKeyStroke(['Enter'], async (e) => {
+  if (testStatus.value === 'running') return
+  if (e.metaKey || e.ctrlKey) {
+    await runTests()
+  }
+}, { dedupe: true, eventName: 'keydown' })
 
 const open = ref(false)
 </script>
@@ -40,15 +48,20 @@ const open = ref(false)
           </template>
         </UPopover>
 
-        <UButton
-          variant="ghost"
-          icon="lucide:circle-play"
-          size="sm"
-          color="neutral"
-          trailing
-          loading-auto
-          @click.stop="runTests()"
-        />
+        <UTooltip
+          text="Run tests"
+          :kbds="['meta', 'Enter']"
+        >
+          <UButton
+            variant="ghost"
+            icon="lucide:circle-play"
+            size="sm"
+            color="neutral"
+            trailing
+            loading-auto
+            @click.stop="runTests()"
+          />
+        </UToolTip>
 
         <UButton
           variant="ghost"

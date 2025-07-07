@@ -7,5 +7,5 @@ extendCompodiumMeta({
 </script>
 
 <template>
-  <USelectMenu />
+  <USelectMenu class="w-48" />
 </template>

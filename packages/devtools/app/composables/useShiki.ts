@@ -1,5 +1,6 @@
 import { createHighlighterCore } from 'shiki/core'
-import { createOnigurumaEngine, type BuiltinLanguage, type HighlighterCore } from 'shiki'
+import { createOnigurumaEngine } from 'shiki'
+import type { BuiltinLanguage, HighlighterCore } from 'shiki'
 import MaterialThemeLighter from 'shiki/themes/material-theme-lighter.mjs'
 import MaterialThemePalenight from 'shiki/themes/material-theme-palenight.mjs'
 import VueLang from 'shiki/langs/vue.mjs'

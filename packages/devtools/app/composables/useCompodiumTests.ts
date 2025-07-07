@@ -1,11 +1,11 @@
 import type { CompodiumTestResult } from '@compodium/core'
-import { createSharedComposable, useStorage } from '@vueuse/core'
+import { createSharedComposable } from '@vueuse/core'
 
 function _useCompodiumTests() {
   const { hooks } = useCompodiumClient()
 
   const testStatus: Ref<undefined | 'running' | 'passed' | 'failed'> = ref()
-  const testResults = useStorage<Record<string, CompodiumTestResult | null>>('compodium-tests', () => ({}))
+  const testResults = useState<Record<string, CompodiumTestResult | null>>('compodium-tests', () => ({}))
   const testStats = ref<{ took?: number } | undefined>()
 
   hooks.hook('test:result', async (payload) => {

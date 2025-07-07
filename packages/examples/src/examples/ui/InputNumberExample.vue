@@ -1,0 +1,3 @@
+<template>
+  <UInputNumber />
+</template>

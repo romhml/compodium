@@ -1,5 +1,6 @@
 import type { PropertyMeta as VuePropertyMeta } from '@compodium/meta'
-import { type ZodSchema, z } from 'zod'
+import { z } from 'zod'
+import type { ZodSchema } from 'zod'
 import type { PropSchema, PropInputType, PropertyMeta } from '../../types'
 
 // Define a type for a resolver that includes an ID and a Zod schema.
