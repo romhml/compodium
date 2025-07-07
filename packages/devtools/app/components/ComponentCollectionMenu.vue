@@ -10,7 +10,7 @@ const treeItems = computed(() => {
   return props.collections?.map(col => ({
     label: col.name,
     icon: col.icon,
-    defaultOpen: true,
+    defaultExpanded: true,
     children: col.components?.map(comp => ({
       label: comp?.isExample ? comp.pascalName.replace(/Example$/, '') : comp.pascalName,
       active: modelValue.value?.pascalName === comp.pascalName,
@@ -30,9 +30,26 @@ const treeItems = computed(() => {
 </script>
 
 <template>
-  <UNavigationMenu
+  <UTree
     :items="treeItems"
-    orientation="vertical"
-    class="px-1 bg-elevated/50"
-  />
+    class="px-1"
+  >
+    <template
+      #item-leading="{ item }"
+    >
+      <UIcon
+        v-if="item.icon"
+        :name="item.icon"
+      />
+      <UIcon
+        v-else-if="item.children?.length"
+        name="lucide:chevron-right"
+        class="transform transition-transform duration-200 group-data-expanded:rotate-90"
+      />
+      <span v-else />
+    </template>
+    <template #item-trailing>
+      <span />
+    </template>
+  </UTree>
 </template>
