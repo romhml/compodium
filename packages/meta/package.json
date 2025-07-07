@@ -29,7 +29,7 @@
     "@vue/language-core": "2.2.12",
     "pathe": "^2.0.3",
     "vue-component-meta": "^2.2.12",
-    "vue-component-type-helpers": "^2.2.12"
+    "vue-component-type-helpers": "^3.0.1"
   },
   "peerDependencies": {
     "typescript": "*"
