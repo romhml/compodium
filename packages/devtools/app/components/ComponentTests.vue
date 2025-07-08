@@ -42,7 +42,7 @@ const { data: screenshot, refresh, status } = await useAsyncData(
   }
 )
 
-const { testResults, acceptChanges, runTests, testStatus } = useCompodiumTests()
+const { testResults, runTests, testStatus } = useCompodiumTests()
 const componentTestResults = computed(() => props.component && testResults.value?.[props.component?.pascalName])
 
 const lazyTestResults = ref(componentTestResults.value)
@@ -54,8 +54,7 @@ async function onAccept() {
   accepting.value = true
 
   try {
-    await acceptChanges(props.component.pascalName)
-    await runTests(props.component.pascalName)
+    await runTests(props.component.pascalName, true)
   } finally {
     accepting.value = false
   }

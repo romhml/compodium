@@ -96,6 +96,7 @@ const open = ref(false)
               size="xs"
               variant="ghost"
               icon="lucide:check"
+              @click="runTests(undefined, true)"
             >
               Accept changes
             </UButton>

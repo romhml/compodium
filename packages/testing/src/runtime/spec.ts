@@ -2,7 +2,7 @@
 /// <reference types="@vitest/browser/providers/playwright" />
 
 import { afterAll, beforeAll, describe, inject, expect, test } from 'vitest'
-import { page, commands } from '@vitest/browser/context'
+import { page, commands, server } from '@vitest/browser/context'
 import type { CompodiumHooks, ComponentCollection, PluginOptions, CompodiumMeta, ComponentExample, Component } from '@compodium/core'
 import { joinURL } from 'ufo'
 import type { Hookable } from 'hookable'
@@ -66,6 +66,8 @@ afterAll(() => {
 })
 
 describe.each(collections.map(c => [c.name, c]))(`%s`, async (_, collection) => {
+  const updateSnapshots = server.config.snapshotOptions?.updateSnapshot === 'all'
+
   // Disable animations using DOM manipulation
   const style = window.document.createElement('style')
   style.textContent = `
@@ -92,9 +94,12 @@ describe.each(collections.map(c => [c.name, c]))(`%s`, async (_, collection) => 
     await commands.waitForNetworkIdle()
 
     const screenshotPath = joinURL(dir, `./__screenshots__/${component.pascalName}.png`)
-    const { base64: current } = await page.screenshot({ path: screenshotPath, element: page.getByTestId('preview'), save: true, base64: true })
-
     const stagedPath = joinURL(dir, `./__screenshots__/staged/${component.pascalName}.png`)
+
+    const { base64: current } = await page.screenshot({ path: updateSnapshots ? stagedPath : screenshotPath, element: page.getByTestId('preview'), save: true, base64: true })
+
+    if (updateSnapshots) return
+
     const staged = await commands.readFile(stagedPath, { encoding: 'base64' }).catch(_ => null)
 
     if (staged) {

@@ -27,11 +27,7 @@ function _useCompodiumTests() {
 
     watchMode,
 
-    async acceptChanges(component: string) {
-      await $fetch('/api/accept-changes', { method: 'PUT', query: { component } })
-    },
-
-    async runTests(components?: string | string[]) {
+    async runTests(components?: string | string[], updateSnapshots?: boolean) {
       testStatus.value = 'running'
 
       components = Array.isArray(components) ? components : components ? [components] : undefined
@@ -40,7 +36,7 @@ function _useCompodiumTests() {
       else components.forEach(c => testResults.value[c] = null)
 
       try {
-        await $fetch('/api/test', { query: { component: components } })
+        await $fetch('/api/test', { query: { component: components, update: updateSnapshots } })
       } finally {
         testStatus.value = Object.values(testResults.value).some(r => !!r && !r?.ok) ? 'failed' as const : 'passed' as const
       }
