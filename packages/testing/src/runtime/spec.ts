@@ -29,8 +29,8 @@ const collections = await fetch('/__compodium__/api/collections').then(async r =
 
 const hooks = window.__COMPODIUM_HOOKS__ as Hookable<CompodiumHooks>
 
-// Disable CSS Animation for consistent screenshots
 beforeAll(() => {
+  // Disable CSS Animation for consistent screenshots
   const style = window.document.createElement('style')
   style.id = 'compodium-disable-animations'
   style.textContent = `
