@@ -324,12 +324,21 @@ importers:
 
   packages/testing:
     dependencies:
+      '@vitest/browser':
+        specifier: '>=3'
+        version: 3.2.4(playwright@1.53.2)(vite@7.0.2(@types/node@22.16.0)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(yaml@2.8.0))(vitest@3.2.4)
+      '@vue/test-utils':
+        specifier: '>=2'
+        version: 2.4.6
       mlly:
         specifier: ^1.7.4
         version: 1.7.4
       pathe:
         specifier: ^2.0.3
         version: 2.0.3
+      playwright:
+        specifier: '>=1'
+        version: 1.53.2
       resemblejs:
         specifier: ^5.0.0
         version: 5.0.0
@@ -340,7 +349,7 @@ importers:
         specifier: ^2.3.5
         version: 2.3.5
       vitest:
-        specifier: '>=3'
+        specifier: '>=3.1'
         version: 3.2.4(@types/debug@4.1.12)(@types/node@22.16.0)(@vitest/browser@3.2.4)(@vitest/ui@3.2.4)(happy-dom@17.6.3)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(yaml@2.8.0)
     devDependencies:
       '@compodium/core':
@@ -355,15 +364,9 @@ importers:
       '@compodium/examples':
         specifier: workspace:^
         version: link:../examples
-      '@vitest/browser':
-        specifier: '>=3'
-        version: 3.2.4(playwright@1.53.2)(vite@7.0.2(@types/node@22.16.0)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(yaml@2.8.0))(vitest@3.2.4)
       '@vue/devtools-kit':
         specifier: ^7.7.7
         version: 7.7.7
-      '@vue/test-utils':
-        specifier: '>=2'
-        version: 2.4.6
       consola:
         specifier: ^3.4.2
         version: 3.4.2
@@ -385,9 +388,6 @@ importers:
       vite:
         specifier: '>=6'
         version: 7.0.2(@types/node@22.16.0)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(yaml@2.8.0)
-      vitest:
-        specifier: '>=3.1'
-        version: 3.2.4(@types/debug@4.1.12)(@types/node@22.16.0)(@vitest/browser@3.2.4)(@vitest/ui@3.2.4)(happy-dom@17.6.3)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(yaml@2.8.0)
       vue:
         specifier: '>=3'
         version: 3.5.17(typescript@5.6.3)

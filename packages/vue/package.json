@@ -31,20 +31,10 @@
     "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
-    "@vitest/browser": ">=3",
-    "@vue/test-utils": ">=2",
-    "playwright": ">=1",
     "vite": ">=6",
-    "vitest": ">=3.1",
     "vue": ">=3"
   },
   "peerDependenciesMeta": {
-    "@vue/test-utils": {
-      "optional": true
-    },
-    "playwright": {
-      "optional": true
-    },
     "vitest": {
       "optional": true
     }

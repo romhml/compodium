@@ -36,7 +36,10 @@
     "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
-    "vitest": ">=3"
+    "@vitest/browser": ">=3",
+    "@vue/test-utils": ">=2",
+    "playwright": ">=1",
+    "vitest": ">=3.1"
   },
   "dependencies": {
     "mlly": "^1.7.4",
