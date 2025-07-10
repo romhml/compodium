@@ -1,15 +1,16 @@
 <script lang="ts">
 import type { PropInputType, PropSchema } from '@compodium/core'
-import BooleanInput from '../components/inputs/BooleanInput.vue'
-import StringInput from '../components/inputs/StringInput.vue'
-import NumberInput from '../components/inputs/NumberInput.vue'
-import StringEnumInput from '../components/inputs/StringEnumInput.vue'
-import ObjectInput from '../components/inputs/ObjectInput.vue'
-import ArrayInput from '../components/inputs/ArrayInput.vue'
-import PrimitiveArrayInput from '../components/inputs/PrimitiveArrayInput.vue'
-import DateInput from '../components/inputs/DateInput.vue'
-import IconInput from '../components/inputs/IconInput.vue'
 import { createReusableTemplate } from '@vueuse/core'
+
+import BooleanInput from './BooleanInput.vue'
+import StringInput from './StringInput.vue'
+import NumberInput from './NumberInput.vue'
+import StringEnumInput from './StringEnumInput.vue'
+import ObjectInput from './ObjectInput.vue'
+import ArrayInput from './ArrayInput.vue'
+import PrimitiveArrayInput from './PrimitiveArrayInput.vue'
+import DateInput from './DateInput.vue'
+import IconInput from './IconInput.vue'
 
 const inputTypes: Record<PropInputType, Component> = {
   icon: IconInput,

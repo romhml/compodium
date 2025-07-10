@@ -99,7 +99,7 @@ function onResetState() {
       :key="prop.name"
       class="grow px-3 py-2 border-b border-default"
     >
-      <ComponentPropInput
+      <PropInput
         :model-value="modelValue[prop.name]"
         :schema="prop.schema"
         :name="prop.name"

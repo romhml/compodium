@@ -244,7 +244,7 @@ const tabs = computed(() => {
         </div>
 
         <div class="flex justify-center items-center">
-          <ComboInput
+          <ComboInputMenu
             v-if="comboItems?.length"
             v-model="comboProps"
             :items="comboItems"
@@ -338,7 +338,7 @@ const tabs = computed(() => {
         :ui="{ content: 'grow relative overflow-y-scroll' }"
       >
         <template #props>
-          <ComponentProps
+          <ComponentPropsTab
             v-model="props"
             :meta="componentMeta"
             :disabled="combo"
@@ -351,18 +351,18 @@ const tabs = computed(() => {
         </template>
 
         <template #events>
-          <ComponentEvents :events="events" />
+          <ComponentEventsTab :events="events" />
         </template>
 
         <template #tests>
-          <ComponentTests
+          <ComponentTestsTab
             :key="component?.pascalName"
             :component="component"
           />
         </template>
 
         <template #code>
-          <ComponentCode
+          <ComponentCodeTab
             :component="component"
             :props="props"
             :default-props="defaultProps"
