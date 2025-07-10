@@ -77,7 +77,9 @@ export function collectionsPlugin(options: PluginOptions): VitePlugin {
               const componentExamples = examples?.filter(e => e.pascalName.startsWith(`${c.pascalName}Example`)).map(e => ({
                 ...e,
                 isExample: true,
-                componentPath: c.filePath
+                componentPath: c.filePath,
+                componentName: c.pascalName,
+                collectionName: col.name
               }))
 
               const mainExample = componentExamples.find(e => e.pascalName === `${c.pascalName}Example`)
@@ -90,7 +92,8 @@ export function collectionsPlugin(options: PluginOptions): VitePlugin {
                 ...component,
                 wrapperComponent: col.wrapperComponent,
                 docUrl: col.getDocUrl?.(c.pascalName),
-                examples: componentExamples.filter(e => e.pascalName !== mainExample?.pascalName)
+                examples: componentExamples.filter(e => e.pascalName !== mainExample?.pascalName),
+                collectionName: col.name
               }]
             })
 

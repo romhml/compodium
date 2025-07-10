@@ -42,7 +42,7 @@ const { data: screenshot, refresh, status } = await useAsyncData(
   }
 )
 
-const { testResults, runTests, testStatus } = useCompodiumTests()
+const { testResults, runTests, testStatus, testStates } = useCompodiumTests()
 const componentTestResults = computed(() => props.component && testResults.value?.[props.component?.pascalName])
 
 const lazyTestResults = ref(componentTestResults.value)
@@ -54,7 +54,7 @@ async function onAccept() {
   accepting.value = true
 
   try {
-    await runTests(props.component.pascalName, true)
+    await runTests(props.component, true)
   } finally {
     accepting.value = false
   }
@@ -62,9 +62,10 @@ async function onAccept() {
 
 const loading = computed(() => testStatus.value === 'running' || accepting.value)
 
-const { hooks } = useCompodiumClient()
-hooks.hook('test:result', async (payload) => {
-  if (!props.component?.pascalName || payload.meta?.compodium?.component !== props.component?.pascalName) return
+const { onEvent } = useViteClient()
+
+onEvent('compodium:test:result', async (payload) => {
+  if (!props.component?.pascalName || payload.meta?.compodium?.name !== props.component?.pascalName) return
 
   if (payload.result.state === 'passed' || payload.result.state === 'failed') {
     await refresh()
@@ -95,7 +96,7 @@ hooks.hook('test:result', async (payload) => {
         class="mt-3"
         loading-auto
         :disabled="loading"
-        @click="runTests(component?.pascalName)"
+        @click="runTests(component)"
       >
         Run tests
       </UButton>
@@ -110,7 +111,7 @@ hooks.hook('test:result', async (payload) => {
         <p class="font-semibold text-sm text-muted">
           No changes
         </p>
-        <TestStatusIcon :status="componentTestResults?.result.state" />
+        <TestStatusIcon :status="testStates[component!.pascalName]" />
       </div>
       <UButton
         variant="ghost"
@@ -120,7 +121,7 @@ hooks.hook('test:result', async (payload) => {
         size="sm"
         loading-auto
         :disabled="loading"
-        @click="runTests(component?.pascalName)"
+        @click="runTests(component)"
       />
     </div>
     <div
@@ -157,7 +158,7 @@ hooks.hook('test:result', async (payload) => {
           size="sm"
           loading-auto
           :disabled="loading"
-          @click="runTests(component?.pascalName)"
+          @click="runTests(component)"
         />
       </div>
     </div>
@@ -182,7 +183,7 @@ hooks.hook('test:result', async (payload) => {
           size="sm"
           loading-auto
           :disabled="loading"
-          @click="runTests(component?.pascalName)"
+          @click="runTests(component)"
         />
       </div>
 

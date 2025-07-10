@@ -9,8 +9,3 @@ export type CompodiumTestResult = {
   diagnostic?: TestDiagnostic
   meta: TaskMeta
 }
-
-export interface CompodiumTestingHooks {
-  'test:result': (payload: CompodiumTestResult) => void
-  'test:finished': (payload: { took?: number }) => void
-}

@@ -7,10 +7,10 @@ import { resolvePathSync } from 'mlly'
 import { createVitest } from 'vitest/node'
 import type { BrowserCommand, Vitest } from 'vitest/node'
 import type { PluginOptions } from '@compodium/core'
-import CompodiumReporter from './reporter'
+import { CompodiumReporter } from './reporter'
 import type { WebSocketServer } from 'vite'
 import fs from 'node:fs/promises'
-import { dirname } from 'pathe'
+import { DefaultReporter } from 'vitest/reporters'
 
 declare module '@vitest/browser/context' {
   interface BrowserCommands {
@@ -45,7 +45,7 @@ export function testPlugin(options: PluginOptions): VitePlugin {
         root: rootDir,
         watch: true,
         passWithNoTests: false,
-        reporters: [new CompodiumReporter(ws)],
+        reporters: [new DefaultReporter(), new CompodiumReporter(ws)],
         silent: true,
         env: {
           VITEST: 'true'
@@ -95,6 +95,26 @@ export function testPlugin(options: PluginOptions): VitePlugin {
 
     configureServer(server) {
       ws = server.ws
+
+      server.middlewares.use('/__compodium__/devtools/api/stop-tests', async (req, res) => {
+        if (!vitestRunning) {
+          res.statusCode = 200
+          res.end()
+          return
+        }
+
+        try {
+          const vitest = await getVitest()
+          await vitest.cancelCurrentRun('keyboard-input')
+          res.end()
+        } catch (err) {
+          res.statusCode = 500
+          console.error(err)
+          res.end(JSON.stringify(err))
+        } finally {
+          vitestRunning = false
+        }
+      })
 
       server.middlewares.use('/__compodium__/devtools/api/test', async (req, res) => {
         if (vitestRunning) {

@@ -1,7 +1,9 @@
 <script setup lang="ts">
+/// <reference lib="dom" />
+/// <reference types="vite/client" />
+
 import { onMounted, shallowRef, ref, computed, toRaw } from 'vue'
 import type { CompodiumHooks } from '@compodium/core'
-import type { CompodiumTestingHooks } from '@compodium/testing'
 import { onKeyStroke, useColorMode } from '@vueuse/core'
 import { joinURL } from 'ufo'
 import { createHooks } from 'hookable'
@@ -53,18 +55,16 @@ async function onUpdateComponent(payload: Parameters<CompodiumHooks['renderer:up
 
 if (import.meta.hot) {
   import.meta.hot.on('compodium:hmr', data => hooks.value?.callHook(data.event, data.path))
-  import.meta.hot.on('compodium:test:result', data => hooks.value?.callHook('test:result', data))
-  import.meta.hot.on('compodium:test:finished', data => hooks.value?.callHook('test:finished', data))
 }
 
 const showGrid = ref(false)
 const gridGap = ref(8)
 
 const colorMode = useColorMode()
-const hooks = shallowRef<Hookable<CompodiumHooks & CompodiumTestingHooks>>()
+const hooks = shallowRef<Hookable<CompodiumHooks>>()
 
 onMounted(() => {
-  hooks.value = window.parent.__COMPODIUM_HOOKS__ as Hookable<CompodiumHooks & CompodiumTestingHooks> ?? createHooks<CompodiumHooks & CompodiumTestingHooks>()
+  hooks.value = window.parent.__COMPODIUM_HOOKS__ as Hookable<CompodiumHooks> ?? createHooks<CompodiumHooks>()
   window.__COMPODIUM_HOOKS__ = hooks.value
 
   hooks.value.hook('renderer:update-component', onUpdateComponent)
@@ -76,7 +76,7 @@ onMounted(() => {
   })
 
   hooks.value.hook('renderer:set-color', color => colorMode.value = color)
-  hooks.value.callHook('renderer:mounted')
+  hooks.value.callHook('renderer:mounted', import.meta.hot)
 })
 
 onMounted(() => {

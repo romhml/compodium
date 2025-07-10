@@ -1,33 +1,48 @@
 import type { WebSocketServer } from 'vite'
-import type { TestCase } from 'vitest/node'
-import { DefaultReporter } from 'vitest/reporters'
+import type { TestCase, TestModule, TestSuite, TestRunEndReason, ReportedHookContext } from 'vitest/node'
+import type { Reporter } from 'vitest/reporters'
 import type { CompodiumTestResult } from '../types'
+import type { SerializedError } from 'vitest'
 
-export default class CompodiumReporter extends DefaultReporter {
+export class CompodiumReporter implements Reporter {
   ws: WebSocketServer
 
   startTime?: number
   endTime?: number
 
   constructor(ws: WebSocketServer) {
-    super()
     this.ws = ws
   }
 
-  override onTestRunStart(): void {
+  onTestRunStart(): void {
     this.startTime = Date.now()
+    this.ws.send('compodium:test:start')
   }
 
-  override onTestRunEnd(): void {
+  onTestRunEnd(_testModules: ReadonlyArray<TestModule>, errors: ReadonlyArray<SerializedError>, reason: TestRunEndReason) {
     this.endTime = Date.now()
 
     this.ws.send('compodium:test:finished', {
-      took: this.startTime ? this.endTime - this.startTime : undefined
+      took: this.startTime ? this.endTime - this.startTime : undefined,
+      errors,
+      reason
     })
-    super.onTestRunEnd()
   }
 
-  override onTestCaseResult(testCase: TestCase): void {
+  onTestCaseReady(testCase: TestCase): void {
+    const result: CompodiumTestResult = {
+      name: testCase.name,
+      id: testCase.id,
+      ok: testCase.ok(),
+      result: testCase.result(),
+      diagnostic: testCase.diagnostic(),
+      meta: testCase.meta()
+    }
+
+    this.ws.send('compodium:test:ready', result)
+  }
+
+  onTestCaseResult(testCase: TestCase): void {
     const result: CompodiumTestResult = {
       name: testCase.name,
       id: testCase.id,
@@ -40,5 +55,30 @@ export default class CompodiumReporter extends DefaultReporter {
     if (result.result.state === 'skipped') return
 
     this.ws.send('compodium:test:result', result)
+  }
+
+  onHookEnd(context: ReportedHookContext) {
+    if (context.entity.type !== 'suite') return
+
+    const meta = context.entity.meta()?.compodium
+    const name = meta?.name
+
+    if (name) this.ws.send('compodium:test:suite:start', { name, state: 'pending' })
+  }
+
+  /**
+   * Called after the test suite and its hooks are finished running.
+   * The `state` cannot be `pending`.
+   */
+  onTestSuiteResult(testSuite: TestSuite) {
+    const meta = testSuite.meta()?.compodium
+    const name = meta?.name
+    if (!name) return
+
+    this.ws.send('compodium:test:suite:result', {
+      name,
+      ok: testSuite.ok(),
+      state: testSuite.state()
+    })
   }
 }

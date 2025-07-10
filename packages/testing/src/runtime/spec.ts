@@ -16,7 +16,7 @@ declare module 'vitest' {
 
   interface TaskMeta {
     compodium?: {
-      component?: string
+      name?: string
       diff?: boolean
     }
   }
@@ -26,7 +26,6 @@ declare module 'vitest' {
 const dir = inject('compodium.dir')
 
 const collections = await fetch('/__compodium__/api/collections').then(async r => (await r.json()) as ComponentCollection[])
-
 const hooks = window.__COMPODIUM_HOOKS__ as Hookable<CompodiumHooks>
 
 beforeAll(() => {
@@ -66,8 +65,12 @@ afterAll(() => {
 })
 
 describe.each(collections.map(c => [c.name, c]))(`%s`, async (_, collection) => {
-  const updateSnapshots = server.config.snapshotOptions?.updateSnapshot === 'all'
+  beforeAll((suite) => {
+    suite.meta.compodium = {}
+    suite.meta.compodium.name = collection.name
+  })
 
+  const updateSnapshots = server.config.snapshotOptions?.updateSnapshot === 'all'
   // Disable animations using DOM manipulation
   const style = window.document.createElement('style')
   style.textContent = `
@@ -76,46 +79,53 @@ describe.each(collections.map(c => [c.name, c]))(`%s`, async (_, collection) => 
       transition-duration: 0s !important;
     }
   `
-  const testComponents = collection.components.flatMap(c => [c, ...(c.examples ?? [])])
 
-  test.for(testComponents.map(c => [c.pascalName, c] as [string, Component & Partial<ComponentExample>]))('%s', async ([_, component], { task }) => {
-    task.meta.compodium = {}
-    task.meta.compodium.component = component.pascalName
-
-    const meta = await fetch(`/__compodium__/api/meta?component=${component.filePath}`).then(async r => (await r.json()) as CompodiumMeta)
-
-    await hooks?.callHook('renderer:update-component', {
-      path: component.filePath,
-      props: meta.compodium?.defaultProps,
-      wrapper: collection.wrapperComponent,
-      events: meta.events
+  describe.each(collection.components.map(c => [c.pascalName, c]))('%s', async (_, component) => {
+    const examples = [component, ...(component.examples ?? [])]
+    beforeAll((suite) => {
+      suite.meta.compodium = {}
+      suite.meta.compodium.name = component.pascalName
     })
 
-    await commands.waitForNetworkIdle()
+    test.for(examples.map(c => [c.pascalName, c] as [string, Component & Partial<ComponentExample>]))('%s', async ([_, example], { task }) => {
+      task.meta.compodium = {}
+      task.meta.compodium.name = example.pascalName
 
-    const screenshotPath = joinURL(dir, `./__screenshots__/${component.pascalName}.png`)
-    const stagedPath = joinURL(dir, `./__screenshots__/staged/${component.pascalName}.png`)
+      const meta = await fetch(`/__compodium__/api/meta?component=${example.filePath}`).then(async r => (await r.json()) as CompodiumMeta)
 
-    const { base64: current } = await page.screenshot({ path: updateSnapshots ? stagedPath : screenshotPath, element: page.getByTestId('preview'), save: true, base64: true })
+      await hooks?.callHook('renderer:update-component', {
+        path: example.filePath,
+        props: meta.compodium?.defaultProps,
+        wrapper: collection.wrapperComponent,
+        events: meta.events
+      })
 
-    if (updateSnapshots) return
+      await commands.waitForNetworkIdle()
 
-    const staged = await commands.readFile(stagedPath, { encoding: 'base64' }).catch(_ => null)
+      const screenshotPath = joinURL(dir, `./__screenshots__/${example.pascalName}.png`)
+      const stagedPath = joinURL(dir, `./__screenshots__/staged/${example.pascalName}.png`)
 
-    if (staged) {
-      await commands.writeFile(screenshotPath, current, { encoding: 'base64' })
+      const { base64: current } = await page.screenshot({ path: updateSnapshots ? stagedPath : screenshotPath, element: page.getByTestId('preview'), save: true, base64: true })
 
-      const diff: resemble.ComparisonResult = await new Promise(resolve => resemble(`data:image/png;base64,${staged}`).compareTo(`data:image/png;base64,${current}`).onComplete(data => resolve(data)))
-      if (diff.error) {
-        throw new Error(`[Compodium] Error while comparing screenshots:\n ${diff.error.toString()}`)
-      }
-      if (diff.rawMisMatchPercentage > 0.001) {
-        task.meta.compodium.diff = true
-        expect.fail(`Screenshot comparison failed.
+      if (updateSnapshots) return
+
+      const staged = await commands.readFile(stagedPath, { encoding: 'base64' }).catch(_ => null)
+
+      if (staged) {
+        await commands.writeFile(screenshotPath, current, { encoding: 'base64' })
+
+        const diff: resemble.ComparisonResult = await new Promise(resolve => resemble(`data:image/png;base64,${staged}`).compareTo(`data:image/png;base64,${current}`).onComplete(data => resolve(data)))
+        if (diff.error) {
+          throw new Error(`[Compodium] Error while comparing screenshots:\n ${diff.error.toString()}`)
+        }
+        if (diff.rawMisMatchPercentage > 0.001) {
+          task.meta.compodium.diff = true
+          expect.fail(`Screenshot comparison failed.
 Difference: ${diff.rawMisMatchPercentage.toFixed(3)}`)
+        }
+      } else {
+        await commands.writeFile(stagedPath, current, { encoding: 'base64' })
       }
-    } else {
-      await commands.writeFile(stagedPath, current, { encoding: 'base64' })
-    }
+    })
   })
 })

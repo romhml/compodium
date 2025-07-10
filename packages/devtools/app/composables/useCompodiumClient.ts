@@ -1,10 +1,9 @@
 import type { CompodiumHooks } from '@compodium/core'
-import type { CompodiumTestingHooks } from '@compodium/testing'
 import { createHooks } from 'hookable'
 import { createSharedComposable } from '@vueuse/core'
 
 function _useCompodiumClient() {
-  const hooks = createHooks<CompodiumHooks & CompodiumTestingHooks>()
+  const hooks = createHooks<CompodiumHooks>()
   window.__COMPODIUM_HOOKS__ = hooks
 
   return {

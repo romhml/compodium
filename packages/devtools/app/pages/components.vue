@@ -13,6 +13,7 @@ const { runTests, watchMode } = useCompodiumTests()
 
 hooks.hook('renderer:mounted', () => {
   rendererMounted.value = true
+
   hooks.hook('component:changed', async (path: string) => {
     if ((component.value?.filePath && path.endsWith(component.value?.filePath)) || (component.value?.componentPath && path.endsWith(component.value?.componentPath))) {
       await Promise.all([refreshMeta(), refreshExampleMeta()])
@@ -21,7 +22,7 @@ hooks.hook('renderer:mounted', () => {
     if (watchMode.value) {
       const updatedComponent = components.value?.find(c => c.filePath === path)
       if (updatedComponent) {
-        const componentsToTest = [updatedComponent, ...(updatedComponent?.examples ?? [])].map(c => c.pascalName)
+        const componentsToTest = [updatedComponent, ...(updatedComponent?.examples ?? [])]
         await runTests(componentsToTest)
       }
     }
@@ -228,7 +229,7 @@ const tabs = computed(() => {
 
       <TestMenu
         v-if="collections?.length"
-        class="border border-muted bg-elevated mx-2 mb-2 rounded"
+        class="bg-elevated mx-2 mb-2 rounded"
       />
     </div>
 

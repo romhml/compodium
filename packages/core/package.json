@@ -33,9 +33,9 @@
     "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
+    "@compodium/testing": "workspace:^",
     "vite": ">=6",
-    "vue": ">=3",
-    "@compodium/testing": "workspace:^"
+    "vue": ">=3"
   },
   "peerDependenciesMeta": {
     "@compodium/testing": {
