@@ -1,14 +1,12 @@
 <script setup lang="ts">
 import type { Component } from '@compodium/core'
 import resemble from 'resemblejs'
-import pixelmatch from 'pixelmatch'
-import { PNG } from 'pngjs/browser'
 
 const props = defineProps<{
   component?: Component
 }>()
 
-const { data: screenshot, error, refresh, status } = await useAsyncData(
+const { data: screenshot, refresh, status } = await useAsyncData(
   computed(() => props.component ? `screenshot-${props.component?.pascalName}` : 'screenshot-empty'),
   async () => {
     if (!props.component) return
@@ -40,35 +38,9 @@ const { data: screenshot, error, refresh, status } = await useAsyncData(
         )
       : null
 
-    try {
-      if (current && staged) {
-        console.log('here')
-        const currentPng = base64ToBytes(current)
-        console.log('there')
-        const stagedPng = base64ToBytes(staged)
-        const diff = new PNG()
-
-        const diff2 = current && staged ? pixelmatch(stagedPng.pixels, currentPng.pixels, diff.data, stagedPng.width, stagedPng.height) : null
-        console.log(diff2)
-      }
-    } catch (e) {
-      console.error(e)
-    }
     return { staged, current, diff }
   }
 )
-
-function base64ToBytes(base64String: string) {
-  const base64Data = base64String.replace(/^data:image\/png;base64,/, '')
-  const binaryString = atob(base64Data)
-  const bytes = new Uint8Array(binaryString.length)
-
-  return {
-    pixels: bytes, // Uint8Array of RGBA values
-    width: 500,
-    height: 500
-  }
-}
 
 const { testResults, runTests, testStatus, testStates } = useCompodiumTests()
 const componentTestResults = computed(() => props.component && testResults.value?.[props.component?.pascalName])
