@@ -16,12 +16,8 @@
     "documentation"
   ],
   "exports": {
-    ".": {
-      "import": "./dist/index.mjs"
-    },
-    "./plugin": {
-      "import": "./dist/plugin.mjs"
-    },
+    ".":  "./dist/index.mjs",
+    "./e2e": "./dist/e2e/index.ts",
     "./*": "./dist/*"
   },
   "main": "dist/index.mjs",

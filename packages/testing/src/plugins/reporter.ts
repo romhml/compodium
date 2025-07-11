@@ -4,6 +4,15 @@ import type { Reporter } from 'vitest/reporters'
 import type { CompodiumTestResult } from '../types'
 import type { SerializedError } from 'vitest'
 
+declare module 'vitest' {
+  interface TaskMeta {
+    compodium?: {
+      name?: string
+      diff?: boolean
+    }
+  }
+}
+
 export class CompodiumReporter implements Reporter {
   ws: WebSocketServer
 

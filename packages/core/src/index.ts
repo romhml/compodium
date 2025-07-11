@@ -10,7 +10,7 @@ import type { PluginOptions } from './types'
 export * from './types'
 
 export const compodium = /* #__PURE__ */ async (options: PluginOptions) => {
-  const plugins: (Plugin | Plugin[])[] = [
+  const plugins: Plugin[] = [
     collectionsPlugin(options),
     metaPlugin(options),
     extendMetaPlugin(options),
@@ -22,8 +22,8 @@ export const compodium = /* #__PURE__ */ async (options: PluginOptions) => {
 
   if (options.testing?.enabled) {
     try {
-      const { compodiumTesting } = await import('@compodium/testing/plugin')
-      plugins.push(compodiumTesting(options))
+      const { compodiumTesting } = await import('@compodium/testing')
+      compodiumTesting(options).forEach(p => plugins.push(p))
     } catch {
       throw new Error(
         'The `@compodium/testing` package is required when tests are enabled. '

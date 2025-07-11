@@ -22,7 +22,6 @@ declare module 'vitest' {
   }
 }
 
-// const options = inject('compodium.options')
 const dir = inject('compodium.dir')
 
 const collections = await fetch('/__compodium__/api/collections').then(async r => (await r.json()) as ComponentCollection[])

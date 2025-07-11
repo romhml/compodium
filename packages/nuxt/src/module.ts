@@ -44,7 +44,7 @@ export default defineNuxtModule<ModuleOptions>({
     }
 
     nuxt.hooks.hookOnce('components:dirs', async (dirs) => {
-      addVitePlugin(compodium({
+      addVitePlugin(await compodium({
         componentDirs: dirs,
         rootDir: nuxt.options.rootDir,
         baseUrl: nuxt.options.app.baseURL,

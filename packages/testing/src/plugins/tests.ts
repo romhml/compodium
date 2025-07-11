@@ -11,6 +11,7 @@ import { CompodiumReporter } from './reporter'
 import type { WebSocketServer } from 'vite'
 import fs from 'node:fs/promises'
 import { DefaultReporter } from 'vitest/reporters'
+import { resolve } from 'pathe'
 
 declare module '@vitest/browser/context' {
   interface BrowserCommands {
@@ -44,9 +45,9 @@ export function testPlugin(options: PluginOptions): VitePlugin {
       vitest = await createVitest('test', {
         root: rootDir,
         watch: true,
-        passWithNoTests: false,
+        passWithNoTests: true,
         reporters: [new DefaultReporter(), new CompodiumReporter(ws)],
-        silent: true,
+        silent: false,
         env: {
           VITEST: 'true'
         }
@@ -169,11 +170,16 @@ export function testPlugin(options: PluginOptions): VitePlugin {
     },
 
     async configureVitest({ project, injectTestProjects }) {
+      const testDir = joinURL(resolve(rootDir, options.dir), './test')
+
       await injectTestProjects({
         extends: project.vite.config.configFile,
         test: {
           name: 'compodium',
-          include: [resolvePathSync('../runtime/spec.ts', { url: import.meta.url })],
+          include: [
+            resolvePathSync('../runtime/spec.ts', { url: import.meta.url }),
+            `${testDir}/**/*.{test,spec}.?(c|m)[jt]s?(x)`
+          ],
           exclude: [],
 
           provide: {

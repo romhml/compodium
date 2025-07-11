@@ -36,6 +36,7 @@ function goToCompodium() {
         color="neutral"
         icon="lucide:rocket"
         block
+        data-testid="go-to-compodium"
         @click="goToCompodium()"
       >
         Go to Compodium
@@ -47,6 +48,7 @@ function goToCompodium() {
         icon="devicon-plain:vuejs"
         block
         :disabled="true"
+        data-testid="open-devtools"
       >
         Open in Vue Devtools
       </UButton>

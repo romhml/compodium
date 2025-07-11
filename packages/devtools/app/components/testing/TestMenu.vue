@@ -143,9 +143,11 @@ watch(testStatus, () => {
               <TestStatusIcon status="failed" />
             </div>
 
-            <div class="flex justify-between w-full gap-2">
+            <div
+              v-if="visualChanges"
+              class="flex justify-between w-full gap-2"
+            >
               <span
-                v-if="visualChanges"
                 class="text-sm"
               >
                 {{ visualChanges }} visual change{{ visualChanges > 1 ? 's' : null }}
