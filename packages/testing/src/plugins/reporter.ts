@@ -1,17 +1,8 @@
 import type { WebSocketServer } from 'vite'
-import type { TestCase, TestModule, TestSuite, TestRunEndReason, ReportedHookContext } from 'vitest/node'
+import type { TestCase, TestModule, TestSuite, TestRunEndReason } from 'vitest/node'
 import type { Reporter } from 'vitest/reporters'
 import type { CompodiumTestResult } from '../types'
 import type { SerializedError } from 'vitest'
-
-declare module 'vitest' {
-  interface TaskMeta {
-    compodium?: {
-      name?: string
-      diff?: boolean
-    }
-  }
-}
 
 export class CompodiumReporter implements Reporter {
   ws: WebSocketServer
@@ -19,18 +10,36 @@ export class CompodiumReporter implements Reporter {
   startTime?: number
   endTime?: number
 
+  // Track suites by component name
+  private pendingTestsByComponent: Record<string, Set<string>> = {}
+  private stateByComponent: Record<string, string> = {}
+
+  onTestModuleCollected(testModule: TestModule) {
+    testModule.children.allSuites().forEach((s) => {
+      this.pendingTestsByComponent[s.name] ??= new Set<string>()
+      const tests = [...s.children.allTests()].map(t => t.id)
+      tests.forEach(id => this.pendingTestsByComponent[s.name]!.add(id))
+      this.ws.send('compodium:test:suite', {
+        name: s.name,
+        tests
+      })
+    })
+  }
+
   constructor(ws: WebSocketServer) {
     this.ws = ws
   }
 
   onTestRunStart(): void {
     this.startTime = Date.now()
+    // Clear tracking data for new test run
+    this.pendingTestsByComponent = {}
+    this.stateByComponent = {}
     this.ws.send('compodium:test:start')
   }
 
   onTestRunEnd(_testModules: ReadonlyArray<TestModule>, errors: ReadonlyArray<SerializedError>, reason: TestRunEndReason) {
     this.endTime = Date.now()
-
     this.ws.send('compodium:test:finished', {
       took: this.startTime ? this.endTime - this.startTime : undefined,
       errors,
@@ -40,7 +49,7 @@ export class CompodiumReporter implements Reporter {
 
   onTestCaseReady(testCase: TestCase): void {
     const result: CompodiumTestResult = {
-      name: testCase.name,
+      name: testCase.fullName,
       id: testCase.id,
       ok: testCase.ok(),
       result: testCase.result(),
@@ -61,18 +70,11 @@ export class CompodiumReporter implements Reporter {
       meta: testCase.meta()
     }
 
-    if (result.result.state === 'skipped') return
+    for (const component of Object.keys(this.pendingTestsByComponent)) {
+      this.pendingTestsByComponent[component]?.delete(testCase.id)
+    }
 
     this.ws.send('compodium:test:result', result)
-  }
-
-  onHookEnd(context: ReportedHookContext) {
-    if (context.entity.type !== 'suite') return
-
-    const meta = context.entity.meta()?.compodium
-    const name = meta?.name
-
-    if (name) this.ws.send('compodium:test:suite:start', { name, state: 'pending' })
   }
 
   /**
@@ -80,14 +82,14 @@ export class CompodiumReporter implements Reporter {
    * The `state` cannot be `pending`.
    */
   onTestSuiteResult(testSuite: TestSuite) {
-    const meta = testSuite.meta()?.compodium
-    const name = meta?.name
-    if (!name) return
+    const state = this.stateByComponent[testSuite.name]
+    if (!state || state === 'passed') this.stateByComponent[testSuite.name] = testSuite.state()
 
-    this.ws.send('compodium:test:suite:result', {
-      name,
-      ok: testSuite.ok(),
-      state: testSuite.state()
-    })
+    if (!this.pendingTestsByComponent[testSuite.name]?.size) {
+      this.ws.send('compodium:test:suite:result', {
+        name: testSuite.name,
+        state: this.stateByComponent[testSuite.name]
+      })
+    }
   }
 }

@@ -18,6 +18,11 @@ defineProps<{
     name="lucide:x"
   />
   <UIcon
+    v-else-if="status === 'skipped'"
+    class="size-4 text-default/50"
+    name="lucide:chevrons-right"
+  />
+  <UIcon
     v-else-if="status === 'pending'"
     class="size-4 text-default/50 animate-spin"
     name="lucide:loader"

@@ -1,16 +1,13 @@
-import { beforeAll, describe, beforeEach } from 'vitest'
+import { describe, beforeEach, expect, inject } from 'vitest'
+import type { TestContext } from 'vitest'
 import type { CompodiumHooks, ComponentCollection, CompodiumMeta, Component } from '@compodium/core'
 import type { Hookable } from 'hookable'
+import { page, commands, server } from '@vitest/browser/context'
+import type { Locator } from '@vitest/browser/context'
+import { joinURL } from 'ufo'
+import resemble from 'resemblejs'
 
-export { page } from '@vitest/browser/context'
-declare module 'vitest' {
-  interface TaskMeta {
-    compodium?: {
-      name?: string
-      diff?: boolean
-    }
-  }
-}
+export { page }
 
 const collections = await fetch('/__compodium__/api/collections').then(async r => (await r.json()) as ComponentCollection[])
 
@@ -35,11 +32,6 @@ export function describeComponent(componentName: string, fn: CompodiumTestFuncti
 
   return describe(collection.name, async () => {
     describe(componentName, async () => {
-      beforeAll((suite) => {
-        suite.meta.compodium ??= {}
-        suite.meta.compodium.name = componentName
-      })
-
       const meta = await fetch(`/__compodium__/api/meta?component=${component.filePath}`).then(async r => (await r.json()) as CompodiumMeta)
 
       beforeEach(async () => {
@@ -55,3 +47,54 @@ export function describeComponent(componentName: string, fn: CompodiumTestFuncti
     })
   })
 }
+
+const dir = inject('compodium.dir')
+
+declare module 'vitest' {
+  interface Matchers<T = any> {
+    toMatchScreenshot(expected: string, context: TestContext): Promise<T>
+  }
+}
+
+expect.extend({
+  async toMatchScreenshot(element: Locator, name: string, context: TestContext) {
+    const screenshotPath = joinURL(dir, `./__screenshots__/${name}`)
+    const stagedPath = joinURL(dir, `./__screenshots__/staged/${name}`)
+
+    const updateSnapshots = server.config.snapshotOptions?.updateSnapshot === 'all'
+
+    const meta = context.task.meta.compodium ??= {}
+
+    meta.screenshotPath = screenshotPath
+    meta.stagedScreenshotPath = stagedPath
+
+    const { base64: screenshot } = await page.screenshot({ path: screenshotPath, save: true, base64: true, element })
+    const staged = await commands.readFile(stagedPath, { encoding: 'base64' }).catch(_ => null)
+
+    if (staged && !updateSnapshots) {
+      const diff: resemble.ComparisonResult = await new Promise(resolve => resemble(`data:image/png;base64,${staged}`).compareTo(`data:image/png;base64,${screenshot}`).onComplete(data => resolve(data)))
+
+      if (diff.error) {
+        throw new Error(`[Compodium] Error while comparing screenshots:\n ${diff.error.toString()}`)
+      }
+
+      if (diff.rawMisMatchPercentage > 0.001) {
+        context.task.meta.compodium ??= {}
+        context.task.meta.compodium.diff = true
+
+        return {
+          pass: false,
+          message: () => `Screenshot comparison failed.
+Difference: ${diff.rawMisMatchPercentage.toFixed(3)}`
+        }
+      }
+    }
+
+    await commands.writeFile(stagedPath, screenshot, { encoding: 'base64' })
+
+    return {
+      pass: true,
+      message: () => ''
+    }
+  }
+})

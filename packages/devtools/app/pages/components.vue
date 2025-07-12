@@ -9,7 +9,7 @@ const rendererMounted = ref(false)
 
 const events = ref<{ name: string, data?: any }[]>([])
 
-const { runTests, watchMode } = useCompodiumTests()
+const { runTests, watchMode } = useComponentTests()
 
 hooks.hook('renderer:mounted', () => {
   rendererMounted.value = true

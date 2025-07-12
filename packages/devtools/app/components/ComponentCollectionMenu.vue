@@ -4,7 +4,7 @@ import type { Component, ComponentCollection, ComponentExample } from '@compodiu
 const props = defineProps<{ collections: ComponentCollection[] }>()
 const modelValue = defineModel<Component | ComponentExample>()
 
-const { testStates, testResults, testStatus, partialTestRun } = useCompodiumTests()
+const { testStates, testResults, testStatus, partialTestRun } = useComponentTests()
 
 const timeFormatter = new Intl.DurationFormat('en', { style: 'short' })
 

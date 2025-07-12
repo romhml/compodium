@@ -3,17 +3,19 @@ import type { CompodiumTestResult } from '@compodium/testing'
 import { createSharedComposable } from '@vueuse/core'
 import type { TestState } from 'vitest/node'
 
-function _useCompodiumTests() {
+function _useComponentTests() {
   const { onEvent } = useViteClient()
 
+  const componentTestMap = ref<Record<number, string>>({})
+
   const testStatus: Ref<undefined | 'running' | 'passed' | 'failed' | 'interrupted'> = ref()
-  const testResults = useState<Record<string, CompodiumTestResult | null>>('compodium-tests', () => ({}))
+  const testResults = useState<Record<string, CompodiumTestResult[] | null>>('compodium-tests', () => ({}))
 
   const testStats = ref<{ took?: number } | undefined>()
   const testStates = ref<Record<string, TestState>>({})
   const partialTestRun = ref(false)
 
-  const visualChanges = computed(() => Object.values(testResults.value).filter(t => t?.meta?.compodium.diff)?.length)
+  const visualChanges = computed(() => Object.values(testResults.value).filter(t => t?.[0]?.meta?.compodium?.diff)?.length)
 
   onEvent('compodium:test:log', async (payload) => {
     console.log(...payload)
@@ -24,11 +26,11 @@ function _useCompodiumTests() {
   })
 
   onEvent('compodium:test:result', async (payload) => {
-    const component = payload.meta.compodium?.name
+    const component = componentTestMap.value[payload.id]
     if (!component) return
 
-    testStates.value[component] = payload.result.state
-    testResults.value[component] = payload
+    testResults.value[component] ??= []
+    testResults.value[component].push(payload)
   })
 
   onEvent('compodium:test:finished', async (payload) => {
@@ -36,9 +38,8 @@ function _useCompodiumTests() {
     testStatus.value = payload.reason
   })
 
-  onEvent('compodium:test:suite:start', async (payload) => {
-    if (!payload.name) return
-    testStates.value[payload.name] = payload.state
+  onEvent('compodium:test:suite', async (payload) => {
+    payload.tests.forEach((id: number) => componentTestMap.value[id] = payload.name)
   })
 
   onEvent('compodium:test:suite:result', async (payload) => {
@@ -66,6 +67,8 @@ function _useCompodiumTests() {
     async runTests(components?: (Component & Partial<ComponentExample>) | (Component & Partial<ComponentExample>)[], updateSnapshots?: boolean) {
       components = Array.isArray(components) ? components : components ? [components] : undefined
 
+      componentTestMap.value = {}
+
       if (!components?.length) {
         partialTestRun.value = false
         testStates.value = {}
@@ -73,9 +76,9 @@ function _useCompodiumTests() {
       } else {
         partialTestRun.value = true
         components.forEach((c) => {
+          testResults.value[c.pascalName] = []
           testStates.value[c.pascalName] = 'pending'
           testStates.value[c.collectionName] = 'pending'
-          if (c.componentName) testStates.value[c.componentName] = 'pending'
         })
       }
 
@@ -84,4 +87,4 @@ function _useCompodiumTests() {
   }
 }
 
-export const useCompodiumTests = createSharedComposable(_useCompodiumTests)
+export const useComponentTests = createSharedComposable(_useComponentTests)

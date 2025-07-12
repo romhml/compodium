@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { runTests, watchMode, testStatus, stopTests, visualChanges } = useCompodiumTests()
+const { runTests, watchMode, testStatus, stopTests, visualChanges } = useComponentTests()
 import { onKeyStroke } from '@vueuse/core'
 
 onKeyStroke(['Enter'], async (e) => {

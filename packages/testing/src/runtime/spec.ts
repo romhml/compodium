@@ -1,130 +1,58 @@
 /// <reference lib="dom" />
 /// <reference types="@vitest/browser/providers/playwright" />
 
-import { afterAll, beforeAll, describe, inject, expect, test } from 'vitest'
-import { page, commands, server } from '@vitest/browser/context'
-import type { CompodiumHooks, ComponentCollection, PluginOptions, CompodiumMeta, ComponentExample, Component } from '@compodium/core'
-import { joinURL } from 'ufo'
-import type { Hookable } from 'hookable'
-import resemble from 'resemblejs'
+import { afterAll, beforeAll, expect, test } from 'vitest'
+import { page } from '@vitest/browser/context'
+import type { ComponentCollection, PluginOptions } from '@compodium/core'
+import { describeComponent } from '@compodium/testing/e2e'
 
 declare module 'vitest' {
   interface ProvidedContext {
     'compodium.options': PluginOptions
     'compodium.dir': string
   }
-
-  interface TaskMeta {
-    compodium?: {
-      name?: string
-      diff?: boolean
-    }
-  }
 }
 
-const dir = inject('compodium.dir')
-
 const collections = await fetch('/__compodium__/api/collections').then(async r => (await r.json()) as ComponentCollection[])
-const hooks = window.__COMPODIUM_HOOKS__ as Hookable<CompodiumHooks>
+const components = collections.flatMap(col => col.components?.flatMap(comp => [comp, ...(comp.examples ?? [])]))
 
-beforeAll(() => {
-  // Disable CSS Animation for consistent screenshots
-  const style = window.document.createElement('style')
-  style.id = 'compodium-disable-animations'
-  style.textContent = `
-    *, *::before, *::after {
-      animation-duration: 0s !important;
-      animation-delay: 0s !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0s !important;
-      transition-delay: 0s !important;
-      transform: none !important;
-    }
+components.forEach((component) => {
+  describeComponent(component.pascalName, () => {
+    beforeAll(() => {
+      const style = window.document.createElement('style')
+      style.id = 'compodium-disable-animations'
+      style.textContent = `
+        *, *::before, *::after {
+          animation-duration: 0s !important;
+          animation-delay: 0s !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0s !important;
+          transition-delay: 0s !important;
+          transform: none !important;
+        }
 
-    /* Disable CSS animations */
-    * {
-      -webkit-animation: none !important;
-      -moz-animation: none !important;
-      -o-animation: none !important;
-      -ms-animation: none !important;
-      animation: none !important;
-    }
-  `
+        /* Disable CSS animations */
+        * {
+          -webkit-animation: none !important;
+          -moz-animation: none !important;
+          -o-animation: none !important;
+          -ms-animation: none !important;
+          animation: none !important;
+        }
+      `
 
-  // Inject into document head
-  window.document.head.appendChild(style)
-})
-
-afterAll(() => {
-  // Remove existing style if present
-  const existing = window.document.getElementById('compodium-disable-animations')
-  if (existing) {
-    existing.remove()
-  }
-})
-
-describe.each(collections.map(c => [c.name, c]))(`%s`, async (_, collection) => {
-  beforeAll((suite) => {
-    suite.meta.compodium = {}
-    suite.meta.compodium.name = collection.name
-  })
-
-  const updateSnapshots = server.config.snapshotOptions?.updateSnapshot === 'all'
-  // Disable animations using DOM manipulation
-  const style = window.document.createElement('style')
-  style.textContent = `
-    *, *::before, *::after {
-      animation-duration: 0s !important;
-      transition-duration: 0s !important;
-    }
-  `
-
-  describe.each(collection.components.map(c => [c.pascalName, c]))('%s', async (_, component) => {
-    const examples = [component, ...(component.examples ?? [])]
-    beforeAll((suite) => {
-      suite.meta.compodium = {}
-      suite.meta.compodium.name = component.pascalName
+      window.document.head.appendChild(style)
     })
 
-    test.for(examples.map(c => [c.pascalName, c] as [string, Component & Partial<ComponentExample>]))('%s', async ([_, example], { task }) => {
-      task.meta.compodium = {}
-      task.meta.compodium.name = example.pascalName
-
-      const meta = await fetch(`/__compodium__/api/meta?component=${example.filePath}`).then(async r => (await r.json()) as CompodiumMeta)
-
-      await hooks?.callHook('renderer:update-component', {
-        path: example.filePath,
-        props: meta.compodium?.defaultProps,
-        wrapper: collection.wrapperComponent,
-        events: meta.events
-      })
-
-      await commands.waitForNetworkIdle()
-
-      const screenshotPath = joinURL(dir, `./__screenshots__/${example.pascalName}.png`)
-      const stagedPath = joinURL(dir, `./__screenshots__/staged/${example.pascalName}.png`)
-
-      const { base64: current } = await page.screenshot({ path: updateSnapshots ? stagedPath : screenshotPath, element: page.getByTestId('preview'), save: true, base64: true })
-
-      if (updateSnapshots) return
-
-      const staged = await commands.readFile(stagedPath, { encoding: 'base64' }).catch(_ => null)
-
-      if (staged) {
-        await commands.writeFile(screenshotPath, current, { encoding: 'base64' })
-
-        const diff: resemble.ComparisonResult = await new Promise(resolve => resemble(`data:image/png;base64,${staged}`).compareTo(`data:image/png;base64,${current}`).onComplete(data => resolve(data)))
-        if (diff.error) {
-          throw new Error(`[Compodium] Error while comparing screenshots:\n ${diff.error.toString()}`)
-        }
-        if (diff.rawMisMatchPercentage > 0.001) {
-          task.meta.compodium.diff = true
-          expect.fail(`Screenshot comparison failed.
-Difference: ${diff.rawMisMatchPercentage.toFixed(3)}`)
-        }
-      } else {
-        await commands.writeFile(stagedPath, current, { encoding: 'base64' })
+    afterAll(() => {
+      const existing = window.document.getElementById('compodium-disable-animations')
+      if (existing) {
+        existing.remove()
       }
+    })
+
+    test('visual regression', async (task) => {
+      await expect(page.getByTestId('preview')).toMatchScreenshot(`${component.pascalName}.png`, task)
     })
   })
 })
