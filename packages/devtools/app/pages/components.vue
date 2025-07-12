@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Component, ComponentExample, CompodiumMeta, ComponentCollection, PropertyMeta } from '@compodium/core'
 import { StorageSerializers, useColorMode, useDebounceFn, useStorage } from '@vueuse/core'
-import type { ComboItem } from '../components/ComboInput.vue'
+import type { ComboItem } from '../components/ComboInputMenu.vue'
 import { getEnumOptions } from '~/utils/enum'
 
 const { hooks } = useCompodiumClient()
@@ -9,7 +9,7 @@ const rendererMounted = ref(false)
 
 const events = ref<{ name: string, data?: any }[]>([])
 
-const { runTests, watchMode } = useComponentTests()
+const { runTests, watchMode, testResults } = useComponentTests()
 
 hooks.hook('renderer:mounted', () => {
   rendererMounted.value = true
@@ -204,11 +204,17 @@ const isDark = computed({
   }
 })
 
+const componentErrors = computed(() =>
+  component.value
+    ? testResults.value?.[component.value.pascalName]?.filter(t => t.result.state === 'failed')?.length
+    : undefined
+)
+
 const tabs = computed(() => {
   return [
     { label: 'Props', slot: 'props', icon: 'lucide:settings' },
     { label: 'Events', slot: 'events', icon: 'lucide:chart-no-axes-gantt' },
-    { label: 'Tests', slot: 'tests', icon: 'lucide:flask-conical' },
+    { label: 'Tests', slot: 'tests', icon: 'lucide:flask-conical', chip: componentErrors.value ? 'error' : undefined },
     { label: 'Code', slot: 'code', icon: 'lucide:code' }
   ]
 })

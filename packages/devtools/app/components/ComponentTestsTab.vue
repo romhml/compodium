@@ -5,14 +5,24 @@ const props = defineProps<{
   component?: Component
 }>()
 
-const { testResults, runTests } = useComponentTests()
+const { testResults, runTests, testStatus } = useComponentTests()
 const componentTestResults = computed(() => props.component && testResults.value?.[props.component?.pascalName])
 </script>
 
 <template>
   <div class="bg-default border-t border-default sticky top-0 z-1 gap-0.5">
     <div
-      v-if="!componentTestResults?.length"
+      v-if="!componentTestResults?.length && testStatus === 'running'"
+      class="flex flex-col gap-2 justify-center items-center text-md text-muted p-8"
+    >
+      <p> Running... </p>
+      <UIcon
+        name="lucide:loader"
+        class="animate-spin"
+      />
+    </div>
+    <div
+      v-else-if="!componentTestResults?.length"
       class="text-dimmed text-center p-8"
     >
       <UIcon

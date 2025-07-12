@@ -3,9 +3,9 @@ import type { ViteHotContext } from 'vite/types/hot.js'
 
 function _useViteClient() {
   const { hooks } = useCompodiumClient()
-  let hot: ViteHotContext | null = null
+  let hot: ViteHotContext | undefined = undefined
 
-  hooks.hook('renderer:mounted', (_hot: ViteHotContext) => {
+  hooks.hook('renderer:mounted', (_hot?: ViteHotContext) => {
     hot = _hot
 
     for (const [e, fns] of Object.entries(viteHandlers.value)) {

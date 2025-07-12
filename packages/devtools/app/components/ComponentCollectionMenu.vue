@@ -4,9 +4,9 @@ import type { Component, ComponentCollection, ComponentExample } from '@compodiu
 const props = defineProps<{ collections: ComponentCollection[] }>()
 const modelValue = defineModel<Component | ComponentExample>()
 
-const { testStates, testResults, testStatus, partialTestRun } = useComponentTests()
+const { testStates, testStatus, partialTestRun } = useComponentTests()
 
-const timeFormatter = new Intl.DurationFormat('en', { style: 'short' })
+// const timeFormatter = new Intl.DurationFormat('en', { style: 'short' })
 
 const treeItems = computed(() => {
   if (!props.collections) return
@@ -58,7 +58,7 @@ const treeItems = computed(() => {
       <span v-else />
     </template>
     <template #item-trailing="{ item }">
-      <span
+      <!-- span
         v-if="testResults[item.pascalName]?.diagnostic?.duration"
         class="text-xs whitespace-nowrap"
         :class="{
@@ -67,7 +67,7 @@ const treeItems = computed(() => {
         }"
       >
         {{ timeFormatter.format({ milliseconds: Math.round(testResults[item.pascalName]?.diagnostic?.duration) }) }}
-      </span>
+      </span -->
       <TestStatusIcon
         v-if="!item.testState && testStatus === 'running' && !partialTestRun"
         status="pending"

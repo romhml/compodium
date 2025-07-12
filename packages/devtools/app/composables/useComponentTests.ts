@@ -17,6 +17,8 @@ function _useComponentTests() {
 
   const visualChanges = computed(() => Object.values(testResults.value).filter(t => t?.[0]?.meta?.compodium?.diff)?.length)
 
+  const testErrors = computed(() => Object.values(testResults.value).filter(t => !t?.[0]?.meta?.compodium?.diff))
+
   onEvent('compodium:test:log', async (payload) => {
     console.log(...payload)
   })
@@ -54,7 +56,9 @@ function _useComponentTests() {
     testResults,
     testStats,
     testStates,
+
     visualChanges,
+    testErrors,
 
     watchMode,
 

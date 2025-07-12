@@ -44,7 +44,7 @@ export function testPlugin(options: PluginOptions): VitePlugin {
     if (!vitest) {
       vitest = await createVitest('test', {
         root: rootDir,
-        watch: true,
+        watch: false,
         passWithNoTests: true,
         reporters: [new DefaultReporter(), new CompodiumReporter(ws)],
         silent: false,

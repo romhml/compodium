@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { runTests, watchMode, testStatus, stopTests, visualChanges } = useComponentTests()
+const { runTests, watchMode, testStatus, stopTests, visualChanges, testErrors } = useComponentTests()
 import { onKeyStroke } from '@vueuse/core'
 
 onKeyStroke(['Enter'], async (e) => {
@@ -112,15 +112,9 @@ watch(testStatus, () => {
     </div>
 
     <template #content>
-      <div
-        class="p-2 min-h-16 w-full border-t border-muted"
-      >
-        <div
-          v-if="testStatus === 'passed'"
-        >
-          <div
-            class="flex justify-between gap-2 mr-1.5"
-          >
+      <div class="p-2 min-h-16 w-full border-t border-muted">
+        <div v-if="testStatus === 'passed'">
+          <div class="flex justify-between gap-2 mr-1.5">
             <p
               class="text-sm text-success"
             >
@@ -135,53 +129,58 @@ watch(testStatus, () => {
         </div>
 
         <div v-else-if="testStatus === 'failed'">
-          <div>
-            <div class="flex justify-between gap-2 mr-1.5">
-              <p class="text-sm text-error mb-1">
-                Failed
-              </p>
-              <TestStatusIcon status="failed" />
-            </div>
-
-            <div
-              v-if="visualChanges"
-              class="flex justify-between w-full gap-2"
-            >
-              <span
-                class="text-sm"
-              >
-                {{ visualChanges }} visual change{{ visualChanges > 1 ? 's' : null }}
-              </span>
-              <UButton
-                size="xs"
-                trailing
-                icon="lucide:check"
-                color="neutral"
-                variant="subtle"
-                @click="runTests(undefined, true)"
-              >
-                Accept
-              </UButton>
-            </div>
-          </div>
-        </div>
-
-        <div v-else-if="testStatus === 'running'">
-          <div class="flex flex-col gap-2 justify-center items-center text-sm text-muted">
-            <p> Running... </p>
-            <UIcon
-              name="lucide:loader"
-              class="animate-spin"
-            />
-          </div>
-        </div>
-        <div v-else>
-          <div class="flex flex-col gap-2 justify-center items-center text-sm text-muted">
-            <p>
-              Interrupted
+          <div class="flex justify-between gap-2 mr-1.5">
+            <p class="text-sm text-error mb-1">
+              Failed
             </p>
-            <UIcon name="lucide:unplug" />
+            <TestStatusIcon status="failed" />
           </div>
+          <p
+            v-if="testErrors.length"
+            class="flex justify-between w-full gap-2 text-sm"
+          >
+            {{ testErrors.length }} error{{ testErrors.length > 1 ? 's' : null }}
+          </p>
+          <div
+            v-if="visualChanges"
+            class="flex justify-between w-full gap-2 mt-0.5"
+          >
+            <span
+              class="text-sm"
+            >
+              {{ visualChanges }} visual change{{ visualChanges > 1 ? 's' : null }}
+            </span>
+            <UButton
+              size="xs"
+              trailing
+              icon="lucide:check"
+              color="neutral"
+              variant="subtle"
+              @click="runTests(undefined, true)"
+            >
+              Accept
+            </UButton>
+          </div>
+        </div>
+
+        <div
+          v-else-if="testStatus === 'running'"
+          class="flex flex-col gap-2 justify-center items-center text-sm text-muted"
+        >
+          <p> Running... </p>
+          <UIcon
+            name="lucide:loader"
+            class="animate-spin"
+          />
+        </div>
+        <div
+          v-else
+          class="flex flex-col gap-2 justify-center items-center text-sm text-muted"
+        >
+          <p>
+            Interrupted
+          </p>
+          <UIcon name="lucide:unplug" />
         </div>
       </div>
     </template>
