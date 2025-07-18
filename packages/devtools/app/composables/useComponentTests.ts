@@ -15,9 +15,9 @@ function _useComponentTests() {
   const testStates = ref<Record<string, TestState>>({})
   const partialTestRun = ref(false)
 
-  const visualChanges = computed(() => Object.values(testResults.value).filter(t => t?.[0]?.meta?.compodium?.diff)?.length)
-
-  const testErrors = computed(() => Object.values(testResults.value).filter(t => !t?.[0]?.meta?.compodium?.diff))
+  const flatTestResults = computed(() => Object.values(testResults.value).flat())
+  const visualChanges = computed(() => flatTestResults.value.filter(t => t?.meta?.compodium?.diff)?.length)
+  const testErrors = computed(() => flatTestResults.value.filter(t => !t?.meta?.compodium?.diff && !t?.ok))
 
   onEvent('compodium:test:log', async (payload) => {
     console.log(...payload)
