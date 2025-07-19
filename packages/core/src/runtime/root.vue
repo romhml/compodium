@@ -92,7 +92,16 @@ onMounted(() => {
   <Suspense>
     <div
       id="__compodium-root"
-      :style="{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', minWidth: '100vw', minHeight: '100vh', padding: '48px' }"
+      :style="{
+        position: 'relative',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        minWidth: '100vw',
+        width: 'fit-content',
+        minHeight: '100vh',
+        padding: '48px'
+      }"
     >
       <PreviewComponent data-testid="preview">
         <RendererWrapper :wrapper="wrapper">
