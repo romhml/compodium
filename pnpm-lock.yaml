@@ -156,8 +156,8 @@ importers:
         specifier: '>=3'
         version: 3.5.17(typescript@5.6.3)
       zod:
-        specifier: ^3.25.75
-        version: 3.25.75
+        specifier: ^4.0.5
+        version: 4.0.5
 
   packages/devtools:
     dependencies:
@@ -7527,6 +7527,9 @@ packages:
 
   zod@3.25.75:
     resolution: {integrity: sha512-OhpzAmVzabPOL6C3A3gpAifqr9MqihV/Msx3gor2b2kviCgcb+HM9SEOpMWwwNp9MRunWnhtAKUoo0AHhjyPPg==}
+
+  zod@4.0.5:
+    resolution: {integrity: sha512-/5UuuRPStvHXu7RS+gmvRf4NXrNxpSllGwDnCBcJZtQsKrviYXm54yDGV2KYNLT5kq0lHGcl7lqWJLgSaG+tgA==}
 
   zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
@@ -15934,5 +15937,7 @@ snapshots:
   zod@3.22.3: {}
 
   zod@3.25.75: {}
+
+  zod@4.0.5: {}
 
   zwitch@2.0.4: {}
