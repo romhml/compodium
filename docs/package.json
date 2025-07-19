@@ -11,8 +11,8 @@
     "typecheck": "nuxt typecheck"
   },
   "dependencies": {
-    "@iconify-json/lucide": "^1.2.56",
-    "@iconify-json/simple-icons": "^1.2.42",
+    "@iconify-json/lucide": "^1.2.57",
+    "@iconify-json/simple-icons": "^1.2.43",
     "@iconify-json/vscode-icons": "^1.2.23",
     "@nuxt/content": "^3.6.3",
     "@nuxt/image": "^1.10.0",
