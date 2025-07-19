@@ -1,10 +1,10 @@
 import type { PropertyMeta as VuePropertyMeta } from '@compodium/meta'
 import { z } from 'zod'
-import type { ZodSchema } from 'zod'
+import type { ZodType } from 'zod'
 import type { PropSchema, PropInputType, PropertyMeta } from '../../types'
 
 // Define a type for a resolver that includes an ID and a Zod schema.
-export type PropSchemaResolver<T extends ZodSchema> = {
+export type PropSchemaResolver<T extends ZodType> = {
   inputType: PropInputType
   schema: T
 }
@@ -35,7 +35,7 @@ const booleanInputSchema = z.literal('boolean').or(
     schema: z.record(z.any(), z.enum(['boolean', '"indeterminate"', 'false', 'true', 'null', 'undefined'])),
     type: z.string(),
     default: z.any()
-  })).or(z.string().refine(type => type.split('|').every(t => ['boolean', 'true', 'false', 'undefined'].includes(t))).pipe(z.array(z.string()).min(1)))
+  }))
 
 export type BooleanInputSchema = z.infer<typeof booleanInputSchema>
 
@@ -101,7 +101,7 @@ const iconInputSchema = z.object({
 export type IconInputSchema = z.infer<typeof iconInputSchema>
 
 // List of available inputs
-const propResolvers: PropSchemaResolver<ZodSchema>[] = [
+const propResolvers: PropSchemaResolver<ZodType>[] = [
   { inputType: 'icon', schema: iconInputSchema },
   { inputType: 'string', schema: stringInputSchema },
   { inputType: 'number', schema: numberInputSchema },
@@ -134,7 +134,11 @@ export function inferSchemaType(schema: string | VuePropertyMeta['schema'] | Vue
     for (const resolver of propResolvers) {
       const result = resolver.schema.safeParse(schema)
       if (result.success) {
-        const propType = { schema: result.data, inputType: resolver.inputType, type: result.data?.type ?? result.data }
+        const propType = {
+          schema: result.data as any,
+          inputType: resolver.inputType,
+          type: typeof result.data === 'object' ? (result.data as any)?.type : result.data
+        }
 
         if (propType.inputType === 'object') {
           const nestedSchema: Record<string, VuePropertyMeta> = propType.schema.schema
