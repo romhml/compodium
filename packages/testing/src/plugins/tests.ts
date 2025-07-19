@@ -47,7 +47,7 @@ export function testPlugin(options: PluginOptions): VitePlugin {
         watch: false,
         passWithNoTests: true,
         reporters: [new DefaultReporter(), new CompodiumReporter(ws)],
-        silent: false,
+        silent: true,
         env: {
           VITEST: 'true'
         }

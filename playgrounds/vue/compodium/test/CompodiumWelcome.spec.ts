@@ -1,4 +1,4 @@
-import { test, expect } from 'vitest'
+import { test, expect, describe } from 'vitest'
 import { describeComponent, page } from '@compodium/testing/e2e'
 
 describeComponent('CompodiumWelcome', () => {
@@ -6,8 +6,6 @@ describeComponent('CompodiumWelcome', () => {
     const button = page.getByTestId('go-to-compodium')
     expect(button).toBeVisible()
   })
-
-  // TODO: Handle nested suites?
 
   test('it works again', () => {
     const button = page.getByTestId('open-devtools')
@@ -29,5 +27,12 @@ describeComponent('CompodiumWelcome', () => {
 
   test('this one has a very very very long name very very very very', async () => {
     expect(1).toBe(2)
+  })
+
+  // TODO: Handle nested suites?
+  describe('nested describe', () => {
+    test('this nested one also doesn\'t', () => {
+      expect(1).toBe(2)
+    })
   })
 })

@@ -4,6 +4,10 @@ import type { Reporter } from 'vitest/reporters'
 import type { CompodiumTestResult } from '../types'
 import type { SerializedError } from 'vitest'
 
+function resolveTestIds(testSuite: TestSuite): Array<string> {
+  return [...testSuite.children.allTests().map(t => t.id), ...testSuite.children.allSuites().flatMap(resolveTestIds)]
+}
+
 export class CompodiumReporter implements Reporter {
   ws: WebSocketServer
 
@@ -17,7 +21,8 @@ export class CompodiumReporter implements Reporter {
   onTestModuleCollected(testModule: TestModule) {
     testModule.children.allSuites().forEach((s) => {
       this.pendingTestsByComponent[s.name] ??= new Set<string>()
-      const tests = [...s.children.allTests()].map(t => t.id)
+      const tests = resolveTestIds(s)
+
       tests.forEach(id => this.pendingTestsByComponent[s.name]!.add(id))
       this.ws.send('compodium:test:suite', {
         name: s.name,

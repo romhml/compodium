@@ -6,18 +6,29 @@ import type { TestState } from 'vitest/node'
 function _useComponentTests() {
   const { onEvent } = useViteClient()
 
-  const componentTestMap = ref<Record<number, string>>({})
+  const componentTestMap = ref<Record<number, Set<string>>>({})
 
   const testStatus: Ref<undefined | 'running' | 'passed' | 'failed' | 'interrupted'> = ref()
-  const testResults = useState<Record<string, CompodiumTestResult[] | null>>('compodium-tests', () => ({}))
+  const testResults = ref<Record<string, CompodiumTestResult[] | null>>({})
 
   const testStats = ref<{ took?: number } | undefined>()
   const testStates = ref<Record<string, TestState>>({})
   const partialTestRun = ref(false)
 
-  const flatTestResults = computed(() => Object.values(testResults.value).flat())
+  const flatTestResults = computed(() => {
+    const allResults = Object.values(testResults.value).flat()
+    const seenIds = new Set()
+    return allResults.filter((test) => {
+      if (!test || seenIds.has(test.id)) return false
+      seenIds.add(test.id)
+      return true
+    })
+  })
+
   const visualChanges = computed(() => flatTestResults.value.filter(t => t?.meta?.compodium?.diff)?.length)
-  const testErrors = computed(() => flatTestResults.value.filter(t => !t?.meta?.compodium?.diff && !t?.ok))
+  const testErrors = computed(
+    () => flatTestResults.value.filter(t => !t?.meta?.compodium?.diff && !t?.ok)
+  )
 
   onEvent('compodium:test:log', async (payload) => {
     console.log(...payload)
@@ -28,11 +39,13 @@ function _useComponentTests() {
   })
 
   onEvent('compodium:test:result', async (payload) => {
-    const component = componentTestMap.value[payload.id]
-    if (!component) return
+    const components = componentTestMap.value[payload.id]
+    if (!components?.size) return
 
-    testResults.value[component] ??= []
-    testResults.value[component].push(payload)
+    components.forEach((component) => {
+      testResults.value[component] ??= []
+      testResults.value[component].push(payload)
+    })
   })
 
   onEvent('compodium:test:finished', async (payload) => {
@@ -41,7 +54,10 @@ function _useComponentTests() {
   })
 
   onEvent('compodium:test:suite', async (payload) => {
-    payload.tests.forEach((id: number) => componentTestMap.value[id] = payload.name)
+    payload.tests.forEach((id: number) => {
+      componentTestMap.value[id] ??= new Set()
+      componentTestMap.value[id].add(payload.name)
+    })
   })
 
   onEvent('compodium:test:suite:result', async (payload) => {
