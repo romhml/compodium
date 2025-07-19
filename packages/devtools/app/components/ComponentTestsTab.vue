@@ -6,7 +6,9 @@ const props = defineProps<{
 }>()
 
 const { testResults, runTests, testStatus } = useComponentTests()
-const componentTestResults = computed(() => props.component && testResults.value?.[props.component?.pascalName])
+const componentTestResults = computed(() =>
+  props.component && testResults.value?.[props.component?.pascalName]?.toSorted((a, _) => !a.ok ? 0 : 1)
+)
 </script>
 
 <template>

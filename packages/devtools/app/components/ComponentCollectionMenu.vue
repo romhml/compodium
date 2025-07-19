@@ -6,8 +6,6 @@ const modelValue = defineModel<Component | ComponentExample>()
 
 const { testStates, testStatus, partialTestRun } = useComponentTests()
 
-// const timeFormatter = new Intl.DurationFormat('en', { style: 'short' })
-
 const treeItems = computed(() => {
   if (!props.collections) return
 
@@ -41,7 +39,7 @@ const treeItems = computed(() => {
 <template>
   <UTree
     :items="treeItems"
-    class="px-1"
+    class="px-1 py-2"
   >
     <template
       #item-leading="{ item }"
@@ -58,16 +56,6 @@ const treeItems = computed(() => {
       <span v-else />
     </template>
     <template #item-trailing="{ item }">
-      <!-- span
-        v-if="testResults[item.pascalName]?.diagnostic?.duration"
-        class="text-xs whitespace-nowrap"
-        :class="{
-          'text-warning': testResults[item.pascalName]?.diagnostic?.slow,
-          'text-muted': !testResults[item.pascalName]?.diagnostic?.slow
-        }"
-      >
-        {{ timeFormatter.format({ milliseconds: Math.round(testResults[item.pascalName]?.diagnostic?.duration) }) }}
-      </span -->
       <TestStatusIcon
         v-if="!item.testState && testStatus === 'running' && !partialTestRun"
         status="pending"

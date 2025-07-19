@@ -1,17 +1,19 @@
 <script setup lang="ts">
 import type { CompodiumTestResult } from '@compodium/testing'
 
-defineProps<CompodiumTestResult>()
+const props = defineProps<CompodiumTestResult>()
+const hasResults = computed(() => props.result?.errors?.length || props.meta?.compodium?.screenshotPath)
 </script>
 
 <template>
   <UCollapsible
     class="border-b border-default"
+    :disabled="!hasResults"
     :default-open="!ok"
   >
     <template #default="{ open }">
       <div class="flex justify-between gap-2 p-2">
-        <div class="flex gap-2 items-center font-mono text-sm cursor-pointer">
+        <div class="flex gap-2 items-center font-mono text-sm">
           <TestStatusIcon
             :status="result.state"
             class="flex-none"
@@ -20,7 +22,7 @@ defineProps<CompodiumTestResult>()
             {{ name }}
           </p>
         </div>
-        <div class="flex items-center">
+        <div class="flex items-center gap-1">
           <p
             v-if="diagnostic?.duration"
             class="text-xs"
@@ -33,6 +35,7 @@ defineProps<CompodiumTestResult>()
           </p>
 
           <UButton
+            v-if="hasResults"
             variant="ghost"
             icon="lucide:chevron-down"
             size="sm"
@@ -44,6 +47,10 @@ defineProps<CompodiumTestResult>()
             :ui="{
               trailingIcon: 'group-data-[open=true]:rotate-180 transition-transform duration-200'
             }"
+          />
+          <span
+            v-else
+            class="size-7"
           />
         </div>
       </div>
