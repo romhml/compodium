@@ -29,7 +29,7 @@
     "@compodium/core": "workspace:^",
     "@compodium/meta": "workspace:^",
     "@iconify-json/lineicons": "^1.2.4",
-    "@iconify-json/lucide": "^1.2.57",
+    "@iconify-json/lucide": "^1.2.58",
     "@iconify/types": "^2.0.0",
     "@types/deep-eql": "^4.0.2"
   }
