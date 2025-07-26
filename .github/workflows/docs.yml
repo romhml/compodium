@@ -1,13 +1,13 @@
-name: Deploy to NuxtHub
+name: Deploy Docs
 
 on:
   push:
-    branches:
-      - main
+    tags:
+      - v*
 
 jobs:
   deploy:
-    name: "Deploy to NuxtHub"
+    name: "Deploy Docs"
     runs-on: ubuntu-latest
     environment:
       name: ${{ github.ref == 'refs/heads/main' && 'production' || 'preview' }}
