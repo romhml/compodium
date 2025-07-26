@@ -41,7 +41,7 @@
     "ufo": "^1.6.1"
   },
   "devDependencies": {
-    "@nuxt/module-builder": "^1.0.1",
+    "@nuxt/module-builder": "^1.0.2",
     "@nuxt/schema": "catalog:",
     "nuxt": "catalog: ",
     "pathe": "^2.0.3"
