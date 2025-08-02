@@ -25,12 +25,12 @@
     "prepack": "unbuild"
   },
   "dependencies": {
-    "@volar/typescript": "^2.4.20",
-    "@vue/language-core": "3.0.4",
+    "@volar/typescript": "^2.4.22",
+    "@vue/language-core": "3.0.5",
     "path-browserify": "^1.0.1",
     "pathe": "^2.0.3",
-    "vue-component-meta": "^3.0.4",
-    "vue-component-type-helpers": "^3.0.4"
+    "vue-component-meta": "^3.0.5",
+    "vue-component-type-helpers": "^3.0.5"
   },
   "devDependencies": {
     "@types/path-browserify": "^1.0.3"
