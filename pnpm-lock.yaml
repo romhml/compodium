@@ -313,8 +313,8 @@ importers:
         specifier: workspace:^
         version: link:../examples
       '@vue/devtools-kit':
-        specifier: ^7.7.7
-        version: 7.7.7
+        specifier: ^8.0.0
+        version: 8.0.0
       consola:
         specifier: ^3.4.2
         version: 3.4.2
@@ -3004,8 +3004,14 @@ packages:
   '@vue/devtools-kit@7.7.7':
     resolution: {integrity: sha512-wgoZtxcTta65cnZ1Q6MbAfePVFxfM+gq0saaeytoph7nEa7yMXoi6sCPy4ufO111B9msnw0VOWjPEFCXuAKRHA==}
 
+  '@vue/devtools-kit@8.0.0':
+    resolution: {integrity: sha512-b11OeQODkE0bctdT0RhL684pEV2DPXJ80bjpywVCbFn1PxuL3bmMPDoJKjbMnnoWbrnUYXYzFfmMWBZAMhORkQ==}
+
   '@vue/devtools-shared@7.7.7':
     resolution: {integrity: sha512-+udSj47aRl5aKb0memBvcUG9koarqnxNM5yjuREvqwK6T3ap4mn3Zqqc17QrBFTqSMjr3HK1cvStEZpMDpfdyw==}
+
+  '@vue/devtools-shared@8.0.0':
+    resolution: {integrity: sha512-jrKnbjshQCiOAJanoeJjTU7WaCg0Dz2BUal6SaR6VM/P3hiFdX5Q6Pxl73ZMnrhCxNK9nAg5hvvRGqs+6dtU1g==}
 
   '@vue/language-core@2.2.0':
     resolution: {integrity: sha512-O1ZZFaaBGkKbsRfnVH1ifOK1/1BUkyK+3SQsfnh6PmMmD4qJcTU8godCeA96jjDRTL6zgnK7YzCHfaUlH2r0Mw==}
@@ -10506,7 +10512,21 @@ snapshots:
       speakingurl: 14.0.1
       superjson: 2.2.2
 
+  '@vue/devtools-kit@8.0.0':
+    dependencies:
+      '@vue/devtools-shared': 8.0.0
+      birpc: 2.5.0
+      hookable: 5.5.3
+      mitt: 3.0.1
+      perfect-debounce: 1.0.0
+      speakingurl: 14.0.1
+      superjson: 2.2.2
+
   '@vue/devtools-shared@7.7.7':
+    dependencies:
+      rfdc: 1.4.1
+
+  '@vue/devtools-shared@8.0.0':
     dependencies:
       rfdc: 1.4.1
 
