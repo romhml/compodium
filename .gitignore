@@ -1,8 +1,9 @@
-# Dependencies
+**/.vitest-attachments
 **/__screenshots__/
-node_modules
-
 TODO.md
+
+# Dependencies
+node_modules
 
 # Logs
 *.log*

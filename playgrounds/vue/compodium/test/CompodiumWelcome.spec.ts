@@ -21,8 +21,8 @@ describeComponent('CompodiumWelcome', () => {
     expect(1).toBe(2)
   })
 
-  test('custom screenshot', async (context) => {
-    await expect(page.getByTestId('preview')).toMatchScreenshot('Welcome.png', context)
+  test('custom screenshot', async () => {
+    await expect(page.getByTestId('preview')).toMatchScreenshot('Welcome.png')
   })
 
   test('this one has a very very very long name very very very very', async () => {

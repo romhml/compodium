@@ -1,37 +1,16 @@
 /// <reference types="vitest" />
 /// <reference types="@vitest/browser/providers/playwright" />
 
-import type { VitePlugin } from 'unplugin'
 import { joinURL } from 'ufo'
 import { resolvePathSync } from 'mlly'
 import { createVitest } from 'vitest/node'
-import type { BrowserCommand, Vitest } from 'vitest/node'
+import type { Vitest } from 'vitest/node'
 import type { PluginOptions } from '@compodium/core'
 import { CompodiumReporter } from './reporter'
-import type { WebSocketServer } from 'vite'
+import type { WebSocketServer, Plugin as VitePlugin } from 'vite'
 import fs from 'node:fs/promises'
 import { DefaultReporter } from 'vitest/reporters'
 import { resolve } from 'pathe'
-
-declare module '@vitest/browser/context' {
-  interface BrowserCommands {
-    waitForNetworkIdle: () => Promise<void>
-  }
-}
-
-// TODO: This is not stable
-const waitForNetworkIdle: BrowserCommand<[]> = async ({
-  frame,
-  provider
-}) => {
-  if (provider.name === 'playwright') {
-    const f = await frame()
-    await f.waitForLoadState('domcontentloaded', { timeout: 2000 })
-    await f.waitForLoadState('networkidle', { timeout: 2000 })
-  } else {
-    throw new Error(`provider ${provider.name} is not supported`)
-  }
-}
 
 export function testPlugin(options: PluginOptions): VitePlugin {
   let rootDir: string
@@ -78,17 +57,6 @@ export function testPlugin(options: PluginOptions): VitePlugin {
   return {
     name: 'compodium:tests',
     enforce: 'post',
-    config() {
-      return {
-        test: {
-          browser: {
-            commands: {
-              waitForNetworkIdle
-            }
-          }
-        }
-      }
-    },
 
     configResolved(viteConfig) {
       rootDir = options.rootDir ?? viteConfig.root
@@ -186,7 +154,6 @@ export function testPlugin(options: PluginOptions): VitePlugin {
             'compodium.options': JSON.parse(JSON.stringify(options)),
             'compodium.dir': joinURL(rootDir, options.dir)
           },
-
           environment: options._nuxt ? 'nuxt' : 'happy-dom',
 
           browser: {
@@ -196,6 +163,7 @@ export function testPlugin(options: PluginOptions): VitePlugin {
             headless: true,
             screenshotFailures: false,
             provider: 'playwright',
+            screenshotDirectory: joinURL(testDir, '/__screenshots__'),
             viewport: {
               width: 1024,
               height: 1024
@@ -204,7 +172,20 @@ export function testPlugin(options: PluginOptions): VitePlugin {
               // TODO: Add option to pass browser instances
               { browser: 'chromium' }
               // { browser: 'firefox' }
-            ]
+            ],
+
+            expect: {
+
+              toMatchScreenshot: {
+                comparatorName: 'pixelmatch',
+                comparatorOptions: {
+                  threshold: 0.2,
+                  allowedMismatchedPixels: 100
+                },
+                resolveScreenshotPath: ({ arg, browserName, ext }) =>
+                  joinURL(testDir, `/__screenshots__/${arg}-${browserName}${ext}`)
+              }
+            }
           }
         }
       })

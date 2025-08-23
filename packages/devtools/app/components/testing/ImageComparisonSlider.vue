@@ -67,7 +67,7 @@ onMounted(() => {
       :style="{ x }"
       tabindex="0"
     >
-      <div class="absolute top-5 left-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-6 bg-primary text-inverted rounded-full flex items-center justify-center text-default cursor-grab touch-none focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2 active:cursor-grabbing">
+      <div class="absolute top-5 left-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-6 bg-primary text-inverted rounded-full flex items-center justify-center cursor-grab touch-none focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2 active:cursor-grabbing">
         <UIcon name="lucide:unfold-horizontal" />
       </div>
     </motion.div>

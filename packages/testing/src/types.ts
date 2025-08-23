@@ -6,6 +6,7 @@ declare module 'vitest' {
     compodium?: {
       diff?: boolean
       screenshotPath?: string
+      diffPath?: string
       stagedScreenshotPath?: string
     }
   }

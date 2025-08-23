@@ -34,11 +34,6 @@
     "vite": ">=6",
     "vue": ">=3"
   },
-  "peerDependenciesMeta": {
-    "vitest": {
-      "optional": true
-    }
-  },
   "dependencies": {
     "@compodium/core": "workspace:^",
     "@compodium/examples": "workspace:^",

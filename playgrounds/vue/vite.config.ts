@@ -33,6 +33,7 @@ export default defineConfig({
       }
     }
   ],
+
   test: {
     // TODO: Ignore compodium tests in default project
     include: []
