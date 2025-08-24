@@ -26,8 +26,7 @@ export const compodium = /* #__PURE__ */ async (options: PluginOptions) => {
       compodiumTesting(options).forEach(p => plugins.push(p))
     } catch {
       throw new Error(
-        'The `@compodium/testing` package is required when tests are enabled. '
-        + 'Install it with: pnpm add -D @compodium/testing'
+        'The `@compodium/testing` package is required when tests are enabled.'
       )
     }
   }

@@ -12,20 +12,20 @@
   },
   "dependencies": {
     "@compodium/vue": "workspace:^",
-    "@nuxt/ui": "3.3.0",
+    "@nuxt/ui": "3.3.2",
     "vue": "catalog:"
   },
   "devDependencies": {
     "@compodium/testing": "workspace:^",
     "@compodium/vue": "workspace:^",
     "@tsconfig/node22": "^22.0.2",
-    "@types/node": "^22.16.5",
-    "@vitejs/plugin-vue": "^6.0.0",
+    "@types/node": "^22.17.2",
+    "@vitejs/plugin-vue": "^6.0.1",
     "@vitest/browser": "^4.0.0-beta.5",
     "@vitest/ui": "^4.0.0-beta.5",
-    "@vue/tsconfig": "^0.7.0",
-    "vite": "^7.0.6",
-    "vite-plugin-vue-devtools": "^7.7.7",
+    "@vue/tsconfig": "^0.8.1",
+    "vite": "^7.1.3",
+    "vite-plugin-vue-devtools": "^8.0.0",
     "vue-tsc": "^2.2.2"
   }
 }

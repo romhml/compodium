@@ -18,7 +18,7 @@ export default defineConfig({
     vueDevTools(),
     ui({ ui: { colors: { neutral: 'zinc' } } }),
     compodium({
-      includeLibraryCollections: true,
+      includeLibraryCollections: false,
       testing: {
         enabled: true
       }
