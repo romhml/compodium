@@ -3,6 +3,10 @@ import type { CompodiumTestResult } from '@compodium/testing'
 
 const props = defineProps<CompodiumTestResult>()
 const hasResults = computed(() => props.result?.errors?.length || props.meta?.compodium?.screenshotPath)
+
+function formatErrorMessage(message: string) {
+  return message.replace(/Reference screenshot:[\s\S]*/, '').replace(/<body>[\s\S]*/, '')
+}
 </script>
 
 <template>
@@ -65,19 +69,18 @@ const hasResults = computed(() => props.result?.errors?.length || props.meta?.co
           :key="error.message"
           color="error"
           variant="subtle"
-          :description="error.message"
-        >
-          {{ error.message }}
-        </UAlert>
+          :description="formatErrorMessage(error.message)"
+        />
 
         <ImageComparisonSlider
-          v-if="meta?.compodium?.diff"
-          :src="'/@fs' + meta.compodium.screenshotPath!"
-          :expected="'/@fs' + meta.compodium.stagedScreenshotPath!"
+          v-if="meta?.compodium?.diff && meta?.compodium?.screenshotPath"
+          :src="'/@fs' + meta.compodium.stagedScreenshotPath!"
+          :expected="'/@fs' + meta.compodium.screenshotPath!"
         />
+
         <img
-          v-else-if="meta?.compodium?.screenshotPath"
-          :src="'/@fs' + meta?.compodium?.screenshotPath"
+          v-else-if="meta?.compodium?.screenshotPath || meta?.compodium?.stagedScreenshotPath!"
+          :src="'/@fs' + (meta?.compodium?.screenshotPath ?? meta?.compodium?.stagedScreenshotPath)"
           class="object-scale-down select-none w-full rounded bg-elevated border border-default px-8 py-10"
         >
       </div>

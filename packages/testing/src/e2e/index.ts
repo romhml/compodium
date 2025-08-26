@@ -5,10 +5,12 @@ import { page } from '@vitest/browser/context'
 
 export { page }
 
-const collections = await fetch('/__compodium__/api/collections').then(async r => (await r.json()) as ComponentCollection[])
+const collections = await import('virtual:compodium/collections').then(c => c.default) as ComponentCollection[]
 
 const componentMap = collections.flatMap(col => col.components?.flatMap(comp => [comp, ...(comp.examples ?? [])])).reduce((acc, c) => {
+  if (c.componentName) acc[c.componentName] = c
   acc[c.pascalName] = c
+
   return acc
 }, {} as Record<string, Component>)
 
@@ -22,9 +24,9 @@ export type CompodiumTestFunction = (ctx: {
 
 export function describeComponent(componentName: string, fn: CompodiumTestFunction) {
   const component = componentMap[componentName]
-  const collection = collections.find(c => c.name === component.collectionName) as ComponentCollection
-
   if (!component) throw new Error(`[Compodium] Component not found ${componentName}`)
+
+  const collection = collections.find(c => c.name === component?.collectionName) as ComponentCollection
 
   return describe(collection.name, async () => {
     describe(componentName, async () => {

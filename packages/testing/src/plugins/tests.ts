@@ -175,7 +175,6 @@ export function testPlugin(options: PluginOptions): VitePlugin {
             ],
 
             expect: {
-
               toMatchScreenshot: {
                 comparatorName: 'pixelmatch',
                 comparatorOptions: {
@@ -183,7 +182,9 @@ export function testPlugin(options: PluginOptions): VitePlugin {
                   allowedMismatchedPixels: 100
                 },
                 resolveScreenshotPath: ({ arg, browserName, ext }) =>
-                  joinURL(testDir, `/__screenshots__/${arg}-${browserName}${ext}`)
+                  joinURL(testDir, `/__screenshots__/${arg}-${browserName}${ext}`),
+                resolveDiffPath: ({ arg, browserName, ext }) =>
+                  joinURL(testDir, `/__screenshots__/${arg}-${browserName}.diff${ext}`)
               }
             }
           }

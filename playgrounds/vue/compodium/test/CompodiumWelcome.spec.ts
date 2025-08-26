@@ -12,13 +12,8 @@ describeComponent('CompodiumWelcome', () => {
     expect(button).toBeVisible()
   })
 
-  test('this one doesn\'t', () => {
-    const button = page.getByTestId('unknown')
-    expect(button).toBeVisible()
-  })
-
   test('this one also doesn\'t', () => {
-    expect(1).toBe(2)
+    expect(1).toBe(1)
   })
 
   test('custom screenshot', async () => {
@@ -26,13 +21,12 @@ describeComponent('CompodiumWelcome', () => {
   })
 
   test('this one has a very very very long name very very very very', async () => {
-    expect(1).toBe(2)
+    expect(1).toBe(1)
   })
 
-  // TODO: Handle nested suites?
   describe('nested describe', () => {
-    test('this nested one also doesn\'t', () => {
-      expect(1).toBe(2)
+    test('this nested one also does', () => {
+      expect(1).toBe(1)
     })
   })
 })

@@ -13,13 +13,13 @@ declare module 'vitest' {
   }
 }
 
-const collections = await fetch('/__compodium__/api/collections').then(async r => (await r.json()) as ComponentCollection[])
+const collections = await import('virtual:compodium/collections').then(c => c.default) as ComponentCollection[]
 const components = collections.flatMap(col => col.components?.flatMap(comp => [comp, ...(comp.examples ?? [])]))
 
 components.forEach((component) => {
   describeComponent(component.pascalName, () => {
     test('visual regression', async () => {
-      await expect(page.getByTestId('preview')).toMatchScreenshot(`${component.pascalName}`, {
+      await expect(page.getByTestId('__compodium-preview')).toMatchScreenshot(`${component.pascalName}`, {
         screenshotOptions: {
           animations: 'disabled'
         }

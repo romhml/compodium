@@ -34,10 +34,6 @@ export default defineConfig({
     }
   ],
 
-  test: {
-    // TODO: Ignore compodium tests in default project
-    include: []
-  },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))

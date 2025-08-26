@@ -103,7 +103,7 @@ onMounted(() => {
         padding: '48px'
       }"
     >
-      <PreviewComponent data-testid="preview">
+      <PreviewComponent data-testid="__compodium-preview">
         <RendererWrapper :wrapper="wrapper">
           <RendererCombo
             :combo="combo"
