@@ -11,6 +11,10 @@ extendCompodiumMeta<typeof _props>({
     bounceIt: true
   }
 })
+
+function goToCompodium() {
+  window.location.href = '/__compodium__/devtools'
+}
 </script>
 
 <template>
@@ -32,7 +36,8 @@ extendCompodiumMeta<typeof _props>({
         color="neutral"
         icon="lucide:rocket"
         block
-        to="/__compodium__/devtools"
+        data-testid="go-to-compodium"
+        @click="goToCompodium()"
       >
         Go to Compodium
       </UButton>
@@ -43,6 +48,7 @@ extendCompodiumMeta<typeof _props>({
         icon="devicon-plain:vuejs"
         block
         :disabled="true"
+        data-testid="open-devtools"
       >
         Open in Vue Devtools
       </UButton>

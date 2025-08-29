@@ -1,6 +1,7 @@
 import type { PropertyMeta as VuePropertyMeta } from '@compodium/meta'
 import type { Hookable } from 'hookable'
 import type { InputSchema } from './plugins/meta/infer'
+import type { ViteHotContext } from 'vite/types/hot.js'
 
 export type PluginOptions = {
   /**
@@ -53,6 +54,16 @@ export type PluginOptions = {
    */
   mainPath?: string
 
+  /**
+   * Testing configuration.
+   */
+  testing?: {
+    /**
+     * Enables testing integrations.
+     * Note that it requires installing `@compodium/testing`.
+     */
+    enabled?: boolean
+  }
   /* Internal */
   _nuxt?: boolean
 }
@@ -128,11 +139,13 @@ export type Component = {
   wrapperComponent?: string
   docUrl?: string
   examples?: ComponentExample[]
+  collectionName: string
 }
 
 export type ComponentExample = Component & {
   isExample: true
   componentPath?: string
+  componentName?: string
 }
 
 export type Collection = {
@@ -166,13 +179,13 @@ export interface CompodiumHooks {
   'component:event': (payload: { name: string, data: any }) => void
 
   // Called after the renderer has mounted
-  'renderer:mounted': () => void
+  'renderer:mounted': (hot?: ViteHotContext) => void
 
   // Update the renderer component
-  'renderer:update-component': (payload: { path: string, props: Record<string, any>, events?: string[], wrapper?: string }) => void
+  'renderer:update-component': (payload: { path: string, props?: Record<string, any>, events?: string[], wrapper?: string }) => void
 
   // Update the renderer props
-  'renderer:update-props': (payload: { props: Record<string, any> }) => void
+  'renderer:update-props': (payload: { props?: Record<string, any> }) => void
 
   // Update the renderer combo (displaying multiple variants)
   'renderer:update-combo': (payload: { props: { value: string, options: string[] }[] }) => void

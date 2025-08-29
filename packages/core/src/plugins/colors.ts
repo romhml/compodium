@@ -9,6 +9,7 @@ export function colorsPlugin(options: PluginOptions): VitePlugin {
   return {
     name: 'compodium:colors',
     apply: 'serve',
+    enforce: 'pre',
     configureServer(server) {
       server.middlewares.use('/__compodium__/api/colors', async (req, res) => {
         try {

@@ -1,3 +1,4 @@
+import type { Plugin } from 'vite'
 import { collectionsPlugin } from './plugins/collections'
 import { extendMetaPlugin, metaPlugin } from './plugins/meta'
 import { examplePlugin } from './plugins/examples'
@@ -8,8 +9,8 @@ import type { PluginOptions } from './types'
 
 export * from './types'
 
-export const compodium = /* #__PURE__ */ (options: PluginOptions) => {
-  return [
+export const compodium = /* #__PURE__ */ async (options: PluginOptions) => {
+  const plugins: Plugin[] = [
     collectionsPlugin(options),
     metaPlugin(options),
     extendMetaPlugin(options),
@@ -18,4 +19,17 @@ export const compodium = /* #__PURE__ */ (options: PluginOptions) => {
     iconifyPlugin(options),
     colorsPlugin(options)
   ]
+
+  if (options.testing?.enabled) {
+    try {
+      const { compodiumTesting } = await import('@compodium/testing')
+      compodiumTesting(options).forEach(p => plugins.push(p))
+    } catch {
+      throw new Error(
+        'The `@compodium/testing` package is required when tests are enabled.'
+      )
+    }
+  }
+
+  return plugins
 }
