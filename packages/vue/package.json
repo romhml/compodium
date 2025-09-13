@@ -36,12 +36,12 @@
   "dependencies": {
     "@compodium/core": "workspace:^",
     "@compodium/examples": "workspace:^",
-    "@vue/devtools-kit": "^8.0.0",
+    "@vue/devtools-kit": "^8.0.2",
     "consola": "^3.4.2",
     "defu": "^6.1.4",
-    "mlly": "^1.7.4",
+    "mlly": "^1.8.0",
     "pathe": "^2.0.3",
     "ufo": "^1.6.1",
-    "unplugin": "^2.3.8"
+    "unplugin": "^2.3.10"
   }
 }
