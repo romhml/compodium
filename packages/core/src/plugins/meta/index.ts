@@ -75,7 +75,7 @@ export function metaPlugin(options: PluginOptions): Plugin {
       checker = createChecker(checkerDirs)
 
       // Existing middleware endpoint
-      server.middlewares.use('/__compodium__/api/meta', async (req, res) => {
+      server.middlewares.use('/__compodium__/api/meta', async (req: any, res: any) => {
         try {
           const url = new URL(req.url!, `http://${req.headers.host}`)
           const componentPath = url.searchParams.get('component')

@@ -124,7 +124,7 @@ export function collectionsPlugin(options: PluginOptions): VitePlugin {
       server = _server
 
       // Existing middleware endpoint
-      server.middlewares.use('/__compodium__/api/collections', async (_, res) => {
+      server.middlewares.use('/__compodium__/api/collections', async (_: any, res: any) => {
         try {
           const result = await generateCollectionsData(collections)
           res.setHeader('Content-Type', 'application/json')

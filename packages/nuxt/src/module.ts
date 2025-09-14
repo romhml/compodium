@@ -20,7 +20,7 @@ export default defineNuxtModule<ModuleOptions>({
   },
 
   async setup(options, nuxt) {
-    if (!nuxt.options.dev) return
+    if (!nuxt.options.dev && !nuxt.options.test) return
 
     const { resolve } = createResolver(import.meta.url)
 
@@ -44,7 +44,7 @@ export default defineNuxtModule<ModuleOptions>({
     }
 
     nuxt.hooks.hookOnce('components:dirs', async (dirs) => {
-      addVitePlugin(compodium({
+      addVitePlugin(await compodium({
         componentDirs: dirs,
         rootDir: nuxt.options.rootDir,
         baseUrl: nuxt.options.app.baseURL,

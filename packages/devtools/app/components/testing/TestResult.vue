@@ -2,7 +2,7 @@
 import type { CompodiumTestResult } from '@compodium/testing'
 
 const props = defineProps<CompodiumTestResult>()
-const hasResults = computed(() => props.result?.errors?.length || props.meta?.compodium?.screenshotPath)
+const hasResults = computed(() => props.result?.errors?.length)
 
 function formatErrorMessage(message: string) {
   return message.replace(/Reference screenshot:[\s\S]*/, '').replace(/<body>[\s\S]*/, '')
@@ -72,7 +72,7 @@ function formatErrorMessage(message: string) {
           :description="formatErrorMessage(error.message)"
         />
 
-        <ImageComparisonSlider
+        <!-- ImageComparisonSlider
           v-if="meta?.compodium?.diff && meta?.compodium?.screenshotPath"
           :src="'/@fs' + meta.compodium.stagedScreenshotPath!"
           :expected="'/@fs' + meta.compodium.screenshotPath!"
@@ -82,7 +82,7 @@ function formatErrorMessage(message: string) {
           v-else-if="meta?.compodium?.screenshotPath || meta?.compodium?.stagedScreenshotPath!"
           :src="'/@fs' + (meta?.compodium?.screenshotPath ?? meta?.compodium?.stagedScreenshotPath)"
           class="object-scale-down select-none w-full rounded bg-elevated border border-default px-8 py-10"
-        >
+        -->
       </div>
     </template>
   </UCollapsible>

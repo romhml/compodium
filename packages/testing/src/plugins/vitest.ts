@@ -1,5 +1,4 @@
 /// <reference types="vitest" />
-/// <reference types="@vitest/browser/providers/playwright" />
 
 import { createVitest } from 'vitest/node'
 import type { Vitest } from 'vitest/node'
@@ -58,7 +57,7 @@ export function testPlugin(options: PluginOptions): VitePlugin {
     configureServer(server) {
       ws = server.ws
 
-      server.middlewares.use('/__compodium__/devtools/api/stop-tests', async (req, res) => {
+      server.middlewares.use('/__compodium__/api/stop-tests', async (req, res) => {
         if (!vitestRunning) {
           res.statusCode = 200
           res.end()
@@ -78,7 +77,7 @@ export function testPlugin(options: PluginOptions): VitePlugin {
         }
       })
 
-      server.middlewares.use('/__compodium__/devtools/api/test', async (req, res) => {
+      server.middlewares.use('/__compodium__/api/test', async (req, res) => {
         if (vitestRunning) {
           res.statusCode = 423
           res.end()

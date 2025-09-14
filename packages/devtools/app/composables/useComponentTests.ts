@@ -79,7 +79,7 @@ function _useComponentTests() {
     partialTestRun,
 
     async stopTests() {
-      await $fetch('/api/stop-tests')
+      await $fetch('/api/stop-tests', { baseURL: '/__compodium__' })
     },
 
     async runTests(components?: (Component & Partial<ComponentExample>) | (Component & Partial<ComponentExample>)[], updateSnapshots?: boolean) {
@@ -100,7 +100,7 @@ function _useComponentTests() {
         })
       }
 
-      await $fetch('/api/test', { query: { component: components?.map(c => c.pascalName), update: updateSnapshots } })
+      await $fetch('/api/test', { baseURL: '/__compodium__', query: { component: components?.map(c => c.pascalName), update: updateSnapshots } })
     }
   }
 }

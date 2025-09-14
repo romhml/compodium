@@ -124,7 +124,7 @@ watch(testStatus, () => {
           </div>
 
           <span class="text-sm">
-            No visual changes
+            No errors
           </span>
         </div>
 

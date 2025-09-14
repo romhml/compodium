@@ -1,5 +1,9 @@
 export default defineNuxtConfig({
-  modules: ['@nuxt/ui', '@compodium/nuxt'],
+  modules: [
+    '@nuxt/ui',
+    '@compodium/nuxt',
+    '@nuxt/test-utils/module'
+  ],
   devtools: { enabled: true },
   css: ['~/assets/css/main.css'],
 
@@ -17,6 +21,9 @@ export default defineNuxtConfig({
         primary: 'blue',
         neutral: 'zinc'
       }
+    },
+    testing: {
+      enabled: false
     }
   }
 })

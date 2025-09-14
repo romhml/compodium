@@ -11,7 +11,12 @@
   },
   "dependencies": {
     "@nuxt/ui": "catalog:",
-    "nuxt": "catalog:",
-    "@compodium/nuxt": "workspace:^"
+    "nuxt": "catalog:"
+  },
+  "devDependencies": {
+    "@compodium/nuxt": "workspace:^",
+    "@compodium/testing": "workspace:^",
+    "@nuxt/test-utils": "^3.19.2",
+    "vitest": "^3.2.4"
   }
 }
