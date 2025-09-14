@@ -4,10 +4,10 @@ packages:
   - "./playgrounds/*"
 
 catalog:
-  nuxt: "^4.0.3"
-  "@nuxt/kit": "^4.0.3"
-  "@nuxt/schema": "^4.0.3"
-  "@nuxt/ui": "^3.3.2"
+  nuxt: "^4.1.2"
+  "@nuxt/kit": "^4.1.2"
+  "@nuxt/schema": "^4.1.2"
+  "@nuxt/ui": "^3.3.3"
   vue: latest
 
 onlyBuiltDependencies:
