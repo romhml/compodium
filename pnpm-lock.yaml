@@ -243,8 +243,8 @@ importers:
         specifier: ^2.4.23
         version: 2.4.23
       '@vue/language-core':
-        specifier: 3.0.8
-        version: 3.0.8(typescript@5.6.3)
+        specifier: 2.2.12
+        version: 2.2.12(typescript@5.6.3)
       path-browserify:
         specifier: ^1.0.1
         version: 1.0.1
@@ -255,11 +255,11 @@ importers:
         specifier: '*'
         version: 5.6.3
       vue-component-meta:
-        specifier: ^3.0.8
-        version: 3.0.8(typescript@5.6.3)
+        specifier: ^2.2.12
+        version: 2.2.12(typescript@5.6.3)
       vue-component-type-helpers:
-        specifier: ^3.0.8
-        version: 3.0.8
+        specifier: ^2.2.12
+        version: 2.2.12
     devDependencies:
       '@types/path-browserify':
         specifier: ^1.0.3
@@ -6849,10 +6849,21 @@ packages:
   vue-bundle-renderer@2.1.2:
     resolution: {integrity: sha512-M4WRBO/O/7G9phGaGH9AOwOnYtY9ZpPoDVpBpRzR2jO5rFL9mgIlQIgums2ljCTC2HL1jDXFQc//CzWcAQHgAw==}
 
+  vue-component-meta@2.2.12:
+    resolution: {integrity: sha512-dQU6/obNSNbennJ1xd+rhDid4g3vQro+9qUBBIg8HMZH2Zs1jTpkFNxuQ3z77bOlU+ew08Qck9sbYkdSePr0Pw==}
+    peerDependencies:
+      typescript: '*'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+
   vue-component-meta@3.0.8:
     resolution: {integrity: sha512-DEdPomVB6p/zYT4XUgav+NiA2LtkoDQ7HCY0hQaHc8YvoDwA2q0hHsQdX3uDQuFNcZTiwX+lIUuGU4iaVybDcA==}
     peerDependencies:
       typescript: '*'
+
+  vue-component-type-helpers@2.2.12:
+    resolution: {integrity: sha512-YbGqHZ5/eW4SnkPNR44mKVc6ZKQoRs/Rux1sxC6rdwXb4qpbOSYfDr9DsTHolOTGmIKgM9j141mZbBeg05R1pw==}
 
   vue-component-type-helpers@3.0.8:
     resolution: {integrity: sha512-WyR30Eq15Y/+odrUUMax6FmPbZwAp/HnC7qgR1r3lVFAcqwQ4wUoV79Mbh4SxDy3NiqDa+G4TOKD5xXSgBHo5A==}
@@ -9868,6 +9879,19 @@ snapshots:
     dependencies:
       rfdc: 1.4.1
 
+  '@vue/language-core@2.2.12(typescript@5.6.3)':
+    dependencies:
+      '@volar/language-core': 2.4.15
+      '@vue/compiler-dom': 3.5.21
+      '@vue/compiler-vue2': 2.7.16
+      '@vue/shared': 3.5.21
+      alien-signals: 1.0.13
+      minimatch: 9.0.5
+      muggle-string: 0.4.1
+      path-browserify: 1.0.1
+    optionalDependencies:
+      typescript: 5.6.3
+
   '@vue/language-core@2.2.12(typescript@5.9.2)':
     dependencies:
       '@volar/language-core': 2.4.15
@@ -9880,19 +9904,6 @@ snapshots:
       path-browserify: 1.0.1
     optionalDependencies:
       typescript: 5.9.2
-
-  '@vue/language-core@3.0.8(typescript@5.6.3)':
-    dependencies:
-      '@volar/language-core': 2.4.23
-      '@vue/compiler-dom': 3.5.21
-      '@vue/compiler-vue2': 2.7.16
-      '@vue/shared': 3.5.21
-      alien-signals: 2.0.5
-      muggle-string: 0.4.1
-      path-browserify: 1.0.1
-      picomatch: 4.0.3
-    optionalDependencies:
-      typescript: 5.6.3
 
   '@vue/language-core@3.0.8(typescript@5.9.2)':
     dependencies:
@@ -14794,13 +14805,14 @@ snapshots:
     dependencies:
       ufo: 1.6.1
 
-  vue-component-meta@3.0.8(typescript@5.6.3):
+  vue-component-meta@2.2.12(typescript@5.6.3):
     dependencies:
-      '@volar/typescript': 2.4.23
-      '@vue/language-core': 3.0.8(typescript@5.6.3)
+      '@volar/typescript': 2.4.15
+      '@vue/language-core': 2.2.12(typescript@5.6.3)
       path-browserify: 1.0.1
+      vue-component-type-helpers: 2.2.12
+    optionalDependencies:
       typescript: 5.6.3
-      vue-component-type-helpers: 3.0.8
 
   vue-component-meta@3.0.8(typescript@5.9.2):
     dependencies:
@@ -14809,6 +14821,8 @@ snapshots:
       path-browserify: 1.0.1
       typescript: 5.9.2
       vue-component-type-helpers: 3.0.8
+
+  vue-component-type-helpers@2.2.12: {}
 
   vue-component-type-helpers@3.0.8: {}
 

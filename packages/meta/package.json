@@ -26,11 +26,11 @@
   },
   "dependencies": {
     "@volar/typescript": "^2.4.23",
-    "@vue/language-core": "3.0.8",
+    "@vue/language-core": "2.2.12",
     "path-browserify": "^1.0.1",
     "pathe": "^2.0.3",
-    "vue-component-meta": "^3.0.8",
-    "vue-component-type-helpers": "^3.0.8"
+    "vue-component-meta": "^2.2.12",
+    "vue-component-type-helpers": "^2.2.12"
   },
   "devDependencies": {
     "@types/path-browserify": "^1.0.3"
