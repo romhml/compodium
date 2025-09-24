@@ -3,7 +3,8 @@
     "github>nuxt/renovate-config-nuxt"
   ],
   "lockFileMaintenance": {
-    "enabled": true
+    "enabled": true,
+    "automerge": true
   },
   "ignoreDeps": [
     "happy-dom",
@@ -14,6 +15,11 @@
   ],
   "postUpdateOptions": ["pnpmDedupe"],
   "packageRules": [
+    {
+      "matchUpdateTypes": ["minor", "patch"],
+      "matchCurrentVersion": "!/^0/",
+      "automerge": true
+    },
     {
       "matchDepTypes": ["peerDependencies"],
       "enabled": false
