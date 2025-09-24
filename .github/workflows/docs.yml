@@ -41,5 +41,3 @@ jobs:
         with:
           project-key: compodium-yt6s
           directory: docs/
-        env:
-          NUXT_UI_PRO_LICENSE: ${{ secrets.NUXT_UI_PRO_LICENSE }}
