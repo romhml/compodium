@@ -28,7 +28,7 @@ export function createCheckerByJsonConfigBase(
   rootDir = rootDir.replace(windowsPathReg, '/')
   return baseCreate(
     ts,
-    () => vue.createParsedCommandLineByJson(ts, ts.sys, rootDir, json, undefined, true),
+    () => vue.createParsedCommandLineByJson(ts, ts.sys, rootDir, json, undefined),
     checkerOptions,
     rootDir,
     path.join(rootDir, 'jsconfig.json.global.vue')
@@ -43,7 +43,7 @@ export function createCheckerBase(
   tsconfig = tsconfig.replace(windowsPathReg, '/')
   return baseCreate(
     ts,
-    () => vue.createParsedCommandLine(ts, ts.sys, tsconfig, true),
+    () => vue.createParsedCommandLine(ts, ts.sys, tsconfig),
     checkerOptions,
     path.dirname(tsconfig),
     tsconfig + '.global.vue'
@@ -64,7 +64,7 @@ export function baseCreate(
   const projectHost: TypeScriptProjectHost = {
     getCurrentDirectory: () => rootPath,
     getProjectVersion: () => projectVersion.toString(),
-    getCompilationSettings: () => commandLine.options,
+    getCompilationSettings: () => commandLine.options as any,
     getScriptFileNames: () => fileNames,
     getProjectReferences: () => commandLine.projectReferences
   }
@@ -84,7 +84,7 @@ export function baseCreate(
 
   const vueLanguagePlugin = vue.createVueLanguagePlugin<string>(
     ts,
-    projectHost.getCompilationSettings(),
+    projectHost.getCompilationSettings() as any,
     commandLine.vueOptions,
     id => id
   )
@@ -97,7 +97,7 @@ export function baseCreate(
         }
       }
     ],
-    new vue.FileMap(ts.sys.useCaseSensitiveFileNames),
+    new vue.FileMap(ts.sys.useCaseSensitiveFileNames) as any,
     (fileName) => {
       let snapshot = scriptSnapshots.get(fileName)
 
@@ -127,8 +127,8 @@ export function baseCreate(
       }
     }
   )
-  const { languageServiceHost } = createLanguageServiceHost(ts, ts.sys, language, s => s, projectHost)
-  const tsLs = ts.createLanguageService(languageServiceHost)
+  const { languageServiceHost } = createLanguageServiceHost(ts as any, ts.sys, language as any, s => s, projectHost)
+  const tsLs = ts.createLanguageService(languageServiceHost as any)
 
   const directoryExists = languageServiceHost.directoryExists?.bind(languageServiceHost)
   const fileExists = languageServiceHost.fileExists.bind(languageServiceHost)
@@ -748,7 +748,7 @@ function createSchemaResolvers(
     const fileName = declaration.getSourceFile().fileName
     const sourceScript = language.scripts.get(fileName)
     if (sourceScript?.generated) {
-      const script = sourceScript.generated.languagePlugin.typescript?.getServiceScript(sourceScript.generated.root)
+      const script = (sourceScript.generated.languagePlugin as any).typescript?.getServiceScript(sourceScript.generated.root)
       if (script) {
         for (const [sourceScript, map] of language.maps.forEach(script.code)) {
           for (const [start] of map.toSourceLocation(declaration.getStart())) {
