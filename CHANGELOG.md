@@ -1,5 +1,36 @@
 # Changelog
 
+## v0.1.0-beta.12
+
+[compare changes](https://github.com/romhml/compodium/compare/v0.1.0-beta.11...v0.1.0-beta.12)
+
+### 🚀 Enhancements
+
+- **vue:** Entrypoint detection ([#96](https://github.com/romhml/compodium/pull/96))
+
+### 🩹 Fixes
+
+- **examples:** Add missing `@nuxt/ui` examples ([acf0a33](https://github.com/romhml/compodium/commit/acf0a33))
+- **meta:** Pull latest base from `vue-component-meta` ([55c9ce8](https://github.com/romhml/compodium/commit/55c9ce8))
+- **devtools:** Add empty state on props tab ([73c1bd0](https://github.com/romhml/compodium/commit/73c1bd0))
+- **devtools:** Replace `UNavigationMenu` with `UTree` ([8fbcdaa](https://github.com/romhml/compodium/commit/8fbcdaa))
+- **core:** Upgrade inference layer to `zod@4` ([838389f](https://github.com/romhml/compodium/commit/838389f))
+- **meta:** Update `vue.createParsedCommandLine` calls ([c03f734](https://github.com/romhml/compodium/commit/c03f734))
+- **meta:** Update checker base ([3fa281a](https://github.com/romhml/compodium/commit/3fa281a))
+- **meta:** `@nuxt/ui` v4 component meta resolution ([0794628](https://github.com/romhml/compodium/commit/0794628))
+- **meta:** Missing component meta on production build ([8b5a632](https://github.com/romhml/compodium/commit/8b5a632))
+- **examples:** UContextMenu ([10ab29d](https://github.com/romhml/compodium/commit/10ab29d))
+- **meta:** Downgrade vue-component-meta to `2.2.12` ([#127](https://github.com/romhml/compodium/pull/127))
+
+### 🏡 Chore
+
+- Deploy docs on tag ([03ce183](https://github.com/romhml/compodium/commit/03ce183))
+- Upgrade to @nuxt/ui v4 ([8661e25](https://github.com/romhml/compodium/commit/8661e25))
+- Migrate to @nuxt/ui v4 ([804a2af](https://github.com/romhml/compodium/commit/804a2af))
+- **renovate:** Enable automerge ([7dce592](https://github.com/romhml/compodium/commit/7dce592))
+- **docs:** Remove ui-pro license ([e6eca5a](https://github.com/romhml/compodium/commit/e6eca5a))
+- **meta:** Set type to module ([3c407b3](https://github.com/romhml/compodium/commit/3c407b3))
+
 ## v0.1.0-beta.11
 
 [compare changes](https://github.com/romhml/compodium/compare/v0.1.0-beta.10...v0.1.0-beta.11)
