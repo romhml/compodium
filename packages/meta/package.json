@@ -1,12 +1,12 @@
 {
   "name": "@compodium/meta",
   "version": "0.1.0-beta.11",
+  "type": "module",
   "repository": {
     "url": "romhml/compodium",
     "directory": "packages/meta"
   },
   "license": "MIT",
-  "type": "commonjs",
   "exports": {
     ".": {
       "import": "./dist/index.mjs"

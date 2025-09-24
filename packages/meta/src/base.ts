@@ -1,7 +1,9 @@
 import { createLanguageServiceHost, resolveFileLanguageId, type TypeScriptProjectHost } from '@volar/typescript'
 import * as vue from '@vue/language-core'
-import { posix as path } from 'path-browserify'
+import pathBrowserify from 'path-browserify'
 import type * as ts from 'typescript'
+
+const { posix: path } = pathBrowserify
 
 import type {
   ComponentMeta,
