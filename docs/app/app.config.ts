@@ -3,9 +3,7 @@ export default defineAppConfig({
     colors: {
       primary: 'black',
       neutral: 'zinc'
-    }
-  },
-  uiPro: {
+    },
     footer: {
       slots: {
         root: 'border-t border-default',
