@@ -2,7 +2,7 @@
 export default defineNuxtConfig({
   modules: [
     '@nuxt/image',
-    '@nuxt/ui-pro',
+    '@nuxt/ui',
     '@nuxt/content',
     'nuxt-og-image',
     'nuxt-llms',

@@ -1,12 +1,12 @@
 {
   "name": "@compodium/meta",
-  "version": "0.1.0-beta.11",
+  "version": "0.1.0-beta.12",
+  "type": "module",
   "repository": {
     "url": "romhml/compodium",
     "directory": "packages/meta"
   },
   "license": "MIT",
-  "type": "commonjs",
   "exports": {
     ".": {
       "import": "./dist/index.mjs"
@@ -26,11 +26,11 @@
   },
   "dependencies": {
     "@volar/typescript": "^2.4.23",
-    "@vue/language-core": "3.0.7",
+    "@vue/language-core": "2.2.12",
     "path-browserify": "^1.0.1",
     "pathe": "^2.0.3",
-    "vue-component-meta": "^3.0.7",
-    "vue-component-type-helpers": "^3.0.7"
+    "vue-component-meta": "^2.2.12",
+    "vue-component-type-helpers": "^2.2.12"
   },
   "devDependencies": {
     "@types/path-browserify": "^1.0.3"

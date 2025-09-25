@@ -5,12 +5,12 @@
     "emitDeclarationOnly": false,
     "declarationMap": true,
     "target": "esnext",
-    "module": "NodeNext",
+    "module": "esnext",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "nodenext",
+    "moduleResolution": "Bundler"
   },
   "include": ["src/**/*"]
 }

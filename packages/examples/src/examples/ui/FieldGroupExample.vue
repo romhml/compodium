@@ -1,5 +1,5 @@
 <template>
-  <UButtonGroup>
+  <UFieldGroup>
     <UInput placeholder="Search..." />
     <UButton
       color="neutral"
@@ -7,5 +7,5 @@
     >
       Button
     </UButton>
-  </UButtonGroup>
+  </UFieldGroup>
 </template>

@@ -8,18 +8,18 @@ export function createChecker(dirs: ComponentsDir[]) {
     rootDir,
     {
       extends: `${rootDir}/tsconfig.json`,
-      skipLibCheck: true,
+      compilerOptions: {
+        allowArbitraryExtensions: true // Fixes Nuxt UI component type resolution
+      },
       include: [
         '**/*',
         ...dirs?.map((dir: any) => {
           const path = typeof dir === 'string' ? dir : (dir?.path || '')
-          if (path.endsWith('.vue')) {
-            return path
-          }
-          return `${path}/**/*`
+          const ext = path.split('.').pop()!
+          return ['vue', 'ts', 'tsx', 'js', 'jsx'].includes(ext) ? path : `${path}/**/*`
         }) ?? []
       ],
-      exclude: []
+      exclude: ['**/*.vue.d.ts']
     },
     {
       forceUseTs: true,

@@ -54,7 +54,7 @@ const visibleIcons = computed(() => {
 
 <template>
   <UPopover>
-    <UButtonGroup>
+    <UFieldGroup>
       <UButton
         :icon="modelValue"
         square
@@ -67,7 +67,7 @@ const visibleIcons = computed(() => {
         v-model="modelValue as string"
         @click="(e: MouseEvent) => e.stopPropagation()"
       />
-    </UButtonGroup>
+    </UFieldGroup>
     <template #content>
       <div class="w-md p-4 h-[312px]">
         <div class="flex gap-2 mb-4">
