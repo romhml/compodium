@@ -1,3 +1,4 @@
+import type { UserConfig as VitestUserConfig, InlineConfig as VitestInlineConfig } from 'vitest/node'
 import type { PropertyMeta as VuePropertyMeta } from '@compodium/meta'
 import type { Hookable } from 'hookable'
 import type { InputSchema } from './plugins/meta/infer'
@@ -66,6 +67,9 @@ export type PluginOptions = {
   }
   /* Internal */
   _nuxt?: boolean
+
+  /* Internal */
+  _vitestConfig?: Promise<TestConfig> | TestConfig
 }
 
 export type IconifyIcon = string & {}
@@ -163,6 +167,10 @@ export type Collection = {
 
 export type ComponentCollection = Collection & {
   components: (Component & Partial<ComponentExample>)[]
+}
+
+export type TestConfig = VitestUserConfig & {
+  test?: VitestInlineConfig
 }
 
 export interface CompodiumHooks {

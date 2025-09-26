@@ -41,7 +41,7 @@ function goToCompodium() {
       >
         Go to Compodium
       </UButton>
-      <USeparator> or </USeparator>
+      <USeparator label="or" />
       <UButton
         variant="ghost"
         color="success"

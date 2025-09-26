@@ -1,11 +1,16 @@
-import { defineVitestConfig } from '@nuxt/test-utils/config'
+import { defineVitestProject } from '@nuxt/test-utils/config'
+import { defineConfig } from 'vitest/config'
 
-export default defineVitestConfig({
+export default defineConfig({
   test: {
-    environment: 'nuxt',
-    silent: 'passed-only',
-    include: [
-      './playgrounds/nuxt/test/**/*.{test,spec}.?(c|m)[jt]s?(x)'
+    projects: [
+      await defineVitestProject({
+        test: {
+          name: 'nuxt',
+          include: ['test/nuxt/*.{test,spec}.ts'],
+          environment: 'nuxt'
+        }
+      })
     ]
   }
 })

@@ -12,6 +12,7 @@
   "dependencies": {
     "@compodium/vue": "workspace:^",
     "@nuxt/ui": "catalog:",
+    "reka-ui": "^2.5.1",
     "vue": "catalog:",
     "vue-router": "^4.5.1"
   },

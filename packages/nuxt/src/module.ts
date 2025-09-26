@@ -5,7 +5,9 @@ import { joinURL } from 'ufo'
 import { version } from '../package.json'
 import { defu } from 'defu'
 import { compodium } from '@compodium/core'
-import type { PluginOptions } from '@compodium/core'
+import type { PluginOptions, TestConfig } from '@compodium/core'
+import { getVitestConfigFromNuxt } from '@nuxt/test-utils/config'
+import { mergeConfig } from 'vite'
 
 export type ModuleOptions = Omit<PluginOptions, 'mainPath' | 'componentDirs' | 'rootDir' | '_nuxt' | 'baseUrl'>
 
@@ -21,7 +23,6 @@ export default defineNuxtModule<ModuleOptions>({
 
   async setup(options, nuxt) {
     if (!nuxt.options.dev && !nuxt.options.test) return
-
     const { resolve } = createResolver(import.meta.url)
 
     nuxt.hooks.hookOnce('app:resolve', (app) => {
@@ -43,12 +44,23 @@ export default defineNuxtModule<ModuleOptions>({
       nuxt.options.routeRules = defu(nuxt.options.routeRules, { '/__compodium__/**': { ssr: false } })
     }
 
+    const rawViteConfigPromise: Promise<TestConfig> = new Promise((resolve) => {
+      nuxt.hooks.hookOnce('app:resolve', () => {
+        nuxt.hook('vite:configResolved', (config, { isClient }) => {
+          if (!isClient) return
+          const _config = mergeConfig({}, config)
+          resolve(getVitestConfigFromNuxt({ nuxt, viteConfig: _config }) as Promise<TestConfig>)
+        })
+      })
+    })
+
     nuxt.hooks.hookOnce('components:dirs', async (dirs) => {
       addVitePlugin(await compodium({
         componentDirs: dirs,
         rootDir: nuxt.options.rootDir,
         baseUrl: nuxt.options.app.baseURL,
         _nuxt: true,
+        _vitestConfig: rawViteConfigPromise,
         ...options
       }))
     })

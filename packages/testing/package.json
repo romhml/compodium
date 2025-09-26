@@ -32,12 +32,12 @@
     "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
-    "@vitest/browser": ">=4.0.0-beta.5",
     "@vue/test-utils": ">=2",
     "playwright": ">=1",
-    "vitest": ">=4.0.0-beta.5"
+    "vitest": ">=3.2.4"
   },
   "dependencies": {
+    "defu": "^6.1.4",
     "unplugin": "^2.3.5"
   },
   "devDependencies": {

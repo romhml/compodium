@@ -1,11 +1,12 @@
 /// <reference types="vitest" />
 
-import { createVitest } from 'vitest/node'
+import { createVitest, startVitest as _startVitest } from 'vitest/node'
 import type { Vitest } from 'vitest/node'
-import type { PluginOptions } from '@compodium/core'
+import type { PluginOptions, TestConfig } from '@compodium/core'
 import { CompodiumReporter } from './reporter'
 import type { WebSocketServer, Plugin as VitePlugin } from 'vite'
 import { DefaultReporter } from 'vitest/reporters'
+import { defu } from 'defu'
 
 export function testPlugin(options: PluginOptions): VitePlugin {
   let rootDir: string
@@ -16,17 +17,19 @@ export function testPlugin(options: PluginOptions): VitePlugin {
 
   async function getVitest() {
     if (!vitest) {
-      vitest = await createVitest('test', {
+      const viteConfig = options._vitestConfig ? await options._vitestConfig : {} as TestConfig
+
+      const vitestConfig = defu({
         root: rootDir,
         watch: false,
         passWithNoTests: true,
         reporters: [new DefaultReporter(), new CompodiumReporter(ws)],
-        silent: true,
-        env: {
-          VITEST: 'true'
-        }
-      })
+        silent: true
+      }, viteConfig.test)
+
+      vitest = await createVitest('test', vitestConfig, viteConfig as any)
     }
+
     return vitest
   }
 
