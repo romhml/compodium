@@ -12,7 +12,9 @@ export default defineConfig({
     vue(),
     vueDevTools(),
     ui({ ui: { colors: { neutral: 'zinc' } } }),
-    compodium(),
+    compodium({
+      testing: { enabled: true }
+    }),
     // Ignore components.d.ts updates to avoid reloading the page
     // when importing a new component in compodium.
     {
@@ -22,6 +24,11 @@ export default defineConfig({
       }
     }
   ],
+
+  test: {
+    environment: 'happy-dom',
+    silent: 'passed-only'
+  },
 
   resolve: {
     alias: {

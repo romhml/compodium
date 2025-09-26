@@ -33,11 +33,12 @@
     "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
+    "@compodium/testing": "workspace:^",
     "vite": ">=6",
     "vue": ">=3"
   },
   "peerDependenciesMeta": {
-    "vite": {
+    "@compodium/testing": {
       "optional": true
     }
   },
