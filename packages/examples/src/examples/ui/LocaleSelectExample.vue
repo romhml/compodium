@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-
 extendCompodiumMeta({
   defaultProps: {
     locales: [
@@ -11,13 +9,8 @@ extendCompodiumMeta({
     ]
   }
 })
-
-const modelValue = ref('en')
 </script>
 
 <template>
-  <ULocaleSelect
-    v-model="modelValue"
-    class="w-40"
-  />
+  <ULocaleSelect class="w-40" />
 </template>

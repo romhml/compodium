@@ -1,10 +1,10 @@
 <script setup lang="ts">
 extendCompodiumMeta({
   defaultProps: {
-    name: 'John Doe',
+    name: 'Benjamin Canac',
     description: 'Software Engineer',
     avatar: {
-      src: 'https://i.pravatar.cc/150?u=john-doe'
+      src: 'https://avatars.githubusercontent.com/u/739984?v=4'
     }
   }
 })

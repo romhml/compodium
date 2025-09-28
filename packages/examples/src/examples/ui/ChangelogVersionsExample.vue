@@ -1,5 +1,5 @@
 <template>
-  <UChangelogVersions>
+  <UChangelogVersions class="min-w-5xl">
     <UChangelogVersion
       title="Version 1.2.0"
       description="Added new features and bug fixes."

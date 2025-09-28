@@ -1,13 +1,10 @@
 <script setup lang="ts">
 extendCompodiumMeta({
   defaultProps: {
-    src: {
-      light: '/logo-light.svg',
-      dark: '/logo-dark.svg'
-    },
-    alt: 'Company Logo',
+    light: 'https://picsum.photos/id/240/320/320',
+    dark: 'https://picsum.photos/id/241/320/320',
     width: 120,
-    height: 40
+    height: 120
   }
 })
 </script>
