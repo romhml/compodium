@@ -1,8 +1,12 @@
 <script setup lang="ts">
+/// <reference lib="dom" />
+/// <reference types="vite/client" />
+
 import { onMounted, shallowRef, ref, computed, toRaw } from 'vue'
 import type { CompodiumHooks } from '@compodium/core'
 import { onKeyStroke, useColorMode } from '@vueuse/core'
 import { joinURL } from 'ufo'
+import { createHooks } from 'hookable'
 import type { Hookable } from 'hookable'
 
 import RendererGrid from './components/RendererGrid.vue'
@@ -43,10 +47,10 @@ async function onUpdateComponent(payload: Parameters<CompodiumHooks['renderer:up
   props.value = payload.props
   events.value = payload.events
 
-  component.value = await importComponent(payload.path)
   if (payload.wrapper) {
     wrapper.value = await importComponent(payload.wrapper)
   }
+  component.value = await importComponent(payload.path)
 }
 
 if (import.meta.hot) {
@@ -60,8 +64,8 @@ const colorMode = useColorMode()
 const hooks = shallowRef<Hookable<CompodiumHooks>>()
 
 onMounted(() => {
-  hooks.value = window.parent.__COMPODIUM_HOOKS__ as Hookable<CompodiumHooks>
-  if (!hooks.value) return
+  hooks.value = window.parent.__COMPODIUM_HOOKS__ as Hookable<CompodiumHooks> ?? createHooks<CompodiumHooks>()
+  window.__COMPODIUM_HOOKS__ = hooks.value
 
   hooks.value.hook('renderer:update-component', onUpdateComponent)
   hooks.value.hook('renderer:update-props', payload => props.value = { ...payload.props })
@@ -72,7 +76,7 @@ onMounted(() => {
   })
 
   hooks.value.hook('renderer:set-color', color => colorMode.value = color)
-  hooks.value.callHook('renderer:mounted')
+  hooks.value.callHook('renderer:mounted', import.meta.hot)
 })
 
 onMounted(() => {
@@ -88,9 +92,18 @@ onMounted(() => {
   <Suspense>
     <div
       id="__compodium-root"
-      :style="{ position: 'relative', minWidth: '100vw', minHeight: '100vh' }"
+      :style="{
+        position: 'relative',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        minWidth: '100vw',
+        width: 'fit-content',
+        minHeight: '100vh',
+        padding: '48px'
+      }"
     >
-      <PreviewComponent>
+      <PreviewComponent data-testid="__compodium-preview">
         <RendererWrapper :wrapper="wrapper">
           <RendererCombo
             :combo="combo"

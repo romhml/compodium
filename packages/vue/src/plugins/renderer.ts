@@ -33,7 +33,12 @@ export function rendererPlugin(options: PluginOptions): VitePlugin {
       rootDir = options.rootDir ?? viteConfig.root
       baseUrl = options.baseUrl ?? viteConfig.base
 
-      index = readFileSync(resolve(rootDir, 'index.html'), 'utf-8')
+      try {
+        index = readFileSync(resolve(rootDir, 'index.html'), 'utf-8')
+      } catch {
+        throw new Error('[Compodium] Could not locate vite index.html')
+      }
+
       const inferredMainPath = inferMainPath(index)
       mainPath = resolve(rootDir, (options.mainPath ?? inferredMainPath) as string)
     },
@@ -63,7 +68,6 @@ export function rendererPlugin(options: PluginOptions): VitePlugin {
     },
     load(id) {
       if (id === '\0@compodium/renderer.ts') {
-        // Read the user's main entrypoint file
         if (!mainPath) {
           throw new Error('[Compodium] Could not infer main script path. Use the mainPath option to specify the path to your Vue script file containing createApp().')
         }
