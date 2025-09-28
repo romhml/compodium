@@ -1,5 +1,3 @@
-/// <reference path="@compodium/testing/types.d.ts" />
-
 import { beforeAll, describe, beforeEach } from 'vitest'
 import type { ComponentCollection, CompodiumMeta, Component } from '@compodium/core'
 import type { Component as VueComponent } from 'vue'
