@@ -24,6 +24,6 @@ body {
   align-items: center;
   min-height: 100vh;
   min-width: fit-content;
-  padding: 24px;
+  padding: 64px;
 }
 </style>

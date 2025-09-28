@@ -1,0 +1,3 @@
+<template>
+  <UColorModeSwitch />
+</template>
