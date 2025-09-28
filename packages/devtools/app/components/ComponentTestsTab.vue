@@ -5,16 +5,19 @@ const props = defineProps<{
   component?: Component
 }>()
 
-const { testResults, runTests, testStatus } = useComponentTests()
-const componentTestResults = computed(() =>
-  props.component && testResults.value?.[props.component?.pascalName]?.toSorted((a, _) => !a.ok ? 0 : 1)
-)
+const { suites, runTests, testStatus } = useVitest()
+
+const componentTests = computed<TestState[]>(() => {
+  if (!props.component) return []
+  const suite = suites.get(props.component.pascalName)
+  return Array.from(suite?.tests?.values() ?? []) as TestState[]
+})
 </script>
 
 <template>
   <div class="bg-default border-t border-default sticky top-0 z-1 gap-0.5">
     <div
-      v-if="!componentTestResults?.length && testStatus === 'running'"
+      v-if="!componentTests?.length && testStatus === 'run'"
       class="flex flex-col gap-2 justify-center items-center text-md text-muted p-8"
     >
       <p> Running... </p>
@@ -24,7 +27,7 @@ const componentTestResults = computed(() =>
       />
     </div>
     <div
-      v-else-if="!componentTestResults?.length"
+      v-else-if="!componentTests?.length"
       class="text-dimmed text-center p-8"
     >
       <UIcon
@@ -42,14 +45,13 @@ const componentTestResults = computed(() =>
         trailing
         class="mt-3"
         loading-auto
-        @click="runTests(component)"
+        @click="runTests()"
       >
         Run tests
       </UButton>
     </div>
-
     <TestResult
-      v-for="test in componentTestResults"
+      v-for="test in componentTests"
       :key="test.id"
       v-bind="test"
     />

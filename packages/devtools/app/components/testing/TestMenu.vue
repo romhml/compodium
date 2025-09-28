@@ -1,9 +1,10 @@
 <script setup lang="ts">
-const { runTests, watchMode, testStatus, stopTests, testErrors } = useComponentTests()
 import { onKeyStroke } from '@vueuse/core'
 
+const { runTests, testStatus, testErrors } = useVitest()
+
 onKeyStroke(['Enter'], async (e) => {
-  if (testStatus.value === 'running') return
+  if (testStatus.value === 'run') return
   if (e.metaKey || e.ctrlKey) {
     await runTests()
   }
@@ -12,7 +13,7 @@ onKeyStroke(['Enter'], async (e) => {
 const open = ref(false)
 
 watch(testStatus, () => {
-  if (testStatus.value === 'failed') open.value = true
+  if (testStatus.value === 'fail') open.value = true
 })
 </script>
 
@@ -21,20 +22,18 @@ watch(testStatus, () => {
     v-model:open="open"
     class="relative before:absolute before:inset-0 before:-m-0.5 before:rounded-md before:-z-1 after:absolute transition ease-in-out"
     :class="{
-      'before:bg-gradient-to-br before:from-primary-300 before:via-primary-500 before:to-primary-800 before:animate-pulse': testStatus === 'running',
-      'before:bg-error': testStatus === 'failed',
-      'before:bg-success': testStatus === 'passed',
-      'before:bg-accented': !testStatus || testStatus === 'interrupted'
+      'before:bg-gradient-to-br before:from-primary-300 before:via-primary-500 before:to-primary-800 before:animate-pulse': testStatus === 'run',
+      'before:bg-error': testStatus === 'fail',
+      'before:bg-success': testStatus === 'pass'
     }"
   >
     <div class="flex justify-between items-center p-2">
       <span
         class="flex gap-2 items-center font-medium text-sm"
         :class="{
-          'text-default': testStatus === 'running',
-          'text-error': testStatus === 'failed',
-          'text-success': testStatus === 'passed',
-          'text-muted': !testStatus || testStatus === 'interrupted'
+          'text-default': testStatus === 'run',
+          'text-error': testStatus === 'fail',
+          'text-success': testStatus === 'pass'
         }"
       >
         <UIcon
@@ -47,25 +46,9 @@ watch(testStatus, () => {
       </span>
 
       <div class="flex">
-        <UPopover mode="hover">
-          <UButton
-            variant="ghost"
-            size="sm"
-            color="neutral"
-            block
-            :trailing-icon="watchMode ? 'lucide:eye' : 'lucide:eye-off' "
-            @click.stop="watchMode = !watchMode"
-          />
-          <template #content>
-            <p class="text-xs py-1 px-2">
-              {{ watchMode ? 'Disable' : 'Enable' }} watch mode
-            </p>
-          </template>
-        </UPopover>
-
         <UTooltip
-          v-if="testStatus !== 'running'"
           text="Run tests"
+          :loading="testStatus === 'run'"
           :kbds="['meta', 'Enter']"
         >
           <UButton
@@ -78,21 +61,6 @@ watch(testStatus, () => {
             @click.stop="runTests()"
           />
         </UToolTip>
-
-        <UTooltip
-          v-else
-          text="Cancel tests"
-        >
-          <UButton
-            variant="ghost"
-            icon="lucide:pause"
-            size="sm"
-            color="neutral"
-            trailing
-            loading-auto
-            @click.stop="stopTests()"
-          />
-        </UTooltip>
 
         <UButton
           variant="ghost"
@@ -113,14 +81,14 @@ watch(testStatus, () => {
 
     <template #content>
       <div class="p-2 min-h-16 w-full border-t border-muted">
-        <div v-if="testStatus === 'passed'">
+        <div v-if="testStatus === 'pass'">
           <div class="flex justify-between gap-2 mr-1.5">
             <p
               class="text-sm text-success"
             >
               Passed
             </p>
-            <TestStatusIcon status="passed" />
+            <TestStatusIcon status="pass" />
           </div>
 
           <span class="text-sm">
@@ -128,12 +96,12 @@ watch(testStatus, () => {
           </span>
         </div>
 
-        <div v-else-if="testStatus === 'failed'">
+        <div v-else-if="testStatus === 'fail'">
           <div class="flex justify-between gap-2 mr-1.5">
             <p class="text-sm text-error mb-1">
               Failed
             </p>
-            <TestStatusIcon status="failed" />
+            <TestStatusIcon status="fail" />
           </div>
           <p
             v-if="testErrors.length"
@@ -144,7 +112,7 @@ watch(testStatus, () => {
         </div>
 
         <div
-          v-else-if="testStatus === 'running'"
+          v-else-if="testStatus === 'run'"
           class="flex flex-col gap-2 justify-center items-center text-sm text-muted"
         >
           <p> Running... </p>
@@ -158,9 +126,9 @@ watch(testStatus, () => {
           class="flex flex-col gap-2 justify-center items-center text-sm text-muted"
         >
           <p>
-            Interrupted
+            No test results
           </p>
-          <UIcon name="lucide:unplug" />
+          <UIcon name="lucide:flask-conical-off" />
         </div>
       </div>
     </template>

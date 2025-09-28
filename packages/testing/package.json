@@ -33,7 +33,6 @@
   },
   "peerDependencies": {
     "@vue/test-utils": ">=2",
-    "playwright": ">=1",
     "vitest": ">=3.2.4"
   },
   "dependencies": {

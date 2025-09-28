@@ -4,21 +4,20 @@ import type { Component, ComponentCollection, ComponentExample } from '@compodiu
 const props = defineProps<{ collections: ComponentCollection[] }>()
 const modelValue = defineModel<Component | ComponentExample>()
 
-const { testStates, testStatus, partialTestRun } = useComponentTests()
+const { suites } = useVitest()
 
 const treeItems = computed(() => {
   if (!props.collections) return
 
   return props.collections?.map(col => ({
     label: col.name,
+    pascalName: col.name,
     icon: col.icon,
     defaultExpanded: true,
-    testState: testStates.value?.[col.name],
     children: col.components?.map(comp => ({
       label: comp?.isExample ? comp.pascalName.replace(/Example$/, '') : comp.pascalName,
       pascalName: comp.pascalName,
       active: modelValue.value?.pascalName === comp.pascalName,
-      testState: testStates.value?.[comp.pascalName],
       onSelect() {
         modelValue.value = comp
       },
@@ -26,7 +25,6 @@ const treeItems = computed(() => {
         label: ex.pascalName.replace(comp.pascalName, ''),
         pascalName: ex.pascalName,
         active: modelValue.value?.pascalName === ex.pascalName,
-        testState: testStates.value?.[ex.pascalName],
         onSelect() {
           modelValue.value = ex
         }
@@ -56,14 +54,7 @@ const treeItems = computed(() => {
       <span v-else />
     </template>
     <template #item-trailing="{ item }">
-      <TestStatusIcon
-        v-if="!item.testState && testStatus === 'running' && !partialTestRun"
-        status="pending"
-      />
-      <TestStatusIcon
-        v-else
-        :status="item.testState"
-      />
+      <TestStatusIcon :status="suites.get(item.pascalName)?.state" />
     </template>
   </UTree>
 </template>

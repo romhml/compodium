@@ -1,29 +1,29 @@
 <script setup lang="ts">
-import type { TestResult } from 'vitest/node'
+import type { RunnerTaskResult } from 'vitest/node'
 
 defineProps<{
-  status?: TestResult['state']
+  status?: RunnerTaskResult['state']
 }>()
 </script>
 
 <template>
   <UIcon
-    v-if="status === 'passed'"
+    v-if="status === 'pass'"
     class="size-4 text-success"
     name="lucide:check"
   />
   <UIcon
-    v-else-if="status === 'failed'"
+    v-else-if="status === 'fail'"
     class="size-4 text-error"
     name="lucide:x"
   />
   <UIcon
-    v-else-if="status === 'skipped'"
+    v-else-if="status === 'skip'"
     class="size-4 text-default/50"
     name="lucide:chevrons-right"
   />
   <UIcon
-    v-else-if="status === 'pending'"
+    v-else-if="status === 'queued' || status === 'run'"
     class="size-4 text-default/50 animate-spin"
     name="lucide:loader"
   />

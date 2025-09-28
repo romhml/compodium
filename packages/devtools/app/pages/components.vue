@@ -9,8 +9,6 @@ const rendererMounted = ref(false)
 
 const events = ref<{ name: string, data?: any }[]>([])
 
-const { runTests, watchMode, testResults } = useComponentTests()
-
 hooks.hook('renderer:mounted', () => {
   rendererMounted.value = true
 
@@ -19,13 +17,14 @@ hooks.hook('renderer:mounted', () => {
       await Promise.all([refreshMeta(), refreshExampleMeta()])
     }
 
-    if (watchMode.value) {
-      const updatedComponent = components.value?.find(c => c.filePath === path)
-      if (updatedComponent) {
-        const componentsToTest = [updatedComponent, ...(updatedComponent?.examples ?? [])]
-        await runTests(componentsToTest)
-      }
-    }
+    // TODO: Is this still needed?
+    // if (watchMode.value) {
+    //   const updatedComponent = components.value?.find(c => c.filePath === path)
+    //   if (updatedComponent) {
+    //     const componentsToTest = [updatedComponent, ...(updatedComponent?.examples ?? [])]
+    //     await runTests(componentsToTest)
+    //   }
+    // }
   })
 
   hooks.hook('component:removed', useDebounceFn(async () => {
@@ -63,8 +62,6 @@ const { data: collections, refresh: refreshCollections } = useAsyncData(async ()
 
   return collections
 })
-
-const components = computed(() => collections.value?.flatMap(col => col.components.flatMap(c => [c, ...(c.examples ?? [])])))
 
 const component = useStorage<(Component & Partial<ComponentExample>) | undefined>('__compodium-component', null, undefined, { serializer: StorageSerializers.object })
 
@@ -204,17 +201,11 @@ const isDark = computed({
   }
 })
 
-const componentErrors = computed(() =>
-  component.value
-    ? testResults.value?.[component.value.pascalName]?.filter(t => t.result.state === 'failed')?.length
-    : undefined
-)
-
 const tabs = computed(() => {
   return [
     { label: 'Props', slot: 'props', icon: 'lucide:settings' },
     { label: 'Events', slot: 'events', icon: 'lucide:chart-no-axes-gantt' },
-    { label: 'Tests', slot: 'tests', icon: 'lucide:flask-conical', chip: componentErrors.value ? 'error' : undefined },
+    { label: 'Tests', slot: 'tests', icon: 'lucide:flask-conical' },
     { label: 'Code', slot: 'code', icon: 'lucide:code' }
   ]
 })

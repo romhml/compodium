@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { CompodiumTestResult } from '@compodium/testing'
+import type { TestState } from '~/composables/useVitest'
 
-const props = defineProps<CompodiumTestResult>()
-const hasResults = computed(() => props.result?.errors?.length)
+const props = defineProps<TestState>()
+const hasResults = computed(() => props.errors?.length)
 
 function formatErrorMessage(message: string) {
   return message.replace(/Reference screenshot:[\s\S]*/, '').replace(/<body>[\s\S]*/, '')
@@ -13,13 +13,13 @@ function formatErrorMessage(message: string) {
   <UCollapsible
     class="border-b border-default"
     :disabled="!hasResults"
-    :default-open="!ok"
+    :default-open="state === 'fail'"
   >
     <template #default="{ open }">
       <div class="flex justify-between gap-2 p-2">
         <div class="flex gap-2 items-center font-mono text-sm">
           <TestStatusIcon
-            :status="result.state"
+            :status="state"
             class="flex-none"
           />
           <p class="font-semibold text-muted truncate text-ellipsis text-wrap">
@@ -28,14 +28,14 @@ function formatErrorMessage(message: string) {
         </div>
         <div class="flex items-center gap-1">
           <p
-            v-if="diagnostic?.duration"
+            v-if="duration"
             class="text-xs"
             :class="{
-              'text-muted': !diagnostic?.slow,
-              'text-warning': diagnostic?.slow
+              'text-muted': duration > 200,
+              'text-warning': duration > 200
             }"
           >
-            {{ Math.round(diagnostic?.duration) }}ms
+            {{ Math.round(duration) }}ms
           </p>
 
           <UButton
@@ -61,11 +61,11 @@ function formatErrorMessage(message: string) {
     </template>
     <template #content>
       <div
-        v-if="result.state !== 'pending'"
+        v-if="state !== 'run'"
         class="flex flex-col gap-2 p-2"
       >
         <UAlert
-          v-for="error in result.errors"
+          v-for="error in errors"
           :key="error.message"
           color="error"
           variant="subtle"

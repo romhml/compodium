@@ -1,4 +1,6 @@
-import { describe, beforeEach } from 'vitest'
+/// <reference path="@compodium/testing/types.d.ts" />
+
+import { beforeAll, describe, beforeEach } from 'vitest'
 import type { ComponentCollection, CompodiumMeta, Component } from '@compodium/core'
 import type { Component as VueComponent } from 'vue'
 
@@ -23,17 +25,38 @@ export function describeComponent(componentName: string, fn: CompodiumTestFuncti
   const collection = collections.find(c => c.name === component?.collectionName) as ComponentCollection
 
   return describe(collection.name, async () => {
-    describe(component.pascalName, async () => {
-      const meta = await import(/* vite-ignore */ `/@id/virtual:compodium/meta?component=${component.filePath}`).then(c => c.default) as CompodiumMeta
-
-      beforeEach(({ task }) => {
-        task.meta.compodium = {
-          component: component?.pascalName
-        }
-      })
-
-      const comp = await import(/* vite-ignore */ component.filePath).then(c => c.default) as VueComponent
-      await fn({ component: comp, props: meta.compodium?.defaultProps, meta })
+    // TODO: Pass meta in way that will be resolved when the test modules are collected instead.
+    // This will allow to display loaders on the initial test run.
+    // The docs mention something to achieve this but seems outdated: https://vitest.dev/advanced/api/test-suite.html#meta
+    beforeAll((task) => {
+      task.meta.compodium = {
+        collection: collection.name,
+        suite: true
+      }
     })
+
+    describe(component.pascalName,
+      async () => {
+        beforeAll((task) => {
+          task.meta.compodium = {
+            collection: collection.name,
+            component: component.pascalName,
+            suite: true
+          }
+        })
+
+        beforeEach(({ task }) => {
+          task.meta.compodium = {
+            collection: collection.name,
+            component: component.pascalName,
+            name: task.name,
+            suite: false
+          }
+        })
+
+        const componentMeta = await import(/* vite-ignore */ `/@id/virtual:compodium/meta?component=${component.filePath}`).then(c => c.default) as CompodiumMeta
+        const vueComponent = await import(/* vite-ignore */ component.filePath).then(c => c.default) as VueComponent
+        await fn({ component: vueComponent, props: componentMeta.compodium?.defaultProps, meta: componentMeta })
+      })
   })
 }

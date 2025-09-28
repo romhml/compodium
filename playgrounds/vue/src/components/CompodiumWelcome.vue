@@ -22,7 +22,7 @@ function goToCompodium() {
     class="data-[spin=true]:animate-spin data-[bounce=true]:animate-bounce"
     :data-spin="spinIt"
     :data-bounce="bounceIt"
-    :class="{ shaker: shakeIt }"
+    :class="{ shake: shakeIt }"
   >
     <div
       class="border border-default p-4 rounded-lg w-sm"
@@ -58,7 +58,7 @@ function goToCompodium() {
 
 <style scoped>
 .shake {
-  animation: shake 1s ease-in-out infinite
+  animation: shake 0.5s ease-in-out infinite
 }
 
 @keyframes shake {

@@ -27,7 +27,8 @@ export default defineConfig({
 
   test: {
     environment: 'happy-dom',
-    silent: 'passed-only'
+    silent: 'passed-only',
+    ui: true
   },
 
   resolve: {

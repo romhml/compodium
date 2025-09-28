@@ -1,19 +1,14 @@
-import type { TestDiagnostic, TestResult } from 'vitest/node'
-import type { TaskMeta } from 'vitest'
+import 'vitest'
+
+export interface CompodiumTestMeta {
+  component?: string
+  collection?: string
+  suite?: boolean
+  name?: string
+}
 
 declare module 'vitest' {
   interface TaskMeta {
-    compodium?: {
-      component: string
-    }
+    compodium?: CompodiumTestMeta
   }
-}
-
-export type CompodiumTestResult = {
-  name: string
-  id: string
-  ok: boolean
-  result: TestResult
-  diagnostic?: TestDiagnostic
-  meta: TaskMeta
 }
