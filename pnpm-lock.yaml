@@ -258,8 +258,8 @@ importers:
         specifier: ^2.2.12
         version: 2.2.12(typescript@5.9.2)
       vue-component-type-helpers:
-        specifier: ^2.2.12
-        version: 2.2.12
+        specifier: ^3.1.0
+        version: 3.1.0
     devDependencies:
       '@types/path-browserify':
         specifier: ^1.0.3
