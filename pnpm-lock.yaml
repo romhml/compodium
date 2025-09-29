@@ -243,8 +243,8 @@ importers:
         specifier: ^2.4.23
         version: 2.4.23
       '@vue/language-core':
-        specifier: 2.2.12
-        version: 2.2.12(typescript@5.9.2)
+        specifier: 3.1.0
+        version: 3.1.0(typescript@5.9.2)
       path-browserify:
         specifier: ^1.0.1
         version: 1.0.1
