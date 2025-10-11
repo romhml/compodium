@@ -19,7 +19,7 @@
   "devDependencies": {
     "@compodium/testing": "workspace:^",
     "@tsconfig/node22": "^22.0.2",
-    "@types/node": "^22.18.8",
+    "@types/node": "^22.18.9",
     "@vitejs/plugin-vue": "^6.0.1",
     "@vue/tsconfig": "^0.8.1",
     "happy-dom": "^17.6.3",
