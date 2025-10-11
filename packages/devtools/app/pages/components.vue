@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Component, ComponentExample, CompodiumMeta, ComponentCollection, PropertyMeta } from '@compodium/core'
 import { StorageSerializers, useColorMode, useDebounceFn, useStorage } from '@vueuse/core'
-import type { ComboItem } from '../components/ComboInput.vue'
+import type { ComboItem } from '../components/ComboInputMenu.vue'
 import { getEnumOptions } from '~/utils/enum'
 
 const { hooks } = useCompodiumClient()
@@ -11,12 +11,20 @@ const events = ref<{ name: string, data?: any }[]>([])
 
 hooks.hook('renderer:mounted', () => {
   rendererMounted.value = true
+
   hooks.hook('component:changed', async (path: string) => {
-    if (
-      (component.value?.filePath && path.endsWith(component.value?.filePath))
-      || (component.value?.componentPath && path.endsWith(component.value?.componentPath))) {
+    if ((component.value?.filePath && path.endsWith(component.value?.filePath)) || (component.value?.componentPath && path.endsWith(component.value?.componentPath))) {
       await Promise.all([refreshMeta(), refreshExampleMeta()])
     }
+
+    // TODO: Is this still needed?
+    // if (watchMode.value) {
+    //   const updatedComponent = components.value?.find(c => c.filePath === path)
+    //   if (updatedComponent) {
+    //     const componentsToTest = [updatedComponent, ...(updatedComponent?.examples ?? [])]
+    //     await runTests(componentsToTest)
+    //   }
+    // }
   })
 
   hooks.hook('component:removed', useDebounceFn(async () => {
@@ -197,6 +205,7 @@ const tabs = computed(() => {
   return [
     { label: 'Props', slot: 'props', icon: 'lucide:settings' },
     { label: 'Events', slot: 'events', icon: 'lucide:chart-no-axes-gantt' },
+    { label: 'Tests', slot: 'tests', icon: 'lucide:flask-conical' },
     { label: 'Code', slot: 'code', icon: 'lucide:code' }
   ]
 })
@@ -207,12 +216,19 @@ const tabs = computed(() => {
     ref="container"
     class="relative flex w-screen h-screen"
   >
-    <ComponentCollectionMenu
-      v-if="collections?.length"
-      v-model="component"
-      :collections="collections"
-      class="pt-1 border-r border-default hidden xl:block xl:w-xs overflow-y-scroll"
-    />
+    <div class="hidden xl:flex xl:w-xs h-full flex-col justify-between pt-1 border-r border-default bg-elevated/50">
+      <ComponentCollectionMenu
+        v-if="collections?.length"
+        v-model="component"
+        :collections="collections"
+        class="overflow-y-scroll"
+      />
+
+      <TestMenu
+        v-if="collections?.length"
+        class="bg-elevated mx-2 mb-2 rounded"
+      />
+    </div>
 
     <div class="grow relative">
       <div class="grid grid-cols-3 absolute inset-x-0 p-2 z-1">
@@ -225,7 +241,7 @@ const tabs = computed(() => {
         </div>
 
         <div class="flex justify-center items-center">
-          <ComboInput
+          <ComboInputMenu
             v-if="comboItems?.length"
             v-model="comboProps"
             :items="comboItems"
@@ -319,7 +335,7 @@ const tabs = computed(() => {
         :ui="{ content: 'grow relative overflow-y-scroll' }"
       >
         <template #props>
-          <ComponentProps
+          <ComponentPropsTab
             v-model="props"
             :meta="componentMeta"
             :disabled="combo"
@@ -332,11 +348,18 @@ const tabs = computed(() => {
         </template>
 
         <template #events>
-          <ComponentEvents :events="events" />
+          <ComponentEventsTab :events="events" />
+        </template>
+
+        <template #tests>
+          <ComponentTestsTab
+            :key="component?.pascalName"
+            :component="component"
+          />
         </template>
 
         <template #code>
-          <ComponentCode
+          <ComponentCodeTab
             :component="component"
             :props="props"
             :default-props="defaultProps"

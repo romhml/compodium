@@ -8,6 +8,7 @@ export function examplePlugin(options: PluginOptions): VitePlugin {
 
   return {
     name: 'compodium:examples',
+    enforce: 'pre',
     apply: 'serve',
 
     configResolved(viteConfig) {

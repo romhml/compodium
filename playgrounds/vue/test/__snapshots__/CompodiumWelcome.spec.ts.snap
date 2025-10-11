@@ -1,0 +1,18 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Components > CompodiumWelcomeExample > snapshot 1`] = `
+"<div data-v-b59470c5="" class="data-[spin=true]:animate-spin data-[bounce=true]:animate-bounce" data-spin="false" data-bounce="true">
+  <div data-v-b59470c5="" class="border border-default p-4 rounded-lg w-sm">
+    <p data-v-b59470c5="" class="text-center font-bold mb-4">Welcome!</p><button type="button" data-testid="go-to-compodium" class="rounded-md font-medium inline-flex items-center disabled:cursor-not-allowed aria-disabled:cursor-not-allowed disabled:opacity-75 aria-disabled:opacity-75 transition-colors px-2.5 py-1.5 text-sm gap-1.5 w-full justify-center text-default hover:bg-elevated active:bg-elevated focus:outline-none focus-visible:bg-elevated hover:disabled:bg-transparent dark:hover:disabled:bg-transparent hover:aria-disabled:bg-transparent dark:hover:aria-disabled:bg-transparent"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 16 16" class="shrink-0 size-5"></svg> Go to Compodium
+      <!--v-if-->
+    </button>
+    <div data-v-b59470c5="" data-orientation="horizontal" role="separator" class="flex items-center align-center text-center w-full flex-row">
+      <div class="border-default w-full border-solid border-t"></div>
+      <div class="font-medium text-default flex mx-3 whitespace-nowrap"><span class="text-sm">or</span></div>
+      <div class="border-default w-full border-solid border-t"></div>
+    </div><button type="button" disabled="" data-testid="open-devtools" class="rounded-md font-medium inline-flex items-center disabled:cursor-not-allowed aria-disabled:cursor-not-allowed disabled:opacity-75 aria-disabled:opacity-75 transition-colors px-2.5 py-1.5 text-sm gap-1.5 w-full justify-center text-success hover:bg-success/10 active:bg-success/10 focus:outline-none focus-visible:bg-success/10 disabled:bg-transparent aria-disabled:bg-transparent dark:disabled:bg-transparent dark:aria-disabled:bg-transparent"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 16 16" class="shrink-0 size-5"></svg> Open in Vue Devtools
+      <!--v-if-->
+    </button>
+  </div>
+</div>"
+`;

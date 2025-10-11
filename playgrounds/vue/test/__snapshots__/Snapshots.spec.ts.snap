@@ -1,0 +1,1076 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Components > CompodiumWelcomeExample > snapshot 1`] = `
+"<div data-v-b59470c5="" class="data-[spin=true]:animate-spin data-[bounce=true]:animate-bounce" data-spin="false" data-bounce="true">
+  <div data-v-b59470c5="" class="border border-default p-4 rounded-lg w-sm">
+    <p data-v-b59470c5="" class="text-center font-bold mb-4">Welcome!</p><button type="button" data-testid="go-to-compodium" class="rounded-md font-medium inline-flex items-center disabled:cursor-not-allowed aria-disabled:cursor-not-allowed disabled:opacity-75 aria-disabled:opacity-75 transition-colors px-2.5 py-1.5 text-sm gap-1.5 w-full justify-center text-default hover:bg-elevated active:bg-elevated focus:outline-none focus-visible:bg-elevated hover:disabled:bg-transparent dark:hover:disabled:bg-transparent hover:aria-disabled:bg-transparent dark:hover:aria-disabled:bg-transparent"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 16 16" class="shrink-0 size-5"></svg> Go to Compodium
+      <!--v-if-->
+    </button>
+    <div data-v-b59470c5="" data-orientation="horizontal" role="separator" class="flex items-center align-center text-center w-full flex-row">
+      <div class="border-default w-full border-solid border-t"></div>
+      <div class="font-medium text-default flex mx-3 whitespace-nowrap"><span class="text-sm">or</span></div>
+      <div class="border-default w-full border-solid border-t"></div>
+    </div><button type="button" disabled="" data-testid="open-devtools" class="rounded-md font-medium inline-flex items-center disabled:cursor-not-allowed aria-disabled:cursor-not-allowed disabled:opacity-75 aria-disabled:opacity-75 transition-colors px-2.5 py-1.5 text-sm gap-1.5 w-full justify-center text-success hover:bg-success/10 active:bg-success/10 focus:outline-none focus-visible:bg-success/10 disabled:bg-transparent aria-disabled:bg-transparent dark:disabled:bg-transparent dark:aria-disabled:bg-transparent"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 16 16" class="shrink-0 size-5"></svg> Open in Vue Devtools
+      <!--v-if-->
+    </button>
+  </div>
+</div>"
+`;
+
+exports[`Components > SupportedProps > snapshot 1`] = `"<p>Supported prop types</p>"`;
+
+exports[`Nuxt UI > UAccordionExample > snapshot 1`] = `
+"<div class="w-96"></div>
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > UAlertExample > snapshot 1`] = `
+"<div data-orientation="vertical" class="relative overflow-hidden rounded-lg p-4 flex gap-2.5 items-start bg-primary text-inverted w-60">
+  <!--v-if-->
+  <div class="min-w-0 flex-1 flex flex-col">
+    <!--v-if-->
+    <!--v-if-->
+    <!--v-if-->
+  </div>
+  <!--v-if-->
+</div>
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > UAuthFormExample > snapshot 1`] = `
+"<div class="w-full space-y-6 max-w-md">
+  <!--v-if-->
+  <div class="gap-y-6 flex flex-col">
+    <!--v-if-->
+    <!--v-if-->
+    <!--v-if-->
+  </div>
+  <!--v-if-->
+</div>
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > UAvatarExample > snapshot 1`] = `
+"<span class="inline-flex items-center justify-center shrink-0 select-none rounded-full align-middle bg-elevated size-8 text-base"><span class="font-medium leading-none text-muted truncate">&nbsp;</span></span>
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > UAvatarGroupExample > snapshot 1`] = `
+"<div class="inline-flex flex-row-reverse justify-end">
+  <!--v-if--><span class="inline-flex items-center justify-center shrink-0 select-none align-middle bg-elevated size-8 text-base relative rounded-full ring-bg first:me-0 ring-2 -me-1.5"><img src="https://github.com/noook.png" alt="Neil Richter" width="32" height="32" class="h-full w-full rounded-[inherit] object-cover"></span><span class="inline-flex items-center justify-center shrink-0 select-none align-middle bg-elevated size-8 text-base relative rounded-full ring-bg first:me-0 ring-2 -me-1.5"><img src="https://github.com/romhml.png" alt="Romain Hamel" width="32" height="32" class="h-full w-full rounded-[inherit] object-cover"></span><span class="inline-flex items-center justify-center shrink-0 select-none align-middle bg-elevated size-8 text-base relative rounded-full ring-bg first:me-0 ring-2 -me-1.5"><img src="https://github.com/benjamincanac.png" alt="Benjamin Canac" width="32" height="32" class="h-full w-full rounded-[inherit] object-cover"></span>
+</div>
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > UBadgeExample > snapshot 1`] = `
+"<span class="font-medium inline-flex items-center text-xs gap-1 rounded-md bg-primary text-inverted p-1"><!--v-if--><!--v-if--><!--v-if--></span>
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > UBlogPostExample > snapshot 1`] = `
+"<article data-orientation="vertical" class="relative group/blog-post rounded-lg overflow-hidden flex flex-col bg-default ring ring-default">
+  <!--v-if-->
+  <div class="min-w-0 flex-1 flex flex-col p-4 sm:p-6">
+    <!--v-if-->
+    <!--v-if-->
+    <!--v-if-->
+    <!--v-if-->
+    <!--v-if-->
+  </div>
+  <!--v-if-->
+</article>
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > UBlogPostsExample > snapshot 1`] = `
+"<div data-orientation="horizontal" class="flex flex-col gap-8 lg:gap-y-16 sm:grid sm:grid-cols-2 lg:grid-cols-3"></div>
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > UBreadcrumbExample > snapshot 1`] = `
+"<nav aria-label="breadcrumb" class="relative min-w-0">
+  <ol class="flex items-center gap-1.5"></ol>
+</nav>
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > UButtonExample > snapshot 1`] = `
+"<button type="button" class="rounded-md font-medium inline-flex items-center disabled:cursor-not-allowed aria-disabled:cursor-not-allowed disabled:opacity-75 aria-disabled:opacity-75 transition-colors text-sm gap-1.5 text-inverted bg-primary hover:bg-primary/75 active:bg-primary/75 disabled:bg-primary aria-disabled:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary p-1.5"></button>
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > UCalendarExample > snapshot 1`] = `
+"<div role="application" aria-label="Event Date, October 2025" dir="ltr">
+  <div class="flex items-center justify-between"><button type="button" aria-label="Previous year" class="rounded-md font-medium inline-flex items-center disabled:cursor-not-allowed aria-disabled:cursor-not-allowed disabled:opacity-75 aria-disabled:opacity-75 transition-colors text-sm gap-1.5 text-default hover:bg-elevated active:bg-elevated focus:outline-none focus-visible:bg-elevated hover:disabled:bg-transparent dark:hover:disabled:bg-transparent hover:aria-disabled:bg-transparent dark:hover:aria-disabled:bg-transparent p-1.5"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 16 16" class="shrink-0 size-5"></svg>
+      <!--v-if-->
+      <!--v-if-->
+    </button><button type="button" aria-label="Previous month" class="rounded-md font-medium inline-flex items-center disabled:cursor-not-allowed aria-disabled:cursor-not-allowed disabled:opacity-75 aria-disabled:opacity-75 transition-colors text-sm gap-1.5 text-default hover:bg-elevated active:bg-elevated focus:outline-none focus-visible:bg-elevated hover:disabled:bg-transparent dark:hover:disabled:bg-transparent hover:aria-disabled:bg-transparent dark:hover:aria-disabled:bg-transparent p-1.5"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 16 16" class="shrink-0 size-5"></svg>
+      <!--v-if-->
+      <!--v-if-->
+    </button>
+    <div class="text-center font-medium truncate mx-auto text-sm">October 2025</div><button type="button" aria-label="Next month" class="rounded-md font-medium inline-flex items-center disabled:cursor-not-allowed aria-disabled:cursor-not-allowed disabled:opacity-75 aria-disabled:opacity-75 transition-colors text-sm gap-1.5 text-default hover:bg-elevated active:bg-elevated focus:outline-none focus-visible:bg-elevated hover:disabled:bg-transparent dark:hover:disabled:bg-transparent hover:aria-disabled:bg-transparent dark:hover:aria-disabled:bg-transparent p-1.5"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 16 16" class="shrink-0 size-5"></svg>
+      <!--v-if-->
+      <!--v-if-->
+    </button><button type="button" aria-label="Next year" class="rounded-md font-medium inline-flex items-center disabled:cursor-not-allowed aria-disabled:cursor-not-allowed disabled:opacity-75 aria-disabled:opacity-75 transition-colors text-sm gap-1.5 text-default hover:bg-elevated active:bg-elevated focus:outline-none focus-visible:bg-elevated hover:disabled:bg-transparent dark:hover:disabled:bg-transparent hover:aria-disabled:bg-transparent dark:hover:aria-disabled:bg-transparent p-1.5"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 16 16" class="shrink-0 size-5"></svg>
+      <!--v-if-->
+      <!--v-if-->
+    </button>
+  </div>
+  <div class="flex flex-col space-y-4 pt-4 sm:flex-row sm:space-x-4 sm:space-y-0">
+    <table tabindex="-1" role="grid" class="w-full border-collapse select-none space-y-1 focus:outline-none">
+      <thead aria-hidden="true">
+        <tr class="mb-1 grid w-full grid-cols-7">
+          <th class="rounded-md text-primary text-xs">S</th>
+          <th class="rounded-md text-primary text-xs">M</th>
+          <th class="rounded-md text-primary text-xs">T</th>
+          <th class="rounded-md text-primary text-xs">W</th>
+          <th class="rounded-md text-primary text-xs">T</th>
+          <th class="rounded-md text-primary text-xs">F</th>
+          <th class="rounded-md text-primary text-xs">S</th>
+        </tr>
+      </thead>
+      <tbody class="grid">
+        <tr class="grid grid-cols-7 place-items-center">
+          <td role="gridcell" aria-disabled="false" class="relative text-center text-sm">
+            <div day="2025-09-28" month="2025-10-11" role="button" aria-label="Sunday, September 28, 2025" data-reka-calendar-cell-trigger="" data-value="2025-09-28" data-outside-view="" data-outside-visible-view="" class="m-0.5 relative flex items-center justify-center rounded-full whitespace-nowrap focus-visible:ring-2 focus:outline-none data-disabled:text-muted data-unavailable:line-through data-unavailable:text-muted data-unavailable:pointer-events-none data-[selected]:text-inverted data-today:font-semibold data-[outside-view]:text-muted transition focus-visible:ring-primary data-[selected]:bg-primary data-today:not-data-[selected]:text-primary data-[highlighted]:bg-primary/20 hover:not-data-[selected]:bg-primary/20 size-8">28</div>
+          </td>
+          <td role="gridcell" aria-disabled="false" class="relative text-center text-sm">
+            <div day="2025-09-29" month="2025-10-11" role="button" aria-label="Monday, September 29, 2025" data-reka-calendar-cell-trigger="" data-value="2025-09-29" data-outside-view="" data-outside-visible-view="" class="m-0.5 relative flex items-center justify-center rounded-full whitespace-nowrap focus-visible:ring-2 focus:outline-none data-disabled:text-muted data-unavailable:line-through data-unavailable:text-muted data-unavailable:pointer-events-none data-[selected]:text-inverted data-today:font-semibold data-[outside-view]:text-muted transition focus-visible:ring-primary data-[selected]:bg-primary data-today:not-data-[selected]:text-primary data-[highlighted]:bg-primary/20 hover:not-data-[selected]:bg-primary/20 size-8">29</div>
+          </td>
+          <td role="gridcell" aria-disabled="false" class="relative text-center text-sm">
+            <div day="2025-09-30" month="2025-10-11" role="button" aria-label="Tuesday, September 30, 2025" data-reka-calendar-cell-trigger="" data-value="2025-09-30" data-outside-view="" data-outside-visible-view="" class="m-0.5 relative flex items-center justify-center rounded-full whitespace-nowrap focus-visible:ring-2 focus:outline-none data-disabled:text-muted data-unavailable:line-through data-unavailable:text-muted data-unavailable:pointer-events-none data-[selected]:text-inverted data-today:font-semibold data-[outside-view]:text-muted transition focus-visible:ring-primary data-[selected]:bg-primary data-today:not-data-[selected]:text-primary data-[highlighted]:bg-primary/20 hover:not-data-[selected]:bg-primary/20 size-8">30</div>
+          </td>
+          <td role="gridcell" aria-disabled="false" class="relative text-center text-sm">
+            <div day="2025-10-01" month="2025-10-11" role="button" aria-label="Wednesday, October 1, 2025" data-reka-calendar-cell-trigger="" data-value="2025-10-01" tabindex="-1" class="m-0.5 relative flex items-center justify-center rounded-full whitespace-nowrap focus-visible:ring-2 focus:outline-none data-disabled:text-muted data-unavailable:line-through data-unavailable:text-muted data-unavailable:pointer-events-none data-[selected]:text-inverted data-today:font-semibold data-[outside-view]:text-muted transition focus-visible:ring-primary data-[selected]:bg-primary data-today:not-data-[selected]:text-primary data-[highlighted]:bg-primary/20 hover:not-data-[selected]:bg-primary/20 size-8">1</div>
+          </td>
+          <td role="gridcell" aria-disabled="false" class="relative text-center text-sm">
+            <div day="2025-10-02" month="2025-10-11" role="button" aria-label="Thursday, October 2, 2025" data-reka-calendar-cell-trigger="" data-value="2025-10-02" tabindex="-1" class="m-0.5 relative flex items-center justify-center rounded-full whitespace-nowrap focus-visible:ring-2 focus:outline-none data-disabled:text-muted data-unavailable:line-through data-unavailable:text-muted data-unavailable:pointer-events-none data-[selected]:text-inverted data-today:font-semibold data-[outside-view]:text-muted transition focus-visible:ring-primary data-[selected]:bg-primary data-today:not-data-[selected]:text-primary data-[highlighted]:bg-primary/20 hover:not-data-[selected]:bg-primary/20 size-8">2</div>
+          </td>
+          <td role="gridcell" aria-disabled="false" class="relative text-center text-sm">
+            <div day="2025-10-03" month="2025-10-11" role="button" aria-label="Friday, October 3, 2025" data-reka-calendar-cell-trigger="" data-value="2025-10-03" tabindex="-1" class="m-0.5 relative flex items-center justify-center rounded-full whitespace-nowrap focus-visible:ring-2 focus:outline-none data-disabled:text-muted data-unavailable:line-through data-unavailable:text-muted data-unavailable:pointer-events-none data-[selected]:text-inverted data-today:font-semibold data-[outside-view]:text-muted transition focus-visible:ring-primary data-[selected]:bg-primary data-today:not-data-[selected]:text-primary data-[highlighted]:bg-primary/20 hover:not-data-[selected]:bg-primary/20 size-8">3</div>
+          </td>
+          <td role="gridcell" aria-disabled="false" class="relative text-center text-sm">
+            <div day="2025-10-04" month="2025-10-11" role="button" aria-label="Saturday, October 4, 2025" data-reka-calendar-cell-trigger="" data-value="2025-10-04" tabindex="-1" class="m-0.5 relative flex items-center justify-center rounded-full whitespace-nowrap focus-visible:ring-2 focus:outline-none data-disabled:text-muted data-unavailable:line-through data-unavailable:text-muted data-unavailable:pointer-events-none data-[selected]:text-inverted data-today:font-semibold data-[outside-view]:text-muted transition focus-visible:ring-primary data-[selected]:bg-primary data-today:not-data-[selected]:text-primary data-[highlighted]:bg-primary/20 hover:not-data-[selected]:bg-primary/20 size-8">4</div>
+          </td>
+        </tr>
+        <tr class="grid grid-cols-7 place-items-center">
+          <td role="gridcell" aria-disabled="false" class="relative text-center text-sm">
+            <div day="2025-10-05" month="2025-10-11" role="button" aria-label="Sunday, October 5, 2025" data-reka-calendar-cell-trigger="" data-value="2025-10-05" tabindex="-1" class="m-0.5 relative flex items-center justify-center rounded-full whitespace-nowrap focus-visible:ring-2 focus:outline-none data-disabled:text-muted data-unavailable:line-through data-unavailable:text-muted data-unavailable:pointer-events-none data-[selected]:text-inverted data-today:font-semibold data-[outside-view]:text-muted transition focus-visible:ring-primary data-[selected]:bg-primary data-today:not-data-[selected]:text-primary data-[highlighted]:bg-primary/20 hover:not-data-[selected]:bg-primary/20 size-8">5</div>
+          </td>
+          <td role="gridcell" aria-disabled="false" class="relative text-center text-sm">
+            <div day="2025-10-06" month="2025-10-11" role="button" aria-label="Monday, October 6, 2025" data-reka-calendar-cell-trigger="" data-value="2025-10-06" tabindex="-1" class="m-0.5 relative flex items-center justify-center rounded-full whitespace-nowrap focus-visible:ring-2 focus:outline-none data-disabled:text-muted data-unavailable:line-through data-unavailable:text-muted data-unavailable:pointer-events-none data-[selected]:text-inverted data-today:font-semibold data-[outside-view]:text-muted transition focus-visible:ring-primary data-[selected]:bg-primary data-today:not-data-[selected]:text-primary data-[highlighted]:bg-primary/20 hover:not-data-[selected]:bg-primary/20 size-8">6</div>
+          </td>
+          <td role="gridcell" aria-disabled="false" class="relative text-center text-sm">
+            <div day="2025-10-07" month="2025-10-11" role="button" aria-label="Tuesday, October 7, 2025" data-reka-calendar-cell-trigger="" data-value="2025-10-07" tabindex="-1" class="m-0.5 relative flex items-center justify-center rounded-full whitespace-nowrap focus-visible:ring-2 focus:outline-none data-disabled:text-muted data-unavailable:line-through data-unavailable:text-muted data-unavailable:pointer-events-none data-[selected]:text-inverted data-today:font-semibold data-[outside-view]:text-muted transition focus-visible:ring-primary data-[selected]:bg-primary data-today:not-data-[selected]:text-primary data-[highlighted]:bg-primary/20 hover:not-data-[selected]:bg-primary/20 size-8">7</div>
+          </td>
+          <td role="gridcell" aria-disabled="false" class="relative text-center text-sm">
+            <div day="2025-10-08" month="2025-10-11" role="button" aria-label="Wednesday, October 8, 2025" data-reka-calendar-cell-trigger="" data-value="2025-10-08" tabindex="-1" class="m-0.5 relative flex items-center justify-center rounded-full whitespace-nowrap focus-visible:ring-2 focus:outline-none data-disabled:text-muted data-unavailable:line-through data-unavailable:text-muted data-unavailable:pointer-events-none data-[selected]:text-inverted data-today:font-semibold data-[outside-view]:text-muted transition focus-visible:ring-primary data-[selected]:bg-primary data-today:not-data-[selected]:text-primary data-[highlighted]:bg-primary/20 hover:not-data-[selected]:bg-primary/20 size-8">8</div>
+          </td>
+          <td role="gridcell" aria-disabled="false" class="relative text-center text-sm">
+            <div day="2025-10-09" month="2025-10-11" role="button" aria-label="Thursday, October 9, 2025" data-reka-calendar-cell-trigger="" data-value="2025-10-09" tabindex="-1" class="m-0.5 relative flex items-center justify-center rounded-full whitespace-nowrap focus-visible:ring-2 focus:outline-none data-disabled:text-muted data-unavailable:line-through data-unavailable:text-muted data-unavailable:pointer-events-none data-[selected]:text-inverted data-today:font-semibold data-[outside-view]:text-muted transition focus-visible:ring-primary data-[selected]:bg-primary data-today:not-data-[selected]:text-primary data-[highlighted]:bg-primary/20 hover:not-data-[selected]:bg-primary/20 size-8">9</div>
+          </td>
+          <td role="gridcell" aria-disabled="false" class="relative text-center text-sm">
+            <div day="2025-10-10" month="2025-10-11" role="button" aria-label="Friday, October 10, 2025" data-reka-calendar-cell-trigger="" data-value="2025-10-10" tabindex="-1" class="m-0.5 relative flex items-center justify-center rounded-full whitespace-nowrap focus-visible:ring-2 focus:outline-none data-disabled:text-muted data-unavailable:line-through data-unavailable:text-muted data-unavailable:pointer-events-none data-[selected]:text-inverted data-today:font-semibold data-[outside-view]:text-muted transition focus-visible:ring-primary data-[selected]:bg-primary data-today:not-data-[selected]:text-primary data-[highlighted]:bg-primary/20 hover:not-data-[selected]:bg-primary/20 size-8">10</div>
+          </td>
+          <td role="gridcell" aria-disabled="false" class="relative text-center text-sm">
+            <div day="2025-10-11" month="2025-10-11" role="button" aria-label="Saturday, October 11, 2025" data-reka-calendar-cell-trigger="" data-value="2025-10-11" data-today="" data-focused="" tabindex="0" class="m-0.5 relative flex items-center justify-center rounded-full whitespace-nowrap focus-visible:ring-2 focus:outline-none data-disabled:text-muted data-unavailable:line-through data-unavailable:text-muted data-unavailable:pointer-events-none data-[selected]:text-inverted data-today:font-semibold data-[outside-view]:text-muted transition focus-visible:ring-primary data-[selected]:bg-primary data-today:not-data-[selected]:text-primary data-[highlighted]:bg-primary/20 hover:not-data-[selected]:bg-primary/20 size-8">11</div>
+          </td>
+        </tr>
+        <tr class="grid grid-cols-7 place-items-center">
+          <td role="gridcell" aria-disabled="false" class="relative text-center text-sm">
+            <div day="2025-10-12" month="2025-10-11" role="button" aria-label="Sunday, October 12, 2025" data-reka-calendar-cell-trigger="" data-value="2025-10-12" tabindex="-1" class="m-0.5 relative flex items-center justify-center rounded-full whitespace-nowrap focus-visible:ring-2 focus:outline-none data-disabled:text-muted data-unavailable:line-through data-unavailable:text-muted data-unavailable:pointer-events-none data-[selected]:text-inverted data-today:font-semibold data-[outside-view]:text-muted transition focus-visible:ring-primary data-[selected]:bg-primary data-today:not-data-[selected]:text-primary data-[highlighted]:bg-primary/20 hover:not-data-[selected]:bg-primary/20 size-8">12</div>
+          </td>
+          <td role="gridcell" aria-disabled="false" class="relative text-center text-sm">
+            <div day="2025-10-13" month="2025-10-11" role="button" aria-label="Monday, October 13, 2025" data-reka-calendar-cell-trigger="" data-value="2025-10-13" tabindex="-1" class="m-0.5 relative flex items-center justify-center rounded-full whitespace-nowrap focus-visible:ring-2 focus:outline-none data-disabled:text-muted data-unavailable:line-through data-unavailable:text-muted data-unavailable:pointer-events-none data-[selected]:text-inverted data-today:font-semibold data-[outside-view]:text-muted transition focus-visible:ring-primary data-[selected]:bg-primary data-today:not-data-[selected]:text-primary data-[highlighted]:bg-primary/20 hover:not-data-[selected]:bg-primary/20 size-8">13</div>
+          </td>
+          <td role="gridcell" aria-disabled="false" class="relative text-center text-sm">
+            <div day="2025-10-14" month="2025-10-11" role="button" aria-label="Tuesday, October 14, 2025" data-reka-calendar-cell-trigger="" data-value="2025-10-14" tabindex="-1" class="m-0.5 relative flex items-center justify-center rounded-full whitespace-nowrap focus-visible:ring-2 focus:outline-none data-disabled:text-muted data-unavailable:line-through data-unavailable:text-muted data-unavailable:pointer-events-none data-[selected]:text-inverted data-today:font-semibold data-[outside-view]:text-muted transition focus-visible:ring-primary data-[selected]:bg-primary data-today:not-data-[selected]:text-primary data-[highlighted]:bg-primary/20 hover:not-data-[selected]:bg-primary/20 size-8">14</div>
+          </td>
+          <td role="gridcell" aria-disabled="false" class="relative text-center text-sm">
+            <div day="2025-10-15" month="2025-10-11" role="button" aria-label="Wednesday, October 15, 2025" data-reka-calendar-cell-trigger="" data-value="2025-10-15" tabindex="-1" class="m-0.5 relative flex items-center justify-center rounded-full whitespace-nowrap focus-visible:ring-2 focus:outline-none data-disabled:text-muted data-unavailable:line-through data-unavailable:text-muted data-unavailable:pointer-events-none data-[selected]:text-inverted data-today:font-semibold data-[outside-view]:text-muted transition focus-visible:ring-primary data-[selected]:bg-primary data-today:not-data-[selected]:text-primary data-[highlighted]:bg-primary/20 hover:not-data-[selected]:bg-primary/20 size-8">15</div>
+          </td>
+          <td role="gridcell" aria-disabled="false" class="relative text-center text-sm">
+            <div day="2025-10-16" month="2025-10-11" role="button" aria-label="Thursday, October 16, 2025" data-reka-calendar-cell-trigger="" data-value="2025-10-16" tabindex="-1" class="m-0.5 relative flex items-center justify-center rounded-full whitespace-nowrap focus-visible:ring-2 focus:outline-none data-disabled:text-muted data-unavailable:line-through data-unavailable:text-muted data-unavailable:pointer-events-none data-[selected]:text-inverted data-today:font-semibold data-[outside-view]:text-muted transition focus-visible:ring-primary data-[selected]:bg-primary data-today:not-data-[selected]:text-primary data-[highlighted]:bg-primary/20 hover:not-data-[selected]:bg-primary/20 size-8">16</div>
+          </td>
+          <td role="gridcell" aria-disabled="false" class="relative text-center text-sm">
+            <div day="2025-10-17" month="2025-10-11" role="button" aria-label="Friday, October 17, 2025" data-reka-calendar-cell-trigger="" data-value="2025-10-17" tabindex="-1" class="m-0.5 relative flex items-center justify-center rounded-full whitespace-nowrap focus-visible:ring-2 focus:outline-none data-disabled:text-muted data-unavailable:line-through data-unavailable:text-muted data-unavailable:pointer-events-none data-[selected]:text-inverted data-today:font-semibold data-[outside-view]:text-muted transition focus-visible:ring-primary data-[selected]:bg-primary data-today:not-data-[selected]:text-primary data-[highlighted]:bg-primary/20 hover:not-data-[selected]:bg-primary/20 size-8">17</div>
+          </td>
+          <td role="gridcell" aria-disabled="false" class="relative text-center text-sm">
+            <div day="2025-10-18" month="2025-10-11" role="button" aria-label="Saturday, October 18, 2025" data-reka-calendar-cell-trigger="" data-value="2025-10-18" tabindex="-1" class="m-0.5 relative flex items-center justify-center rounded-full whitespace-nowrap focus-visible:ring-2 focus:outline-none data-disabled:text-muted data-unavailable:line-through data-unavailable:text-muted data-unavailable:pointer-events-none data-[selected]:text-inverted data-today:font-semibold data-[outside-view]:text-muted transition focus-visible:ring-primary data-[selected]:bg-primary data-today:not-data-[selected]:text-primary data-[highlighted]:bg-primary/20 hover:not-data-[selected]:bg-primary/20 size-8">18</div>
+          </td>
+        </tr>
+        <tr class="grid grid-cols-7 place-items-center">
+          <td role="gridcell" aria-disabled="false" class="relative text-center text-sm">
+            <div day="2025-10-19" month="2025-10-11" role="button" aria-label="Sunday, October 19, 2025" data-reka-calendar-cell-trigger="" data-value="2025-10-19" tabindex="-1" class="m-0.5 relative flex items-center justify-center rounded-full whitespace-nowrap focus-visible:ring-2 focus:outline-none data-disabled:text-muted data-unavailable:line-through data-unavailable:text-muted data-unavailable:pointer-events-none data-[selected]:text-inverted data-today:font-semibold data-[outside-view]:text-muted transition focus-visible:ring-primary data-[selected]:bg-primary data-today:not-data-[selected]:text-primary data-[highlighted]:bg-primary/20 hover:not-data-[selected]:bg-primary/20 size-8">19</div>
+          </td>
+          <td role="gridcell" aria-disabled="false" class="relative text-center text-sm">
+            <div day="2025-10-20" month="2025-10-11" role="button" aria-label="Monday, October 20, 2025" data-reka-calendar-cell-trigger="" data-value="2025-10-20" tabindex="-1" class="m-0.5 relative flex items-center justify-center rounded-full whitespace-nowrap focus-visible:ring-2 focus:outline-none data-disabled:text-muted data-unavailable:line-through data-unavailable:text-muted data-unavailable:pointer-events-none data-[selected]:text-inverted data-today:font-semibold data-[outside-view]:text-muted transition focus-visible:ring-primary data-[selected]:bg-primary data-today:not-data-[selected]:text-primary data-[highlighted]:bg-primary/20 hover:not-data-[selected]:bg-primary/20 size-8">20</div>
+          </td>
+          <td role="gridcell" aria-disabled="false" class="relative text-center text-sm">
+            <div day="2025-10-21" month="2025-10-11" role="button" aria-label="Tuesday, October 21, 2025" data-reka-calendar-cell-trigger="" data-value="2025-10-21" tabindex="-1" class="m-0.5 relative flex items-center justify-center rounded-full whitespace-nowrap focus-visible:ring-2 focus:outline-none data-disabled:text-muted data-unavailable:line-through data-unavailable:text-muted data-unavailable:pointer-events-none data-[selected]:text-inverted data-today:font-semibold data-[outside-view]:text-muted transition focus-visible:ring-primary data-[selected]:bg-primary data-today:not-data-[selected]:text-primary data-[highlighted]:bg-primary/20 hover:not-data-[selected]:bg-primary/20 size-8">21</div>
+          </td>
+          <td role="gridcell" aria-disabled="false" class="relative text-center text-sm">
+            <div day="2025-10-22" month="2025-10-11" role="button" aria-label="Wednesday, October 22, 2025" data-reka-calendar-cell-trigger="" data-value="2025-10-22" tabindex="-1" class="m-0.5 relative flex items-center justify-center rounded-full whitespace-nowrap focus-visible:ring-2 focus:outline-none data-disabled:text-muted data-unavailable:line-through data-unavailable:text-muted data-unavailable:pointer-events-none data-[selected]:text-inverted data-today:font-semibold data-[outside-view]:text-muted transition focus-visible:ring-primary data-[selected]:bg-primary data-today:not-data-[selected]:text-primary data-[highlighted]:bg-primary/20 hover:not-data-[selected]:bg-primary/20 size-8">22</div>
+          </td>
+          <td role="gridcell" aria-disabled="false" class="relative text-center text-sm">
+            <div day="2025-10-23" month="2025-10-11" role="button" aria-label="Thursday, October 23, 2025" data-reka-calendar-cell-trigger="" data-value="2025-10-23" tabindex="-1" class="m-0.5 relative flex items-center justify-center rounded-full whitespace-nowrap focus-visible:ring-2 focus:outline-none data-disabled:text-muted data-unavailable:line-through data-unavailable:text-muted data-unavailable:pointer-events-none data-[selected]:text-inverted data-today:font-semibold data-[outside-view]:text-muted transition focus-visible:ring-primary data-[selected]:bg-primary data-today:not-data-[selected]:text-primary data-[highlighted]:bg-primary/20 hover:not-data-[selected]:bg-primary/20 size-8">23</div>
+          </td>
+          <td role="gridcell" aria-disabled="false" class="relative text-center text-sm">
+            <div day="2025-10-24" month="2025-10-11" role="button" aria-label="Friday, October 24, 2025" data-reka-calendar-cell-trigger="" data-value="2025-10-24" tabindex="-1" class="m-0.5 relative flex items-center justify-center rounded-full whitespace-nowrap focus-visible:ring-2 focus:outline-none data-disabled:text-muted data-unavailable:line-through data-unavailable:text-muted data-unavailable:pointer-events-none data-[selected]:text-inverted data-today:font-semibold data-[outside-view]:text-muted transition focus-visible:ring-primary data-[selected]:bg-primary data-today:not-data-[selected]:text-primary data-[highlighted]:bg-primary/20 hover:not-data-[selected]:bg-primary/20 size-8">24</div>
+          </td>
+          <td role="gridcell" aria-disabled="false" class="relative text-center text-sm">
+            <div day="2025-10-25" month="2025-10-11" role="button" aria-label="Saturday, October 25, 2025" data-reka-calendar-cell-trigger="" data-value="2025-10-25" tabindex="-1" class="m-0.5 relative flex items-center justify-center rounded-full whitespace-nowrap focus-visible:ring-2 focus:outline-none data-disabled:text-muted data-unavailable:line-through data-unavailable:text-muted data-unavailable:pointer-events-none data-[selected]:text-inverted data-today:font-semibold data-[outside-view]:text-muted transition focus-visible:ring-primary data-[selected]:bg-primary data-today:not-data-[selected]:text-primary data-[highlighted]:bg-primary/20 hover:not-data-[selected]:bg-primary/20 size-8">25</div>
+          </td>
+        </tr>
+        <tr class="grid grid-cols-7 place-items-center">
+          <td role="gridcell" aria-disabled="false" class="relative text-center text-sm">
+            <div day="2025-10-26" month="2025-10-11" role="button" aria-label="Sunday, October 26, 2025" data-reka-calendar-cell-trigger="" data-value="2025-10-26" tabindex="-1" class="m-0.5 relative flex items-center justify-center rounded-full whitespace-nowrap focus-visible:ring-2 focus:outline-none data-disabled:text-muted data-unavailable:line-through data-unavailable:text-muted data-unavailable:pointer-events-none data-[selected]:text-inverted data-today:font-semibold data-[outside-view]:text-muted transition focus-visible:ring-primary data-[selected]:bg-primary data-today:not-data-[selected]:text-primary data-[highlighted]:bg-primary/20 hover:not-data-[selected]:bg-primary/20 size-8">26</div>
+          </td>
+          <td role="gridcell" aria-disabled="false" class="relative text-center text-sm">
+            <div day="2025-10-27" month="2025-10-11" role="button" aria-label="Monday, October 27, 2025" data-reka-calendar-cell-trigger="" data-value="2025-10-27" tabindex="-1" class="m-0.5 relative flex items-center justify-center rounded-full whitespace-nowrap focus-visible:ring-2 focus:outline-none data-disabled:text-muted data-unavailable:line-through data-unavailable:text-muted data-unavailable:pointer-events-none data-[selected]:text-inverted data-today:font-semibold data-[outside-view]:text-muted transition focus-visible:ring-primary data-[selected]:bg-primary data-today:not-data-[selected]:text-primary data-[highlighted]:bg-primary/20 hover:not-data-[selected]:bg-primary/20 size-8">27</div>
+          </td>
+          <td role="gridcell" aria-disabled="false" class="relative text-center text-sm">
+            <div day="2025-10-28" month="2025-10-11" role="button" aria-label="Tuesday, October 28, 2025" data-reka-calendar-cell-trigger="" data-value="2025-10-28" tabindex="-1" class="m-0.5 relative flex items-center justify-center rounded-full whitespace-nowrap focus-visible:ring-2 focus:outline-none data-disabled:text-muted data-unavailable:line-through data-unavailable:text-muted data-unavailable:pointer-events-none data-[selected]:text-inverted data-today:font-semibold data-[outside-view]:text-muted transition focus-visible:ring-primary data-[selected]:bg-primary data-today:not-data-[selected]:text-primary data-[highlighted]:bg-primary/20 hover:not-data-[selected]:bg-primary/20 size-8">28</div>
+          </td>
+          <td role="gridcell" aria-disabled="false" class="relative text-center text-sm">
+            <div day="2025-10-29" month="2025-10-11" role="button" aria-label="Wednesday, October 29, 2025" data-reka-calendar-cell-trigger="" data-value="2025-10-29" tabindex="-1" class="m-0.5 relative flex items-center justify-center rounded-full whitespace-nowrap focus-visible:ring-2 focus:outline-none data-disabled:text-muted data-unavailable:line-through data-unavailable:text-muted data-unavailable:pointer-events-none data-[selected]:text-inverted data-today:font-semibold data-[outside-view]:text-muted transition focus-visible:ring-primary data-[selected]:bg-primary data-today:not-data-[selected]:text-primary data-[highlighted]:bg-primary/20 hover:not-data-[selected]:bg-primary/20 size-8">29</div>
+          </td>
+          <td role="gridcell" aria-disabled="false" class="relative text-center text-sm">
+            <div day="2025-10-30" month="2025-10-11" role="button" aria-label="Thursday, October 30, 2025" data-reka-calendar-cell-trigger="" data-value="2025-10-30" tabindex="-1" class="m-0.5 relative flex items-center justify-center rounded-full whitespace-nowrap focus-visible:ring-2 focus:outline-none data-disabled:text-muted data-unavailable:line-through data-unavailable:text-muted data-unavailable:pointer-events-none data-[selected]:text-inverted data-today:font-semibold data-[outside-view]:text-muted transition focus-visible:ring-primary data-[selected]:bg-primary data-today:not-data-[selected]:text-primary data-[highlighted]:bg-primary/20 hover:not-data-[selected]:bg-primary/20 size-8">30</div>
+          </td>
+          <td role="gridcell" aria-disabled="false" class="relative text-center text-sm">
+            <div day="2025-10-31" month="2025-10-11" role="button" aria-label="Friday, October 31, 2025" data-reka-calendar-cell-trigger="" data-value="2025-10-31" tabindex="-1" class="m-0.5 relative flex items-center justify-center rounded-full whitespace-nowrap focus-visible:ring-2 focus:outline-none data-disabled:text-muted data-unavailable:line-through data-unavailable:text-muted data-unavailable:pointer-events-none data-[selected]:text-inverted data-today:font-semibold data-[outside-view]:text-muted transition focus-visible:ring-primary data-[selected]:bg-primary data-today:not-data-[selected]:text-primary data-[highlighted]:bg-primary/20 hover:not-data-[selected]:bg-primary/20 size-8">31</div>
+          </td>
+          <td role="gridcell" aria-disabled="false" class="relative text-center text-sm">
+            <div day="2025-11-01" month="2025-10-11" role="button" aria-label="Saturday, November 1, 2025" data-reka-calendar-cell-trigger="" data-value="2025-11-01" data-outside-view="" data-outside-visible-view="" class="m-0.5 relative flex items-center justify-center rounded-full whitespace-nowrap focus-visible:ring-2 focus:outline-none data-disabled:text-muted data-unavailable:line-through data-unavailable:text-muted data-unavailable:pointer-events-none data-[selected]:text-inverted data-today:font-semibold data-[outside-view]:text-muted transition focus-visible:ring-primary data-[selected]:bg-primary data-today:not-data-[selected]:text-primary data-[highlighted]:bg-primary/20 hover:not-data-[selected]:bg-primary/20 size-8">1</div>
+          </td>
+        </tr>
+        <tr class="grid grid-cols-7 place-items-center">
+          <td role="gridcell" aria-disabled="false" class="relative text-center text-sm">
+            <div day="2025-11-02" month="2025-10-11" role="button" aria-label="Sunday, November 2, 2025" data-reka-calendar-cell-trigger="" data-value="2025-11-02" data-outside-view="" data-outside-visible-view="" class="m-0.5 relative flex items-center justify-center rounded-full whitespace-nowrap focus-visible:ring-2 focus:outline-none data-disabled:text-muted data-unavailable:line-through data-unavailable:text-muted data-unavailable:pointer-events-none data-[selected]:text-inverted data-today:font-semibold data-[outside-view]:text-muted transition focus-visible:ring-primary data-[selected]:bg-primary data-today:not-data-[selected]:text-primary data-[highlighted]:bg-primary/20 hover:not-data-[selected]:bg-primary/20 size-8">2</div>
+          </td>
+          <td role="gridcell" aria-disabled="false" class="relative text-center text-sm">
+            <div day="2025-11-03" month="2025-10-11" role="button" aria-label="Monday, November 3, 2025" data-reka-calendar-cell-trigger="" data-value="2025-11-03" data-outside-view="" data-outside-visible-view="" class="m-0.5 relative flex items-center justify-center rounded-full whitespace-nowrap focus-visible:ring-2 focus:outline-none data-disabled:text-muted data-unavailable:line-through data-unavailable:text-muted data-unavailable:pointer-events-none data-[selected]:text-inverted data-today:font-semibold data-[outside-view]:text-muted transition focus-visible:ring-primary data-[selected]:bg-primary data-today:not-data-[selected]:text-primary data-[highlighted]:bg-primary/20 hover:not-data-[selected]:bg-primary/20 size-8">3</div>
+          </td>
+          <td role="gridcell" aria-disabled="false" class="relative text-center text-sm">
+            <div day="2025-11-04" month="2025-10-11" role="button" aria-label="Tuesday, November 4, 2025" data-reka-calendar-cell-trigger="" data-value="2025-11-04" data-outside-view="" data-outside-visible-view="" class="m-0.5 relative flex items-center justify-center rounded-full whitespace-nowrap focus-visible:ring-2 focus:outline-none data-disabled:text-muted data-unavailable:line-through data-unavailable:text-muted data-unavailable:pointer-events-none data-[selected]:text-inverted data-today:font-semibold data-[outside-view]:text-muted transition focus-visible:ring-primary data-[selected]:bg-primary data-today:not-data-[selected]:text-primary data-[highlighted]:bg-primary/20 hover:not-data-[selected]:bg-primary/20 size-8">4</div>
+          </td>
+          <td role="gridcell" aria-disabled="false" class="relative text-center text-sm">
+            <div day="2025-11-05" month="2025-10-11" role="button" aria-label="Wednesday, November 5, 2025" data-reka-calendar-cell-trigger="" data-value="2025-11-05" data-outside-view="" data-outside-visible-view="" class="m-0.5 relative flex items-center justify-center rounded-full whitespace-nowrap focus-visible:ring-2 focus:outline-none data-disabled:text-muted data-unavailable:line-through data-unavailable:text-muted data-unavailable:pointer-events-none data-[selected]:text-inverted data-today:font-semibold data-[outside-view]:text-muted transition focus-visible:ring-primary data-[selected]:bg-primary data-today:not-data-[selected]:text-primary data-[highlighted]:bg-primary/20 hover:not-data-[selected]:bg-primary/20 size-8">5</div>
+          </td>
+          <td role="gridcell" aria-disabled="false" class="relative text-center text-sm">
+            <div day="2025-11-06" month="2025-10-11" role="button" aria-label="Thursday, November 6, 2025" data-reka-calendar-cell-trigger="" data-value="2025-11-06" data-outside-view="" data-outside-visible-view="" class="m-0.5 relative flex items-center justify-center rounded-full whitespace-nowrap focus-visible:ring-2 focus:outline-none data-disabled:text-muted data-unavailable:line-through data-unavailable:text-muted data-unavailable:pointer-events-none data-[selected]:text-inverted data-today:font-semibold data-[outside-view]:text-muted transition focus-visible:ring-primary data-[selected]:bg-primary data-today:not-data-[selected]:text-primary data-[highlighted]:bg-primary/20 hover:not-data-[selected]:bg-primary/20 size-8">6</div>
+          </td>
+          <td role="gridcell" aria-disabled="false" class="relative text-center text-sm">
+            <div day="2025-11-07" month="2025-10-11" role="button" aria-label="Friday, November 7, 2025" data-reka-calendar-cell-trigger="" data-value="2025-11-07" data-outside-view="" data-outside-visible-view="" class="m-0.5 relative flex items-center justify-center rounded-full whitespace-nowrap focus-visible:ring-2 focus:outline-none data-disabled:text-muted data-unavailable:line-through data-unavailable:text-muted data-unavailable:pointer-events-none data-[selected]:text-inverted data-today:font-semibold data-[outside-view]:text-muted transition focus-visible:ring-primary data-[selected]:bg-primary data-today:not-data-[selected]:text-primary data-[highlighted]:bg-primary/20 hover:not-data-[selected]:bg-primary/20 size-8">7</div>
+          </td>
+          <td role="gridcell" aria-disabled="false" class="relative text-center text-sm">
+            <div day="2025-11-08" month="2025-10-11" role="button" aria-label="Saturday, November 8, 2025" data-reka-calendar-cell-trigger="" data-value="2025-11-08" data-outside-view="" data-outside-visible-view="" class="m-0.5 relative flex items-center justify-center rounded-full whitespace-nowrap focus-visible:ring-2 focus:outline-none data-disabled:text-muted data-unavailable:line-through data-unavailable:text-muted data-unavailable:pointer-events-none data-[selected]:text-inverted data-today:font-semibold data-[outside-view]:text-muted transition focus-visible:ring-primary data-[selected]:bg-primary data-today:not-data-[selected]:text-primary data-[highlighted]:bg-primary/20 hover:not-data-[selected]:bg-primary/20 size-8">8</div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div style="border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; white-space: nowrap; width: 1px;">
+    <div role="heading" aria-level="2">Event Date, October 2025</div>
+  </div>
+</div>
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > UCardExample > snapshot 1`] = `
+"<div class="rounded-lg overflow-hidden bg-default ring ring-default divide-y divide-default w-96">
+  <!--v-if-->
+  <div class="p-4 sm:p-6">
+    <div class="placeholder h-32"></div>
+  </div>
+  <!--v-if-->
+</div>
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > UCarouselExample > snapshot 1`] = `
+"<div role="region" aria-roledescription="carousel" data-orientation="horizontal" tabindex="0" class="relative focus:outline-none w-xs h-xs">
+  <div class="overflow-hidden">
+    <div class="flex items-start flex-row -ms-4" style="transform: translate3d(NaNpx,0px,0px);">
+      <div role="group" aria-roledescription="slide" class="min-w-0 shrink-0 basis-full ps-4"><img src="https://picsum.photos/id/240/320/320" class="rounded-lg"></div>
+      <div role="group" aria-roledescription="slide" class="min-w-0 shrink-0 basis-full ps-4"><img src="https://picsum.photos/id/241/320/320" class="rounded-lg"></div>
+      <div role="group" aria-roledescription="slide" class="min-w-0 shrink-0 basis-full ps-4"><img src="https://picsum.photos/id/242/320/320" class="rounded-lg"></div>
+    </div>
+  </div>
+  <!--v-if-->
+</div>
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > UChangelogVersionExample > snapshot 1`] = `
+"<article class="relative">
+  <div class="absolute start-0 top-0 w-32 hidden lg:flex items-center justify-end gap-3 min-w-0">
+    <!--v-if-->
+    <div class="size-4 rounded-full bg-default ring ring-default flex items-center justify-center my-1">
+      <div class="size-2 rounded-full bg-primary"></div>
+    </div>
+  </div>
+  <div class="flex flex-col mx-auto max-w-2xl">
+    <!--v-if-->
+    <!--v-if-->
+  </div>
+</article>
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > UChangelogVersionsExample > snapshot 1`] = `
+"<div class="relative min-w-5xl">
+  <div class="absolute hidden lg:block overflow-hidden inset-y-3 start-32 h-full w-px bg-border -ms-[8.5px]">
+    <div class="absolute start-0 top-0 w-full bg-primary will-change-[height]" style="height: 0%;"></div>
+  </div>
+  <div class="flex flex-col gap-y-8 sm:gap-y-12 lg:gap-y-16">
+    <!---->
+    <!---->
+    <article class="relative">
+      <div class="absolute start-0 top-0 w-32 hidden lg:flex items-center justify-end gap-3 min-w-0"><time datetime="2024-03-15T00:00:00.000Z" class="text-sm/6 text-toned truncate">Mar 15, 2024</time>
+        <div class="size-4 rounded-full bg-default ring ring-default flex items-center justify-center my-1">
+          <div class="size-2 rounded-full bg-primary"></div>
+        </div>
+      </div>
+      <div class="flex flex-col mx-auto max-w-2xl">
+        <div class="">
+          <div class="flex items-center gap-3 mb-2"><span class="font-medium inline-flex items-center text-xs px-2 py-1 gap-1 rounded-md text-inverted bg-inverted"><!--v-if--><span class="truncate">Release</span>
+            <!--v-if--></span><time datetime="2024-03-15T00:00:00.000Z" class="text-sm/6 text-toned truncate lg:hidden">Mar 15, 2024</time>
+          </div>
+          <h2 class="relative text-xl text-pretty font-semibold text-highlighted">
+            <!--v-if-->Version 1.2.0
+          </h2>
+          <div class="text-base text-pretty text-muted mt-1">Added new features and bug fixes.</div>
+          <!--v-if-->
+        </div>
+        <!--v-if-->
+      </div>
+    </article>
+    <!---->
+    <!---->
+    <article class="relative">
+      <div class="absolute start-0 top-0 w-32 hidden lg:flex items-center justify-end gap-3 min-w-0"><time datetime="2024-02-20T00:00:00.000Z" class="text-sm/6 text-toned truncate">Feb 20, 2024</time>
+        <div class="size-4 rounded-full bg-default ring ring-default flex items-center justify-center my-1">
+          <div class="size-2 rounded-full bg-primary"></div>
+        </div>
+      </div>
+      <div class="flex flex-col mx-auto max-w-2xl">
+        <div class="">
+          <div class="flex items-center gap-3 mb-2"><span class="font-medium inline-flex items-center text-xs px-2 py-1 gap-1 rounded-md text-inverted bg-inverted"><!--v-if--><span class="truncate">Update</span>
+            <!--v-if--></span><time datetime="2024-02-20T00:00:00.000Z" class="text-sm/6 text-toned truncate lg:hidden">Feb 20, 2024</time>
+          </div>
+          <h2 class="relative text-xl text-pretty font-semibold text-highlighted">
+            <!--v-if-->Version 1.1.0
+          </h2>
+          <div class="text-base text-pretty text-muted mt-1">Performance improvements and optimizations.</div>
+          <!--v-if-->
+        </div>
+        <!--v-if-->
+      </div>
+    </article>
+  </div>
+</div>
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > UChatMessagesExample > snapshot 1`] = `
+"<div class="w-full flex flex-col gap-1 flex-1 px-2.5 [&amp;>article]:last-of-type:min-h-(--last-message-height) max-h-96 overflow-y-auto" style="--last-message-height: 0px;">
+  <!--v-if-->
+  <!---->
+</div>
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > UChatPaletteExample > snapshot 1`] = `
+"<div class="relative flex-1 flex flex-col min-h-0 min-w-0">
+  <div class="overflow-y-auto flex-1 flex flex-col py-3">
+    <div class="w-full flex flex-col gap-1 flex-1 px-2.5 [&amp;>article]:last-of-type:min-h-(--last-message-height)" style="--last-message-height: 0px;">
+      <article data-role="assistant" class="group/message relative w-full scroll-mt-3">
+        <div class="relative flex items-start group-data-[role=user]/message:max-w-[75%] rtl:justify-end gap-1.5 pb-3">
+          <!--v-if-->
+          <div class="relative text-pretty min-w-0">Hello! How can I help you today?</div>
+          <!--v-if-->
+        </div>
+      </article>
+      <article data-role="user" class="group/message relative w-full scroll-mt-3">
+        <div class="relative flex items-start group-data-[role=user]/message:max-w-[75%] ltr:justify-end ms-auto gap-1.5 pb-3">
+          <!--v-if-->
+          <div class="relative text-pretty min-w-0 bg-elevated/50 px-2 py-1 rounded-lg min-h-8">I need help with my project setup.</div>
+          <!--v-if-->
+        </div>
+      </article>
+      <article data-role="assistant" class="group/message relative w-full scroll-mt-3">
+        <div class="relative flex items-start group-data-[role=user]/message:max-w-[75%] rtl:justify-end gap-1.5 pb-3">
+          <!--v-if-->
+          <div class="relative text-pretty min-w-0">I'd be happy to help! What kind of project are you working on?</div>
+          <!--v-if-->
+        </div>
+      </article>
+      <!--v-if-->
+      <!---->
+    </div>
+  </div>
+  <form class="relative flex flex-col items-stretch gap-2 py-2 w-full rounded-lg backdrop-blur bg-default/75 ring ring-default px-0 rounded-t-none border-t border-default">
+    <!--v-if-->
+    <div class="relative inline-flex items-start"><textarea rows="1" placeholder="Type your message here…" class="w-full rounded-md border-0 appearance-none placeholder:text-dimmed focus:outline-none disabled:cursor-not-allowed disabled:opacity-75 transition-colors px-2.5 py-1.5 gap-1.5 text-highlighted bg-transparent resize-none text-base/5" value=""></textarea>
+      <!--v-if-->
+      <!--v-if-->
+    </div>
+    <!--v-if-->
+  </form>
+</div>
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > UChatPromptExample > snapshot 1`] = `
+"<form class="relative flex flex-col items-stretch gap-2 px-2.5 py-2 rounded-lg backdrop-blur bg-default/75 ring ring-default w-full">
+  <!--v-if-->
+  <div class="relative inline-flex items-start"><textarea rows="1" placeholder="Type your message here…" class="w-full rounded-md border-0 appearance-none placeholder:text-dimmed focus:outline-none disabled:cursor-not-allowed disabled:opacity-75 transition-colors px-2.5 py-1.5 gap-1.5 text-highlighted bg-transparent resize-none text-base/5" value=""></textarea>
+    <!--v-if-->
+    <!--v-if-->
+  </div>
+  <!--v-if-->
+</form>
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > UChatPromptSubmitExample > snapshot 1`] = `
+"<button type="submit" aria-label="Send prompt" class="font-medium inline-flex items-center disabled:cursor-not-allowed aria-disabled:cursor-not-allowed disabled:opacity-75 aria-disabled:opacity-75 transition-colors text-sm gap-1.5 text-inverted bg-primary hover:bg-primary/75 active:bg-primary/75 disabled:bg-primary aria-disabled:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary p-1.5 rounded-full"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 16 16" class="shrink-0 size-5"></svg>
+  <!--v-if-->
+  <!--v-if-->
+</button>
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > UCheckboxExample > snapshot 1`] = `
+"<div class="relative flex items-start flex-row">
+  <div class="flex items-center h-5"><button class="rounded-sm ring ring-inset ring-accented overflow-hidden focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary size-4" id="v-0" role="checkbox" type="button" aria-checked="false" aria-required="false" data-state="unchecked">
+      <!---->
+      <!--v-if-->
+    </button></div>
+  <!--v-if-->
+</div>
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > UCheckboxGroupExample > snapshot 1`] = `
+"<div id="v-0" class="relative" tabindex="-1" data-orientation="vertical" dir="ltr" style="outline-color: none; outline-style: none; outline-width: initial;">
+  <fieldset class="flex gap-x-2 flex-col gap-y-1">
+    <!--v-if-->
+  </fieldset>
+  <!--v-if-->
+</div>
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > UChipExample > snapshot 1`] = `
+"<div class="relative inline-flex items-center justify-center shrink-0"><span class="inline-flex items-center justify-center shrink-0 select-none rounded-full align-middle bg-elevated size-8 text-base"><img src="https://avatars.githubusercontent.com/u/739984?v=4" width="32" height="32" class="h-full w-full rounded-[inherit] object-cover"></span><span class="rounded-full ring ring-bg flex items-center justify-center text-inverted font-medium whitespace-nowrap bg-primary h-[8px] min-w-[8px] text-[8px] top-0 right-0 absolute -translate-y-1/2 translate-x-1/2 transform"></span></div>
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > UCollapsibleExample > snapshot 1`] = `
+"<div data-state="closed" class="w-48"><button type="button" aria-controls="" aria-expanded="false" data-state="closed" class="rounded-md font-medium inline-flex items-center disabled:cursor-not-allowed aria-disabled:cursor-not-allowed disabled:opacity-75 aria-disabled:opacity-75 transition-colors px-2.5 py-1.5 text-sm gap-1.5 w-full justify-center ring ring-inset ring-accented text-default bg-default hover:bg-elevated active:bg-elevated disabled:bg-default aria-disabled:bg-default focus:outline-none focus-visible:ring-2 focus-visible:ring-inverted">
+    <!--v-if--><span class="truncate">Open Collapse</span>
+    <!--v-if-->
+  </button>
+  <div class="data-[state=open]:animate-[collapsible-down_200ms_ease-out] data-[state=closed]:animate-[collapsible-up_200ms_ease-out] overflow-hidden" id="reka-collapsible-content-v-0" hidden="" data-state="closed" style="--reka-collapsible-content-height: 0px; --reka-collapsible-content-width: 0px;">
+    <!--v-if-->
+  </div>
+</div>
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > UColorModeAvatarExample > snapshot 1`] = `
+"<span class="inline-flex items-center justify-center shrink-0 select-none rounded-full align-middle bg-elevated size-8 text-base dark:hidden"><span class="font-medium leading-none text-muted truncate">&nbsp;</span></span>
+<span class="items-center justify-center shrink-0 select-none rounded-full align-middle bg-elevated size-8 text-base hidden dark:block"><span class="font-medium leading-none text-muted truncate">&nbsp;</span></span>
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > UColorModeButtonExample > snapshot 1`] = `
+"<button type="button" aria-label="Switch to dark mode" class="font-medium inline-flex items-center disabled:cursor-not-allowed aria-disabled:cursor-not-allowed disabled:opacity-75 aria-disabled:opacity-75 transition-colors text-sm gap-1.5 text-default hover:bg-elevated active:bg-elevated focus:outline-none focus-visible:bg-elevated hover:disabled:bg-transparent dark:hover:disabled:bg-transparent hover:aria-disabled:bg-transparent dark:hover:aria-disabled:bg-transparent p-1.5 rounded-lg"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 16 16" class="shrink-0 size-5"></svg>
+  <!--v-if-->
+  <!--v-if-->
+</button>
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > UColorModeImageExample > snapshot 1`] = `
+"<img class="dark:hidden">
+<img class="hidden dark:block">
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > UColorModeSelectExample > snapshot 1`] = `
+"<button type="button" tabindex="0" aria-label="Show popup" aria-haspopup="listbox" aria-expanded="false" aria-controls="" data-state="closed" aria-disabled="false" dir="ltr" class="relative group rounded-md inline-flex items-center focus:outline-none disabled:cursor-not-allowed disabled:opacity-75 transition-colors px-2.5 py-1.5 text-sm gap-1.5 text-highlighted bg-default ring ring-inset ring-accented focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary ps-9 pe-9 w-32"><span class="absolute inset-y-0 start-0 flex items-center ps-2.5"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 16 16" class="shrink-0 text-dimmed size-5"></svg></span><span class="truncate pointer-events-none">System</span><span class="absolute inset-y-0 end-0 flex items-center pe-2.5"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 16 16" class="shrink-0 text-dimmed size-5"></svg></span></button>
+<!--v-if-->
+<!--v-if-->
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > UColorModeSwitchExample > snapshot 1`] = `
+"<div class="relative flex items-start">
+  <div class="flex items-center h-5"><button aria-label="Switch to dark mode" class="inline-flex items-center shrink-0 rounded-full border-2 border-transparent focus-visible:outline-2 focus-visible:outline-offset-2 data-[state=unchecked]:bg-accented transition-[background] duration-200 data-[state=checked]:bg-primary focus-visible:outline-primary w-9" id="v-0" role="switch" type="button" aria-checked="false" aria-required="false" data-state="unchecked" value="on"><span data-state="unchecked" class="group pointer-events-none rounded-full bg-default shadow-lg ring-0 transition-transform duration-200 data-[state=unchecked]:translate-x-0 data-[state=unchecked]:rtl:-translate-x-0 flex items-center justify-center size-4 data-[state=checked]:translate-x-4 data-[state=checked]:rtl:-translate-x-4"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 16 16" class="absolute shrink-0 group-data-[state=unchecked]:text-dimmed opacity-0 size-10/12 transition-[color,opacity] duration-200 group-data-[state=checked]:text-primary group-data-[state=checked]:opacity-100"></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 16 16" class="absolute shrink-0 group-data-[state=unchecked]:text-dimmed opacity-0 size-10/12 transition-[color,opacity] duration-200 group-data-[state=checked]:text-primary group-data-[state=unchecked]:opacity-100"></svg></span>
+      <!--v-if-->
+    </button></div>
+  <!--v-if-->
+</div>
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > UColorPickerExample > snapshot 1`] = `
+"<div data-v-fdcd7a71="" class="data-[disabled]:opacity-75">
+  <div data-v-fdcd7a71="" class="flex gap-4">
+    <div data-v-fdcd7a71="" class="rounded-md touch-none w-42 h-42" style="background-color: #FF0000;">
+      <div data-v-fdcd7a71="" class="w-full h-full relative rounded-md" data-color-picker-background="">
+        <div data-v-fdcd7a71="" class="-translate-y-1/2 -translate-x-1/2 absolute size-4 ring-2 ring-(--color-white) rounded-full cursor-pointer data-[disabled]:cursor-not-allowed" style="background-color: #FFFFFF; left: 0%; top: 0%;"></div>
+      </div>
+    </div>
+    <div data-v-fdcd7a71="" class="w-[8px] relative rounded-md touch-none h-42" data-color-picker-track="">
+      <div data-v-fdcd7a71="" class="absolute transform -translate-y-1/2 -translate-x-[4px] rtl:translate-x-[4px] size-4 rounded-full ring-2 ring-(--color-white) cursor-pointer data-[disabled]:cursor-not-allowed" style="background-color: #FF0000; top: 0%;"></div>
+    </div>
+  </div>
+</div>
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > UCommandPaletteExample > snapshot 1`] = `
+"<div dir="ltr" class="flex flex-col min-h-0 min-w-0 divide-y divide-default">
+  <div class="relative inline-flex items-center [&amp;>input]:h-12"><input type="text" placeholder="Type a command or search…" class="w-full rounded-md border-0 appearance-none placeholder:text-dimmed focus:outline-none disabled:cursor-not-allowed disabled:opacity-75 transition-colors px-2.5 py-1.5 text-sm gap-1.5 text-highlighted bg-transparent ps-9" autocomplete="off" aria-disabled="false" value=""><span class="absolute inset-y-0 start-0 flex items-center ps-2.5"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 16 16" class="shrink-0 text-dimmed size-5"></svg></span>
+    <!--v-if-->
+  </div>
+  <div class="relative overflow-hidden flex flex-col" role="listbox" tabindex="0" aria-orientation="vertical" aria-multiselectable="false" data-orientation="vertical">
+    <div class="py-6 text-center text-sm text-muted">No data</div>
+  </div>
+  <!--v-if-->
+  <!--v-if-->
+</div>
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > UContainerExample > snapshot 1`] = `
+"<div class="max-w-(--ui-container) mx-auto px-4 sm:px-6 lg:px-8 w-72 aspect-video">
+  <div class="placeholder size-full"> Container </div>
+</div>
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > UContextMenuExample > snapshot 1`] = `
+"<div data-state="closed" style="pointer-events: auto;" class="placeholder aspect-video w-72"> Right click here </div>
+<!--v-if-->
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > UDrawerExample > snapshot 1`] = `
+"<button type="button" aria-haspopup="dialog" aria-expanded="false" data-state="closed" class="rounded-md font-medium inline-flex items-center disabled:cursor-not-allowed aria-disabled:cursor-not-allowed disabled:opacity-75 aria-disabled:opacity-75 transition-colors px-2.5 py-1.5 text-sm gap-1.5 ring ring-inset ring-accented text-default bg-default hover:bg-elevated active:bg-elevated disabled:bg-default aria-disabled:bg-default focus:outline-none focus-visible:ring-2 focus-visible:ring-inverted">
+  <!--v-if--><span class="truncate">Open Drawer</span>
+  <!--v-if-->
+</button>
+<!--v-if-->
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > UDropdownMenuExample > snapshot 1`] = `
+"<button type="button" id="reka-dropdown-menu-trigger-v-0" aria-haspopup="menu" aria-expanded="false" data-state="closed" class="rounded-md font-medium inline-flex items-center disabled:cursor-not-allowed aria-disabled:cursor-not-allowed disabled:opacity-75 aria-disabled:opacity-75 transition-colors px-2.5 py-1.5 text-sm gap-1.5 ring ring-inset ring-accented text-default bg-default hover:bg-elevated active:bg-elevated disabled:bg-default aria-disabled:bg-default focus:outline-none focus-visible:ring-2 focus-visible:ring-inverted">
+  <!--v-if--><span class="truncate">Open Menu</span>
+  <!--v-if-->
+</button>
+<!--v-if-->
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > UErrorExample > snapshot 1`] = `
+"<main class="min-h-[calc(100vh-var(--ui-header-height))] flex flex-col items-center justify-center text-center">
+  <!--v-if-->
+  <!--v-if-->
+  <!--v-if-->
+  <div class="mt-8 flex items-center justify-center gap-6"><button type="button" class="rounded-md font-medium inline-flex items-center disabled:cursor-not-allowed aria-disabled:cursor-not-allowed disabled:opacity-75 aria-disabled:opacity-75 transition-colors px-3 py-2 text-sm gap-2 text-inverted bg-primary hover:bg-primary/75 active:bg-primary/75 disabled:bg-primary aria-disabled:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">
+      <!--v-if--><span class="truncate">Back to home</span>
+      <!--v-if-->
+    </button></div>
+</main>
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > UFieldGroupExample > snapshot 1`] = `
+"<div data-orientation="horizontal" class="relative inline-flex -space-x-px">
+  <div class="relative inline-flex items-center group has-focus-visible:z-[1]"><input type="text" placeholder="Search..." class="w-full rounded-md border-0 appearance-none placeholder:text-dimmed focus:outline-none disabled:cursor-not-allowed disabled:opacity-75 transition-colors group-not-only:group-first:rounded-e-none group-not-only:group-last:rounded-s-none group-not-last:group-not-first:rounded-none px-2.5 py-1.5 text-sm gap-1.5 text-highlighted bg-default ring ring-inset ring-accented focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary" autocomplete="off">
+    <!--v-if-->
+    <!--v-if-->
+  </div><button type="button" class="rounded-md font-medium inline-flex items-center disabled:cursor-not-allowed aria-disabled:cursor-not-allowed disabled:opacity-75 aria-disabled:opacity-75 transition-colors not-only:first:rounded-e-none not-only:last:rounded-s-none not-last:not-first:rounded-none focus-visible:z-[1] px-2.5 py-1.5 text-sm gap-1.5 ring ring-inset ring-accented text-default bg-default hover:bg-elevated active:bg-elevated disabled:bg-default aria-disabled:bg-default focus:outline-none focus-visible:ring-2 focus-visible:ring-inverted">
+    <!--v-if--> Button
+    <!--v-if-->
+  </button>
+</div>
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > UFileUploadExample > snapshot 1`] = `
+"<div class="relative flex flex-col w-96 min-h-48">
+  <div role="button" data-dragging="false" class="w-full flex-1 bg-default border border-default flex flex-col gap-2 items-stretch justify-center rounded-lg focus-visible:outline-2 transition-[background] p-4 text-sm border-dashed data-[dragging=true]:bg-elevated/25 focus-visible:outline-primary hover:bg-elevated/25" tabindex="0">
+    <!--v-if-->
+    <div class="flex flex-col items-center justify-center text-center px-4 py-3"><span class="inline-flex items-center justify-center select-none rounded-full align-middle bg-elevated size-8 text-base shrink-0"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 16 16" class="text-muted shrink-0"></svg></span>
+      <!--v-if-->
+      <!--v-if-->
+      <!--v-if-->
+    </div>
+  </div>
+  <!--v-if--><input type="file" accept="*" class="sr-only" tabindex="-1">
+</div>
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > UFormExample > snapshot 1`] = `
+"<form id="v-0" class="space-y-4">
+  <div class="text-sm">
+    <div class="">
+      <div class="flex content-center items-center justify-between"><label for="v-1" class="block font-medium text-default">Email</label>
+        <!--v-if-->
+      </div>
+      <!--v-if-->
+    </div>
+    <div class="mt-1 relative">
+      <div class="relative inline-flex items-center"><input id="v-1" type="text" name="email" class="w-full rounded-md border-0 appearance-none placeholder:text-dimmed focus:outline-none disabled:cursor-not-allowed disabled:opacity-75 transition-colors px-2.5 py-1.5 text-sm gap-1.5 text-highlighted bg-default ring ring-inset ring-accented focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary" autocomplete="off" aria-invalid="false">
+        <!--v-if-->
+        <!--v-if-->
+      </div>
+      <!--v-if-->
+    </div>
+  </div>
+  <div class="text-sm">
+    <div class="">
+      <div class="flex content-center items-center justify-between"><label for="v-2" class="block font-medium text-default">Password</label>
+        <!--v-if-->
+      </div>
+      <!--v-if-->
+    </div>
+    <div class="mt-1 relative">
+      <div class="relative inline-flex items-center"><input id="v-2" type="password" name="password" class="w-full rounded-md border-0 appearance-none placeholder:text-dimmed focus:outline-none disabled:cursor-not-allowed disabled:opacity-75 transition-colors px-2.5 py-1.5 text-sm gap-1.5 text-highlighted bg-default ring ring-inset ring-accented focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary" autocomplete="off" aria-invalid="false">
+        <!--v-if-->
+        <!--v-if-->
+      </div>
+      <!--v-if-->
+    </div>
+  </div><button type="submit" class="rounded-md font-medium inline-flex items-center disabled:cursor-not-allowed aria-disabled:cursor-not-allowed disabled:opacity-75 aria-disabled:opacity-75 transition-colors px-2.5 py-1.5 text-sm gap-1.5 text-inverted bg-primary hover:bg-primary/75 active:bg-primary/75 disabled:bg-primary aria-disabled:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">
+    <!--v-if--> Submit
+    <!--v-if-->
+  </button>
+</form>
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > UFormFieldExample > snapshot 1`] = `
+"<div class="text-sm">
+  <div class="">
+    <!--v-if-->
+    <!--v-if-->
+  </div>
+  <div class="">
+    <div class="relative inline-flex items-center"><input id="v-0" type="text" class="w-full rounded-md border-0 appearance-none placeholder:text-dimmed focus:outline-none disabled:cursor-not-allowed disabled:opacity-75 transition-colors px-2.5 py-1.5 text-sm gap-1.5 text-highlighted bg-default ring ring-inset ring-accented focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary" autocomplete="off" aria-invalid="false">
+      <!--v-if-->
+      <!--v-if-->
+    </div>
+    <!--v-if-->
+  </div>
+</div>
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > UIconExample > snapshot 1`] = `"<!--v-if-->"`;
+
+exports[`Nuxt UI > UInputExample > snapshot 1`] = `
+"<div class="relative inline-flex items-center"><input type="text" class="w-full rounded-md border-0 appearance-none placeholder:text-dimmed focus:outline-none disabled:cursor-not-allowed disabled:opacity-75 transition-colors px-2.5 py-1.5 text-sm gap-1.5 text-highlighted bg-default ring ring-inset ring-accented focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary" autocomplete="off">
+  <!--v-if-->
+  <!--v-if-->
+</div>
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > UInputMenuExample > snapshot 1`] = `
+"<div dir="ltr" class="relative inline-flex items-center"><input aria-disabled="false" type="text" aria-expanded="false" aria-controls="" aria-autocomplete="list" role="combobox" autocomplete="off" class="rounded-md transition-colors px-2.5 py-1.5 text-sm gap-1.5 text-highlighted bg-default ring ring-inset ring-accented w-full border-0 placeholder:text-dimmed focus:outline-none disabled:cursor-not-allowed disabled:opacity-75 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary pe-9" value="">
+  <!--v-if--><button type="button" tabindex="-1" aria-label="Show popup" aria-haspopup="listbox" aria-expanded="false" aria-controls="" data-state="closed" aria-disabled="false" class="group absolute inset-y-0 end-0 flex items-center disabled:cursor-not-allowed disabled:opacity-75 pe-2.5"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 16 16" class="shrink-0 text-dimmed size-5"></svg></button>
+  <!--v-if-->
+  <!--v-if-->
+</div>
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > UInputNumberExample > snapshot 1`] = `
+"<div class="relative inline-flex items-center" role="group"><input role="spinbutton" type="text" tabindex="0" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" aria-roledescription="Number field" class="w-full rounded-md border-0 placeholder:text-dimmed focus:outline-none disabled:cursor-not-allowed disabled:opacity-75 transition-colors py-1.5 text-sm gap-1.5 text-highlighted bg-default ring ring-inset ring-accented text-center focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary px-9" value="">
+  <div class="absolute flex items-center inset-y-0 end-0 pe-1"><button type="button" tabindex="-1" aria-label="Increment" class="rounded-md font-medium inline-flex items-center disabled:cursor-not-allowed aria-disabled:cursor-not-allowed disabled:opacity-75 aria-disabled:opacity-75 transition-colors text-sm gap-1.5 text-primary hover:text-primary/75 active:text-primary/75 disabled:text-primary aria-disabled:text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary p-1.5"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 16 16" class="shrink-0 size-5"></svg>
+      <!--v-if-->
+      <!--v-if-->
+    </button></div>
+  <div class="absolute flex items-center inset-y-0 start-0 ps-1"><button type="button" tabindex="-1" aria-label="Decrement" class="rounded-md font-medium inline-flex items-center disabled:cursor-not-allowed aria-disabled:cursor-not-allowed disabled:opacity-75 aria-disabled:opacity-75 transition-colors text-sm gap-1.5 text-primary hover:text-primary/75 active:text-primary/75 disabled:text-primary aria-disabled:text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary p-1.5"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 16 16" class="shrink-0 size-5"></svg>
+      <!--v-if-->
+      <!--v-if-->
+    </button></div>
+  <!--v-if-->
+</div>
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > UInputTagsExample > snapshot 1`] = `
+"<div class="relative inline-flex items-center flex-wrap rounded-md transition-colors px-2.5 py-1.5 text-sm gap-1.5 text-highlighted bg-default ring ring-inset ring-accented has-focus-visible:ring-2 has-focus-visible:ring-inset has-focus-visible:ring-primary" dir="ltr"><input type="text" autocomplete="off" autocorrect="off" autocapitalize="off" class="flex-1 border-0 bg-transparent placeholder:text-dimmed focus:outline-none disabled:cursor-not-allowed disabled:opacity-75">
+  <!--v-if-->
+  <!--v-if-->
+  <!--v-if-->
+</div>
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > UKbdExample > snapshot 1`] = `
+"<kbd class="inline-flex items-center justify-center px-1 rounded-sm font-medium font-sans h-5 min-w-[20px] text-[11px] ring ring-inset ring-accented text-default bg-default"></kbd>
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > ULinkExample > snapshot 1`] = `
+"<button type="button" class="focus-visible:outline-primary text-muted hover:text-default transition-colors"> Link </button>
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > ULocaleSelectExample > snapshot 1`] = `
+"<button type="button" tabindex="0" aria-label="Show popup" aria-haspopup="listbox" aria-expanded="false" aria-controls="" data-state="closed" aria-disabled="false" dir="ltr" class="relative group rounded-md inline-flex items-center focus:outline-none disabled:cursor-not-allowed disabled:opacity-75 transition-colors px-2.5 py-1.5 text-sm gap-1.5 text-highlighted bg-default ring ring-inset ring-accented focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary ps-9 pe-9 w-40"><span class="absolute inset-y-0 start-0 flex items-center ps-2.5"><!--v-if--></span><span class="truncate text-dimmed">&nbsp;</span><span class="absolute inset-y-0 end-0 flex items-center pe-2.5"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 16 16" class="shrink-0 text-dimmed size-5"></svg></span></button>
+<!--v-if-->
+<!--v-if-->
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > UMarqueeExample > snapshot 1`] = `
+"<div data-orientation="horizontal" class="group relative flex items-center overflow-hidden gap-(--gap) [--gap:--spacing(16)] [--duration:20s] before:absolute before:pointer-events-none before:content-[&quot;&quot;] before:z-2 before:from-default before:to-transparent after:absolute after:pointer-events-none after:content-[&quot;&quot;] after:z-2 after:from-default after:to-transparent flex-row before:inset-y-0 before:left-0 before:h-full before:w-1/3 before:bg-gradient-to-r after:inset-y-0 after:right-0 after:h-full after:w-1/3 after:bg-gradient-to-l backface-hidden">
+  <div class="flex items-center shrink-0 justify-around gap-(--gap) min-w-max w-full flex-row animate-[marquee_var(--duration)_linear_infinite] rtl:animate-[marquee-rtl_var(--duration)_linear_infinite] backface-hidden"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 16 16" class="size-10 shrink-0"></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 16 16" class="size-10 shrink-0"></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 16 16" class="size-10 shrink-0"></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 16 16" class="size-10 shrink-0"></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 16 16" class="size-10 shrink-0"></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 16 16" class="size-10 shrink-0"></svg></div>
+  <div class="flex items-center shrink-0 justify-around gap-(--gap) min-w-max w-full flex-row animate-[marquee_var(--duration)_linear_infinite] rtl:animate-[marquee-rtl_var(--duration)_linear_infinite] backface-hidden"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 16 16" class="size-10 shrink-0"></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 16 16" class="size-10 shrink-0"></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 16 16" class="size-10 shrink-0"></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 16 16" class="size-10 shrink-0"></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 16 16" class="size-10 shrink-0"></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 16 16" class="size-10 shrink-0"></svg></div>
+  <div class="flex items-center shrink-0 justify-around gap-(--gap) min-w-max w-full flex-row animate-[marquee_var(--duration)_linear_infinite] rtl:animate-[marquee-rtl_var(--duration)_linear_infinite] backface-hidden"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 16 16" class="size-10 shrink-0"></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 16 16" class="size-10 shrink-0"></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 16 16" class="size-10 shrink-0"></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 16 16" class="size-10 shrink-0"></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 16 16" class="size-10 shrink-0"></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 16 16" class="size-10 shrink-0"></svg></div>
+  <div class="flex items-center shrink-0 justify-around gap-(--gap) min-w-max w-full flex-row animate-[marquee_var(--duration)_linear_infinite] rtl:animate-[marquee-rtl_var(--duration)_linear_infinite] backface-hidden"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 16 16" class="size-10 shrink-0"></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 16 16" class="size-10 shrink-0"></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 16 16" class="size-10 shrink-0"></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 16 16" class="size-10 shrink-0"></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 16 16" class="size-10 shrink-0"></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 16 16" class="size-10 shrink-0"></svg></div>
+</div>
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > UModalExample > snapshot 1`] = `
+"<button type="button" aria-haspopup="dialog" aria-expanded="false" data-state="closed" class="rounded-md font-medium inline-flex items-center disabled:cursor-not-allowed aria-disabled:cursor-not-allowed disabled:opacity-75 aria-disabled:opacity-75 transition-colors px-2.5 py-1.5 text-sm gap-1.5 ring ring-inset ring-accented text-default bg-default hover:bg-elevated active:bg-elevated disabled:bg-default aria-disabled:bg-default focus:outline-none focus-visible:ring-2 focus-visible:ring-inverted">
+  <!--v-if--><span class="truncate">Open Modal</span>
+  <!--v-if-->
+</button>
+<!--v-if-->
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > UNavigationMenuExample > snapshot 1`] = `
+"<nav data-collapsed="false" class="relative flex gap-1.5 [&amp;>div]:min-w-0 items-center justify-between" aria-label="Main" data-orientation="horizontal" dir="ltr" data-reka-navigation-menu="">
+  <div class="absolute top-full left-0 flex w-full justify-center">
+    <!--v-if-->
+    <!---->
+  </div>
+</nav>
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > UPaginationExample > snapshot 1`] = `
+"<nav>
+  <div class="flex items-center gap-1"><button type="button" disabled="" aria-label="First Page" class="rounded-md font-medium inline-flex items-center disabled:cursor-not-allowed aria-disabled:cursor-not-allowed disabled:opacity-75 aria-disabled:opacity-75 transition-colors text-sm gap-1.5 ring ring-inset ring-accented text-default bg-default hover:bg-elevated active:bg-elevated disabled:bg-default aria-disabled:bg-default focus:outline-none focus-visible:ring-2 focus-visible:ring-inverted p-1.5"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 16 16" class="shrink-0 size-5"></svg>
+      <!--v-if-->
+      <!--v-if-->
+    </button><button type="button" disabled="" aria-label="Previous Page" class="rounded-md font-medium inline-flex items-center disabled:cursor-not-allowed aria-disabled:cursor-not-allowed disabled:opacity-75 aria-disabled:opacity-75 transition-colors text-sm gap-1.5 ring ring-inset ring-accented text-default bg-default hover:bg-elevated active:bg-elevated disabled:bg-default aria-disabled:bg-default focus:outline-none focus-visible:ring-2 focus-visible:ring-inverted p-1.5"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 16 16" class="shrink-0 size-5"></svg>
+      <!--v-if-->
+      <!--v-if-->
+    </button><button type="button" data-type="page" aria-label="Page 1" aria-current="page" data-selected="true" class="rounded-md font-medium inline-flex items-center disabled:cursor-not-allowed aria-disabled:cursor-not-allowed disabled:opacity-75 aria-disabled:opacity-75 transition-colors text-sm gap-1.5 text-inverted bg-primary hover:bg-primary/75 active:bg-primary/75 disabled:bg-primary aria-disabled:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary p-1.5" value="1">
+      <!--v-if--><span class="truncate min-w-5 text-center">1</span>
+      <!--v-if-->
+    </button><button type="button" disabled="" aria-label="Next Page" class="rounded-md font-medium inline-flex items-center disabled:cursor-not-allowed aria-disabled:cursor-not-allowed disabled:opacity-75 aria-disabled:opacity-75 transition-colors text-sm gap-1.5 ring ring-inset ring-accented text-default bg-default hover:bg-elevated active:bg-elevated disabled:bg-default aria-disabled:bg-default focus:outline-none focus-visible:ring-2 focus-visible:ring-inverted p-1.5"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 16 16" class="shrink-0 size-5"></svg>
+      <!--v-if-->
+      <!--v-if-->
+    </button><button type="button" disabled="" aria-label="Last Page" class="rounded-md font-medium inline-flex items-center disabled:cursor-not-allowed aria-disabled:cursor-not-allowed disabled:opacity-75 aria-disabled:opacity-75 transition-colors text-sm gap-1.5 ring ring-inset ring-accented text-default bg-default hover:bg-elevated active:bg-elevated disabled:bg-default aria-disabled:bg-default focus:outline-none focus-visible:ring-2 focus-visible:ring-inverted p-1.5"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 16 16" class="shrink-0 size-5"></svg>
+      <!--v-if-->
+      <!--v-if-->
+    </button></div>
+</nav>
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > UPinInputExample > snapshot 1`] = `
+"<div class="relative inline-flex items-center gap-1.5" dir="ltr" data-complete=""><input autocapitalize="none" autocomplete="false" type="text" inputmode="text" placeholder="" data-complete="" aria-label="pin input 1 of 0" class="rounded-md border-0 placeholder:text-dimmed text-center focus:outline-none disabled:cursor-not-allowed disabled:opacity-75 transition-colors size-8 text-sm text-highlighted bg-default ring ring-inset ring-accented focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary"><input autocapitalize="none" autocomplete="false" type="text" inputmode="text" placeholder="" data-complete="" aria-label="pin input 2 of 0" class="rounded-md border-0 placeholder:text-dimmed text-center focus:outline-none disabled:cursor-not-allowed disabled:opacity-75 transition-colors size-8 text-sm text-highlighted bg-default ring ring-inset ring-accented focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary"><input autocapitalize="none" autocomplete="false" type="text" inputmode="text" placeholder="" data-complete="" aria-label="pin input 3 of 0" class="rounded-md border-0 placeholder:text-dimmed text-center focus:outline-none disabled:cursor-not-allowed disabled:opacity-75 transition-colors size-8 text-sm text-highlighted bg-default ring ring-inset ring-accented focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary"><input autocapitalize="none" autocomplete="false" type="text" inputmode="text" placeholder="" data-complete="" aria-label="pin input 4 of 0" class="rounded-md border-0 placeholder:text-dimmed text-center focus:outline-none disabled:cursor-not-allowed disabled:opacity-75 transition-colors size-8 text-sm text-highlighted bg-default ring ring-inset ring-accented focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary"><input autocapitalize="none" autocomplete="false" type="text" inputmode="text" placeholder="" data-complete="" aria-label="pin input 5 of 0" class="rounded-md border-0 placeholder:text-dimmed text-center focus:outline-none disabled:cursor-not-allowed disabled:opacity-75 transition-colors size-8 text-sm text-highlighted bg-default ring ring-inset ring-accented focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary"><!-- We render single input if it's required --><input aria-hidden="true" tabindex="-1" style="position: absolute; border: 0px; width: 1px; height: 1px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); clip-path: inset(50%); white-space: nowrap; word-wrap: normal; top: -1px; left: -1px;" name="" value=""></div>
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > UPopoverExample > snapshot 1`] = `
+"<button type="button" id="reka-popover-trigger-v-0" aria-haspopup="dialog" aria-expanded="false" aria-controls="" data-state="closed" class="rounded-md font-medium inline-flex items-center disabled:cursor-not-allowed aria-disabled:cursor-not-allowed disabled:opacity-75 aria-disabled:opacity-75 transition-colors px-2.5 py-1.5 text-sm gap-1.5 ring ring-inset ring-accented text-default bg-default hover:bg-elevated active:bg-elevated disabled:bg-default aria-disabled:bg-default focus:outline-none focus-visible:ring-2 focus-visible:ring-inverted">
+  <!--v-if--><span class="truncate">Open Popover</span>
+  <!--v-if-->
+</button>
+<!--v-if-->
+<!--v-if-->
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > UPricingPlanExample > snapshot 1`] = `
+"<div data-orientation="vertical" class="relative grid rounded-lg p-6 lg:p-8 xl:p-10 gap-6 bg-default ring ring-default">
+  <!--v-if-->
+  <div class="flex flex-col min-w-0">
+    <div class="flex items-center gap-3">
+      <!--v-if-->
+      <!--v-if-->
+    </div>
+    <!--v-if-->
+    <!--v-if-->
+    <!--v-if-->
+  </div>
+  <!--v-if-->
+</div>
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > UPricingTableExample > snapshot 1`] = `
+"<div class="w-full relative">
+  <table class="w-full table-fixed border-separate border-spacing-x-0 hidden md:table">
+    <!--v-if-->
+    <thead class="">
+      <tr class="">
+        <td></td>
+      </tr>
+    </thead>
+    <tbody class=""></tbody>
+  </table>
+  <ul class="md:hidden flex flex-col gap-6 w-full"></ul>
+</div>
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > UProgressExample > snapshot 1`] = `
+"<div data-orientation="horizontal" class="gap-2 flex flex-col w-60">
+  <!--v-if-->
+  <div aria-valuemax="100" aria-valuemin="0" role="progressbar" data-state="indeterminate" data-max="100" class="relative overflow-hidden rounded-full bg-accented w-full h-2" style="transform: translateZ(0);">
+    <div data-state="indeterminate" data-max="100" class="rounded-full size-full transition-transform duration-200 ease-out bg-primary data-[state=indeterminate]:animate-[carousel_2s_ease-in-out_infinite] data-[state=indeterminate]:rtl:animate-[carousel-rtl_2s_ease-in-out_infinite]"></div>
+  </div>
+  <!--v-if-->
+</div>
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > URadioGroupExample > snapshot 1`] = `
+"<div id="v-0" class="relative" tabindex="-1" data-orientation="vertical" dir="ltr" style="outline-color: none; outline-style: none; outline-width: initial;" role="radiogroup" aria-orientation="vertical" aria-required="false">
+  <fieldset class="flex gap-x-2 flex-col gap-y-1">
+    <!--v-if-->
+  </fieldset>
+  <!--v-if-->
+</div>
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > USelectExample > snapshot 1`] = `
+"<button class="relative group rounded-md inline-flex items-center focus:outline-none disabled:cursor-not-allowed disabled:opacity-75 transition-colors px-2.5 py-1.5 text-sm gap-1.5 text-highlighted bg-default ring ring-inset ring-accented focus:ring-2 focus:ring-inset focus:ring-primary pe-9" role="combobox" type="button" aria-controls="reka-select-content-v-0" aria-expanded="false" aria-required="false" aria-autocomplete="none" dir="ltr" data-state="closed" data-placeholder="">
+  <!--v-if--><span class="truncate text-dimmed">&nbsp;</span><span class="absolute inset-y-0 end-0 flex items-center pe-2.5"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 16 16" class="shrink-0 text-dimmed size-5"></svg></span>
+</button>
+<!--v-if-->
+<select aria-hidden="true" tabindex="-1" style="position: absolute; border: 0px; width: 1px; height: 1px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); clip-path: inset(50%); white-space: nowrap; word-wrap: normal; top: -1px; left: -1px;">
+  <option value=""></option>
+</select>
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > USelectMenuExample > snapshot 1`] = `
+"<button type="button" tabindex="0" aria-label="Show popup" aria-haspopup="listbox" aria-expanded="false" aria-controls="" data-state="closed" aria-disabled="false" dir="ltr" class="relative group rounded-md inline-flex items-center focus:outline-none disabled:cursor-not-allowed disabled:opacity-75 transition-colors px-2.5 py-1.5 text-sm gap-1.5 text-highlighted bg-default ring ring-inset ring-accented focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary pe-9 w-48">
+  <!--v-if--><span class="truncate text-dimmed">&nbsp;</span><span class="absolute inset-y-0 end-0 flex items-center pe-2.5"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 16 16" class="shrink-0 text-dimmed size-5"></svg></span>
+</button>
+<!--v-if-->
+<!--v-if-->
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > USeparatorExample > snapshot 1`] = `
+"<div data-orientation="horizontal" role="separator" class="flex items-center align-center text-center flex-row w-60">
+  <div class="border-default w-full border-solid border-t"></div>
+  <!--v-if-->
+</div>
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > USkeletonExample > snapshot 1`] = `
+"<div aria-busy="true" aria-label="loading" aria-live="polite" role="alert" class="animate-pulse rounded-md bg-elevated h-32 w-96"></div>
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > USlideoverExample > snapshot 1`] = `
+"<button type="button" aria-haspopup="dialog" aria-expanded="false" data-state="closed" class="rounded-md font-medium inline-flex items-center disabled:cursor-not-allowed aria-disabled:cursor-not-allowed disabled:opacity-75 aria-disabled:opacity-75 transition-colors px-2.5 py-1.5 text-sm gap-1.5 ring ring-inset ring-accented text-default bg-default hover:bg-elevated active:bg-elevated disabled:bg-default aria-disabled:bg-default focus:outline-none focus-visible:ring-2 focus-visible:ring-inverted">
+  <!--v-if--><span class="truncate">Open Slideover</span>
+  <!--v-if-->
+</button>
+<!--v-if-->
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > USliderExample > snapshot 1`] = `
+"<span data-slider-impl="" dir="ltr" data-orientation="horizontal" style="--reka-slider-thumb-transform: translateX(-50%);" class="relative flex items-center select-none touch-none w-full min-w-56" aria-disabled="false"><span data-orientation="horizontal" class="relative bg-accented overflow-hidden rounded-full grow h-[8px]"><span data-orientation="horizontal" style="left: 0%; right: 100%;" class="absolute rounded-full bg-primary h-full"></span></span><span data-reka-collection-item="" class="rounded-full bg-default ring-2 focus-visible:outline-2 focus-visible:outline-offset-2 ring-primary focus-visible:outline-primary/50 size-4" role="slider" tabindex="0" data-orientation="horizontal" aria-valuemin="0" aria-valuemax="100" aria-orientation="horizontal" style="transform: var(--reka-slider-thumb-transform); position: absolute; left: calc(0% + 0px); display: none;"></span>
+<!--v-if--></span>
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > UStepperExample > snapshot 1`] = `
+"<div role="group" aria-label="progress" data-linear="" data-orientation="horizontal" class="flex gap-4 flex-col">
+  <div class="flex">
+    <div aria-current="true" data-state="active" data-orientation="horizontal" class="group text-center relative w-full">
+      <div class="relative flex justify-center"><button type="button" data-state="active" data-orientation="horizontal" tabindex="0" aria-describedby="reka-stepper-item-description-v-1" aria-labelledby="reka-stepper-item-title-v-0" class="rounded-full text-center align-middle flex items-center justify-center font-semibold group-data-[state=completed]:text-inverted group-data-[state=active]:text-inverted text-muted bg-elevated focus-visible:outline-2 focus-visible:outline-offset-2 size-10 text-base group-data-[state=completed]:bg-primary group-data-[state=active]:bg-primary focus-visible:outline-primary">
+          <div class="flex items-center justify-center size-full"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 16 16" class="shrink-0 size-5"></svg></div>
+        </button>
+        <div data-orientation="horizontal" role="none" data-state="active" class="absolute rounded-full group-data-[disabled]:opacity-75 bg-accented top-[calc(50%-2px)] h-0.5 group-data-[state=completed]:bg-primary start-[calc(50%+28px)] end-[calc(-50%+28px)]"></div>
+      </div>
+      <div class="mt-2.5">
+        <div id="reka-stepper-item-title-v-0" class="font-medium text-default text-sm">Address</div>
+        <div id="reka-stepper-item-description-v-1" class="text-muted text-wrap text-sm">Add your address here</div>
+      </div>
+    </div>
+    <div data-state="inactive" data-orientation="horizontal" class="group text-center relative w-full">
+      <div class="relative flex justify-center"><button type="button" data-state="inactive" data-orientation="horizontal" tabindex="0" aria-describedby="reka-stepper-item-description-v-3" aria-labelledby="reka-stepper-item-title-v-2" class="rounded-full text-center align-middle flex items-center justify-center font-semibold group-data-[state=completed]:text-inverted group-data-[state=active]:text-inverted text-muted bg-elevated focus-visible:outline-2 focus-visible:outline-offset-2 size-10 text-base group-data-[state=completed]:bg-primary group-data-[state=active]:bg-primary focus-visible:outline-primary">
+          <div class="flex items-center justify-center size-full"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 16 16" class="shrink-0 size-5"></svg></div>
+        </button>
+        <div data-orientation="horizontal" role="none" data-state="inactive" class="absolute rounded-full group-data-[disabled]:opacity-75 bg-accented top-[calc(50%-2px)] h-0.5 group-data-[state=completed]:bg-primary start-[calc(50%+28px)] end-[calc(-50%+28px)]"></div>
+      </div>
+      <div class="mt-2.5">
+        <div id="reka-stepper-item-title-v-2" class="font-medium text-default text-sm">Shipping</div>
+        <div id="reka-stepper-item-description-v-3" class="text-muted text-wrap text-sm">Set your preferred shipping method</div>
+      </div>
+    </div>
+    <div data-state="inactive" disabled="" data-disabled="" data-orientation="horizontal" class="group text-center relative w-full">
+      <div class="relative flex justify-center"><button type="button" data-state="inactive" disabled="" data-disabled="" data-orientation="horizontal" tabindex="-1" aria-describedby="reka-stepper-item-description-v-5" aria-labelledby="reka-stepper-item-title-v-4" class="rounded-full text-center align-middle flex items-center justify-center font-semibold group-data-[state=completed]:text-inverted group-data-[state=active]:text-inverted text-muted bg-elevated focus-visible:outline-2 focus-visible:outline-offset-2 size-10 text-base group-data-[state=completed]:bg-primary group-data-[state=active]:bg-primary focus-visible:outline-primary">
+          <div class="flex items-center justify-center size-full">3</div>
+        </button>
+        <!--v-if-->
+      </div>
+      <div class="mt-2.5">
+        <div id="reka-stepper-item-title-v-4" class="font-medium text-default text-sm">Checkout</div>
+        <div id="reka-stepper-item-description-v-5" class="text-muted text-wrap text-sm">Confirm your order</div>
+      </div>
+    </div>
+  </div>
+  <div class="size-full"></div>
+  <div aria-live="polite" aria-atomic="true" role="status" style="transform: translateX(-100%); position: absolute; pointer-events: none; opacity: 0; margin: 0px;"> Step 0 of 0</div>
+</div>
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > USwitchExample > snapshot 1`] = `
+"<div class="relative flex items-start">
+  <div class="flex items-center h-5"><button class="inline-flex items-center shrink-0 rounded-full border-2 border-transparent focus-visible:outline-2 focus-visible:outline-offset-2 data-[state=unchecked]:bg-accented transition-[background] duration-200 data-[state=checked]:bg-primary focus-visible:outline-primary w-9" id="v-0" role="switch" type="button" aria-checked="false" aria-required="false" data-state="unchecked" value="on"><span data-state="unchecked" class="group pointer-events-none rounded-full bg-default shadow-lg ring-0 transition-transform duration-200 data-[state=unchecked]:translate-x-0 data-[state=unchecked]:rtl:-translate-x-0 flex items-center justify-center size-4 data-[state=checked]:translate-x-4 data-[state=checked]:rtl:-translate-x-4"></span>
+      <!--v-if-->
+    </button></div>
+  <!--v-if-->
+</div>
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > UTableExample > snapshot 1`] = `
+"<div class="relative overflow-auto flex-1">
+  <table class="min-w-full overflow-clip">
+    <!--v-if-->
+    <thead class="relative">
+      <tr class="data-[selected=true]:bg-elevated/50">
+        <th data-pinned="false" scope="col" class="px-4 py-3.5 text-sm text-highlighted text-left rtl:text-right font-semibold [&amp;:has([role=checkbox])]:pe-0">Id</th>
+        <th data-pinned="false" scope="col" class="px-4 py-3.5 text-sm text-highlighted text-left rtl:text-right font-semibold [&amp;:has([role=checkbox])]:pe-0">Date</th>
+        <th data-pinned="false" scope="col" class="px-4 py-3.5 text-sm text-highlighted text-left rtl:text-right font-semibold [&amp;:has([role=checkbox])]:pe-0">Status</th>
+        <th data-pinned="false" scope="col" class="px-4 py-3.5 text-sm text-highlighted text-left rtl:text-right font-semibold [&amp;:has([role=checkbox])]:pe-0">Email</th>
+        <th data-pinned="false" scope="col" class="px-4 py-3.5 text-sm text-highlighted text-left rtl:text-right font-semibold [&amp;:has([role=checkbox])]:pe-0">Amount</th>
+      </tr>
+      <tr class="absolute z-[1] left-0 w-full h-px bg-(--ui-border-accented)"></tr>
+    </thead>
+    <tbody class="divide-y divide-default [&amp;>tr]:data-[selectable=true]:hover:bg-elevated/50 [&amp;>tr]:data-[selectable=true]:focus-visible:outline-primary">
+      <tr data-selected="false" data-selectable="false" data-expanded="false" class="data-[selected=true]:bg-elevated/50">
+        <td data-pinned="false" class="p-4 text-sm text-muted whitespace-nowrap [&amp;:has([role=checkbox])]:pe-0">4600</td>
+        <td data-pinned="false" class="p-4 text-sm text-muted whitespace-nowrap [&amp;:has([role=checkbox])]:pe-0">2024-03-11T15:30:00</td>
+        <td data-pinned="false" class="p-4 text-sm text-muted whitespace-nowrap [&amp;:has([role=checkbox])]:pe-0">paid</td>
+        <td data-pinned="false" class="p-4 text-sm text-muted whitespace-nowrap [&amp;:has([role=checkbox])]:pe-0">james.anderson@example.com</td>
+        <td data-pinned="false" class="p-4 text-sm text-muted whitespace-nowrap [&amp;:has([role=checkbox])]:pe-0">594</td>
+      </tr>
+      <!--v-if-->
+      <tr data-selected="false" data-selectable="false" data-expanded="false" class="data-[selected=true]:bg-elevated/50">
+        <td data-pinned="false" class="p-4 text-sm text-muted whitespace-nowrap [&amp;:has([role=checkbox])]:pe-0">4599</td>
+        <td data-pinned="false" class="p-4 text-sm text-muted whitespace-nowrap [&amp;:has([role=checkbox])]:pe-0">2024-03-11T10:10:00</td>
+        <td data-pinned="false" class="p-4 text-sm text-muted whitespace-nowrap [&amp;:has([role=checkbox])]:pe-0">failed</td>
+        <td data-pinned="false" class="p-4 text-sm text-muted whitespace-nowrap [&amp;:has([role=checkbox])]:pe-0">mia.white@example.com</td>
+        <td data-pinned="false" class="p-4 text-sm text-muted whitespace-nowrap [&amp;:has([role=checkbox])]:pe-0">276</td>
+      </tr>
+      <!--v-if-->
+      <tr data-selected="false" data-selectable="false" data-expanded="false" class="data-[selected=true]:bg-elevated/50">
+        <td data-pinned="false" class="p-4 text-sm text-muted whitespace-nowrap [&amp;:has([role=checkbox])]:pe-0">4598</td>
+        <td data-pinned="false" class="p-4 text-sm text-muted whitespace-nowrap [&amp;:has([role=checkbox])]:pe-0">2024-03-11T08:50:00</td>
+        <td data-pinned="false" class="p-4 text-sm text-muted whitespace-nowrap [&amp;:has([role=checkbox])]:pe-0">refunded</td>
+        <td data-pinned="false" class="p-4 text-sm text-muted whitespace-nowrap [&amp;:has([role=checkbox])]:pe-0">william.brown@example.com</td>
+        <td data-pinned="false" class="p-4 text-sm text-muted whitespace-nowrap [&amp;:has([role=checkbox])]:pe-0">315</td>
+      </tr>
+      <!--v-if-->
+      <tr data-selected="false" data-selectable="false" data-expanded="false" class="data-[selected=true]:bg-elevated/50">
+        <td data-pinned="false" class="p-4 text-sm text-muted whitespace-nowrap [&amp;:has([role=checkbox])]:pe-0">4597</td>
+        <td data-pinned="false" class="p-4 text-sm text-muted whitespace-nowrap [&amp;:has([role=checkbox])]:pe-0">2024-03-10T19:45:00</td>
+        <td data-pinned="false" class="p-4 text-sm text-muted whitespace-nowrap [&amp;:has([role=checkbox])]:pe-0">paid</td>
+        <td data-pinned="false" class="p-4 text-sm text-muted whitespace-nowrap [&amp;:has([role=checkbox])]:pe-0">emma.davis@example.com</td>
+        <td data-pinned="false" class="p-4 text-sm text-muted whitespace-nowrap [&amp;:has([role=checkbox])]:pe-0">529</td>
+      </tr>
+      <!--v-if-->
+      <tr data-selected="false" data-selectable="false" data-expanded="false" class="data-[selected=true]:bg-elevated/50">
+        <td data-pinned="false" class="p-4 text-sm text-muted whitespace-nowrap [&amp;:has([role=checkbox])]:pe-0">4596</td>
+        <td data-pinned="false" class="p-4 text-sm text-muted whitespace-nowrap [&amp;:has([role=checkbox])]:pe-0">2024-03-10T15:55:00</td>
+        <td data-pinned="false" class="p-4 text-sm text-muted whitespace-nowrap [&amp;:has([role=checkbox])]:pe-0">paid</td>
+        <td data-pinned="false" class="p-4 text-sm text-muted whitespace-nowrap [&amp;:has([role=checkbox])]:pe-0">ethan.harris@example.com</td>
+        <td data-pinned="false" class="p-4 text-sm text-muted whitespace-nowrap [&amp;:has([role=checkbox])]:pe-0">639</td>
+      </tr>
+      <!--v-if-->
+    </tbody>
+    <!--v-if-->
+  </table>
+</div>
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > UTabsExample > snapshot 1`] = `
+"<div dir="ltr" data-orientation="horizontal" class="flex items-center gap-2 flex-col">
+  <div class="relative flex p-1 group bg-elevated rounded-lg w-full" tabindex="-1" data-orientation="horizontal" dir="ltr" style="outline-color: none; outline-style: none; outline-width: initial;" role="tablist" aria-orientation="horizontal">
+    <!--v-if-->
+  </div>
+</div>
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > UTextareaExample > snapshot 1`] = `
+"<div class="relative inline-flex items-center"><textarea rows="3" class="w-full rounded-md border-0 appearance-none placeholder:text-dimmed focus:outline-none disabled:cursor-not-allowed disabled:opacity-75 transition-colors px-2.5 py-1.5 text-sm gap-1.5 text-highlighted bg-default ring ring-inset ring-accented focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary"></textarea>
+  <!--v-if-->
+  <!--v-if-->
+</div>
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > UTimelineExample > snapshot 1`] = `
+"<div data-orientation="vertical" class="flex gap-1.5 flex-col w-96"></div>
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > UToasterExample > snapshot 1`] = `
+"<button type="button" class="rounded-md font-medium inline-flex items-center disabled:cursor-not-allowed aria-disabled:cursor-not-allowed disabled:opacity-75 aria-disabled:opacity-75 transition-colors px-2.5 py-1.5 text-sm gap-1.5 ring ring-inset ring-accented text-default bg-default hover:bg-elevated active:bg-elevated disabled:bg-default aria-disabled:bg-default focus:outline-none focus-visible:ring-2 focus-visible:ring-inverted">
+  <!--v-if--><span class="truncate">Open Toast</span>
+  <!--v-if-->
+</button>
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > UTooltipExample > snapshot 1`] = `
+"<button type="button" data-state="closed" data-grace-area-trigger="" class="rounded-md font-medium inline-flex items-center disabled:cursor-not-allowed aria-disabled:cursor-not-allowed disabled:opacity-75 aria-disabled:opacity-75 transition-colors px-2.5 py-1.5 text-sm gap-1.5 ring ring-inset ring-accented text-default bg-elevated hover:bg-accented/75 active:bg-accented/75 disabled:bg-elevated aria-disabled:bg-elevated focus:outline-none focus-visible:ring-2 focus-visible:ring-inverted">
+  <!--v-if--><span class="truncate">Show Tooltip</span>
+  <!--v-if-->
+</button>
+<!--v-if-->
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > UTreeExample > snapshot 1`] = `
+"<ul class="relative isolate" tabindex="-1" data-orientation="vertical" dir="ltr" style="outline-color: none; outline-style: none; outline-width: initial;" role="tree"></ul>
+<!--v-if-->"
+`;
+
+exports[`Nuxt UI > UUserExample > snapshot 1`] = `
+"<div data-orientation="horizontal" class="relative group/user flex items-center gap-2">
+  <!--v-if-->
+  <div class="">
+    <!--v-if-->
+    <!--v-if-->
+    <!--v-if-->
+  </div>
+</div>
+<!--v-if-->"
+`;

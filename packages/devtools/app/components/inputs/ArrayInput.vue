@@ -37,7 +37,7 @@ const openedItem = ref<number | null>(0)
       :key="index"
       class="relative w-full flex mb-2"
     >
-      <ComponentPropInput
+      <PropInput
         :model-value="value"
         :schema="schema.schema"
         :name="'item ' + (index + 1)"
@@ -55,7 +55,7 @@ const openedItem = ref<number | null>(0)
             @click="removeArrayItem(index)"
           />
         </template>
-      </ComponentPropInput>
+      </PropInput>
     </div>
 
     <UButton
