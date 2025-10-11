@@ -1,6 +1,3 @@
-/// <reference types="vitest" />
-
-import { createVitest, startVitest as _startVitest } from 'vitest/node'
 import type { Vitest, InlineConfig } from 'vitest/node'
 import type { PluginOptions, TestConfig } from '@compodium/core'
 import type { Plugin as VitePlugin } from 'vite'
@@ -12,13 +9,14 @@ export function testPlugin(options: PluginOptions): VitePlugin {
 
   async function getVitest() {
     if (!vitest) {
+      const { createVitest } = await import('vitest/node')
       const viteConfig = options._vitestConfig ? await options._vitestConfig : {} as TestConfig
       const vitestConfig = defu(
         {
           root: rootDir,
           watch: true,
           passWithNoTests: true,
-          silent: false,
+          silent: true,
           api: true,
           ui: false
         } satisfies InlineConfig,

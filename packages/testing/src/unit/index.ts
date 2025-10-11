@@ -1,6 +1,7 @@
 import { beforeAll, describe, beforeEach } from 'vitest'
 import type { ComponentCollection, CompodiumMeta, Component } from '@compodium/core'
 import type { Component as VueComponent } from 'vue'
+import { h } from 'vue'
 
 // @ts-expect-error virtual import
 const collections = await import(/* vite-ignore */ 'virtual:compodium/collections').then(c => c.default) as ComponentCollection[]
@@ -53,8 +54,27 @@ export function describeComponent(componentName: string, fn: CompodiumTestFuncti
         })
 
         const componentMeta = await import(/* vite-ignore */ `/@id/virtual:compodium/meta?component=${component.filePath}`).then(c => c.default) as CompodiumMeta
+
         const vueComponent = await import(/* vite-ignore */ component.filePath).then(c => c.default) as VueComponent
-        await fn({ component: vueComponent, props: componentMeta.compodium?.defaultProps, meta: componentMeta })
+        const wrapperComponent = component.wrapperComponent ? await import(/* vite-ignore */ component.wrapperComponent).then(c => c.default) as VueComponent : null
+
+        const testComponent = wrapperComponent
+          ? {
+              render(props: any) {
+                return h(wrapperComponent, {}, {
+                  default: () => h(vueComponent, props)
+                })
+              }
+            }
+          : vueComponent
+
+        await fn({ component: testComponent, props: componentMeta.compodium?.defaultProps, meta: componentMeta })
       })
+  })
+}
+
+export function describeComponents(fn: CompodiumTestFunction) {
+  collections.forEach((collection) => {
+    collection.components.forEach(component => describeComponent(component.pascalName, fn))
   })
 }

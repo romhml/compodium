@@ -35,10 +35,14 @@
   "peerDependencies": {
     "@compodium/testing": "workspace:^",
     "vite": ">=6",
+    "vitest": ">=3.2.4",
     "vue": ">=3"
   },
   "peerDependenciesMeta": {
     "@compodium/testing": {
+      "optional": true
+    },
+    "vitest": {
       "optional": true
     }
   },
@@ -57,5 +61,8 @@
     "unplugin": "^2.3.10",
     "unplugin-ast": "^0.15.2",
     "zod": "^4.1.11"
+  },
+  "devDependencies": {
+    "vitest": "^3.2.4"
   }
 }
