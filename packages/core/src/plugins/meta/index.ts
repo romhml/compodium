@@ -143,15 +143,11 @@ export function metaPlugin(options: PluginOptions): Plugin {
         if (watchedPaths.find(p => filePath.startsWith(p))) {
           const code = await readFile(filePath, 'utf-8')
           checker.updateFile(filePath, code)
-
-          // Existing WebSocket HMR
           server.ws.send({
             type: 'custom',
             event: 'compodium:hmr',
             data: { path: filePath, event: 'component:changed' }
           })
-
-          // Virtual module invalidation for specific file
           invalidateVirtualModuleForFile(filePath)
         }
       })
