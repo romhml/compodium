@@ -19,7 +19,7 @@
   "devDependencies": {
     "@nuxt/eslint-config": "^1.9.0",
     "@nuxt/test-utils": "^3.19.2",
-    "@types/node": "^22.18.9",
+    "@types/node": "^22.18.10",
     "@types/supertest": "^6.0.3",
     "changelogen": "^0.6.2",
     "eslint": "^9.37.0",
