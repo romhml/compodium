@@ -258,8 +258,8 @@ importers:
         specifier: ^2.2.12
         version: 2.2.12(typescript@5.9.3)
       vue-component-type-helpers:
-        specifier: ^2.2.12
-        version: 2.2.12
+        specifier: ^3.1.1
+        version: 3.1.1
     devDependencies:
       '@types/path-browserify':
         specifier: ^1.0.3
@@ -6663,6 +6663,9 @@ packages:
 
   vue-component-type-helpers@2.2.12:
     resolution: {integrity: sha512-YbGqHZ5/eW4SnkPNR44mKVc6ZKQoRs/Rux1sxC6rdwXb4qpbOSYfDr9DsTHolOTGmIKgM9j141mZbBeg05R1pw==}
+
+  vue-component-type-helpers@3.1.1:
+    resolution: {integrity: sha512-B0kHv7qX6E7+kdc5nsaqjdGZ1KwNKSUQDWGy7XkTYT7wFsOpkEyaJ1Vq79TjwrrtuLRgizrTV7PPuC4rRQo+vw==}
 
   vue-component-type-helpers@3.1.1:
     resolution: {integrity: sha512-B0kHv7qX6E7+kdc5nsaqjdGZ1KwNKSUQDWGy7XkTYT7wFsOpkEyaJ1Vq79TjwrrtuLRgizrTV7PPuC4rRQo+vw==}
@@ -14408,6 +14411,8 @@ snapshots:
       vue-component-type-helpers: 3.1.1
 
   vue-component-type-helpers@2.2.12: {}
+
+  vue-component-type-helpers@3.1.1: {}
 
   vue-component-type-helpers@3.1.1: {}
 
