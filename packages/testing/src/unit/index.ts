@@ -1,7 +1,15 @@
-import { beforeAll, describe, beforeEach } from 'vitest'
+import { describe, beforeEach } from 'vitest'
+import type { CompodiumTestMeta } from '../types'
 import type { ComponentCollection, CompodiumMeta, Component } from '@compodium/core'
+import { getCurrentSuite } from 'vitest/suite'
 import type { Component as VueComponent } from 'vue'
 import { h } from 'vue'
+
+declare module 'vitest' {
+  interface TaskMeta {
+    compodium?: CompodiumTestMeta
+  }
+}
 
 // @ts-expect-error virtual import
 const collections = await import(/* vite-ignore */ 'virtual:compodium/collections').then(c => c.default) as ComponentCollection[]
@@ -24,52 +32,46 @@ export function describeComponent(componentName: string, fn: CompodiumTestFuncti
   const collection = collections.find(c => c.name === component?.collectionName) as ComponentCollection
 
   return describe(collection.name, async () => {
-    // TODO: Pass meta in way that will be resolved when the test modules are collected instead.
-    // This will allow to display loaders on the initial test run.
-    // The docs mention something to achieve this but seems outdated: https://vitest.dev/advanced/api/test-suite.html#meta
-    beforeAll((task) => {
-      task.meta.compodium = {
+    const { suite } = getCurrentSuite()
+    suite!.meta.compodium = {
+      collection: collection.name,
+      suite: true
+    }
+
+    describe(component.pascalName, async () => {
+      const { suite } = getCurrentSuite()
+      suite!.meta.compodium = {
         collection: collection.name,
+        component: component.pascalName,
         suite: true
       }
-    })
 
-    describe(component.pascalName,
-      async () => {
-        beforeAll((task) => {
-          task.meta.compodium = {
-            collection: collection.name,
-            component: component.pascalName,
-            suite: true
-          }
-        })
-
-        beforeEach(({ task }) => {
-          task.meta.compodium = {
-            collection: collection.name,
-            component: component.pascalName,
-            name: task.name,
-            suite: false
-          }
-        })
-
-        const componentMeta = await import(/* vite-ignore */ `/@id/virtual:compodium/meta?component=${component.filePath}`).then(c => c.default) as CompodiumMeta
-
-        const vueComponent = await import(/* vite-ignore */ component.filePath).then(c => c.default) as VueComponent
-        const wrapperComponent = component.wrapperComponent ? await import(/* vite-ignore */ component.wrapperComponent).then(c => c.default) as VueComponent : null
-
-        const testComponent = wrapperComponent
-          ? {
-              render(props: any) {
-                return h(wrapperComponent, {}, {
-                  default: () => h(vueComponent, props)
-                })
-              }
-            }
-          : vueComponent
-
-        await fn({ component: testComponent, props: componentMeta.compodium?.defaultProps, meta: componentMeta })
+      beforeEach(({ task }) => {
+        task.meta.compodium = {
+          collection: collection.name,
+          component: component.pascalName,
+          name: task.name,
+          suite: false
+        }
       })
+
+      const componentMeta = await import(/* vite-ignore */ `/@id/virtual:compodium/meta?component=${component.filePath}`).then(c => c.default) as CompodiumMeta
+
+      const vueComponent = await import(/* vite-ignore */ component.filePath).then(c => c.default) as VueComponent
+      const wrapperComponent = component.wrapperComponent ? await import(/* vite-ignore */ component.wrapperComponent).then(c => c.default) as VueComponent : null
+
+      const testComponent = wrapperComponent
+        ? {
+            render(props: any) {
+              return h(wrapperComponent, {}, {
+                default: () => h(vueComponent, props)
+              })
+            }
+          }
+        : vueComponent
+
+      await fn({ component: testComponent, props: componentMeta.compodium?.defaultProps, meta: componentMeta })
+    })
   })
 }
 
