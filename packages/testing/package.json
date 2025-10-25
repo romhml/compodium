@@ -32,7 +32,9 @@
     "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
+    "@compodium/core": "workspace:^",
     "@vue/test-utils": ">=2",
+    "vite": ">=6",
     "vitest": ">=3.2.4"
   },
   "dependencies": {

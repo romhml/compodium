@@ -6,7 +6,6 @@ export default defineBuildConfig({
   entries: [
     'src/index',
     { builder: 'copy', input: './src/unit', outDir: './dist/unit' },
-    { builder: 'copy', input: './src/runtime', outDir: './dist/runtime' }
   ],
   replace: {
     'process.env.COMPODIUM_DEVTOOLS_URL': undefined
