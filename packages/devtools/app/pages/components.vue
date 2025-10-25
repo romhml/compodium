@@ -16,15 +16,6 @@ hooks.hook('renderer:mounted', () => {
     if ((component.value?.filePath && path.endsWith(component.value?.filePath)) || (component.value?.componentPath && path.endsWith(component.value?.componentPath))) {
       await Promise.all([refreshMeta(), refreshExampleMeta()])
     }
-
-    // TODO: Is this still needed?
-    // if (watchMode.value) {
-    //   const updatedComponent = components.value?.find(c => c.filePath === path)
-    //   if (updatedComponent) {
-    //     const componentsToTest = [updatedComponent, ...(updatedComponent?.examples ?? [])]
-    //     await runTests(componentsToTest)
-    //   }
-    // }
   })
 
   hooks.hook('component:removed', useDebounceFn(async () => {
