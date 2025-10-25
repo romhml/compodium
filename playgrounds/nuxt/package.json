@@ -17,7 +17,8 @@
   "devDependencies": {
     "@compodium/nuxt": "workspace:^",
     "@compodium/testing": "workspace:^",
-    "@nuxt/test-utils": "^3.19.2",
+    "@nuxt/test-utils": "^3.20.0",
+    "@vitest/ui": "^4.0.3",
     "vitest": "^3.2.4",
     "vitest-environment-nuxt": "^1.0.1"
   }

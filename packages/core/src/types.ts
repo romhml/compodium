@@ -69,7 +69,7 @@ export type PluginOptions = {
   _nuxt?: boolean
 
   /* Internal */
-  _vitestConfig?: Promise<TestConfig> | TestConfig
+  _vitestConfig?: Promise<TestConfig | undefined> | TestConfig
 }
 
 export type IconifyIcon = string & {}

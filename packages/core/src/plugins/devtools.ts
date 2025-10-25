@@ -12,6 +12,7 @@ export function devtoolsPlugin(options: PluginOptions): VitePlugin {
 
   return {
     name: 'compodium:devtools',
+    enforce: 'pre',
     apply: 'serve',
 
     configResolved(viteConfig) {

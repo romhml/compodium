@@ -11,6 +11,7 @@ export function testPlugin(options: PluginOptions): VitePlugin {
     if (!vitest) {
       const { createVitest } = await import('vitest/node')
       const viteConfig = options._vitestConfig ? await options._vitestConfig : {} as TestConfig
+
       const vitestConfig = defu(
         {
           root: rootDir,
@@ -20,7 +21,7 @@ export function testPlugin(options: PluginOptions): VitePlugin {
           api: true,
           ui: false
         } satisfies InlineConfig,
-        viteConfig.test
+        viteConfig?.test
       )
 
       vitest = await createVitest('test', vitestConfig, viteConfig as any)
