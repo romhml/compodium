@@ -33,7 +33,7 @@
     "@compodium/meta": "workspace:^",
     "@compodium/testing": "workspace:^",
     "@iconify-json/lineicons": "^1.2.6",
-    "@iconify-json/lucide": "^1.2.69",
+    "@iconify-json/lucide": "^1.2.70",
     "@iconify/types": "^2.0.0",
     "@types/deep-eql": "^4.0.2",
     "@types/resemblejs": "^4.1.3"
