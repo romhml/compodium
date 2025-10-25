@@ -1,15 +1,12 @@
 export default defineNuxtConfig({
-  modules: ['@nuxt/ui', '@compodium/nuxt'],
+  modules: [
+    '@nuxt/ui',
+    '@compodium/nuxt',
+    '@nuxt/test-utils/module'
+  ],
+
   devtools: { enabled: true },
   css: ['~/assets/css/main.css'],
-
-  typescript: {
-    tsConfig: {
-      compilerOptions: {
-        skipLibCheck: true
-      }
-    }
-  },
 
   compodium: {
     extras: {
@@ -17,6 +14,9 @@ export default defineNuxtConfig({
         primary: 'blue',
         neutral: 'zinc'
       }
+    },
+    testing: {
+      enabled: true
     }
   }
 })

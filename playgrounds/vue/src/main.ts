@@ -3,7 +3,6 @@ import ui from '@nuxt/ui/vue-plugin'
 
 import App from './App.vue'
 import './assets/main.css'
-
 import { createRouter, createWebHashHistory } from 'vue-router'
 
 const app = createApp(App)

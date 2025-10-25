@@ -4,9 +4,6 @@ export default defineConfig({
   test: {
     projects: [
       'packages/*'
-    ],
-    env: {
-      COMPODIUM_TEST: 'true'
-    }
+    ]
   }
 })

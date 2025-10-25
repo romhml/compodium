@@ -1,0 +1,44 @@
+{
+  "name": "@compodium/testing",
+  "type": "module",
+  "version": "0.1.0-beta.11",
+  "description": "A plug and play component playground for Vue and Nuxt.",
+  "license": "MIT",
+  "repository": {
+    "url": "romhml/compodium",
+    "directory": "packages/testing"
+  },
+  "keywords": [
+    "nuxt",
+    "vue",
+    "vite",
+    "components",
+    "documentation"
+  ],
+  "exports": {
+    ".": "./dist/index.mjs",
+    "./unit": "./dist/unit/index.ts",
+    "./*": "./dist/*"
+  },
+  "main": "dist/index.mjs",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev:prepare": "unbuild --stub",
+    "prepack": "unbuild",
+    "typecheck": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "@compodium/core": "workspace:^",
+    "@vue/test-utils": ">=2",
+    "vite": ">=6",
+    "vitest": ">=3.2.4"
+  },
+  "dependencies": {
+    "defu": "^6.1.4",
+    "unplugin": "^2.3.5"
+  }
+}
