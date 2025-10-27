@@ -16,10 +16,10 @@
   },
   "devDependencies": {
     "@tsconfig/node22": "^22.0.2",
-    "@types/node": "^22.18.11",
+    "@types/node": "^22.18.12",
     "@vitejs/plugin-vue": "^6.0.1",
     "@vue/tsconfig": "^0.8.1",
-    "vite": "^7.1.11",
+    "vite": "^7.1.12",
     "vite-plugin-vue-devtools": "^8.0.3",
     "vue-tsc": "^2.2.2"
   }
