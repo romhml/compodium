@@ -9,6 +9,18 @@ import ui from '@nuxt/ui/vite'
 
 // https://vite.dev/config/
 export default defineConfig({
+  server: {
+    proxy: {
+      '/__compodium__/devtools': {
+        target: process.env.COMPODIUM_DEVTOOLS_URL,
+        ws: true,
+        rewriteWsOrigin: true,
+        changeOrigin: true,
+        followRedirects: true
+      }
+    }
+  },
+
   plugins: [
     vue(),
     vueDevTools(),

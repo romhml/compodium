@@ -18,19 +18,6 @@ export function devtoolsPlugin(options: PluginOptions): VitePlugin {
     configResolved(viteConfig) {
       userPreview = resolve(joinURL(options.rootDir ?? viteConfig.root, options.dir, 'preview.vue'))
     },
-    config(config) {
-      if (process.env.COMPODIUM_DEVTOOLS_URL) {
-        config.server ||= {}
-        config.server.proxy ||= {}
-        config.server.proxy['/__compodium__/devtools'] = {
-          target: process.env.COMPODIUM_DEVTOOLS_URL,
-          ws: true,
-          rewriteWsOrigin: true,
-          changeOrigin: true,
-          followRedirects: true
-        }
-      }
-    },
 
     configureServer(server) {
       if (process.env.COMPODIUM_DEVTOOLS_URL || process.env.VITEST) return
