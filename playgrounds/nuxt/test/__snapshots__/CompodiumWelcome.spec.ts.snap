@@ -1,0 +1,18 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Components > CompodiumWelcomeExample > snapshot 1`] = `
+"<div data-v-7949eb4f="" class="data-[spin=true]:animate-spin data-[bounce=true]:animate-bounce" data-spin="false" data-bounce="true">
+  <div data-v-7949eb4f="" class="border border-default p-4 rounded-lg w-sm">
+    <p data-v-7949eb4f="" class="text-center font-bold mb-4">Welcome!</p><button type="button" class="rounded-md font-medium inline-flex items-center disabled:cursor-not-allowed aria-disabled:cursor-not-allowed disabled:opacity-75 aria-disabled:opacity-75 transition-colors px-2.5 py-1.5 text-sm gap-1.5 w-full justify-center text-default hover:bg-elevated active:bg-elevated focus:outline-none focus-visible:bg-elevated hover:disabled:bg-transparent dark:hover:disabled:bg-transparent hover:aria-disabled:bg-transparent dark:hover:aria-disabled:bg-transparent"><span class="iconify i-lucide:rocket shrink-0 size-5" aria-hidden="true"></span> Go to Compodium
+      <!--v-if-->
+    </button>
+    <div data-v-7949eb4f="" data-orientation="horizontal" role="separator" class="flex items-center align-center text-center w-full flex-row">
+      <div class="border-default w-full border-solid border-t"></div>
+      <div class="font-medium text-default flex mx-3 whitespace-nowrap"><span class="text-sm">or</span></div>
+      <div class="border-default w-full border-solid border-t"></div>
+    </div><button type="button" class="rounded-md font-medium inline-flex items-center disabled:cursor-not-allowed aria-disabled:cursor-not-allowed disabled:opacity-75 aria-disabled:opacity-75 transition-colors px-2.5 py-1.5 text-sm gap-1.5 w-full justify-center text-success hover:bg-success/10 active:bg-success/10 focus:outline-none focus-visible:bg-success/10 disabled:bg-transparent aria-disabled:bg-transparent dark:disabled:bg-transparent dark:aria-disabled:bg-transparent"><span class="iconify i-lineicons:nuxt shrink-0 size-5" aria-hidden="true"></span> Open in Nuxt Devtools
+      <!--v-if-->
+    </button>
+  </div>
+</div>"
+`;

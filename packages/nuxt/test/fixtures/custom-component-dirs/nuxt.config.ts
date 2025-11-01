@@ -3,5 +3,6 @@ export default defineNuxtConfig({
   components: [
     { path: 'components/' },
     { path: 'my-ui/', prefix: 'U' }
-  ]
+  ],
+  test: false
 })

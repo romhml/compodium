@@ -5,7 +5,9 @@ import { joinURL } from 'ufo'
 export function iconifyPlugin(_options: PluginOptions): VitePlugin {
   return {
     name: 'compodium:iconify',
+    enforce: 'pre',
     apply: 'serve',
+
     configureServer(server) {
       server.middlewares.use('/__compodium__/api/iconify', async (req, res) => {
         try {

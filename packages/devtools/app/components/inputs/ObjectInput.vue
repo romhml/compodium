@@ -66,7 +66,7 @@ const visibleProps = computed(() => new Set(fuseResults.value?.map(result => res
           class="w-full ml-1"
         />
       </div>
-      <ComponentPropInput
+      <PropInput
         v-for="attr in attrs"
         v-show="visibleProps.has(attr.name)"
         :key="attr.name"

@@ -20,10 +20,5 @@ body {
 
 #compodium-default-preview {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  min-width: fit-content;
-  padding: 64px;
 }
 </style>
