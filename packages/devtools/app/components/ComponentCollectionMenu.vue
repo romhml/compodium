@@ -38,18 +38,18 @@ const treeItems = computed(() => {
   <UTree
     :items="treeItems"
     class="px-1 py-2"
+    :ui="{ linkLabel: 'mt-0.5' }"
   >
-    <template
-      #item-leading="{ item }"
-    >
+    <template #item-leading="{ item }">
       <UIcon
         v-if="item.icon"
         :name="item.icon"
+        class="size-4.5"
       />
       <UIcon
         v-else-if="item.children?.length"
         name="lucide:chevron-right"
-        class="transform transition-transform duration-200 group-data-expanded:rotate-90"
+        class="transform transition-transform duration-200 group-data-expanded:rotate-90 size-4.5"
       />
       <span v-else />
     </template>
