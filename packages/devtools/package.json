@@ -19,7 +19,7 @@
     "hookable": "^5.5.3",
     "json-editor-vue": "^0.18.1",
     "knitwork": "^1.2.0",
-    "motion-v": "^1.4.0",
+    "motion-v": "^1.7.4",
     "nuxt": "catalog:",
     "pathe": "^2.0.3",
     "prettier": "^3.6.2",
@@ -33,7 +33,7 @@
     "@compodium/meta": "workspace:^",
     "@compodium/testing": "workspace:^",
     "@iconify-json/lineicons": "^1.2.6",
-    "@iconify-json/lucide": "^1.2.71",
+    "@iconify-json/lucide": "^1.2.72",
     "@iconify/types": "^2.0.0",
     "@types/deep-eql": "^4.0.2",
     "@types/resemblejs": "^4.1.3"

@@ -39,6 +39,6 @@
   },
   "dependencies": {
     "defu": "^6.1.4",
-    "unplugin": "^2.3.5"
+    "unplugin": "^2.3.10"
   }
 }
