@@ -12,13 +12,13 @@
   "dependencies": {
     "@nuxt/ui": "catalog:",
     "nuxt": "catalog:",
-    "reka-ui": "^2.5.1"
+    "reka-ui": "^2.6.0"
   },
   "devDependencies": {
     "@compodium/nuxt": "workspace:^",
     "@compodium/testing": "workspace:^",
     "@nuxt/test-utils": "^3.20.0",
-    "@vitest/ui": "^4.0.3",
+    "@vitest/ui": "^4.0.6",
     "vitest": "^3.2.4",
     "vitest-environment-nuxt": "^1.0.1"
   }
