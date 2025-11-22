@@ -55,8 +55,8 @@
     "sirv": "^3.0.2",
     "tinyglobby": "^0.2.15",
     "ufo": "^1.6.1",
-    "unplugin": "^2.3.10",
-    "unplugin-ast": "^0.15.3",
+    "unplugin": "^2.3.11",
+    "unplugin-ast": "^0.15.4",
     "zod": "^4.1.12"
   }
 }
