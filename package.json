@@ -34,7 +34,6 @@
   "resolutions": {
     "@compodium/core": "workspace:^",
     "@compodium/examples": "workspace:^",
-    "@compodium/meta": "workspace:^",
     "@compodium/nuxt": "workspace:^",
     "@compodium/vue": "workspace:^",
     "@compodium/testing": "workspace:^"

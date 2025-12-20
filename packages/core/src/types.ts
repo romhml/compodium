@@ -1,5 +1,5 @@
 import type { UserConfig as VitestUserConfig, InlineConfig as VitestInlineConfig } from 'vitest/node'
-import type { PropertyMeta as VuePropertyMeta } from '@compodium/meta'
+import type { PropertyMeta as VuePropertyMeta } from 'vue-component-meta'
 import type { Hookable } from 'hookable'
 import type { InputSchema } from './plugins/meta/infer'
 import type { ViteHotContext } from 'vite/types/hot.js'

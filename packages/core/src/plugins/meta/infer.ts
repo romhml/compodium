@@ -1,4 +1,4 @@
-import type { PropertyMeta as VuePropertyMeta } from '@compodium/meta'
+import type { PropertyMeta as VuePropertyMeta } from 'vue-component-meta'
 import { z } from 'zod'
 import type { ZodType } from 'zod'
 import type { PropSchema, PropInputType, PropertyMeta } from '../../types'

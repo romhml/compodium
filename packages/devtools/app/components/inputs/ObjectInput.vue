@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { ObjectInputSchema } from '@compodium/core'
-import type { PropertyMeta } from '@compodium/meta'
-import { useFuse } from '@vueuse/integrations/useFuse.mjs'
+import type { PropertyMeta } from 'vue-component-meta'
+import { useFuse } from '@vueuse/integrations/useFuse'
 
 const props = defineProps<{ schema: ObjectInputSchema, name?: string }>()
 
