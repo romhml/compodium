@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import type { Component, ComponentExample, CompodiumMeta, ComponentCollection, PropertyMeta } from '@compodium/core'
+import type { ComponentMeta } from 'vue-component-meta'
+import type { Component, ComponentExample, ComponentCollection, PropertyMeta } from '@compodium/core'
 import { StorageSerializers, useColorMode, useDebounceFn, useStorage } from '@vueuse/core'
 import type { ComboItem } from '../components/ComboInputMenu.vue'
 import { getEnumOptions } from '~/utils/enum'
@@ -58,7 +59,6 @@ const component = useStorage<(Component & Partial<ComponentExample>) | undefined
 
 const props = useState<Record<string, any>>('__component_state', () => ref({}))
 const defaultProps = shallowRef({})
-const compodiumDefaultProps = shallowRef({})
 const touched = ref(false)
 
 watch(component, () => {
@@ -66,7 +66,9 @@ watch(component, () => {
   events.value = []
 })
 
-function getDefaultProps(meta: CompodiumMeta): Record<string, any> {
+function getDefaultProps(meta?: ComponentMeta): Record<string, any> {
+  if (!meta) return {}
+
   return meta.props?.reduce((acc: Record<string, any>, prop: any) => {
     const value = evalPropValue(prop)
     if (value !== undefined) acc[prop.name] = value
@@ -85,7 +87,7 @@ function evalPropValue(meta: Partial<PropertyMeta>) {
 
 const { data: componentMeta, refresh: refreshMeta } = useAsyncData('__compodium-fetch-meta', async () => {
   if (!component.value) return
-  const meta = await $fetch<CompodiumMeta>('/api/meta', { baseURL: '/__compodium__', query: {
+  const meta = await $fetch<ComponentMeta>('/api/meta', { baseURL: '/__compodium__', query: {
     component: component.value?.componentPath ?? component.value?.filePath }
   })
   return meta
@@ -93,26 +95,20 @@ const { data: componentMeta, refresh: refreshMeta } = useAsyncData('__compodium-
 
 const { data: exampleMeta, refresh: refreshExampleMeta } = useAsyncData('__compodium-fetch-example-meta', async () => {
   if (!component.value || !component.value.isExample) return
-  const example = await $fetch<CompodiumMeta>(`/api/meta`, { baseURL: '/__compodium__', query: { component: component.value.filePath } })
+  const example = await $fetch<ComponentMeta>(`/api/meta`, { baseURL: '/__compodium__', query: { component: component.value.filePath } })
   return example
 }, { watch: [component] })
 
-watch([componentMeta, exampleMeta], async ([newComponentMeta, newExampleMeta]) => {
-  if (!newComponentMeta) return
+const compodiumDefaultProps = computed(() => {
+  if (!component.value || !componentMeta.value) return {}
+  return structuredClone({ ...getDefaultProps(componentMeta.value), ...component.value?.defaultProps })
+})
 
-  compodiumDefaultProps.value = { ...(newExampleMeta?.compodium?.defaultProps ?? newComponentMeta?.compodium?.defaultProps) }
-  defaultProps.value = {
-    ...getDefaultProps(newComponentMeta)
-  }
-
+watch([compodiumDefaultProps], async () => {
+  if (!component.value) return
   if (!touched.value) {
-    props.value = structuredClone({ ...defaultProps.value, ...compodiumDefaultProps.value })
-
-    combo.value = [...(
-      newExampleMeta?.compodium?.combo
-      ?? newComponentMeta?.compodium?.combo as any
-      ?? []
-    )]
+    props.value = compodiumDefaultProps.value
+    combo.value = component.value?.combo
   }
 
   await updateComponent()

@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import type { CompodiumMeta, PropertyMeta } from '@compodium/core'
+import type { PropertyMeta } from '@compodium/core'
+import type { ComponentMeta } from 'vue-component-meta'
 import { useFuse } from '@vueuse/integrations/useFuse'
 
 const props = defineProps<{
-  meta?: CompodiumMeta
+  meta?: ComponentMeta
   defaultValue?: Record<string, any>
   disabled?: string[]
 }>()

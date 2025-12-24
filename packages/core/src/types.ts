@@ -1,4 +1,4 @@
-import type { UserConfig as VitestUserConfig, InlineConfig as VitestInlineConfig } from 'vitest/node'
+import type { TestUserConfig, InlineConfig as VitestInlineConfig } from 'vitest/node'
 import type { PropertyMeta as VuePropertyMeta } from 'vue-component-meta'
 import type { Hookable } from 'hookable'
 import type { InputSchema } from './plugins/meta/infer'
@@ -111,12 +111,8 @@ export type ComponentsDir = {
 }
 
 export type CompodiumMeta<T = Record<string, any>> = {
-  compodium?: {
-    combo?: Combo<T>
-    defaultProps?: Partial<T>
-  }
-  props: PropertyMeta[]
-  events: string[]
+  combo?: Combo<T>
+  defaultProps?: Partial<T>
 }
 
 export type PropSchema = {
@@ -144,7 +140,7 @@ export type Component = {
   docUrl?: string
   examples?: ComponentExample[]
   collectionName: string
-}
+} & CompodiumMeta
 
 export type ComponentExample = Component & {
   isExample: true
@@ -169,7 +165,7 @@ export type ComponentCollection = Collection & {
   components: (Component & Partial<ComponentExample>)[]
 }
 
-export type TestConfig = VitestUserConfig & {
+export type TestConfig = TestUserConfig & {
   test?: VitestInlineConfig
 }
 
