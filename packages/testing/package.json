@@ -27,8 +27,9 @@
     "dist"
   ],
   "scripts": {
-    "dev:prepare": "unbuild --stub",
-    "prepack": "unbuild",
+    "dev:prepare": "tsdown",
+    "prepack": "tsdown",
+    "dev": "tsdown --watch",
     "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {

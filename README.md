@@ -100,6 +100,7 @@ pnpm dev:prepare
 
 # Develop with the playground
 pnpm dev
+pnpm dev:vue # or pnpm dev:nuxt
 
 # Run ESLint
 pnpm lint

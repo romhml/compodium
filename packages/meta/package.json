@@ -20,9 +20,10 @@
     "dist/"
   ],
   "scripts": {
-    "dev:prepare": "unbuild --stub",
+    "dev": "tsdown --watch",
+    "dev:prepare": "tsdown",
     "typecheck": "tsc --noEmit",
-    "prepack": "unbuild"
+    "prepack": "tsdown"
   },
   "dependencies": {
     "@volar/typescript": "^2.4.23",

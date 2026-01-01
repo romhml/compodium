@@ -1,5 +1,5 @@
 {
-  "name": "@compodium/playground-nuxt",
+  "name": "playground-nuxt",
   "private": true,
   "type": "module",
   "scripts": {

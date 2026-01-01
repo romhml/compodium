@@ -18,7 +18,8 @@
     "dist"
   ],
   "scripts": {
-    "dev:prepare": "unbuild --stub",
+    "dev": "tsdown --watch",
+    "dev:prepare": "tsdown",
     "prepack": "tailwindcss -i src/assets/ui/base.css -o src/assets/ui/index.css && unbuild"
   },
   "dependencies": {

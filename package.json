@@ -7,10 +7,10 @@
   "type": "module",
   "scripts": {
     "dev:prepare": "pnpm -r --color dev:prepare",
-    "dev": "COMPODIUM_DEVTOOLS_URL=http://localhost:4242 pnpm --color --parallel -r dev",
-    "dev:nuxt": "COMPODIUM_DEVTOOLS_URL=http://localhost:4242 pnpm --color --parallel --filter devtools --filter playground-nuxt dev",
-    "dev:vue": "COMPODIUM_DEVTOOLS_URL=http://localhost:4242 pnpm --color --parallel --filter devtools --filter playground-vue dev",
-    "dev:docs": "COMPODIUM_DEVTOOLS_URL=http://localhost:4242 pnpm --color --parallel --filter devtools --filter docs dev",
+    "dev": "COMPODIUM_DEVTOOLS_URL=http://localhost:4242 pnpm --color --parallel --filter '@compodium/*' dev",
+    "dev:nuxt": "COMPODIUM_DEVTOOLS_URL=http://localhost:4242 pnpm --filter playground-nuxt dev",
+    "dev:vue": "COMPODIUM_DEVTOOLS_URL=http://localhost:4242 pnpm --filter playground-vue dev",
+    "dev:docs": "COMPODIUM_DEVTOOLS_URL=http://localhost:4242 pnpm --filter docs dev",
     "lint": "eslint .",
     "typecheck": "pnpm -r --color typecheck",
     "test": "vitest",
@@ -26,7 +26,7 @@
     "happy-dom": "^17.4.4",
     "supertest": "^7.1.4",
     "typescript": "^5.9.2",
-    "unbuild": "^3.6.1",
+    "tsdown": "^0.18.4",
     "vite": "^7.1.12",
     "vitest": "^3.2.4",
     "wrangler": "^4.45.3"
