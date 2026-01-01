@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import type { ComponentMeta } from 'vue-component-meta'
-import type { Component, ComponentExample, ComponentCollection, PropertyMeta } from '@compodium/core'
+import type { Component, ComponentExample, ComponentCollection, PropertyMeta, ComponentMeta } from '@compodium/core'
 import { StorageSerializers, useColorMode, useDebounceFn, useStorage } from '@vueuse/core'
 import type { ComboItem } from '../components/ComboInputMenu.vue'
 import { getEnumOptions } from '~/utils/enum'
@@ -9,35 +8,19 @@ const { hooks } = useCompodiumClient()
 const rendererMounted = ref(false)
 
 const events = ref<{ name: string, data?: any }[]>([])
+const collections = useStorage<ComponentCollection[]>('__compodium-collections', null, undefined, { serializer: StorageSerializers.object })
 
 hooks.hook('renderer:mounted', () => {
   rendererMounted.value = true
-
-  hooks.hook('component:changed', async (path: string) => {
-    if ((component.value?.filePath && path.endsWith(component.value?.filePath)) || (component.value?.componentPath && path.endsWith(component.value?.componentPath))) {
-      await Promise.all([refreshMeta(), refreshExampleMeta()])
-    }
-  })
-
-  hooks.hook('component:removed', useDebounceFn(async () => {
-    await refreshCollections()
-  }, 300))
-
-  hooks.hook('component:added', useDebounceFn(async () => {
-    await refreshCollections()
-  }, 300))
-
   hooks.hook('component:event', async (payload) => {
     events.value.unshift(payload)
   })
-
-  updateComponent()
 })
 
-const { data: collections, refresh: refreshCollections } = useAsyncData(async () => {
-  const collections = await $fetch<ComponentCollection[]>('/api/collections', { baseURL: '/__compodium__' })
+hooks.hook('collections:resolved', async (cols) => {
+  collections.value = cols
 
-  const isComponentFound = component.value && collections.some(col =>
+  const isComponentFound = component.value && collections?.value.some(col =>
     col.components.some(comp =>
       comp.pascalName === component.value?.pascalName
       || comp.examples?.some(ex => ex.pascalName === component.value?.pascalName)
@@ -45,20 +28,24 @@ const { data: collections, refresh: refreshCollections } = useAsyncData(async ()
   )
 
   if (!isComponentFound) {
-    const fallbackCollection = collections.find(c => c.components.length > 0)
+    const fallbackCollection = collections.value.find(c => c.components.length > 0)
     component.value = fallbackCollection?.components?.[0]
-    if (!component.value) {
-      await navigateTo(`/welcome`)
-    }
+    if (!component.value) await navigateTo(`/welcome`)
   }
 
-  return collections
+  updateComponent()
+})
+
+hooks.hook('component:updated', async (_, meta) => {
+  componentMeta.value = meta
+  console.log(meta)
 })
 
 const component = useStorage<(Component & Partial<ComponentExample>) | undefined>('__compodium-component', null, undefined, { serializer: StorageSerializers.object })
 
 const props = useState<Record<string, any>>('__component_state', () => ref({}))
 const defaultProps = shallowRef({})
+
 const touched = ref(false)
 
 watch(component, () => {
@@ -66,14 +53,16 @@ watch(component, () => {
   events.value = []
 })
 
+// TODO
+const componentMeta = ref<ComponentMeta>()
+
 function getDefaultProps(meta?: ComponentMeta): Record<string, any> {
   if (!meta) return {}
-
   return meta.props?.reduce((acc: Record<string, any>, prop: any) => {
     const value = evalPropValue(prop)
     if (value !== undefined) acc[prop.name] = value
     return acc
-  }, {})
+  }, {}) ?? {}
 }
 
 function evalPropValue(meta: Partial<PropertyMeta>) {
@@ -85,23 +74,9 @@ function evalPropValue(meta: Partial<PropertyMeta>) {
   }
 }
 
-const { data: componentMeta, refresh: refreshMeta } = useAsyncData('__compodium-fetch-meta', async () => {
-  if (!component.value) return
-  const meta = await $fetch<ComponentMeta>('/api/meta', { baseURL: '/__compodium__', query: {
-    component: component.value?.componentPath ?? component.value?.filePath }
-  })
-  return meta
-}, { watch: [component] })
-
-const { data: exampleMeta, refresh: refreshExampleMeta } = useAsyncData('__compodium-fetch-example-meta', async () => {
-  if (!component.value || !component.value.isExample) return
-  const example = await $fetch<ComponentMeta>(`/api/meta`, { baseURL: '/__compodium__', query: { component: component.value.filePath } })
-  return example
-}, { watch: [component] })
-
 const compodiumDefaultProps = computed(() => {
   if (!component.value || !componentMeta.value) return {}
-  return structuredClone({ ...getDefaultProps(componentMeta.value), ...component.value?.defaultProps })
+  return { ...getDefaultProps(componentMeta.value), ...component.value?.defaultProps }
 })
 
 watch([compodiumDefaultProps], async () => {
@@ -121,11 +96,13 @@ watch(component, async (oldValue, newValue) => {
 async function updateComponent() {
   if (!component.value) return
 
+  // TODO: The schema can be clarified by specifying an optional examplePath attribute.
   await hooks.callHook('renderer:update-component', {
     path: component.value.realPath,
     props: props.value,
     wrapper: component.value?.wrapperComponent,
-    events: componentMeta.value?.events
+    events: componentMeta.value?.events,
+    componentPath: component.value.componentPath ?? component.value.realPath
   })
 
   await hooks.callHook('renderer:update-combo', { props: comboProps.value?.filter(Boolean) as ComboItem[] ?? [] })
@@ -150,7 +127,7 @@ const comboProps = computed<Partial<[ComboItem, ComboItem]>>({
 })
 
 const comboItems = computed<ComboItem[]>(() => {
-  return componentMeta.value?.props.flatMap((prop) => {
+  return componentMeta.value?.props?.flatMap((prop) => {
     if (!Array.isArray(prop.schema)) return []
     const enumInput = prop.schema?.find((sch: any) => sch?.inputType === 'stringEnum')
 
@@ -165,7 +142,7 @@ const comboItems = computed<ComboItem[]>(() => {
   }) ?? []
 })
 
-watch([componentMeta, exampleMeta, combo], async () => {
+watch([componentMeta, combo], async () => {
   await hooks.callHook('renderer:update-combo', { props: comboProps.value?.filter(Boolean) as ComboItem[] ?? [] })
 }, { deep: true })
 

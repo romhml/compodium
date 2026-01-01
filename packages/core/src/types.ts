@@ -1,5 +1,5 @@
 import type { TestUserConfig, InlineConfig as VitestInlineConfig } from 'vitest/node'
-import type { PropertyMeta as VuePropertyMeta } from 'vue-component-meta'
+import type { PropertyMeta as VuePropertyMeta, ComponentMeta as VueComponentMeta } from 'vue-component-meta'
 import type { Hookable } from 'hookable'
 import type { InputSchema } from './plugins/meta/infer'
 import type { ViteHotContext } from 'vite/types/hot.js'
@@ -127,6 +127,11 @@ export type PropertyMeta = Omit<VuePropertyMeta, 'schema'> & {
   schema: PropSchema[]
 }
 
+export type ComponentMeta = {
+  props?: PropertyMeta[]
+  events: VueComponentMeta['events']
+}
+
 export type Component = {
   pascalName: string
   kebabName: string
@@ -170,23 +175,21 @@ export type TestConfig = TestUserConfig & {
 }
 
 export interface CompodiumHooks {
-  // Triggered when the components code has been updated
-  'component:changed': (path: string) => void
-
-  // Triggered when a new component has been added
-  'component:added': (path: string) => void
-
-  // Triggered when a component has been deleted
-  'component:removed': (path: string) => void
-
-  // Triggered when a component event is triggered
-  'component:event': (payload: { name: string, data: any }) => void
 
   // Called after the renderer has mounted
   'renderer:mounted': (hot?: ViteHotContext) => void
 
+  // Called once the component collections have been parsed
+  'collections:resolved': (collections: ComponentCollection[]) => void
+
+  // Called whenever the renderer's component is updated
+  'component:updated': (component: Component, meta: ComponentMeta) => void
+
+  // Triggered when a component event is triggered
+  'component:event': (payload: { name: string, data: any }) => void
+
   // Update the renderer component
-  'renderer:update-component': (payload: { path: string, props?: Record<string, any>, events?: string[], wrapper?: string }) => void
+  'renderer:update-component': (payload: { path: string, props?: Record<string, any>, events?: string[], wrapper?: string, componentPath: string }) => void
 
   // Update the renderer props
   'renderer:update-props': (payload: { props?: Record<string, any> }) => void
@@ -213,5 +216,5 @@ declare global {
   /**
    * Macro to configure components and examples.
    */
-  function extendCompodiumMeta<T = Record<string, any>>(_options: CompodiumMeta<T>['compodium']): void
+  function extendCompodiumMeta<T = Record<string, any>>(_options: CompodiumMeta<T>): void
 }

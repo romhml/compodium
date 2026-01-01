@@ -1,5 +1,5 @@
-import { createCheckerByJson } from 'vue-component-meta'
-import type { CompodiumMeta, ComponentsDir } from '../../types'
+import { type ComponentMeta, createCheckerByJson } from 'vue-component-meta'
+import type { ComponentsDir } from '../../types'
 import { inferPropTypes } from './infer'
 
 export function createChecker(dirs: ComponentsDir[]) {
@@ -36,7 +36,7 @@ export function createChecker(dirs: ComponentsDir[]) {
 
   const checker = {
     ...metaChecker,
-    getComponentMeta: (componentPath: string): CompodiumMeta => {
+    getComponentMeta: (componentPath: string): ComponentMeta => {
       const meta = metaChecker.getComponentMeta(componentPath)
       return {
         props: meta.props
@@ -45,7 +45,6 @@ export function createChecker(dirs: ComponentsDir[]) {
           .map((sch: any) => stripeTypeScriptInternalTypesSchema(sch, true))
           .map(inferPropTypes),
 
-        compodium: meta.compodium,
         events: meta.events.map((sch: any) => sch.name)
         // exposed: meta.exposed.map(sch => stripeTypeScriptInternalTypesSchema(sch, true)),
         // slots: meta.slots.map(sch => stripeTypeScriptInternalTypesSchema(sch, true))

@@ -131,19 +131,6 @@ export function collectionsPlugin(options: PluginOptions): VitePlugin {
     configureServer(_server) {
       server = _server
 
-      // Existing middleware endpoint
-      server.middlewares.use('/__compodium__/api/collections', async (_: any, res: any) => {
-        try {
-          const result = await generateCollectionsData(collections)
-          res.setHeader('Content-Type', 'application/json')
-          res.write(JSON.stringify(result))
-          res.end()
-        } catch {
-          res.statusCode = 500
-          res.end(JSON.stringify({ error: 'Failed to fetch collections' }))
-        }
-      })
-
       const componentCollection = collections.find(c => c.name === 'Components') as Collection
 
       const watchedPaths = [
@@ -159,34 +146,15 @@ export function collectionsPlugin(options: PluginOptions): VitePlugin {
         }
       })
 
-      const handleFileChange = async (filePath: string, event: string) => {
-        if (watchedPaths.find(p => filePath.startsWith(p))) {
-          // Existing WebSocket HMR
-          server.ws.send({
-            type: 'custom',
-            event: 'compodium:hmr',
-            data: { path: filePath, event }
-          })
-
-          // Virtual module invalidation
-          const module = server.moduleGraph.getModuleById(RESOLVED_VIRTUAL_MODULE_ID)
-          if (module) {
-            server.reloadModule(module)
-          }
-        }
+      const handleFileChange = async () => {
+        // Virtual module invalidation
+        const mod = server.moduleGraph.getModuleById(RESOLVED_VIRTUAL_MODULE_ID)
+        if (mod) server.reloadModule(mod)
       }
 
-      watcher.on('add', async (filePath: string) => {
-        await handleFileChange(filePath, 'component:added')
-      })
-
-      watcher.on('addDir', async (filePath: string) => {
-        await handleFileChange(filePath, 'component:added')
-      })
-
-      watcher.on('unlink', async (filePath: string) => {
-        await handleFileChange(filePath, 'component:removed')
-      })
+      watcher.on('add', handleFileChange)
+      watcher.on('addDir', handleFileChange)
+      watcher.on('unlink', handleFileChange)
     }
   }
 }

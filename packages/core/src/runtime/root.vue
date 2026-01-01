@@ -3,7 +3,7 @@
 /// <reference types="vite/client" />
 
 import { onMounted, shallowRef, ref, computed, toRaw } from 'vue'
-import type { CompodiumHooks } from '@compodium/core'
+import type { CompodiumHooks, ComponentMeta, ComponentCollection } from '@compodium/core'
 import { onKeyStroke, useColorMode } from '@vueuse/core'
 import { joinURL } from 'ufo'
 import { createHooks } from 'hookable'
@@ -24,6 +24,7 @@ const component = shallowRef()
 const wrapper = shallowRef()
 
 const events = shallowRef<string[]>()
+
 const eventHandlers = computed(() => {
   return {
     ...events.value?.reduce((acc, event) => {
@@ -44,17 +45,16 @@ async function onUpdateComponent(payload: Parameters<CompodiumHooks['renderer:up
   combo.value = []
   component.value = null
   wrapper.value = null
+
   props.value = payload.props
   events.value = payload.events
 
-  if (payload.wrapper) {
-    wrapper.value = await importComponent(payload.wrapper)
-  }
-  component.value = await importComponent(payload.path)
-}
+  // TODO: Should also update the default props directly there
+  const componentMeta = await import(/* vite-ignore */ `/@id/virtual:compodium/meta?component=${payload.componentPath}`).then(c => c.default) as ComponentMeta
 
-if (import.meta.hot) {
-  import.meta.hot.on('compodium:hmr', data => hooks.value?.callHook(data.event, data.path))
+  hooks.value?.callHook('component:updated', {}, componentMeta)
+
+  component.value = await importComponent(payload.path)
 }
 
 const showGrid = ref(false)
@@ -63,13 +63,14 @@ const gridGap = ref(8)
 const colorMode = useColorMode()
 const hooks = shallowRef<Hookable<CompodiumHooks>>()
 
-onMounted(() => {
+onMounted(async () => {
   hooks.value = window.parent.__COMPODIUM_HOOKS__ as Hookable<CompodiumHooks> ?? createHooks<CompodiumHooks>()
   window.__COMPODIUM_HOOKS__ = hooks.value
 
   hooks.value.hook('renderer:update-component', onUpdateComponent)
   hooks.value.hook('renderer:update-props', payload => props.value = { ...payload.props })
   hooks.value.hook('renderer:update-combo', payload => combo.value = payload.props)
+
   hooks.value.hook('renderer:grid', (payload) => {
     showGrid.value = payload.enabled
     gridGap.value = payload.gap
@@ -77,6 +78,9 @@ onMounted(() => {
 
   hooks.value.hook('renderer:set-color', color => colorMode.value = color)
   hooks.value.callHook('renderer:mounted', import.meta.hot)
+
+  const collections = await import(/* vite-ignore */ 'virtual:compodium/collections').then(c => c.default) as ComponentCollection[]
+  hooks.value.callHook('collections:resolved', collections)
 })
 
 onMounted(() => {
