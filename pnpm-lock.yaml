@@ -293,8 +293,8 @@ importers:
         specifier: workspace:^
         version: link:../core
       '@nuxt/devtools-kit':
-        specifier: ^2.7.0
-        version: 2.7.0(magicast@0.5.1)(vite@7.3.1(@types/node@22.19.0)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.0)(yaml@2.8.2))
+        specifier: ^3.1.1
+        version: 3.1.1(magicast@0.5.1)(vite@7.3.1(@types/node@22.19.0)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.0)(yaml@2.8.2))
       '@nuxt/kit':
         specifier: '>=3.15'
         version: 4.2.2(magicast@0.5.1)
