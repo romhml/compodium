@@ -30,7 +30,7 @@
     "path-browserify": "^1.0.1",
     "pathe": "^2.0.3",
     "vue-component-meta": "^2.2.12",
-    "vue-component-type-helpers": "^2.2.12"
+    "vue-component-type-helpers": "^3.2.4"
   },
   "devDependencies": {
     "@types/path-browserify": "^1.0.3"
