@@ -18,7 +18,7 @@
   },
   "devDependencies": {
     "@compodium/testing": "workspace:^",
-    "@tsconfig/node22": "^22.0.2",
+    "@tsconfig/node24": "^24.0.0",
     "@types/node": "^22.19.0",
     "@vitejs/plugin-vue": "^6.0.1",
     "@vue/tsconfig": "^0.8.1",
