@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@nuxt/ui": "catalog:",
-    "@vitest/ws-client": "^3.2.4",
+    "@vitest/ws-client": "^4.0.18",
     "@vueuse/core": "^13.9.0",
     "@vueuse/integrations": "^13.9.0",
     "deep-eql": "^5.0.2",
