@@ -47,7 +47,7 @@
     "@compodium/examples": "workspace:^",
     "@compodium/meta": "workspace:^",
     "@vueuse/core": "^13.9.0",
-    "chokidar": "^4.0.3",
+    "chokidar": "^5.0.0",
     "hookable": "^5.5.3",
     "mlly": "^1.8.0",
     "pathe": "^2.0.3",
