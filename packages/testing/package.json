@@ -38,7 +38,7 @@
     "vitest": ">=3.2.4"
   },
   "dependencies": {
-    "defu": "^6.1.4",
-    "unplugin": "^2.3.10"
+    "defu": "^6.1.7",
+    "unplugin": "^2.3.11"
   }
 }
