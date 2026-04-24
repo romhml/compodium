@@ -44,8 +44,8 @@
     "@compodium/core": "workspace:^",
     "@nuxt/devtools-kit": "^2.7.0",
     "consola": "^3.4.2",
-    "defu": "^6.1.4",
-    "ufo": "^1.6.1"
+    "defu": "^6.1.7",
+    "ufo": "^1.6.3"
   },
   "devDependencies": {
     "@nuxt/module-builder": "^1.0.2",
