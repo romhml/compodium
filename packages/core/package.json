@@ -35,7 +35,7 @@
   "peerDependencies": {
     "@compodium/testing": "workspace:^",
     "vite": ">=6",
-    "vitest": ">=3.2.4",
+    "vitest": ">=4.0.2",
     "vue": ">=3"
   },
   "peerDependenciesMeta": {
@@ -58,5 +58,8 @@
     "unplugin": "^2.3.10",
     "unplugin-ast": "^0.15.3",
     "zod": "^4.1.12"
+  },
+  "devDependencies": {
+    "vue": "catalog:"
   }
 }

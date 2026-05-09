@@ -1,4 +1,5 @@
 import { createCheckerByJson } from '@compodium/meta'
+import type { CompodiumComponentMeta } from '@compodium/meta'
 import type { CompodiumMeta, ComponentsDir } from '../../types'
 import { inferPropTypes } from './infer'
 
@@ -37,7 +38,7 @@ export function createChecker(dirs: ComponentsDir[]) {
   const checker = {
     ...metaChecker,
     getComponentMeta: (componentPath: string): CompodiumMeta => {
-      const meta = metaChecker.getComponentMeta(componentPath)
+      const meta = metaChecker.getComponentMeta(componentPath) as CompodiumComponentMeta
       return {
         props: meta.props
           .filter((sch: any) => !sch.global)

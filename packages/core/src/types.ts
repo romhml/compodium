@@ -1,4 +1,4 @@
-import type { UserConfig as VitestUserConfig, InlineConfig as VitestInlineConfig } from 'vitest/node'
+import type { TestUserConfig as VitestUserConfig, InlineConfig as VitestInlineConfig } from 'vitest/node'
 import type { PropertyMeta as VuePropertyMeta } from '@compodium/meta'
 import type { Hookable } from 'hookable'
 import type { InputSchema } from './plugins/meta/infer'

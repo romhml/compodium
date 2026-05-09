@@ -3,8 +3,6 @@ import { createLanguageServiceHost, resolveFileLanguageId } from '@volar/typescr
 import * as vue from '@vue/language-core'
 import path from 'pathe'
 import type ts from 'typescript'
-import { code as typeHelpersCode } from 'vue-component-type-helpers'
-import { code as vue2TypeHelpersCode } from 'vue-component-type-helpers/vue2.js'
 
 import type {
   ComponentMeta,
@@ -18,6 +16,36 @@ import type {
 } from 'vue-component-meta'
 
 const windowsPathReg = /\\/g
+const typeHelpersCode = `
+type ComponentType<T> = T extends new (...args: any) => any ? 1 : T extends (...args: any) => any ? 2 : 0;
+type ComponentProps<T> = T extends new (...args: any) => { $props: infer P } ? NonNullable<P> : T extends (props: infer P, ...args: any) => any ? P : {};
+type ComponentSlots<T> = T extends new (...args: any) => { $slots: infer S } ? NonNullable<S> : T extends (props: any, ctx: { slots: infer S }, ...args: any) => any ? NonNullable<S> : {};
+type ComponentEmit<T> = T extends new (...args: any) => { $emit: infer E } ? NonNullable<E> : T extends (props: any, ctx: { emit: infer E }, ...args: any) => any ? NonNullable<E> : {};
+type ComponentExposed<T> = T extends new (...args: any) => infer E ? E : T extends (props: any, ctx: any, expose: (exposed: infer E) => any, ...args: any) => any ? NonNullable<E> : {};
+`.trim()
+
+type CommandLineAndFiles = [vue.ParsedCommandLine, string[]]
+
+function getFileNames(
+  ts: typeof import('typescript'),
+  rootDir: string,
+  json: any,
+  configFileName: string | undefined,
+  commandLine: vue.ParsedCommandLine
+) {
+  const parsed = typeof json.fileName === 'string'
+    ? ts.parseJsonSourceFileConfigFileContent(json, ts.sys, rootDir, {}, configFileName, undefined, getVueExtraExtensions(ts, commandLine))
+    : ts.parseJsonConfigFileContent(json, ts.sys, rootDir, {}, configFileName, undefined, getVueExtraExtensions(ts, commandLine))
+  return parsed.fileNames
+}
+
+function getVueExtraExtensions(ts: typeof import('typescript'), commandLine: vue.ParsedCommandLine) {
+  return vue.getAllExtensions(commandLine.vueOptions).map(extension => ({
+    extension: extension.slice(1),
+    isMixedContent: true,
+    scriptKind: ts.ScriptKind.Deferred
+  }))
+}
 
 export function createCheckerByJsonConfigBase(
   ts: typeof import('typescript'),
@@ -28,7 +56,10 @@ export function createCheckerByJsonConfigBase(
   rootDir = rootDir.replace(windowsPathReg, '/')
   return baseCreate(
     ts,
-    () => vue.createParsedCommandLineByJson(ts, ts.sys, rootDir, json, undefined),
+    () => {
+      const commandLine = vue.createParsedCommandLineByJson(ts, ts.sys, rootDir, json, undefined)
+      return [commandLine, getFileNames(ts, rootDir, json, undefined, commandLine)]
+    },
     checkerOptions,
     rootDir,
     path.join(rootDir, 'jsconfig.json.global.vue')
@@ -43,7 +74,11 @@ export function createCheckerBase(
   tsconfig = tsconfig.replace(windowsPathReg, '/')
   return baseCreate(
     ts,
-    () => vue.createParsedCommandLine(ts, ts.sys, tsconfig),
+    () => {
+      const commandLine = vue.createParsedCommandLine(ts, ts.sys, tsconfig)
+      const sourceFile = ts.readJsonConfigFile(tsconfig, ts.sys.readFile)
+      return [commandLine, getFileNames(ts, path.dirname(tsconfig), sourceFile, tsconfig, commandLine)]
+    },
     checkerOptions,
     path.dirname(tsconfig),
     tsconfig + '.global.vue'
@@ -52,13 +87,13 @@ export function createCheckerBase(
 
 export function baseCreate(
   ts: typeof import('typescript'),
-  getCommandLine: () => vue.ParsedCommandLine,
+  getCommandLine: () => CommandLineAndFiles,
   checkerOptions: MetaCheckerOptions,
   rootPath: string,
   globalComponentName: string
 ) {
-  let commandLine = getCommandLine()
-  let fileNames = commandLine.fileNames.map(path => path.replace(windowsPathReg, '/'))
+  let [commandLine, fileNames] = getCommandLine()
+  fileNames = fileNames.map(path => path.replace(windowsPathReg, '/'))
   let projectVersion = 0
 
   const projectHost: TypeScriptProjectHost = {
@@ -130,37 +165,6 @@ export function baseCreate(
   const { languageServiceHost } = createLanguageServiceHost(ts as any, ts.sys, language as any, s => s, projectHost)
   const tsLs = ts.createLanguageService(languageServiceHost as any)
 
-  const directoryExists = languageServiceHost.directoryExists?.bind(languageServiceHost)
-  const fileExists = languageServiceHost.fileExists.bind(languageServiceHost)
-  const getScriptSnapshot = languageServiceHost.getScriptSnapshot.bind(languageServiceHost)
-  const globalTypesName = vue.getGlobalTypesFileName(commandLine.vueOptions)
-  const globalTypesContents = `// @ts-nocheck\nexport {};\n` + vue.generateGlobalTypes(commandLine.vueOptions)
-  const globalTypesSnapshot: ts.IScriptSnapshot = {
-    getText: (start, end) => globalTypesContents.slice(start, end),
-    getLength: () => globalTypesContents.length,
-    getChangeRange: () => undefined
-  }
-  if (directoryExists) {
-    languageServiceHost.directoryExists = (path) => {
-      if (path.endsWith('.vue-global-types')) {
-        return true
-      }
-      return directoryExists(path)
-    }
-  }
-  languageServiceHost.fileExists = (path) => {
-    if (path.endsWith(`.vue-global-types/${globalTypesName}`) || path.endsWith(`.vue-global-types\\${globalTypesName}`)) {
-      return true
-    }
-    return fileExists(path)
-  }
-  languageServiceHost.getScriptSnapshot = (path) => {
-    if (path.endsWith(`.vue-global-types/${globalTypesName}`) || path.endsWith(`.vue-global-types\\${globalTypesName}`)) {
-      return globalTypesSnapshot
-    }
-    return getScriptSnapshot(path)
-  }
-
   if (checkerOptions.forceUseTs) {
     const getScriptKind = languageServiceHost.getScriptKind?.bind(languageServiceHost)
     languageServiceHost.getScriptKind = (fileName) => {
@@ -193,8 +197,8 @@ export function baseCreate(
       projectVersion++
     },
     reload() {
-      commandLine = getCommandLine()
-      fileNames = commandLine.fileNames.map(path => path.replace(windowsPathReg, '/'))
+      ;[commandLine, fileNames] = getCommandLine()
+      fileNames = fileNames.map(path => path.replace(windowsPathReg, '/'))
       this.clearCache()
     },
     clearCache() {
@@ -231,7 +235,7 @@ interface ComponentMeta<T> {
   exposed: ComponentExposed<T>;
 };
 
-${commandLine.vueOptions.target < 3 ? vue2TypeHelpersCode : typeHelpersCode}
+${typeHelpersCode}
 `.trim()
     return code
   }
@@ -608,6 +612,12 @@ function createSchemaResolvers(
       required: !(prop.flags & ts.SymbolFlags.Optional),
       type: typeChecker.typeToString(subtype),
       rawType: rawType ? subtype : undefined,
+      getDeclarations() {
+        return declarations ??= getDeclarations(prop.declarations ?? [])
+      },
+      getTypeObject() {
+        return subtype
+      },
       get declarations() {
         return declarations ??= getDeclarations(prop.declarations ?? [])
       },
@@ -629,6 +639,16 @@ function createSchemaResolvers(
       type: typeChecker.typeToString(subtype),
       rawType: rawType ? subtype : undefined,
       description: ts.displayPartsToString(prop.getDocumentationComment(typeChecker)),
+      tags: prop.getJsDocTags(typeChecker).map(tag => ({
+        name: tag.name,
+        text: tag.text !== undefined ? ts.displayPartsToString(tag.text) : undefined
+      })),
+      getDeclarations() {
+        return declarations ??= getDeclarations(prop.declarations ?? [])
+      },
+      getTypeObject() {
+        return subtype
+      },
       get declarations() {
         return declarations ??= getDeclarations(prop.declarations ?? [])
       },
@@ -647,6 +667,16 @@ function createSchemaResolvers(
       type: typeChecker.typeToString(subtype),
       rawType: rawType ? subtype : undefined,
       description: ts.displayPartsToString(expose.getDocumentationComment(typeChecker)),
+      tags: expose.getJsDocTags(typeChecker).map(tag => ({
+        name: tag.name,
+        text: tag.text !== undefined ? ts.displayPartsToString(tag.text) : undefined
+      })),
+      getDeclarations() {
+        return declarations ??= getDeclarations(expose.declarations ?? [])
+      },
+      getTypeObject() {
+        return subtype
+      },
       get declarations() {
         return declarations ??= getDeclarations(expose.declarations ?? [])
       },
@@ -670,6 +700,12 @@ function createSchemaResolvers(
       type: typeChecker.typeToString(subtype),
       rawType: rawType ? subtype : undefined,
       signature: typeChecker.signatureToString(call),
+      getDeclarations() {
+        return declarations ??= call.declaration ? getDeclarations([call.declaration]) : []
+      },
+      getTypeObject() {
+        return subtype
+      },
       get declarations() {
         return declarations ??= call.declaration ? getDeclarations([call.declaration]) : []
       },
@@ -803,8 +839,8 @@ function readVueComponentDefaultProps(
     const codegen = vue.tsCodegen.get(sfc)
     const scriptSetupRanges = codegen?.getScriptSetupRanges()
 
-    if (scriptSetupRanges?.withDefaults?.argNode) {
-      const obj = findObjectLiteralExpression(scriptSetupRanges.withDefaults.argNode)
+    if (scriptSetupRanges?.withDefaults?.arg) {
+      const obj = findObjectLiteralExpression(getNodeByRange(scriptSetupRanges.withDefaults.arg))
       if (obj) {
         for (const prop of obj.properties) {
           if (ts.isPropertyAssignment(prop)) {
@@ -818,8 +854,8 @@ function readVueComponentDefaultProps(
           }
         }
       }
-    } else if (scriptSetupRanges?.defineProps?.argNode) {
-      const obj = findObjectLiteralExpression(scriptSetupRanges.defineProps.argNode)
+    } else if (scriptSetupRanges?.defineProps?.arg) {
+      const obj = findObjectLiteralExpression(getNodeByRange(scriptSetupRanges.defineProps.arg))
       if (obj) {
         result = {
           ...result,
@@ -837,10 +873,9 @@ function readVueComponentDefaultProps(
       }
     }
 
-    if (scriptSetupRanges?.defineProp) {
-      for (const defineProp of scriptSetupRanges.defineProp) {
-        const argNode = (defineProp as any).argNode
-        const obj = argNode ? findObjectLiteralExpression(argNode) : undefined
+    if (scriptSetupRanges?.defineModel) {
+      for (const defineProp of scriptSetupRanges.defineModel) {
+        const obj = defineProp.arg ? findObjectLiteralExpression(getNodeByRange(defineProp.arg)) : undefined
         if (obj) {
           const name = defineProp.name ? sfc.scriptSetup.content.slice(defineProp.name.start, defineProp.name.end).slice(1, -1) : 'modelValue'
           result[name] = resolveModelOption(ast, obj, printer, ts)
@@ -859,6 +894,24 @@ function readVueComponentDefaultProps(
         }
       })
       return result
+    }
+
+    function getNodeByRange(range: { start: number, end: number }) {
+      let result: ts.Node | undefined
+      find(ast)
+      return result ?? ast
+
+      function find(node: ts.Node) {
+        if (node.getStart(ast) === range.start && node.getEnd() === range.end) {
+          result = node
+          return
+        }
+        node.forEachChild((child) => {
+          if (!result && child.getStart(ast) <= range.start && child.getEnd() >= range.end) {
+            find(child)
+          }
+        })
+      }
     }
   }
 

@@ -4,11 +4,11 @@ packages:
   - "./playgrounds/*"
 
 catalog:
-  nuxt: "^4.2.2"
-  "@nuxt/kit": "^4.2.2"
-  "@nuxt/schema": "^4.2.2"
-  "@nuxt/ui": "^4.1.0"
-  vue: latest
+  nuxt: "^4.4.4"
+  "@nuxt/kit": "^4.4.4"
+  "@nuxt/schema": "^4.4.4"
+  "@nuxt/ui": "^4.7.1"
+  vue: "^3.5.34"
 
 onlyBuiltDependencies:
   - better-sqlite3

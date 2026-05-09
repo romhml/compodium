@@ -35,10 +35,13 @@
     "@compodium/core": "workspace:^",
     "@vue/test-utils": ">=2",
     "vite": ">=6",
-    "vitest": ">=3.2.4"
+    "vitest": ">=4.0.2"
   },
   "dependencies": {
     "defu": "^6.1.4",
     "unplugin": "^2.3.10"
+  },
+  "devDependencies": {
+    "@compodium/core": "workspace:^"
   }
 }
