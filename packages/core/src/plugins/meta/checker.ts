@@ -1,4 +1,4 @@
-import { createCheckerByJson } from '@compodium/meta'
+import { createCheckerByJson } from 'vue-component-meta'
 import type { CompodiumMeta, ComponentsDir } from '../../types'
 import { inferPropTypes } from './infer'
 
