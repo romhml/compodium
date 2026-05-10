@@ -20,7 +20,7 @@
   "scripts": {
     "dev": "tsdown --watch",
     "dev:prepare": "tsdown",
-    "prepack": "tailwindcss -i src/assets/ui/base.css -o src/assets/ui/index.css && unbuild"
+    "prepack": "tailwindcss -i src/assets/ui/base.css -o src/assets/ui/index.css && tsdown"
   },
   "dependencies": {
     "pathe": "^2.0.3",

@@ -28,7 +28,7 @@
     "dist"
   ],
   "scripts": {
-    "dev:prepare": "tsdown --stub",
+    "dev:prepare": "tsdown",
     "prepack": "tsdown && pnpm --filter devtools generate",
     "dev": "tsdown --watch",
     "typecheck": "tsc --noEmit"

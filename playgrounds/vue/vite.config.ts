@@ -3,11 +3,14 @@ import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueDevTools from 'vite-plugin-vue-devtools'
+// import { compodium } from '@compodium/vue'
+
 import { compodium } from '@compodium/vue'
 
 import ui from '@nuxt/ui/vite'
-
+//
 // https://vite.dev/config/
+
 export default defineConfig({
   server: {
     proxy: {
@@ -20,6 +23,15 @@ export default defineConfig({
       }
     }
   },
+
+  // optimizeDeps: {
+  //   exclude: [
+  //     '@compodium/vue',
+  //     '@compodium/testing',
+  //     '@compodium/core',
+  //     '@compodium/meta'
+  //   ]
+  // },
 
   plugins: [
     vue(),
@@ -34,6 +46,16 @@ export default defineConfig({
       name: 'ignore-components-dts-hmr',
       handleHotUpdate(ctx) {
         if (ctx.file.endsWith('components.d.ts')) return []
+      }
+    },
+
+    {
+      name: 'compodium-dev-hmr',
+
+      configResolved(config) {
+        const packages = ['core', 'examples', 'vue', 'nuxt', 'meta']
+        const packagePaths = packages.map(pack => fileURLToPath(new URL(`../../packages/${pack}/dist/index.mjs`, import.meta.url)))
+        config.configFileDependencies.push(...packagePaths)
       }
     }
   ],
