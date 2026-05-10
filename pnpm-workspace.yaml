@@ -1,14 +1,14 @@
 packages:
   - ./docs/
-  - "./packages/*"
-  - "./playgrounds/*"
+  - ./packages/*
+  - ./playgrounds/*
 
 catalog:
-  nuxt: "^4.2.0"
-  "@nuxt/kit": "^4.2.0"
-  "@nuxt/schema": "^4.2.0"
-  "@nuxt/ui": "^4.1.0"
-  vue: latest
+  '@nuxt/kit': ^4.2.0
+  '@nuxt/schema': ^4.4.4
+  '@nuxt/ui': ^4.7.1
+  nuxt: ^4.4.4
+  vue: ^3.5.34
 
 onlyBuiltDependencies:
   - better-sqlite3
