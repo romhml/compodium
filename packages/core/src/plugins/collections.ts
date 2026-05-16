@@ -5,12 +5,11 @@ import { watch } from 'chokidar'
 import type { VitePlugin } from 'unplugin'
 import { resolve } from 'pathe'
 import { joinURL } from 'ufo'
-import type { ResolvedConfig } from 'vite'
 import type { Component } from 'vue'
 import { parseCompodiumMeta } from './meta/compodium-meta'
 import { defu } from 'defu'
 
-export function resolveCollections(options: PluginOptions, viteConfig: ResolvedConfig): Collection[] {
+export function resolveCollections(options: PluginOptions, viteConfig: any): Collection[] {
   const rootDir = options.rootDir ?? viteConfig.root
 
   const exampleDir = {

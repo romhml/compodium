@@ -128,6 +128,8 @@ export type Component = {
   wrapperComponent?: string
   docUrl?: string
   examples?: ComponentExample[]
+  combo?: Combo<any>
+  defaultProps?: any
 }
 
 export type ComponentExample = Component & {

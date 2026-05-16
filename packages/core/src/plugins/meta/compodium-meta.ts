@@ -16,8 +16,8 @@ function evaluateNode(node: Node | ArrayExpressionElement): any {
     case 'ObjectExpression':
       for (const prop of node.properties) {
         if (prop.type === 'Property') {
-          const key = prop.key.type === 'Identifier' ? prop.key.name : prop.key.value
-          obj[key] = evaluateNode(prop.value)
+          const key = prop.key.type === 'Identifier' ? prop.key.name : 'value' in prop.key ? prop.key.value?.toString() : undefined
+          if (key) obj[key] = evaluateNode(prop.value)
         }
       }
       return obj
@@ -53,7 +53,7 @@ export async function parseCompodiumMeta(componentPath: string): Promise<Compodi
   for (const statement of ast.program.body) {
     if (statement.type === 'ExpressionStatement' && statement.expression.type === 'CallExpression' && statement.expression.callee.type === 'Identifier' && statement.expression.callee.name === DEFINE_COMPODIUM_META) {
       const callExpression = statement.expression
-      if (callExpression.arguments && callExpression.arguments.length > 0) {
+      if (callExpression.arguments?.[0]) {
         return evaluateNode(callExpression.arguments[0])
       }
     }
