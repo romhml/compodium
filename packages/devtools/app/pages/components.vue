@@ -89,13 +89,13 @@ const { data: componentMeta, refresh: refreshMeta } = useAsyncData('__compodium-
   const meta = await $fetch<CompodiumMeta>('/api/meta', { baseURL: '/__compodium__', query: {
     component: component.value?.componentPath ?? component.value?.filePath }
   })
-  return meta
+  return { ...meta, compodium: { defaultProps: component.value?.defaultProps, combo: component.value?.combo } }
 }, { watch: [component] })
 
 const { data: exampleMeta, refresh: refreshExampleMeta } = useAsyncData('__compodium-fetch-example-meta', async () => {
   if (!component.value || !component.value.isExample) return
-  const example = await $fetch<CompodiumMeta>(`/api/meta`, { baseURL: '/__compodium__', query: { component: component.value.filePath } })
-  return example
+  const meta = await $fetch<CompodiumMeta>(`/api/meta`, { baseURL: '/__compodium__', query: { component: component.value.filePath } })
+  return meta
 }, { watch: [component] })
 
 watch([componentMeta, exampleMeta], async ([newComponentMeta, newExampleMeta]) => {
@@ -107,7 +107,7 @@ watch([componentMeta, exampleMeta], async ([newComponentMeta, newExampleMeta]) =
   }
 
   if (!touched.value) {
-    props.value = structuredClone({ ...defaultProps.value, ...compodiumDefaultProps.value })
+    props.value = { ...defaultProps.value, ...compodiumDefaultProps.value }
 
     combo.value = [...(
       newExampleMeta?.compodium?.combo

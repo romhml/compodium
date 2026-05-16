@@ -17,9 +17,10 @@ export function createChecker(dirs: ComponentsDir[]) {
           const path = typeof dir === 'string' ? dir : (dir?.path || '')
           const ext = path.split('.').pop()!
           return ['vue', 'ts', 'tsx', 'js', 'jsx'].includes(ext) ? path : `${path}/**/*`
-        }) ?? []
+        }) ?? [],
+        'node_modules/@nuxt/ui/dist/runtime/**/*'
       ],
-      exclude: ['**/*.vue.d.ts']
+      exclude: ['**/*.d.vue.ts']
     },
     {
       forceUseTs: true,
@@ -34,6 +35,12 @@ export function createChecker(dirs: ComponentsDir[]) {
     }
   )
 
+  console.log(
+    ...dirs?.map((dir: any) => {
+      const path = typeof dir === 'string' ? dir : (dir?.path || '')
+      const ext = path.split('.').pop()!
+      return ['vue', 'ts', 'tsx', 'js', 'jsx'].includes(ext) ? path : `${path}/**/*`
+    }) ?? [])
   const checker = {
     ...metaChecker,
     getComponentMeta: (componentPath: string): CompodiumMeta => {
@@ -44,8 +51,6 @@ export function createChecker(dirs: ComponentsDir[]) {
           .filter(sch => !(/^on[A-Z]/.test(sch.name))) // Filter out event emitters (onXxx pattern)
           .map((sch: any) => stripeTypeScriptInternalTypesSchema(sch, true))
           .map(inferPropTypes),
-
-        compodium: meta.compodium,
         events: meta.events.map((sch: any) => sch.name)
         // exposed: meta.exposed.map(sch => stripeTypeScriptInternalTypesSchema(sch, true)),
         // slots: meta.slots.map(sch => stripeTypeScriptInternalTypesSchema(sch, true))

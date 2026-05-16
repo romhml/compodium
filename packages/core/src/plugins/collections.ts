@@ -6,6 +6,9 @@ import type { VitePlugin } from 'unplugin'
 import { resolve } from 'pathe'
 import { joinURL } from 'ufo'
 import type { ResolvedConfig } from 'vite'
+import type { Component } from 'vue'
+import { parseCompodiumMeta } from './meta/compodium-meta'
+import { defu } from 'defu'
 
 export function resolveCollections(options: PluginOptions, viteConfig: ResolvedConfig): Collection[] {
   const rootDir = options.rootDir ?? viteConfig.root
@@ -73,26 +76,34 @@ export function collectionsPlugin(options: PluginOptions): VitePlugin {
             const components = await scanComponents(col.dirs)
             const examples = await scanComponents([col.exampleDir])
 
-            const collectionComponents = components.flatMap((c) => {
-              const componentExamples = examples?.filter(e => e.pascalName.startsWith(`${c.pascalName}Example`)).map(e => ({
+            const collectionComponents: Component[] = []
+
+            for (const c of components) {
+              const componentMeta = await parseCompodiumMeta(c.filePath)
+
+              const componentExamples = await Promise.all(examples?.filter(e => e.pascalName.startsWith(`${c.pascalName}Example`)).map(async e => ({
                 ...e,
                 isExample: true,
-                componentPath: c.filePath
-              }))
+                componentPath: c.filePath,
+                componentName: c.pascalName,
+                collectionName: col.name,
+                ...defu(componentMeta, await parseCompodiumMeta(e.filePath))
+              })))
 
               const mainExample = componentExamples.find(e => e.pascalName === `${c.pascalName}Example`)
               const component = mainExample ?? c
 
               // Hides third party library components if no example can be found.
-              if (col.name !== 'Components' && !mainExample) return []
+              if (col.name !== 'Components' && !mainExample) continue
 
-              return [{
+              collectionComponents.push({
+                ...componentMeta,
                 ...component,
                 wrapperComponent: col.wrapperComponent,
                 docUrl: col.getDocUrl?.(c.pascalName),
                 examples: componentExamples.filter(e => e.pascalName !== mainExample?.pascalName)
-              }]
-            })
+              })
+            }
 
             return {
               ...col,

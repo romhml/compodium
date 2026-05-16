@@ -33,7 +33,7 @@
     "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
-    "vite": ">=6",
+    "vite": ">=7",
     "vue": ">=3"
   },
   "peerDependenciesMeta": {
@@ -43,10 +43,12 @@
   },
   "dependencies": {
     "@compodium/examples": "workspace:^",
+    "@vue/compiler-sfc": "^3.5.34",
     "@vueuse/core": "^14.3.0",
     "chokidar": "^5.0.0",
     "hookable": "^6.1.1",
     "mlly": "^1.8.2",
+    "oxc-parser": "^0.131.0",
     "pathe": "^2.0.3",
     "scule": "^1.3.0",
     "sirv": "^3.0.2",

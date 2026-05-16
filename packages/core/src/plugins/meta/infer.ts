@@ -14,7 +14,7 @@ const stringInputSchema = z.literal('string').or(
     kind: z.literal('enum'),
     schema: z.record(z.string(), z.enum(['string', 'null', 'undefined'])),
     type: z.string(),
-    default: z.any()
+    default: z.any().optional()
   })).or(z.string().transform(t => t.split('|').find(s => s.trim() === 'string')).pipe(z.string()))
 
 export type StringInputSchema = z.infer<typeof stringInputSchema>
@@ -24,7 +24,7 @@ const numberInputSchema = z.literal('number').or(
     kind: z.literal('enum'),
     schema: z.record(z.string(), z.enum(['number', 'null', 'undefined'])),
     type: z.string(),
-    default: z.any()
+    default: z.any().optional()
   })).or(z.string().transform(t => t.split('|').find(s => s.trim() === 'number')).pipe(z.string()))
 
 export type NumberInputSchema = z.infer<typeof numberInputSchema>
@@ -34,7 +34,7 @@ const booleanInputSchema = z.literal('boolean').or(
     kind: z.literal('enum'),
     schema: z.record(z.any(), z.enum(['boolean', '"indeterminate"', 'false', 'true', 'null', 'undefined'])),
     type: z.string(),
-    default: z.any()
+    default: z.any().optional()
   }))
 
 export type BooleanInputSchema = z.infer<typeof booleanInputSchema>
@@ -54,7 +54,7 @@ const stringEnumInputSchema = z.object({
     .transform(t => t.map(s => s.trim().replaceAll(/["'`]/g, '')))
     .pipe(z.array(z.string()).min(1)),
   type: z.string().includes('"'),
-  default: z.any()
+  default: z.any().optional()
 })
 
 export type StringEnumInputSchema = z.infer<typeof stringEnumInputSchema>
@@ -63,7 +63,7 @@ const objectInputSchema = z.object({
   kind: z.literal('object'),
   schema: z.record(z.string(), z.any()),
   type: z.string(),
-  default: z.any()
+  default: z.any().optional()
 })
 
 export type ObjectInputSchema = z.infer<typeof objectInputSchema>
@@ -75,7 +75,7 @@ const primitiveArrayInputSchema = z.object({
   schema: z.array(primitiveSchema)
     .or(z.record(z.any(), primitiveSchema).transform(t => Object.values(t))),
   type: z.string(),
-  default: z.any()
+  default: z.any().optional()
 })
 
 export type PrimitiveArrayInputSchema = z.infer<typeof primitiveArrayInputSchema>
@@ -86,7 +86,7 @@ const arrayInputSchema = z.object({
     .or(z.record(z.any(), z.any()).transform(t => Object.values(t)).transform(t => t.filter(s => s !== 'undefined')))
     .pipe(z.array(z.any()).min(1)),
   type: z.string(),
-  default: z.any()
+  default: z.any().optional()
 })
 
 export type ArrayInputSchema = z.infer<typeof arrayInputSchema>
@@ -95,7 +95,7 @@ export type InputSchema = StringInputSchema | BooleanInputSchema | NumberInputSc
 const iconInputSchema = z.object({
   schema: z.any(),
   type: z.literal('IconifyIcon'),
-  default: z.any()
+  default: z.any().optional()
 })
 
 export type IconInputSchema = z.infer<typeof iconInputSchema>
@@ -133,6 +133,7 @@ export function inferSchemaType(schema: string | VuePropertyMeta['schema'] | Vue
   return schemas.flatMap((schema) => {
     for (const resolver of propResolvers) {
       const result = resolver.schema.safeParse(schema)
+
       if (result.success) {
         const propType = {
           schema: result.data as any,
