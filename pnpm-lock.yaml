@@ -111,12 +111,18 @@ importers:
       '@vue/compiler-sfc':
         specifier: ^3.5.34
         version: 3.5.34
+      '@vue/language-core':
+        specifier: ^3.2.9
+        version: 3.2.9
       '@vueuse/core':
         specifier: ^14.3.0
         version: 14.3.0(vue@3.5.34(typescript@6.0.3))
       chokidar:
         specifier: ^5.0.0
         version: 5.0.0
+      defu:
+        specifier: ^6.1.7
+        version: 6.1.7
       hookable:
         specifier: ^6.1.1
         version: 6.1.1
@@ -138,6 +144,9 @@ importers:
       tinyglobby:
         specifier: ^0.2.16
         version: 0.2.16
+      typescript:
+        specifier: '>=5.8'
+        version: 6.0.3
       ufo:
         specifier: ^1.6.4
         version: 1.6.4
@@ -153,6 +162,9 @@ importers:
       vue:
         specifier: '>=3'
         version: 3.5.34(typescript@6.0.3)
+      vue-component-meta:
+        specifier: ^3.2.9
+        version: 3.2.9(typescript@6.0.3)
       zod:
         specifier: ^4.4.3
         version: 4.4.3
@@ -17441,6 +17453,14 @@ snapshots:
       path-browserify: 1.0.1
     optionalDependencies:
       typescript: 5.9.3
+
+  vue-component-meta@3.2.9(typescript@6.0.3):
+    dependencies:
+      '@volar/typescript': 2.4.28
+      '@vue/language-core': 3.2.9
+      path-browserify: 1.0.1
+    optionalDependencies:
+      typescript: 6.0.3
 
   vue-component-type-helpers@3.2.9: {}
 
