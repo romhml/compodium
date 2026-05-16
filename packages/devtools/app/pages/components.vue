@@ -92,16 +92,10 @@ const { data: componentMeta, refresh: refreshMeta } = useAsyncData('__compodium-
   return { ...meta, compodium: { defaultProps: component.value?.defaultProps, combo: component.value?.combo } }
 }, { watch: [component] })
 
-const { data: exampleMeta, refresh: refreshExampleMeta } = useAsyncData('__compodium-fetch-example-meta', async () => {
-  if (!component.value || !component.value.isExample) return
-  const meta = await $fetch<CompodiumMeta>(`/api/meta`, { baseURL: '/__compodium__', query: { component: component.value.filePath } })
-  return meta
-}, { watch: [component] })
-
-watch([componentMeta, exampleMeta], async ([newComponentMeta, newExampleMeta]) => {
+watch([componentMeta], async ([newComponentMeta]) => {
   if (!newComponentMeta) return
 
-  compodiumDefaultProps.value = { ...(newExampleMeta?.compodium?.defaultProps ?? newComponentMeta?.compodium?.defaultProps) }
+  compodiumDefaultProps.value = { ...newComponentMeta?.compodium?.defaultProps }
   defaultProps.value = {
     ...getDefaultProps(newComponentMeta)
   }
@@ -109,11 +103,7 @@ watch([componentMeta, exampleMeta], async ([newComponentMeta, newExampleMeta]) =
   if (!touched.value) {
     props.value = { ...defaultProps.value, ...compodiumDefaultProps.value }
 
-    combo.value = [...(
-      newExampleMeta?.compodium?.combo
-      ?? newComponentMeta?.compodium?.combo as any
-      ?? []
-    )]
+    combo.value = [...(newComponentMeta?.compodium?.combo as any ?? [])]
   }
 
   await updateComponent()
@@ -170,7 +160,7 @@ const comboItems = computed<ComboItem[]>(() => {
   }) ?? []
 })
 
-watch([componentMeta, exampleMeta, combo], async () => {
+watch([componentMeta, combo], async () => {
   await hooks.callHook('renderer:update-combo', { props: comboProps.value?.filter(Boolean) as ComboItem[] ?? [] })
 }, { deep: true })
 
