@@ -142,12 +142,12 @@ const updatePropsDebounced = useDebounceFn(
 )
 
 const combo = ref<string[]>([])
-const comboProps = computed<Partial<[ComboItem, ComboItem]>>({
+const comboProps = computed({
   get() {
     return [
       comboItems.value?.find(i => i?.value === combo.value[0]),
       comboItems.value?.find(i => i?.value === combo.value[1])
-    ]
+    ] as [ComboItem | undefined, ComboItem | undefined]
   },
   set(value) {
     combo.value = value?.map(c => c?.value ?? null) as [string, string] ?? [null, null]
