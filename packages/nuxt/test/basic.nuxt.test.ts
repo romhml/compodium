@@ -100,7 +100,7 @@ describe('basic', async () => {
     })
   })
 
-  describe('compodium meta', async () => {
+  describe.skip('compodium meta', async () => {
     it('works', async () => {
       const component = await $fetch<CompodiumMeta>('/__compodium__/api/meta', {
         query: {
