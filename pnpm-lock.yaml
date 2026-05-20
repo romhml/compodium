@@ -258,8 +258,8 @@ importers:
         specifier: ^2.2.12
         version: 2.2.12(typescript@5.9.3)
       vue-component-type-helpers:
-        specifier: ^2.2.12
-        version: 2.2.12
+        specifier: ^3.3.1
+        version: 3.3.1
     devDependencies:
       '@types/path-browserify':
         specifier: ^1.0.3
@@ -7623,6 +7623,9 @@ packages:
   vue-component-type-helpers@3.1.1:
     resolution: {integrity: sha512-B0kHv7qX6E7+kdc5nsaqjdGZ1KwNKSUQDWGy7XkTYT7wFsOpkEyaJ1Vq79TjwrrtuLRgizrTV7PPuC4rRQo+vw==}
 
+  vue-component-type-helpers@3.3.1:
+    resolution: {integrity: sha512-pu58kqxmVyEH6VfNYW1UyEfR3XAnJ27ZXT3yzXxxpjLxVzAbyC35Zk/nm/RMs7ijWnJNSd9fWkeex2OhUsx3MA==}
+
   vue-demi@0.14.10:
     resolution: {integrity: sha512-nMZBOwuzabUO0nLgIcc6rycZEebF6eeUfaiQx9+WSk8e29IbLvPU9feI6tqW4kTo3hvoYAJkMh8n8D0fuISphg==}
     engines: {node: '>=12'}
@@ -9525,7 +9528,7 @@ snapshots:
       unplugin-auto-import: 20.2.0(@nuxt/kit@4.4.6(magicast@0.5.3))(@vueuse/core@13.9.0(vue@3.5.34(typescript@5.9.3)))
       unplugin-vue-components: 30.0.0(@babel/parser@7.29.3)(@nuxt/kit@4.4.6(magicast@0.5.3))(vue@3.5.34(typescript@5.9.3))
       vaul-vue: 0.4.1(reka-ui@2.6.0(typescript@5.9.3)(vue@3.5.34(typescript@5.9.3)))(vue@3.5.34(typescript@5.9.3))
-      vue-component-type-helpers: 3.1.1
+      vue-component-type-helpers: 3.3.1
     optionalDependencies:
       vue-router: 4.6.3(vue@3.5.34(typescript@5.9.3))
       zod: 4.1.12
@@ -16202,6 +16205,8 @@ snapshots:
   vue-component-type-helpers@2.2.12: {}
 
   vue-component-type-helpers@3.1.1: {}
+
+  vue-component-type-helpers@3.3.1: {}
 
   vue-demi@0.14.10(vue@3.5.34(typescript@5.9.3)):
     dependencies:
