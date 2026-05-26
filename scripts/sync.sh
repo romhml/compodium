@@ -9,10 +9,8 @@ REPO_ROOT=$(pwd)
 # Function to publish a package
 sync_package() {
   local pkg=$1
-  if [[ $pkg != "packages/meta" ]]; then
-    cp "$REPO_ROOT/LICENSE" .
-    cp "$REPO_ROOT/README.md" .
-  fi
+  cp "$REPO_ROOT/LICENSE" .
+  cp "$REPO_ROOT/README.md" .
 }
 
 # Release packages

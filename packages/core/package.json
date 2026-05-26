@@ -33,7 +33,8 @@
     "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
-    "vite": ">=6",
+    "typescript": ">=5.8",
+    "vite": ">=7",
     "vue": ">=3"
   },
   "peerDependenciesMeta": {
@@ -43,18 +44,22 @@
   },
   "dependencies": {
     "@compodium/examples": "workspace:^",
-    "@compodium/meta": "workspace:^",
-    "@vueuse/core": "^13.9.0",
-    "chokidar": "^4.0.3",
-    "hookable": "^5.5.3",
-    "mlly": "^1.8.0",
+    "@vue/compiler-sfc": "^3.5.34",
+    "@vue/language-core": "^3.2.9",
+    "@vueuse/core": "^14.3.0",
+    "chokidar": "^5.0.0",
+    "defu": "^6.1.7",
+    "hookable": "^6.1.1",
+    "mlly": "^1.8.2",
+    "oxc-parser": "^0.131.0",
     "pathe": "^2.0.3",
     "scule": "^1.3.0",
     "sirv": "^3.0.2",
-    "tinyglobby": "^0.2.15",
-    "ufo": "^1.6.1",
-    "unplugin": "^2.3.10",
-    "unplugin-ast": "^0.15.3",
-    "zod": "^4.1.12"
+    "tinyglobby": "^0.2.16",
+    "ufo": "^1.6.4",
+    "unplugin": "^3.0.0",
+    "unplugin-ast": "^0.17.0",
+    "vue-component-meta": "2.2.12",
+    "zod": "^4.4.3"
   }
 }

@@ -33,6 +33,7 @@ extendCompodiumMeta<typeof _props>({
         icon="lucide:rocket"
         block
         to="/__compodium__/devtools"
+        external
       >
         Go to Compodium
       </UButton>

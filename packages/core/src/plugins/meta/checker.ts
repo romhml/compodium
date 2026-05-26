@@ -1,4 +1,4 @@
-import { createCheckerByJson } from '@compodium/meta'
+import { createCheckerByJson } from 'vue-component-meta'
 import type { CompodiumMeta, ComponentsDir } from '../../types'
 import { inferPropTypes } from './infer'
 
@@ -44,8 +44,6 @@ export function createChecker(dirs: ComponentsDir[]) {
           .filter(sch => !(/^on[A-Z]/.test(sch.name))) // Filter out event emitters (onXxx pattern)
           .map((sch: any) => stripeTypeScriptInternalTypesSchema(sch, true))
           .map(inferPropTypes),
-
-        compodium: meta.compodium,
         events: meta.events.map((sch: any) => sch.name)
         // exposed: meta.exposed.map(sch => stripeTypeScriptInternalTypesSchema(sch, true)),
         // slots: meta.slots.map(sch => stripeTypeScriptInternalTypesSchema(sch, true))
