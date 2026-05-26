@@ -15,7 +15,7 @@ hooks.hook('renderer:mounted', () => {
     if (
       (component.value?.filePath && path.endsWith(component.value?.filePath))
       || (component.value?.componentPath && path.endsWith(component.value?.componentPath))) {
-      await Promise.all([refreshMeta(), refreshExampleMeta()])
+      await refreshMeta()
     }
   })
 
