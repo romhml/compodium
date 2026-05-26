@@ -7,7 +7,6 @@ import { resolve } from 'pathe'
 import { joinURL } from 'ufo'
 import type { Component } from 'vue'
 import { parseCompodiumMeta } from './meta/compodium-meta'
-import { defu } from 'defu'
 
 export function resolveCollections(options: PluginOptions, viteConfig: any): Collection[] {
   const rootDir = options.rootDir ?? viteConfig.root
@@ -86,7 +85,7 @@ export function collectionsPlugin(options: PluginOptions): VitePlugin {
                 componentPath: c.filePath,
                 componentName: c.pascalName,
                 collectionName: col.name,
-                ...defu(componentMeta, await parseCompodiumMeta(e.filePath))
+                ...(await parseCompodiumMeta(e.filePath) ?? componentMeta)
               })))
 
               const mainExample = componentExamples.find(e => e.pascalName === `${c.pascalName}Example`)
