@@ -1,13 +1,14 @@
+import { existsSync } from 'node:fs'
 import { createCheckerByJson } from 'vue-component-meta'
 import type { CompodiumMeta, ComponentsDir } from '../../types'
 import { inferPropTypes } from './infer'
 
-export function createChecker(dirs: ComponentsDir[]) {
-  const rootDir = process.cwd()
+export function createChecker(dirs: ComponentsDir[], rootDir = process.cwd()) {
+  const tsconfig = `${rootDir}/tsconfig.json`
   const metaChecker = createCheckerByJson(
     rootDir,
     {
-      extends: `${rootDir}/tsconfig.json`,
+      ...(existsSync(tsconfig) ? { extends: tsconfig } : {}),
       compilerOptions: {
         allowArbitraryExtensions: true // Fixes Nuxt UI component type resolution
       },

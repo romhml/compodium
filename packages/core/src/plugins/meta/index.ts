@@ -26,6 +26,7 @@ export function extendMetaPlugin(_options: PluginOptions): VitePlugin {
 
 export function metaPlugin(options: PluginOptions): VitePlugin {
   let collections: Collection[]
+  let rootDir: string
 
   return {
     name: 'compodium:meta',
@@ -33,6 +34,7 @@ export function metaPlugin(options: PluginOptions): VitePlugin {
     apply: 'serve',
 
     configResolved(viteConfig) {
+      rootDir = options.rootDir ?? viteConfig.root
       collections = resolveCollections(options, viteConfig)
     },
 
@@ -41,7 +43,7 @@ export function metaPlugin(options: PluginOptions): VitePlugin {
         ...c.dirs,
         c.exampleDir
       ])
-      const checker = createChecker(checkerDirs)
+      const checker = createChecker(checkerDirs, rootDir)
 
       server.middlewares.use('/__compodium__/api/meta', async (req, res) => {
         try {
