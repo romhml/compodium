@@ -35,7 +35,7 @@
   },
   "dependencies": {
     "@compodium/core": "workspace:^",
-    "@nuxt/devtools-kit": "4.0.0-alpha.4",
+    "@nuxt/devtools-kit": "4.0.0-alpha.7",
     "consola": "^3.4.2",
     "defu": "^6.1.7",
     "ufo": "^1.6.4"
