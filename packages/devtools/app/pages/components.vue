@@ -281,7 +281,7 @@ const tabs = computed(() => {
             class="rounded-full"
             color="neutral"
             :disabled="!rendererMounted"
-            @click="isDark = !isDark"
+            @click="() => { isDark = !isDark }"
           />
         </div>
       </div>

@@ -25,7 +25,7 @@ watch(() => props.events?.length, () => currentEventIndex.value = 0)
           color="neutral"
           :active="currentEventIndex === index"
           active-variant="soft"
-          @click="currentEventIndex = index"
+          @click="() => { currentEventIndex = index }"
         >
           {{ e.name }}
           <template v-if="e.data !== undefined">

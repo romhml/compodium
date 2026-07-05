@@ -6,7 +6,7 @@ packages:
 catalog:
   '@nuxt/kit': ^4.4.8
   '@nuxt/schema': ^4.4.8
-  '@nuxt/ui': ^4.9.0
+  '@nuxt/ui': ^4.8.3
   nuxt: ^4.4.8
   vue: latest
 

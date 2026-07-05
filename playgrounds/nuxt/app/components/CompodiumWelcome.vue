@@ -35,7 +35,7 @@ extendCompodiumMeta<typeof _props>({
         color="neutral"
         icon="lucide:rocket"
         block
-        @click="navigateTo('/__compodium__/devtools', { external: true })"
+        @click="() => { navigateTo('/__compodium__/devtools', { external: true }) }"
       >
         Go to Compodium
       </UButton>

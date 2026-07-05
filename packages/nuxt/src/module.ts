@@ -50,7 +50,7 @@ export default defineNuxtModule<ModuleOptions>({
         baseUrl: nuxt.options.app.baseURL,
         _nuxt: true,
         ...options
-      }))
+      }) as Parameters<typeof addVitePlugin>[0])
     })
 
     addCustomTab({
