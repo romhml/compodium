@@ -22,6 +22,18 @@ describe('collections api', async () => {
     })
   })
 
+  it('does not merge component defaultProps into examples that define defaultProps', async () => {
+    expect(collections).toContainComponent({
+      pascalName: 'BasicComponent',
+      examples: [
+        expect.objectContaining({
+          pascalName: 'BasicComponentExampleWithFoo',
+          defaultProps: { exampleDefault: true }
+        })
+      ]
+    })
+  })
+
   it('replace component with main example', async () => {
     expect(collections).toContainComponent({
       pascalName: 'TestComponentExample',
