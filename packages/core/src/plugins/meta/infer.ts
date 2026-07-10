@@ -12,7 +12,7 @@ export type PropSchemaResolver<T extends ZodType> = {
 const stringInputSchema = z.literal('string').or(
   z.object({
     kind: z.literal('enum'),
-    schema: z.record(z.string(), z.enum(['string', 'null', 'undefined'])).refine(s => Object.keys(s).length > 0),
+    schema: z.record(z.string(), z.enum(['string', 'null', 'undefined'])),
     type: z.string(),
     default: z.any().optional()
   })).or(z.string().transform(t => t.split('|').find(s => s.trim() === 'string')).pipe(z.string()))
@@ -22,7 +22,7 @@ export type StringInputSchema = z.infer<typeof stringInputSchema>
 const numberInputSchema = z.literal('number').or(
   z.object({
     kind: z.literal('enum'),
-    schema: z.record(z.string(), z.enum(['number', 'null', 'undefined'])).refine(s => Object.keys(s).length > 0),
+    schema: z.record(z.string(), z.enum(['number', 'null', 'undefined'])),
     type: z.string(),
     default: z.any().optional()
   })).or(z.string().transform(t => t.split('|').find(s => s.trim() === 'number')).pipe(z.string()))
@@ -32,7 +32,7 @@ export type NumberInputSchema = z.infer<typeof numberInputSchema>
 const booleanInputSchema = z.literal('boolean').or(
   z.object({
     kind: z.literal('enum'),
-    schema: z.record(z.any(), z.enum(['boolean', '"indeterminate"', 'false', 'true', 'null', 'undefined'])).refine(s => Object.keys(s).length > 0),
+    schema: z.record(z.any(), z.enum(['boolean', '"indeterminate"', 'false', 'true', 'null', 'undefined'])),
     type: z.string(),
     default: z.any().optional()
   }))
