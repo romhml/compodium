@@ -60,7 +60,7 @@
     "ufo": "^1.6.4",
     "unplugin": "^3.3.0",
     "unplugin-ast": "^0.17.2",
-    "vue-component-meta": "3.3.6",
+    "vue-component-meta": "2.2.12",
     "zod": "^4.4.3"
   }
 }
