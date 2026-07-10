@@ -2,12 +2,13 @@ import { addCustomTab } from '@nuxt/devtools-kit'
 import { defineNuxtModule, createResolver, addTemplate, addVitePlugin, logger } from '@nuxt/kit'
 import { colors } from 'consola/utils'
 import { joinURL } from 'ufo'
+import { resolve as resolvePath } from 'pathe'
 import { version } from '../package.json'
 import { defu } from 'defu'
 import { compodium } from '@compodium/core'
 import type { PluginOptions } from '@compodium/core'
 
-export type ModuleOptions = Omit<PluginOptions, 'mainPath' | 'componentDirs' | 'rootDir' | '_nuxt' | 'baseUrl'>
+export type ModuleOptions = Omit<PluginOptions, 'mainPath' | 'componentDirs' | 'rootDir' | '_nuxt' | 'baseUrl' | 'tsconfigPath'>
 
 export default defineNuxtModule<ModuleOptions>({
   meta: {
@@ -47,6 +48,7 @@ export default defineNuxtModule<ModuleOptions>({
       addVitePlugin(compodium({
         componentDirs: dirs,
         rootDir: nuxt.options.rootDir,
+        tsconfigPath: resolvePath(nuxt.options.rootDir, nuxt.options.buildDir, 'tsconfig.app.json'),
         baseUrl: nuxt.options.app.baseURL,
         _nuxt: true,
         ...options

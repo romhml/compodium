@@ -43,7 +43,7 @@ export function metaPlugin(options: PluginOptions): VitePlugin {
         ...c.dirs,
         c.exampleDir
       ])
-      const checker = createChecker(checkerDirs, rootDir)
+      const checker = createChecker(checkerDirs, rootDir, options.tsconfigPath)
 
       server.middlewares.use('/__compodium__/api/meta', async (req, res) => {
         try {

@@ -55,6 +55,9 @@ export type PluginOptions = {
 
   /* Internal */
   _nuxt?: boolean
+
+  /* Internal */
+  tsconfigPath?: string
 }
 
 export type IconifyIcon = string & {}

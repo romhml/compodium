@@ -4,36 +4,22 @@ import { createCheckerByJson } from 'vue-component-meta'
 import type { CompodiumMeta, ComponentsDir } from '../../types'
 import { inferPropTypes } from './infer'
 
-export function createChecker(dirs: ComponentsDir[], rootDir = process.cwd()) {
-  const tsconfig = `${rootDir}/tsconfig.json`
-  const metaChecker = createCheckerByJson(
-    rootDir,
-    {
-      ...(existsSync(tsconfig) ? { extends: tsconfig } : {}),
-      compilerOptions: {
-        allowArbitraryExtensions: true // Fixes Nuxt UI component type resolution
-      },
-      include: [
-        '**/*',
-        ...dirs?.map((dir: any) => {
-          const path = typeof dir === 'string' ? dir : (dir?.path || '')
-          const ext = path.split('.').pop()!
-          return ['vue', 'ts', 'tsx', 'js', 'jsx'].includes(ext) ? path : `${path}/**/*`
-        }) ?? []
-      ]
-    },
-    {
-      forceUseTs: true,
-      schema: {
-        ignore: [
-          'NuxtComponentMetaNames',
-          'RouteLocationRaw',
-          'RouteLocationPathRaw',
-          'RouteLocationNamedRaw'
-        ]
-      }
-    }
-  )
+type MetaChecker = ReturnType<typeof createCheckerByJson>
+
+const checkerOptions = {
+  forceUseTs: true,
+  schema: {
+    ignore: [
+      'NuxtComponentMetaNames',
+      'RouteLocationRaw',
+      'RouteLocationPathRaw',
+      'RouteLocationNamedRaw'
+    ]
+  }
+}
+
+export function createChecker(dirs: ComponentsDir[], rootDir = process.cwd(), tsconfigPath?: string) {
+  const metaChecker = createMetaChecker(dirs, rootDir, tsconfigPath)
 
   const checker = {
     ...metaChecker,
@@ -54,20 +40,42 @@ export function createChecker(dirs: ComponentsDir[], rootDir = process.cwd()) {
   return checker
 }
 
-function getComponentMeta(metaChecker: ReturnType<typeof createCheckerByJson>, componentPath: string) {
+function createMetaChecker(dirs: ComponentsDir[], rootDir: string, tsconfigPath?: string): MetaChecker {
+  const tsconfig = `${rootDir}/tsconfig.json`
+  const tsconfigToExtend = tsconfigPath && existsSync(tsconfigPath) ? tsconfigPath : tsconfig
+
+  // Keep a JSON wrapper so library components outside Nuxt's app tsconfig include set remain inspectable.
+  return createCheckerByJson(
+    rootDir,
+    {
+      ...(existsSync(tsconfigToExtend) ? { extends: tsconfigToExtend } : {}),
+      compilerOptions: {
+        allowArbitraryExtensions: true // Fixes Nuxt UI component type resolution
+      },
+      include: [
+        '**/*',
+        ...dirs?.map((dir: any) => {
+          const path = typeof dir === 'string' ? dir : (dir?.path || '')
+          const ext = path.split('.').pop()!
+          return ['vue', 'ts', 'tsx', 'js', 'jsx'].includes(ext) ? path : `${path}/**/*`
+        }) ?? []
+      ]
+    },
+    checkerOptions
+  )
+}
+
+function getComponentMeta(metaChecker: MetaChecker, componentPath: string) {
   if (!componentPath.endsWith('.vue')) {
     return metaChecker.getComponentMeta(componentPath)
   }
 
   const metaEntryPath = `${componentPath}.compodium-meta.ts`
-  const componentImportPath = `./${escapeSingleQuotedImportSpecifier(basename(componentPath))}`
-  metaChecker.updateFile(metaEntryPath, `import Component from '${componentImportPath}'\nexport const CompodiumMetaComponent = Component\nexport default Component\n`)
+  const componentImportPath = `./${basename(componentPath)}`
+  // vue-component-meta needs a named export to inspect virtual .vue component metadata reliably.
+  metaChecker.updateFile(metaEntryPath, `import Component from ${JSON.stringify(componentImportPath)}\nexport const CompodiumMetaComponent = Component\nexport default Component\n`)
 
   return metaChecker.getComponentMeta(metaEntryPath, 'CompodiumMetaComponent')
-}
-
-function escapeSingleQuotedImportSpecifier(importSpecifier: string) {
-  return importSpecifier.replace(/\\/g, '\\\\').replace(/'/g, '\\\'')
 }
 
 export function stripeTypeScriptInternalTypesSchema(type: any, topLevel: boolean = true): any {
