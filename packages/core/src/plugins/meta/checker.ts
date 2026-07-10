@@ -1,4 +1,5 @@
 import { existsSync } from 'node:fs'
+import { basename } from 'node:path'
 import { createCheckerByJson } from 'vue-component-meta'
 import type { CompodiumMeta, ComponentsDir } from '../../types'
 import { inferPropTypes } from './infer'
@@ -19,8 +20,7 @@ export function createChecker(dirs: ComponentsDir[], rootDir = process.cwd()) {
           const ext = path.split('.').pop()!
           return ['vue', 'ts', 'tsx', 'js', 'jsx'].includes(ext) ? path : `${path}/**/*`
         }) ?? []
-      ],
-      exclude: ['**/*.vue.d.ts']
+      ]
     },
     {
       forceUseTs: true,
@@ -38,11 +38,11 @@ export function createChecker(dirs: ComponentsDir[], rootDir = process.cwd()) {
   const checker = {
     ...metaChecker,
     getComponentMeta: (componentPath: string): CompodiumMeta => {
-      const meta = metaChecker.getComponentMeta(componentPath)
+      const meta = getComponentMeta(metaChecker, componentPath)
       return {
         props: meta.props
           .filter((sch: any) => !sch.global)
-          .filter(sch => !(/^on[A-Z]/.test(sch.name))) // Filter out event emitters (onXxx pattern)
+          .filter((sch: any) => !(/^on[A-Z]/.test(sch.name))) // Filter out event emitters (onXxx pattern)
           .map((sch: any) => stripeTypeScriptInternalTypesSchema(sch, true))
           .map(inferPropTypes),
         events: meta.events.map((sch: any) => sch.name)
@@ -52,6 +52,22 @@ export function createChecker(dirs: ComponentsDir[], rootDir = process.cwd()) {
     }
   }
   return checker
+}
+
+function getComponentMeta(metaChecker: ReturnType<typeof createCheckerByJson>, componentPath: string) {
+  if (!componentPath.endsWith('.vue')) {
+    return metaChecker.getComponentMeta(componentPath)
+  }
+
+  const metaEntryPath = `${componentPath}.compodium-meta.ts`
+  const componentImportPath = `./${escapeSingleQuotedImportSpecifier(basename(componentPath))}`
+  metaChecker.updateFile(metaEntryPath, `import Component from '${componentImportPath}'\nexport const CompodiumMetaComponent = Component\nexport default Component\n`)
+
+  return metaChecker.getComponentMeta(metaEntryPath, 'CompodiumMetaComponent')
+}
+
+function escapeSingleQuotedImportSpecifier(importSpecifier: string) {
+  return importSpecifier.replace(/\\/g, '\\\\').replace(/'/g, '\\\'')
 }
 
 export function stripeTypeScriptInternalTypesSchema(type: any, topLevel: boolean = true): any {
