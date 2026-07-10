@@ -38,13 +38,13 @@
     "@nuxt/devtools-kit": "4.0.0-alpha.7",
     "consola": "^3.4.2",
     "defu": "^6.1.7",
+    "pathe": "^2.0.3",
     "ufo": "^1.6.4"
   },
   "devDependencies": {
     "@nuxt/module-builder": "^1.0.2",
     "@nuxt/schema": "catalog:",
-    "nuxt": "catalog: ",
-    "pathe": "^2.0.3"
+    "nuxt": "catalog: "
   },
   "keywords": [
     "nuxt",
