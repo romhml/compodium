@@ -3,6 +3,16 @@ packages:
   - ./packages/*
   - ./playgrounds/*
 
+allowBuilds:
+  '@parcel/watcher': false
+  better-sqlite3: false
+  esbuild: false
+  json-editor-vue: false
+  sharp: false
+  unrs-resolver: false
+  vue-demi: false
+  workerd: false
+
 catalog:
   '@nuxt/kit': ^4.4.8
   '@nuxt/schema': ^4.4.8
