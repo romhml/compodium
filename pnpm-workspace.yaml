@@ -5,7 +5,7 @@ packages:
 
 allowBuilds:
   '@parcel/watcher': false
-  better-sqlite3: false
+  better-sqlite3: true
   esbuild: false
   json-editor-vue: false
   sharp: false

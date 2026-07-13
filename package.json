@@ -17,31 +17,26 @@
     "bump": "jiti ./scripts/bump.ts"
   },
   "devDependencies": {
-    "@nuxt/eslint-config": "^1.15.2",
+    "@nuxt/eslint-config": "^1.16.0",
     "@nuxt/test-utils": "^4.0.3",
-    "@types/node": "^25.8.0",
+    "@types/node": "^25.9.5",
     "@types/supertest": "^7.2.0",
     "changelogen": "^0.6.2",
-    "eslint": "^10.4.0",
+    "eslint": "^10.7.0",
     "happy-dom": "^20.9.0",
     "supertest": "^7.2.2",
     "typescript": "^6.0.3",
     "unbuild": "^3.6.1",
-    "vite": "8.0.16",
-    "vitest": "^4.1.6",
-    "wrangler": "^4.92.0"
+    "vite": "8.1.4",
+    "vitest": "^4.1.10",
+    "wrangler": "^4.110.0"
   },
   "resolutions": {
     "@compodium/core": "workspace:^",
     "@compodium/examples": "workspace:^",
     "@compodium/nuxt": "workspace:^",
     "@compodium/vue": "workspace:^",
-    "vite": "8.0.16"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "better-sqlite3"
-    ]
+    "vite": "8.1.4"
   },
   "packageManager": "pnpm@11.12.0+sha512.820a6fbd0d9f04c226638002aead1e45340a9139dd5dc077c1d83ef44aa2481c8eb6637b4c9aa696a3c7e35ba818e49cf27213e5f2b91138d09b7a3e26e898ba"
 }
