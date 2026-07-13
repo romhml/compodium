@@ -1,5 +1,5 @@
 export default defineNuxtConfig({
-  modules: ['@nuxt/ui', '@compodium/nuxt'],
+  modules: ['@nuxt/ui', '../../packages/nuxt/src/module'],
   devtools: { enabled: true },
   css: ['~/assets/css/main.css'],
 
@@ -10,7 +10,6 @@ export default defineNuxtConfig({
       }
     }
   },
-
   compodium: {
     extras: {
       colors: {

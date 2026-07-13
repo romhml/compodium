@@ -1,5 +1,5 @@
 import { addCustomTab } from '@nuxt/devtools-kit'
-import { defineNuxtModule, createResolver, addTemplate, addVitePlugin, logger } from '@nuxt/kit'
+import { defineNuxtModule, createResolver, addTemplate, addTypeTemplate, addVitePlugin, logger } from '@nuxt/kit'
 import { colors } from 'consola/utils'
 import { joinURL } from 'ufo'
 import { resolve as resolvePath } from 'pathe'
@@ -21,9 +21,16 @@ export default defineNuxtModule<ModuleOptions>({
   },
 
   async setup(options, nuxt) {
-    if (!nuxt.options.dev) return
+    const { resolve, resolvePath: resolveModulePath } = createResolver(import.meta.url)
 
-    const { resolve } = createResolver(import.meta.url)
+    const coreTypesEntry = await resolveModulePath('@compodium/core')
+
+    addTypeTemplate({
+      filename: 'types/compodium.d.ts',
+      getContents: () => `import ${JSON.stringify(coreTypesEntry)}`
+    })
+
+    if (!nuxt.options.dev) return
 
     nuxt.hooks.hookOnce('app:resolve', (app) => {
       const rootComponent = app.rootComponent

@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --configLoader=runner",
     "preview": "vite preview",
     "build": "vite build",
     "typecheck": "vue-tsc --noEmit"
@@ -21,7 +21,7 @@
     "@types/node": "^26.1.1",
     "@vitejs/plugin-vue": "^6.0.7",
     "@vue/tsconfig": "^0.9.1",
-    "vite": "^8.1.4",
+    "vite": "8.0.16",
     "vite-plugin-vue-devtools": "^8.1.5",
     "vue-tsc": "^3.3.6"
   }
