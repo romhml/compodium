@@ -16,11 +16,17 @@
     "documentation"
   ],
   "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs"
-    },
-    "./*": "./dist/*"
+    ".": "./src/index.ts",
+    "./*": "./src/*"
+  },
+  "publishConfig": {
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.mjs"
+      },
+      "./*": "./dist/*"
+    }
   },
   "main": "dist/index.mjs",
   "module": "dist/index.mjs",
@@ -29,7 +35,6 @@
     "dist"
   ],
   "scripts": {
-    "dev:prepare": "unbuild --stub",
     "prepack": "unbuild && pnpm --filter devtools generate",
     "typecheck": "tsc --noEmit"
   },
