@@ -7,25 +7,6 @@ import { existsSync } from 'node:fs'
 import { joinURL } from 'ufo'
 import { resolvePathSync } from 'mlly'
 
-const devtoolsOptimizeDeps = [
-  '@vue/devtools-core',
-  '@vue/devtools-kit',
-  '@vueuse/core',
-  '@internationalized/date',
-  '@vueuse/integrations/useFuse',
-  'deep-eql',
-  'json-editor-vue',
-  'knitwork',
-  'shiki',
-  'shiki/core',
-  'shiki/langs/markdown.mjs',
-  'shiki/langs/vue.mjs',
-  'shiki/themes/material-theme-lighter.mjs',
-  'shiki/themes/material-theme-palenight.mjs',
-  'shiki/wasm',
-  'vanilla-jsoneditor'
-]
-
 export function devtoolsPlugin(options: PluginOptions): VitePlugin {
   let userPreview: string
 
@@ -37,9 +18,6 @@ export function devtoolsPlugin(options: PluginOptions): VitePlugin {
       userPreview = resolve(joinURL(options.rootDir ?? viteConfig.root, options.dir, 'preview.vue'))
     },
     config(config) {
-      config.optimizeDeps ||= {}
-      config.optimizeDeps.include = [...new Set([...(config.optimizeDeps.include ?? []), ...devtoolsOptimizeDeps])]
-
       if (process.env.COMPODIUM_DEVTOOLS_URL) {
         config.server ||= {}
         config.server.proxy ||= {}
