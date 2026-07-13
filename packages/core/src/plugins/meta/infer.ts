@@ -143,10 +143,15 @@ export function inferSchemaType(schema: string | VuePropertyMeta['schema'] | Vue
 
         if (propType.inputType === 'object') {
           const nestedSchema: Record<string, VuePropertyMeta> = propType.schema.schema
+
           propType.schema.schema = Object.entries(nestedSchema).reduce((acc, [key, sch]) => {
-            acc[key] = inferPropTypes(sch)
+            const inferedSchema = inferPropTypes(sch)
+            if (Object.keys(inferedSchema)?.length) acc[key] = inferPropTypes(sch)
+
             return acc
           }, {} as Record<string, PropertyMeta>)
+
+          if (!Object.keys(propType.schema.schema)?.length) return []
         }
 
         if (propType.inputType === 'array') {

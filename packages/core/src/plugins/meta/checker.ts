@@ -78,12 +78,46 @@ function getComponentMeta(metaChecker: MetaChecker, componentPath: string) {
   return metaChecker.getComponentMeta(metaEntryPath, 'CompodiumMetaComponent')
 }
 
+export function isNativeBrowserType(typeName: string): boolean {
+  const nativeTypes = [
+    // HTML Elements
+    'HTMLElement', 'HTMLCanvasElement', 'HTMLDivElement', 'HTMLSpanElement',
+    'HTMLInputElement', 'HTMLButtonElement', 'HTMLFormElement', 'HTMLImageElement',
+    'HTMLAnchorElement', 'HTMLLinkElement', 'HTMLScriptElement', 'HTMLStyleElement',
+    'HTMLTableElement', 'HTMLIFrameElement', 'HTMLVideoElement', 'HTMLAudioElement',
+    'HTMLSelectElement', 'HTMLOptionElement', 'HTMLTextAreaElement', 'HTMLLabelElement',
+    'HTMLSlotElement',
+    // DOM
+    'Element', 'Document', 'Window', 'Node', 'NodeList', 'HTMLCollection',
+    'DOMTokenList', 'NamedNodeMap', 'DocumentFragment', 'ShadowRoot',
+    // Events
+    'Event', 'MouseEvent', 'KeyboardEvent', 'FocusEvent', 'InputEvent',
+    'EventTarget', 'EventListener',
+    // Canvas/WebGL
+    'CanvasRenderingContext2D', 'WebGLRenderingContext', 'WebGL2RenderingContext',
+    'ImageBitmap', 'OffscreenCanvas',
+    // Media
+    'MediaStream', 'MediaStreamTrack', 'MediaRecorder',
+    // Storage/Data
+    'Storage', 'SessionStorage', 'LocalStorage', 'DOMStringMap',
+    // Node.js types
+    'Buffer', 'Process', 'Stream'
+  ]
+  return nativeTypes.includes(typeName)
+}
+
 export function stripeTypeScriptInternalTypesSchema(type: any, topLevel: boolean = true): any {
   if (!type) {
     return type
   }
 
   if (type?.name?.startsWith('__')) return false
+
+  // Check if this type's schema is a native browser/Node type
+  if (type.schema && typeof type.schema === 'object' && type.schema.kind === 'object'
+    && typeof type.schema.type === 'string' && isNativeBrowserType(type.schema.type)) {
+    return false
+  }
 
   if (!topLevel && type.declarations && type.declarations.find((d: any) => d.file.includes('node_modules/typescript') || d.file.includes('@vue/runtime-core'))) {
     return false
