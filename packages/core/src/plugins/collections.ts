@@ -41,7 +41,7 @@ export function resolveCollections(options: PluginOptions, viteConfig: any): Col
           prefix: collection.prefix
         },
         dirs: [{
-          path: collection.path,
+          path: resolve(rootDir, collection.path),
           pattern: '**/*.{vue,tsx}',
           ignore: collection.ignore,
           prefix: collection.prefix

@@ -12,6 +12,8 @@
   "dependencies": {
     "@compodium/vue": "workspace:^",
     "@nuxt/ui": "catalog:",
+    "tailwindcss": "^4.1.17",
+    "vue-router": "^4.6.4",
     "vue": "catalog:"
   },
   "devDependencies": {
