@@ -6,7 +6,7 @@ defineProps<{
   readonly?: boolean
 }>()
 
-const modelValue = defineModel<Record<string, any>>({ default: () => {} })
+const modelValue = defineModel<Record<string, any>>({ default: () => ({}) })
 
 watch(modelValue, () => jsonValue.value = modelValue.value)
 
