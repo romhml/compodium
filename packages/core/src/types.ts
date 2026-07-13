@@ -1,4 +1,4 @@
-import type { PropertyMeta as VuePropertyMeta } from '@compodium/meta'
+import type { PropertyMeta as VuePropertyMeta } from 'vue-component-meta'
 import type { Hookable } from 'hookable'
 import type { InputSchema } from './plugins/meta/infer'
 
@@ -55,6 +55,9 @@ export type PluginOptions = {
 
   /* Internal */
   _nuxt?: boolean
+
+  /* Internal */
+  tsconfigPath?: string
 }
 
 export type IconifyIcon = string & {}
@@ -128,6 +131,8 @@ export type Component = {
   wrapperComponent?: string
   docUrl?: string
   examples?: ComponentExample[]
+  combo?: Combo<any>
+  defaultProps?: any
 }
 
 export type ComponentExample = Component & {

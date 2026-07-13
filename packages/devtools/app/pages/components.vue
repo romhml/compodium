@@ -15,7 +15,7 @@ hooks.hook('renderer:mounted', () => {
     if (
       (component.value?.filePath && path.endsWith(component.value?.filePath))
       || (component.value?.componentPath && path.endsWith(component.value?.componentPath))) {
-      await Promise.all([refreshMeta(), refreshExampleMeta()])
+      await refreshMeta()
     }
   })
 
@@ -89,31 +89,21 @@ const { data: componentMeta, refresh: refreshMeta } = useAsyncData('__compodium-
   const meta = await $fetch<CompodiumMeta>('/api/meta', { baseURL: '/__compodium__', query: {
     component: component.value?.componentPath ?? component.value?.filePath }
   })
-  return meta
+  return { ...meta, compodium: { defaultProps: component.value?.defaultProps, combo: component.value?.combo } }
 }, { watch: [component] })
 
-const { data: exampleMeta, refresh: refreshExampleMeta } = useAsyncData('__compodium-fetch-example-meta', async () => {
-  if (!component.value || !component.value.isExample) return
-  const example = await $fetch<CompodiumMeta>(`/api/meta`, { baseURL: '/__compodium__', query: { component: component.value.filePath } })
-  return example
-}, { watch: [component] })
-
-watch([componentMeta, exampleMeta], async ([newComponentMeta, newExampleMeta]) => {
+watch([componentMeta], async ([newComponentMeta]) => {
   if (!newComponentMeta) return
 
-  compodiumDefaultProps.value = { ...(newExampleMeta?.compodium?.defaultProps ?? newComponentMeta?.compodium?.defaultProps) }
+  compodiumDefaultProps.value = { ...newComponentMeta?.compodium?.defaultProps }
   defaultProps.value = {
     ...getDefaultProps(newComponentMeta)
   }
 
   if (!touched.value) {
-    props.value = structuredClone({ ...defaultProps.value, ...compodiumDefaultProps.value })
+    props.value = { ...defaultProps.value, ...compodiumDefaultProps.value }
 
-    combo.value = [...(
-      newExampleMeta?.compodium?.combo
-      ?? newComponentMeta?.compodium?.combo as any
-      ?? []
-    )]
+    combo.value = [...(newComponentMeta?.compodium?.combo as any ?? [])]
   }
 
   await updateComponent()
@@ -142,12 +132,12 @@ const updatePropsDebounced = useDebounceFn(
 )
 
 const combo = ref<string[]>([])
-const comboProps = computed<Partial<[ComboItem, ComboItem]>>({
+const comboProps = computed({
   get() {
     return [
       comboItems.value?.find(i => i?.value === combo.value[0]),
       comboItems.value?.find(i => i?.value === combo.value[1])
-    ]
+    ] as [ComboItem | undefined, ComboItem | undefined]
   },
   set(value) {
     combo.value = value?.map(c => c?.value ?? null) as [string, string] ?? [null, null]
@@ -170,7 +160,7 @@ const comboItems = computed<ComboItem[]>(() => {
   }) ?? []
 })
 
-watch([componentMeta, exampleMeta, combo], async () => {
+watch([componentMeta, combo], async () => {
   await hooks.callHook('renderer:update-combo', { props: comboProps.value?.filter(Boolean) as ComboItem[] ?? [] })
 }, { deep: true })
 
@@ -291,7 +281,7 @@ const tabs = computed(() => {
             class="rounded-full"
             color="neutral"
             :disabled="!rendererMounted"
-            @click="isDark = !isDark"
+            @click="() => { isDark = !isDark }"
           />
         </div>
       </div>

@@ -26,6 +26,6 @@ export async function createViteServer(path: string, viteOptions?: Partial<ViteU
         '@': fileURLToPath(joinURL(dirname(import.meta.url), joinURL(path, './src')))
       }
     }
-  }, viteOptions))
+  } as any, viteOptions))
   return request(server.middlewares)
 }

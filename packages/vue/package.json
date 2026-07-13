@@ -15,6 +15,7 @@
   ],
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs"
     },
     "./*": "./dist/*"
@@ -31,17 +32,17 @@
     "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
-    "vite": ">=6"
+    "vite": ">=7"
   },
   "dependencies": {
     "@compodium/core": "workspace:^",
     "@compodium/examples": "workspace:^",
-    "@vue/devtools-kit": "^8.0.3",
+    "@vue/devtools-kit": "^8.1.5",
     "consola": "^3.4.2",
-    "defu": "^6.1.4",
-    "mlly": "^1.8.0",
+    "defu": "^6.1.7",
+    "mlly": "^1.8.2",
     "pathe": "^2.0.3",
-    "ufo": "^1.6.1",
-    "unplugin": "^2.3.10"
+    "ufo": "^1.6.4",
+    "unplugin": "^3.3.0"
   }
 }

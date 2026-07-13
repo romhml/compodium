@@ -95,7 +95,7 @@ const visibleIcons = computed(() => {
               color="neutral"
               square
               class="size-8"
-              @click="modelValue = icon"
+              @click="() => { modelValue = icon }"
             />
           </div>
           <UPagination

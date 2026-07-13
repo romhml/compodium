@@ -18,6 +18,10 @@ TODO.md
 # Generated dirs
 dist
 
+# Generated Vue playground declarations
+playgrounds/vue/auto-imports.d.ts
+playgrounds/vue/components.d.ts
+
 # Nuxt
 .nuxt
 .output
@@ -56,3 +60,5 @@ coverage
 Network Trash Folder
 Temporary Items
 .apdisk
+
+docs/.data

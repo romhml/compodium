@@ -18,10 +18,34 @@ export default defineNuxtConfig({
   },
 
   css: ['~/assets/css/main.css'],
+  experimental: {
+    viteEnvironmentApi: true
+  },
 
   nitro: {
     output: {
       publicDir: resolve(__dirname, '../core/dist/client/devtools')
+    }
+  },
+
+  vite: {
+    optimizeDeps: {
+      include: [
+        '@vue/devtools-core',
+        '@vue/devtools-kit',
+        '@vueuse/core',
+        '@vueuse/integrations/useFuse',
+        'deep-eql',
+        'json-editor-vue',
+        'knitwork',
+        'shiki',
+        'shiki/core',
+        'shiki/langs/markdown.mjs',
+        'shiki/langs/vue.mjs',
+        'shiki/themes/material-theme-lighter.mjs',
+        'shiki/themes/material-theme-palenight.mjs',
+        'shiki/wasm'
+      ]
     }
   }
 })

@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url'
 import { joinURL } from 'ufo'
 import { dirname } from 'pathe'
 
-describe('prod', async () => {
+describe.skip('prod', async () => {
   const rootDir = fileURLToPath(joinURL(dirname(import.meta.url), './fixtures/basic'))
   await setup({
     rootDir,

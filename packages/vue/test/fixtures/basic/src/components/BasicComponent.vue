@@ -1,5 +1,11 @@
 <script setup lang="ts">
-defineProps<{ foo: string }>()
+defineProps<{
+  foo: string
+  componentDefault?: boolean
+  exampleDefault?: boolean
+}>()
+
+extendCompodiumMeta({ defaultProps: { componentDefault: true } })
 </script>
 
 <template>

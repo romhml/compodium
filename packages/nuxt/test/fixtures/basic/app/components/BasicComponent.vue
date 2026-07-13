@@ -1,5 +1,7 @@
 <script setup lang="ts">
-defineProps<{ foo: string }>()
+import type { BasicComponentProps } from '#fixture-types'
+
+defineProps<BasicComponentProps>()
 </script>
 
 <template>
