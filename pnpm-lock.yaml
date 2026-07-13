@@ -171,9 +171,6 @@ importers:
 
   packages/devtools:
     dependencies:
-      '@internationalized/date':
-        specifier: ^3.10.0
-        version: 3.10.0
       '@nuxt/ui':
         specifier: 'catalog:'
         version: 4.9.0(45e0f81ff82ea000f8fb13e169235562)
@@ -216,9 +213,6 @@ importers:
       shiki:
         specifier: ^4.3.1
         version: 4.3.1
-      vanilla-jsoneditor:
-        specifier: ^3.10.0
-        version: 3.10.0
       vue:
         specifier: 'catalog:'
         version: 3.5.39(typescript@6.0.3)
