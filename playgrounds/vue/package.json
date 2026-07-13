@@ -13,7 +13,7 @@
     "@compodium/vue": "workspace:^",
     "@nuxt/ui": "catalog:",
     "tailwindcss": "^4.1.17",
-    "vue-router": "^4.6.4",
+    "vue-router": "^5.1.0",
     "vue": "catalog:"
   },
   "devDependencies": {
