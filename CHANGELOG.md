@@ -6,7 +6,6 @@
 
 ### 🚀 Enhancements
 
-- **vue:** Entrypoint detection ([#96](https://github.com/romhml/compodium/pull/96))
 - **examples:** Add NuxtUI PRO components ([#129](https://github.com/romhml/compodium/pull/129))
 
 ### 💅 Refactors
@@ -15,7 +14,6 @@
 
 ### 🏡 Chore
 
-- Deploy docs on tag ([03ce183](https://github.com/romhml/compodium/commit/03ce183))
 - Add release action ([443d5b7](https://github.com/romhml/compodium/commit/443d5b7))
 - Add AGENTS.md ([#189](https://github.com/romhml/compodium/pull/189))
 - Remove unbuild stubs ([#193](https://github.com/romhml/compodium/pull/193))
