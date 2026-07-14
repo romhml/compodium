@@ -1,5 +1,31 @@
 # Changelog
 
+## v0.1.0-beta.13
+
+[compare changes](https://github.com/romhml/compodium/compare/v0.1.0-beta.12...v0.1.0-beta.13)
+
+### 🚀 Enhancements
+
+- **vue:** Entrypoint detection ([#96](https://github.com/romhml/compodium/pull/96))
+- **examples:** Add NuxtUI PRO components ([#129](https://github.com/romhml/compodium/pull/129))
+
+### 💅 Refactors
+
+- Remove vue-component-meta fork and update dependencies ([#179](https://github.com/romhml/compodium/pull/179))
+
+### 🏡 Chore
+
+- Deploy docs on tag ([03ce183](https://github.com/romhml/compodium/commit/03ce183))
+- Add release action ([443d5b7](https://github.com/romhml/compodium/commit/443d5b7))
+- Add AGENTS.md ([#189](https://github.com/romhml/compodium/pull/189))
+- Remove unbuild stubs ([#193](https://github.com/romhml/compodium/pull/193))
+- Downgrade vite to 8.0.16 ([48cf602](https://github.com/romhml/compodium/commit/48cf602))
+
+### ❤️ Contributors
+
+- Romain Hamel <romain@rohm.dev>
+- Jakub Michálek ([@J-Michalek](https://github.com/J-Michalek))
+
 ## v0.1.0-beta.12
 
 [compare changes](https://github.com/romhml/compodium/compare/v0.1.0-beta.11...v0.1.0-beta.12)
