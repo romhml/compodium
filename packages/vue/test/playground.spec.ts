@@ -82,6 +82,13 @@ describe('vue playground', async () => {
       expect(buttonSourcePath).toContain('@nuxt/ui')
       expect(buttonSourcePath).not.toContain('/playgrounds/vue/src/components/')
 
+      if (!('isExample' in button) || button.isExample !== true) {
+        throw new Error('Expected UButton to use its selected library example')
+      }
+      const example = await viteServer.ssrLoadModule(`virtual:compodium:example?path=${encodeURIComponent(button.filePath)}`)
+      expect(example.default).toBeTypeOf('string')
+      expect(example.default).not.toContain('extendCompodiumMeta')
+
       const meta = (await viteServer.ssrLoadModule(`virtual:compodium:meta?component=${encodeURIComponent(buttonSourcePath)}`)).default as CompodiumMeta
       const colorProp = meta.props.find(prop => prop.name === 'color')
 

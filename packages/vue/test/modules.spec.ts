@@ -164,13 +164,17 @@ describe('project data modules', async () => {
       .rejects.toThrow(`Unknown Compodium macro path: ${siblingPrefixPath}`)
   })
 
-  it('rejects missing, traversal, out-of-root, and unknown example paths', async () => {
+  it('rejects malformed queries and unauthorized example paths', async () => {
     const traversalPath = resolve(viteServer.config.root, 'compodium/examples') + '/../examples/BasicComponentExampleWithFoo.vue'
     const unknownPath = resolve(viteServer.config.root, 'src/App.vue')
     const siblingPrefixPath = resolve(viteServer.config.root, 'compodium/examples-sibling/UnknownExample.vue')
 
     await expect(viteServer.pluginContainer.resolveId('virtual:compodium:example?t=1752500000000'))
       .rejects.toThrow('Compodium example module requires an example path')
+    await expect(viteServer.pluginContainer.resolveId(`virtual:compodium:example?path=${encodeURIComponent(examplePath)}&path=${encodeURIComponent(macroFreeExamplePath)}`))
+      .rejects.toThrow('Duplicate Compodium example module query key')
+    await expect(viteServer.pluginContainer.resolveId(`virtual:compodium:example?path=${encodeURIComponent(examplePath)}&t=invalid`))
+      .rejects.toThrow('Invalid Compodium example module timestamp: invalid')
     await expect(viteServer.pluginContainer.resolveId(`virtual:compodium:example?path=${encodeURIComponent(traversalPath)}`))
       .rejects.toThrow(`Unknown Compodium example path: ${traversalPath}`)
     await expect(viteServer.pluginContainer.resolveId('virtual:compodium:example?path=%2Ftmp%2Fcompodium-out-of-root.vue'))
@@ -229,6 +233,29 @@ describe('project data modules', async () => {
     } finally {
       await lateRootServer.close()
       await rm(lateRoot, { recursive: true, force: true })
+    }
+  })
+
+  it('accepts a configured example root created after server startup', async () => {
+    const lateCompodiumDir = resolve(viteServer.config.root, 'late-compodium')
+    const lateExampleRoot = resolve(lateCompodiumDir, 'examples')
+    const lateExample = resolve(lateExampleRoot, 'LateComponentExample.vue')
+    await rm(lateCompodiumDir, { recursive: true, force: true })
+    const lateRootServer = await createViteDevServer('./fixtures/basic', undefined, {
+      dir: './late-compodium',
+      includeLibraryCollections: false
+    })
+
+    try {
+      await mkdir(lateExampleRoot, { recursive: true })
+      await writeFile(lateExample, '<script setup lang="ts">extendCompodiumMeta({ defaultProps: { late: true } })</script>\n<template><div>late</div></template>\n')
+
+      const example = await lateRootServer.ssrLoadModule(`virtual:compodium:example?path=${encodeURIComponent(lateExample)}`)
+      expect(example.default).toContain('<div>late</div>')
+      expect(example.default).not.toContain('extendCompodiumMeta')
+    } finally {
+      await lateRootServer.close()
+      await rm(lateCompodiumDir, { recursive: true, force: true })
     }
   })
 })

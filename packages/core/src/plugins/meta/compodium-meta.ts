@@ -1,11 +1,20 @@
 import { type ArrayExpressionElement, type Node, parse as parseAst } from 'oxc-parser'
 import { readFile } from 'node:fs/promises'
+import { createRequire } from 'node:module'
 
 import type { CompodiumMeta } from '../../types'
 import { basename } from 'node:path'
 
 const DEFINE_COMPODIUM_META = 'extendCompodiumMeta'
 const unsupportedValue = Symbol('unsupported Compodium metadata value')
+type VueSfcCompiler = typeof import('@vue/compiler-sfc')
+const requireFromPluginProcess = createRequire(import.meta.url)
+let vueSfcCompiler: VueSfcCompiler | undefined
+
+function loadVueSfcCompiler(): VueSfcCompiler {
+  vueSfcCompiler ??= requireFromPluginProcess('@vue/compiler-sfc') as VueSfcCompiler
+  return vueSfcCompiler
+}
 
 function evaluateNode(node: Node | ArrayExpressionElement): any | typeof unsupportedValue {
   if (!node) return unsupportedValue
@@ -43,7 +52,7 @@ function evaluateNode(node: Node | ArrayExpressionElement): any | typeof unsuppo
 }
 
 export async function parseCompodiumMeta(componentPath: string): Promise<CompodiumMeta['compodium'] | null> {
-  const { parse: parseSFC } = await import('@vue/compiler-sfc')
+  const { parse: parseSFC } = loadVueSfcCompiler()
   const code = (await readFile(componentPath)).toString()
   const filename = basename(componentPath)
 

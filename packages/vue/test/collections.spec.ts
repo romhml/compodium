@@ -1,5 +1,8 @@
 import { afterAll, describe, expect, it } from 'vitest'
 import request from 'supertest'
+import { fileURLToPath } from 'node:url'
+import type { Collection } from '@compodium/core'
+import { resolve } from 'pathe'
 
 import { createViteDevServer } from './utils'
 
@@ -111,5 +114,30 @@ describe('collections module', async () => {
     })
 
     await expect(closingViteServer.close()).resolves.toBeUndefined()
+  })
+
+  it('assembles collections after the application module runner closes', async () => {
+    const applicationServer = await createViteDevServer('./fixtures/basic')
+    const collectionsSourcePath = fileURLToPath(new URL('../../core/src/plugins/collections.ts', import.meta.url))
+    const { assembleCollections } = await applicationServer.ssrLoadModule(collectionsSourcePath) as typeof import('../../core/src/plugins/collections')
+    const root = applicationServer.config.root
+    const collection: Collection = {
+      name: 'Components',
+      dirs: [{ path: resolve(root, 'src/components'), pattern: '**/*.vue' }],
+      exampleDir: { path: resolve(root, 'compodium/examples'), pattern: '**/*.vue' }
+    }
+
+    await applicationServer.close()
+
+    await expect(assembleCollections([collection])).resolves.toEqual([
+      expect.objectContaining({
+        components: expect.arrayContaining([
+          expect.objectContaining({
+            pascalName: 'BasicComponent',
+            defaultProps: { componentDefault: true }
+          })
+        ])
+      })
+    ])
   })
 })

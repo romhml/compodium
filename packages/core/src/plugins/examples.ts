@@ -1,10 +1,9 @@
-import fs from 'node:fs/promises'
+import { readFile, realpath } from 'node:fs/promises'
 import type { VitePlugin } from 'unplugin'
 import type { ViteDevServer } from 'vite'
-import type { Collection, PluginOptions } from '../types'
-import { isAbsolute, relative } from 'pathe'
+import type { PluginOptions } from '../types'
+import { basename, dirname, isAbsolute, relative, resolve } from 'pathe'
 import { resolveCollections } from './collections'
-import { scanComponents } from './utils'
 
 const EXAMPLE_MODULE_ID = 'virtual:compodium:example'
 const RESOLVED_EXAMPLE_MODULE_ID = `\0${EXAMPLE_MODULE_ID}`
@@ -43,57 +42,41 @@ function isPathInside(rootPath: string, filePath: string): boolean {
 }
 
 export function examplePlugin(options: PluginOptions): VitePlugin {
-  let collections: Collection[]
   const moduleIdsByExamplePath = new Map<string, Set<string>>()
-  const resolvedModuleIds = new Set<string>()
-  let discoveredExamplePaths: Set<string> | undefined
-  let discoveryPromise: Promise<Set<string>> | undefined
-  let discoveryGeneration = 0
   let exampleRoots: string[] = []
+  let canonicalExampleRoots: Promise<string[]>
   let removeWatcherListeners: (() => void) | undefined
 
-  function clearDiscoveredExamplePaths() {
-    discoveryGeneration++
-    discoveredExamplePaths = undefined
-    discoveryPromise = undefined
-  }
+  async function canonicalizeConfiguredRoot(rootPath: string): Promise<string> {
+    const missingSegments: string[] = []
+    let ancestorPath = rootPath
 
-  async function getDiscoveredExamplePaths(): Promise<Set<string>> {
-    if (discoveredExamplePaths) return discoveredExamplePaths
-    if (discoveryPromise) return await discoveryPromise
+    while (true) {
+      const ancestorRealPath = await realpath(ancestorPath).catch(() => undefined)
+      if (ancestorRealPath) return resolve(ancestorRealPath, ...missingSegments)
 
-    const generation = discoveryGeneration
-    const populatePromise = (async () => {
-      const realRoots = (await Promise.all(collections.map(collection => fs.realpath(collection.exampleDir.path).catch(() => undefined))))
-        .filter((path): path is string => Boolean(path))
-      const discoveredExamples = (await Promise.all(collections.map(collection => scanComponents([collection.exampleDir])))).flat()
-
-      return new Set(discoveredExamples
-        .map(example => example.realPath)
-        .filter(path => realRoots.some(root => isPathInside(root, path))))
-    })()
-
-    discoveryPromise = populatePromise
-    try {
-      const paths = await populatePromise
-      if (generation !== discoveryGeneration) return await getDiscoveredExamplePaths()
-      discoveredExamplePaths = paths
-      return paths
-    } finally {
-      if (discoveryPromise === populatePromise) discoveryPromise = undefined
+      const parentPath = dirname(ancestorPath)
+      if (parentPath === ancestorPath) throw new Error(`Unable to canonicalize Compodium example root: ${rootPath}`)
+      missingSegments.unshift(basename(ancestorPath))
+      ancestorPath = parentPath
     }
   }
 
-  async function resolveDiscoveredExamplePath(requestedPath: string): Promise<string | undefined> {
+  function refreshCanonicalExampleRoots(): Promise<string[]> {
+    canonicalExampleRoots = Promise.all(exampleRoots.map(canonicalizeConfiguredRoot))
+    return canonicalExampleRoots
+  }
+
+  async function resolveAllowedExamplePath(requestedPath: string): Promise<string | undefined> {
     if (hasTraversal(requestedPath)) return
 
-    const requestedRealPath = await fs.realpath(requestedPath).catch(() => undefined)
+    const requestedRealPath = await realpath(requestedPath).catch(() => undefined)
     if (!requestedRealPath) return
-    if ((await getDiscoveredExamplePaths()).has(requestedRealPath)) return requestedRealPath
+    if ((await canonicalExampleRoots).some(root => isPathInside(root, requestedRealPath))) return requestedRealPath
   }
 
   async function loadExampleSource(examplePath: string): Promise<string> {
-    const exampleCode = await fs.readFile(examplePath)
+    const exampleCode = await readFile(examplePath)
     let result = exampleCode.toString()
       .replace(/extendCompodiumMeta\s*\([\s\S]*?\)\s*;?/g, '')
 
@@ -105,27 +88,24 @@ export function examplePlugin(options: PluginOptions): VitePlugin {
     return result.replace(/<script[^>]*>\s*<\/script>/g, '')
   }
 
-  function getExampleModuleIdsForSource(sourcePath: string, server: ViteDevServer): string[] {
-    const knownModuleIds = new Set([...resolvedModuleIds, ...server.moduleGraph.idToModuleMap.keys()])
-    return [...knownModuleIds]
-      .filter(moduleId => getResolvedExamplePath(moduleId) === sourcePath)
+  function getExampleModuleIdsForSource(sourcePath: string): string[] {
+    return [...moduleIdsByExamplePath.get(sourcePath) ?? []]
   }
 
   function removeExampleRegistrations(filePath: string, directory: boolean, server: ViteDevServer) {
-    const sourcePaths = [...new Set([
-      ...moduleIdsByExamplePath.keys(),
-      ...server.moduleGraph.idToModuleMap.keys()
-        .map(moduleId => getResolvedExamplePath(moduleId))
-        .filter((path): path is string => Boolean(path))
-    ])]
-      .filter(sourcePath => sourcePath === filePath || (directory && isPathInside(filePath, sourcePath)))
-    for (const sourcePath of sourcePaths) {
-      for (const moduleId of getExampleModuleIdsForSource(sourcePath, server)) {
-        const module = server.moduleGraph.getModuleById(moduleId)
-        if (module) server.moduleGraph.invalidateModule(module)
-        resolvedModuleIds.delete(moduleId)
+    const removedPath = resolve(filePath)
+    const affectedModuleIds = new Set([...moduleIdsByExamplePath]
+      .filter(([sourcePath]) => sourcePath === removedPath || (directory && isPathInside(removedPath, sourcePath)))
+      .flatMap(([, moduleIds]) => [...moduleIds]))
+
+    for (const moduleId of affectedModuleIds) {
+      const module = server.moduleGraph.getModuleById(moduleId)
+      if (module) server.moduleGraph.invalidateModule(module)
+
+      for (const [sourcePath, moduleIds] of moduleIdsByExamplePath) {
+        moduleIds.delete(moduleId)
+        if (moduleIds.size === 0) moduleIdsByExamplePath.delete(sourcePath)
       }
-      moduleIdsByExamplePath.delete(sourcePath)
     }
   }
 
@@ -134,8 +114,8 @@ export function examplePlugin(options: PluginOptions): VitePlugin {
     apply: 'serve',
 
     configResolved(viteConfig) {
-      collections = resolveCollections(options, viteConfig)
-      exampleRoots = collections.map(collection => collection.exampleDir.path)
+      exampleRoots = resolveCollections(options, viteConfig).map(collection => collection.exampleDir.path)
+      refreshCanonicalExampleRoots()
     },
 
     async resolveId(id) {
@@ -145,20 +125,23 @@ export function examplePlugin(options: PluginOptions): VitePlugin {
       const examplePath = searchParams.get('path')
       if (!examplePath) throw new Error('Compodium example module requires an example path')
 
-      const discoveredPath = await resolveDiscoveredExamplePath(examplePath)
-      if (!discoveredPath) throw new Error(`Unknown Compodium example path: ${examplePath}`)
+      await refreshCanonicalExampleRoots()
+      const requestedExamplePath = resolve(examplePath)
+      const canonicalExamplePath = await resolveAllowedExamplePath(examplePath)
+      if (!canonicalExamplePath) throw new Error(`Unknown Compodium example path: ${examplePath}`)
 
-      const canonicalId = `${RESOLVED_EXAMPLE_MODULE_ID}?path=${encodeURIComponent(discoveredPath)}`
-      const moduleIds = moduleIdsByExamplePath.get(discoveredPath) ?? new Set<string>()
-      moduleIds.add(canonicalId)
-      moduleIdsByExamplePath.set(discoveredPath, moduleIds)
-      resolvedModuleIds.add(canonicalId)
+      const canonicalId = `${RESOLVED_EXAMPLE_MODULE_ID}?path=${encodeURIComponent(canonicalExamplePath)}`
+      for (const sourcePath of new Set([requestedExamplePath, canonicalExamplePath])) {
+        const moduleIds = moduleIdsByExamplePath.get(sourcePath) ?? new Set<string>()
+        moduleIds.add(canonicalId)
+        moduleIdsByExamplePath.set(sourcePath, moduleIds)
+      }
       return canonicalId
     },
 
     async load(id) {
       const examplePath = getResolvedExamplePath(id)
-      if (!examplePath || !resolvedModuleIds.has(id)) return
+      if (!examplePath || !moduleIdsByExamplePath.get(examplePath)?.has(id)) return
 
       const source = await loadExampleSource(examplePath)
       return `export default ${JSON.stringify(source)};`
@@ -167,26 +150,16 @@ export function examplePlugin(options: PluginOptions): VitePlugin {
     configureServer(server) {
       removeWatcherListeners?.()
       server.watcher.add(exampleRoots)
-      const isWatchedPath = (path: string) => exampleRoots.some(root => isPathInside(root, path))
-      const handleAdd = (path: string) => {
-        if (isWatchedPath(path)) clearDiscoveredExamplePaths()
-      }
       const handleRemove = (directory: boolean) => (path: string) => {
-        if (!isWatchedPath(path)) return
-        clearDiscoveredExamplePaths()
         removeExampleRegistrations(path, directory, server)
       }
       const handleUnlink = handleRemove(false)
       const handleUnlinkDir = handleRemove(true)
 
-      server.watcher.on('add', handleAdd)
-      server.watcher.on('addDir', handleAdd)
       server.watcher.on('unlink', handleUnlink)
       server.watcher.on('unlinkDir', handleUnlinkDir)
 
       removeWatcherListeners = () => {
-        server.watcher.off('add', handleAdd)
-        server.watcher.off('addDir', handleAdd)
         server.watcher.off('unlink', handleUnlink)
         server.watcher.off('unlinkDir', handleUnlinkDir)
       }
@@ -194,8 +167,8 @@ export function examplePlugin(options: PluginOptions): VitePlugin {
     },
 
     async handleHotUpdate({ file, server }) {
-      const changedRealPath = await fs.realpath(file).catch(() => file)
-      for (const moduleId of getExampleModuleIdsForSource(changedRealPath, server)) {
+      const changedRealPath = await realpath(file).catch(() => file)
+      for (const moduleId of getExampleModuleIdsForSource(changedRealPath)) {
         const module = server.moduleGraph.getModuleById(moduleId)
         if (module) server.moduleGraph.invalidateModule(module)
       }
@@ -204,7 +177,6 @@ export function examplePlugin(options: PluginOptions): VitePlugin {
     closeBundle() {
       removeWatcherListeners?.()
       removeWatcherListeners = undefined
-      clearDiscoveredExamplePaths()
     }
   }
 }

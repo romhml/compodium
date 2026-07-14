@@ -1,5 +1,5 @@
 import { afterAll, describe, expect, it, vi } from 'vitest'
-import { readFile, writeFile } from 'node:fs/promises'
+import { mkdir, readFile, rm, symlink, writeFile } from 'node:fs/promises'
 import { resolve } from 'pathe'
 import { createViteDevServer } from './utils'
 
@@ -127,6 +127,97 @@ describe('compodium HMR ownership', async () => {
     send.mockRestore()
   })
 
+  it('invalidates and unregisters removed example modules', async () => {
+    const exampleRequest = `virtual:compodium:example?path=${encodeURIComponent(examplePath)}`
+    const exampleId = (await server.pluginContainer.resolveId(exampleRequest))!.id
+    await server.transformRequest(exampleRequest)
+    const exampleModule = server.moduleGraph.getModuleById(exampleId)!
+    const invalidate = vi.spyOn(server.moduleGraph, 'invalidateModule')
+
+    server.watcher.emit('unlink', examplePath)
+    expect(invalidate).toHaveBeenCalledWith(exampleModule)
+
+    invalidate.mockClear()
+    server.watcher.emit('unlink', examplePath)
+    expect(invalidate.mock.calls.some(([module]) => module === exampleModule)).toBe(false)
+    invalidate.mockRestore()
+  })
+
+  it('unregisters a canonical example when its lexical symlink is removed', async () => {
+    const fixtureDir = resolve(exampleRoot, 'symlink-file-fixture')
+    const targetPath = resolve(fixtureDir, 'TargetExample.vue')
+    const lexicalPath = resolve(fixtureDir, 'AliasExample.vue')
+    await rm(fixtureDir, { recursive: true, force: true })
+
+    try {
+      await mkdir(fixtureDir, { recursive: true })
+      await writeFile(targetPath, '<template><div>symlink file</div></template>\n')
+      await symlink('TargetExample.vue', lexicalPath)
+
+      const exampleRequest = `virtual:compodium:example?path=${encodeURIComponent(lexicalPath)}`
+      const exampleId = (await server.pluginContainer.resolveId(exampleRequest))!.id
+      await server.transformRequest(exampleRequest)
+      const exampleModule = server.moduleGraph.getModuleById(exampleId)!
+      const invalidate = vi.spyOn(server.moduleGraph, 'invalidateModule')
+
+      await rm(lexicalPath)
+      server.watcher.emit('unlink', lexicalPath)
+      expect(invalidate).toHaveBeenCalledWith(exampleModule)
+      expect(await server.pluginContainer.load(exampleId)).toBeNull()
+
+      invalidate.mockClear()
+      server.watcher.emit('unlink', targetPath)
+      expect(invalidate).not.toHaveBeenCalledWith(exampleModule)
+      invalidate.mockRestore()
+    } finally {
+      await rm(fixtureDir, { recursive: true, force: true })
+    }
+  })
+
+  it('cleans registrations beneath a symlinked configured example root on unlinkDir', async () => {
+    const physicalRoot = resolve(server.config.root, 'symlink-root-target')
+    const lexicalCompodiumDir = resolve(server.config.root, 'symlink-root-compodium')
+    const lexicalRoot = resolve(lexicalCompodiumDir, 'examples')
+    const physicalDirectory = resolve(physicalRoot, 'nested')
+    const physicalPath = resolve(physicalDirectory, 'NestedExample.vue')
+    const lexicalDirectory = resolve(lexicalRoot, 'nested')
+    const lexicalPath = resolve(lexicalDirectory, 'NestedExample.vue')
+    await rm(physicalRoot, { recursive: true, force: true })
+    await rm(lexicalCompodiumDir, { recursive: true, force: true })
+
+    let symlinkRootServer: Awaited<ReturnType<typeof createViteDevServer>> | undefined
+    try {
+      await mkdir(physicalDirectory, { recursive: true })
+      await writeFile(physicalPath, '<template><div>symlink root</div></template>\n')
+      await mkdir(lexicalCompodiumDir, { recursive: true })
+      await symlink(physicalRoot, lexicalRoot)
+      symlinkRootServer = await createViteDevServer('./fixtures/hmr', undefined, {
+        dir: './symlink-root-compodium',
+        includeLibraryCollections: false
+      })
+
+      const exampleRequest = `virtual:compodium:example?path=${encodeURIComponent(lexicalPath)}`
+      const exampleId = (await symlinkRootServer.pluginContainer.resolveId(exampleRequest))!.id
+      await symlinkRootServer.transformRequest(exampleRequest)
+      const exampleModule = symlinkRootServer.moduleGraph.getModuleById(exampleId)!
+      const invalidate = vi.spyOn(symlinkRootServer.moduleGraph, 'invalidateModule')
+
+      await rm(physicalDirectory, { recursive: true })
+      symlinkRootServer.watcher.emit('unlinkDir', lexicalDirectory)
+      expect(invalidate).toHaveBeenCalledWith(exampleModule)
+      expect(await symlinkRootServer.pluginContainer.load(exampleId)).toBeNull()
+
+      invalidate.mockClear()
+      symlinkRootServer.watcher.emit('unlinkDir', physicalDirectory)
+      expect(invalidate).not.toHaveBeenCalledWith(exampleModule)
+      invalidate.mockRestore()
+    } finally {
+      await symlinkRootServer?.close()
+      await rm(lexicalCompodiumDir, { recursive: true, force: true })
+      await rm(physicalRoot, { recursive: true, force: true })
+    }
+  })
+
   it('removes only Compodium listeners during teardown', async () => {
     const watcher = server.watcher
     const close = vi.spyOn(watcher, 'close')
@@ -135,7 +226,7 @@ describe('compodium HMR ownership', async () => {
     await closeCompodiumPlugins()
 
     expect(['add', 'addDir', 'unlink', 'unlinkDir'].map(event => watcher.listenerCount(event)))
-      .toEqual(listenerCounts.map(count => count - 3))
+      .toEqual(listenerCounts.map((count, index) => count - (index < 2 ? 2 : 3)))
     expect(close).not.toHaveBeenCalled()
     close.mockRestore()
   })
