@@ -115,11 +115,11 @@ pnpm test
 [npm-version-src]: https://img.shields.io/npm/v/%40compodium%2Fcore/latest.svg?style=flat&colorA=020420&colorB=00DC82
 [npm-version-href]: https://npmjs.com/package/%40compodium%2Fcore
 
-[npm-downloads-src]: https://img.shields.io/npm/dm/compodium.svg?style=flat&colorA=020420&colorB=00DC82
+[npm-downloads-src]: https://img.shields.io/npm/dm/%40compodium%2Fcore.svg?style=flat&colorA=020420&colorB=00DC82
 [npm-downloads-href]: https://npm.chart.dev/%40compodium%2Fcore
 
-[license-src]: https://img.shields.io/npm/l/compodium.svg?style=flat&colorA=020420&colorB=00DC82
-[license-href]: https://npmjs.com/package/compodium
+[license-src]: https://img.shields.io/npm/l/%40compodium%2Fcore.svg?style=flat&colorA=020420&colorB=00DC82
+[license-href]: https://npmjs.com/package/%40compodium%2Fcore
 
 [nuxt-src]: https://img.shields.io/badge/Nuxt-020420?logo=nuxt.js
 [nuxt-href]: https://nuxt.com
