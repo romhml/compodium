@@ -5,6 +5,7 @@ import { joinURL } from 'ufo'
 import { fileURLToPath } from 'node:url'
 import { dirname } from 'pathe'
 import { loadNativeModule } from './native-module'
+import { createTestNuxtConfig } from './test-config'
 
 describe('basic', async () => {
   const rootDir = fileURLToPath(joinURL(dirname(import.meta.url), './fixtures/basic'))
@@ -13,7 +14,8 @@ describe('basic', async () => {
     rootDir,
     dev: true,
     port: 4545,
-    setupTimeout: 30000
+    setupTimeout: 30000,
+    nuxtConfig: createTestNuxtConfig()
   })
 
   it('renders the index page', async () => {
@@ -35,6 +37,22 @@ describe('basic', async () => {
       expect(collections).toContainComponent({
         pascalName: 'BasicComponentExample'
       })
+    })
+
+    it('normalizes Vite import transport markers', async () => {
+      async function loadMarkedCollections(query: string) {
+        const source = await $fetch<string>(`/__compodium__/modules/collections?${query}`, {
+          headers: { accept: 'text/javascript' }
+        })
+        const moduleUrl = `data:text/javascript;base64,${Buffer.from(source).toString('base64')}`
+        return (await import(moduleUrl)).default as ComponentCollection[]
+      }
+
+      const imported = await loadMarkedCollections('import')
+      const importedRevision = await loadMarkedCollections('import&t=1752500000000')
+
+      expect(imported).toContainComponent({ pascalName: 'BasicComponentExample' })
+      expect(importedRevision).toEqual(imported)
     })
 
     it('assigns component examples', async () => {
@@ -127,7 +145,7 @@ describe('basic', async () => {
     })
   })
 
-  describe.skip('compodium meta', async () => {
+  describe('compodium meta', async () => {
     it('works', async () => {
       const component = await loadNativeModule<CompodiumMeta>('/__compodium__/modules/meta', {
         component: joinURL(rootDir, '/app/components/ExtendMeta.vue')
@@ -362,7 +380,7 @@ describe('basic', async () => {
       ]))
     })
 
-    it.skip('works with objects', async () => {
+    it('works with objects', async () => {
       expect(props).toEqual(expect.arrayContaining([
         expect.objectContaining({
           description: '',
@@ -384,22 +402,30 @@ describe('basic', async () => {
                   num: expect.objectContaining({
                     name: 'num',
                     required: false,
-                    schema: [{ inputType: 'number', schema: 'number', type: 'number' }],
-                    type: 'number'
+                    schema: [{
+                      inputType: 'number',
+                      schema: {
+                        kind: 'enum',
+                        schema: { 0: 'undefined', 1: 'number' },
+                        type: 'number | undefined'
+                      },
+                      type: 'number | undefined'
+                    }],
+                    type: 'number | undefined'
                   })
                 },
-                type: '{ num?: number; foo: string; }'
+                type: '{ num?: number | undefined; foo: string; }'
               },
-              type: '{ num?: number; foo: string; }'
+              type: '{ num?: number | undefined; foo: string; }'
             }
           ],
           tags: [],
-          type: '{ num?: number; foo: string; }'
+          type: '{ num?: number | undefined; foo: string; }'
         })
       ]))
     })
 
-    it.skip('works with array objects', async () => {
+    it('works with array objects', async () => {
       expect(props).toEqual(expect.arrayContaining([
         expect.objectContaining({
           description: '',
@@ -431,23 +457,31 @@ describe('basic', async () => {
                           global: false,
                           name: 'num',
                           required: false,
-                          schema: [{ inputType: 'number', schema: 'number', type: 'number' }],
+                          schema: [{
+                            inputType: 'number',
+                            schema: {
+                              kind: 'enum',
+                              schema: { 0: 'undefined', 1: 'number' },
+                              type: 'number | undefined'
+                            },
+                            type: 'number | undefined'
+                          }],
                           tags: [],
-                          type: 'number'
+                          type: 'number | undefined'
                         }
                       },
-                      type: '{ num?: number; foo: string; }'
+                      type: '{ num?: number | undefined; foo: string; }'
                     },
-                    type: '{ num?: number; foo: string; }'
+                    type: '{ num?: number | undefined; foo: string; }'
                   }
                 ],
-                type: '{ num?: number; foo: string; }[]'
+                type: '{ num?: number | undefined; foo: string; }[]'
               },
-              type: '{ num?: number; foo: string; }[]'
+              type: '{ num?: number | undefined; foo: string; }[]'
             }
           ],
           tags: [],
-          type: '{ num?: number; foo: string; }[]'
+          type: '{ num?: number | undefined; foo: string; }[]'
         }
         )
       ]))

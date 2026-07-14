@@ -15,7 +15,17 @@ function getModuleSearchParams(id: string): URLSearchParams | undefined {
   const moduleId = queryIndex === -1 ? id : id.slice(0, queryIndex)
   if (moduleId !== EXAMPLE_MODULE_ID && moduleId !== EXAMPLE_BROWSER_ALIAS) return
 
-  return new URLSearchParams(queryIndex === -1 ? '' : id.slice(queryIndex + 1))
+  const query = queryIndex === -1 ? '' : id.slice(queryIndex + 1)
+  const searchParams = new URLSearchParams(query)
+  if ([...searchParams.keys()].some(key => !['path', 't'].includes(key))) {
+    throw new Error(`Unsupported Compodium example module query: ?${query}`)
+  }
+  if (searchParams.getAll('path').length > 1 || searchParams.getAll('t').length > 1) {
+    throw new Error(`Duplicate Compodium example module query key: ?${query}`)
+  }
+  const timestamp = searchParams.get('t')
+  if (timestamp !== null && !/^\d{13}$/.test(timestamp)) throw new Error(`Invalid Compodium example module timestamp: ${timestamp}`)
+  return searchParams
 }
 
 function getResolvedExamplePath(id: string): string | undefined {

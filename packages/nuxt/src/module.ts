@@ -5,7 +5,6 @@ import { joinURL } from 'ufo'
 import { resolve as resolvePath } from 'pathe'
 import { version } from '../package.json'
 import { defu } from 'defu'
-import { compodium } from '@compodium/core'
 import type { PluginOptions } from '@compodium/core'
 
 export type ModuleOptions = Omit<PluginOptions, 'mainPath' | 'componentDirs' | 'rootDir' | '_nuxt' | 'baseUrl' | 'tsconfigPath'>
@@ -31,6 +30,7 @@ export default defineNuxtModule<ModuleOptions>({
     })
 
     if (!nuxt.options.dev) return
+    const { compodium } = await import('@compodium/core')
 
     nuxt.hooks.hookOnce('app:resolve', (app) => {
       const rootComponent = app.rootComponent

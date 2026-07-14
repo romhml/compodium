@@ -1,7 +1,12 @@
 import { defineVitestConfig } from '@nuxt/test-utils/config'
 
 export default defineVitestConfig({
+  server: {
+    hmr: false,
+    ws: false
+  },
   test: {
+    fileParallelism: false,
     silent: true,
     setupFiles: [
       '../vue/test/setup.ts'

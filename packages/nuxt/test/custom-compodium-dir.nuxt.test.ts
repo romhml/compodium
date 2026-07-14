@@ -5,6 +5,7 @@ import type { ComponentCollection } from '@compodium/core'
 import { fileURLToPath } from 'node:url'
 import { joinURL } from 'ufo'
 import { loadNativeModule } from './native-module'
+import { createTestNuxtConfig } from './test-config'
 
 describe('custom compodium dir', async () => {
   const rootDir = fileURLToPath(joinURL(dirname(import.meta.url), './fixtures/custom-compodium-dir'))
@@ -12,7 +13,8 @@ describe('custom compodium dir', async () => {
   await setup({
     rootDir,
     dev: true,
-    setupTimeout: 30000
+    setupTimeout: 30000,
+    nuxtConfig: createTestNuxtConfig()
   })
 
   describe('renderer', () => {

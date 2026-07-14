@@ -5,13 +5,15 @@ import type { ComponentCollection } from '@compodium/core'
 import { joinURL } from 'ufo'
 import { fileURLToPath } from 'node:url'
 import { loadNativeModule } from './native-module'
+import { createTestNuxtConfig } from './test-config'
 
 describe('custom components dirs', async () => {
   const rootDir = fileURLToPath(joinURL(dirname(import.meta.url), './fixtures/custom-component-dirs'))
   await setup({
     rootDir,
     dev: true,
-    setupTimeout: 30000
+    setupTimeout: 30000,
+    nuxtConfig: createTestNuxtConfig()
   })
 
   describe('collections module', () => {

@@ -22,6 +22,11 @@ export function colorsPlugin(options: PluginOptions): VitePlugin {
       const queryIndex = id.indexOf('?')
       const moduleId = queryIndex === -1 ? id : id.slice(0, queryIndex)
       if (moduleId !== COLORS_MODULE_ID && moduleId !== COLORS_BROWSER_ALIAS) return
+      const query = queryIndex === -1 ? '' : id.slice(queryIndex + 1)
+      const entries = [...new URLSearchParams(query)]
+      if (entries.length > 1 || (entries.length === 1 && (entries[0]![0] !== 't' || !/^\d{13}$/.test(entries[0]![1])))) {
+        throw new Error(`Unsupported Compodium colors module query: ?${query}`)
+      }
       return RESOLVED_COLORS_MODULE_ID
     },
 

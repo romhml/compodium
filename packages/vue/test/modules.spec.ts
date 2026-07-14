@@ -93,8 +93,29 @@ describe('project data modules', async () => {
     expect(browserModule.default).not.toContain('extendCompodiumMeta')
   })
 
+  it('preserves metadata and example semantic queries after import normalization', async () => {
+    const metadataResponse = await server
+      .get('/__compodium__/modules/meta?import')
+      .query({ component: componentPath, macro: examplePath, t: 1752500000000 })
+    const exampleResponse = await server
+      .get('/__compodium__/modules/example?import')
+      .query({ path: examplePath, t: 1752500000000 })
+
+    expect(metadataResponse.status).toBe(200)
+    expect(exampleResponse.status).toBe(200)
+    expect((await importModuleResponse(metadataResponse.text)).default).toEqual(expect.objectContaining({
+      compodium: { defaultProps: { exampleDefault: true }, combo: ['exampleDefault'] }
+    }))
+    expect((await importModuleResponse(exampleResponse.text)).default).toBeTypeOf('string')
+
+    await expect(viteServer.pluginContainer.resolveId(`virtual:compodium:meta?component=${encodeURIComponent(componentPath)}&unknown=value`))
+      .rejects.toThrow('Unsupported Compodium metadata module query')
+    await expect(viteServer.pluginContainer.resolveId(`virtual:compodium:example?path=${encodeURIComponent(examplePath)}&unknown=value`))
+      .rejects.toThrow('Unsupported Compodium example module query')
+  })
+
   it('serves colors with alias and public ID parity', async () => {
-    const moduleResponse = await server.get('/__compodium__/modules/colors?t=1752500000000')
+    const moduleResponse = await server.get('/__compodium__/modules/colors?import&t=1752500000000')
     const browserModule = await importModuleResponse(moduleResponse.text)
     const publicModule = await viteServer.ssrLoadModule('virtual:compodium:colors?t=1752500000001')
 
@@ -105,11 +126,11 @@ describe('project data modules', async () => {
   })
 
   it('uses query-specific canonical IDs without browser timestamps', async () => {
-    const firstMeta = await viteServer.pluginContainer.resolveId(`/__compodium__/modules/meta?component=${encodeURIComponent(componentPath)}&t=1752500000000`)
-    const secondMeta = await viteServer.pluginContainer.resolveId(`/__compodium__/modules/meta?component=${encodeURIComponent(componentPath)}&t=1752500000001`)
-    const selectedExampleMeta = await viteServer.pluginContainer.resolveId(`/__compodium__/modules/meta?component=${encodeURIComponent(componentPath)}&macro=${encodeURIComponent(examplePath)}&t=1752500000001`)
-    const firstExample = await viteServer.pluginContainer.resolveId(`/__compodium__/modules/example?path=${encodeURIComponent(examplePath)}&t=1752500000000`)
-    const secondExample = await viteServer.pluginContainer.resolveId(`/__compodium__/modules/example?path=${encodeURIComponent(examplePath)}&t=1752500000001`)
+    const firstMeta = await viteServer.pluginContainer.resolveId(`virtual:compodium:meta?component=${encodeURIComponent(componentPath)}&t=1752500000000`)
+    const secondMeta = await viteServer.pluginContainer.resolveId(`virtual:compodium:meta?component=${encodeURIComponent(componentPath)}&t=1752500000001`)
+    const selectedExampleMeta = await viteServer.pluginContainer.resolveId(`virtual:compodium:meta?component=${encodeURIComponent(componentPath)}&macro=${encodeURIComponent(examplePath)}&t=1752500000001`)
+    const firstExample = await viteServer.pluginContainer.resolveId(`virtual:compodium:example?path=${encodeURIComponent(examplePath)}&t=1752500000000`)
+    const secondExample = await viteServer.pluginContainer.resolveId(`virtual:compodium:example?path=${encodeURIComponent(examplePath)}&t=1752500000001`)
 
     expect(firstMeta?.id).toBe(secondMeta?.id)
     expect(firstMeta?.id).toContain('?component=')
@@ -127,13 +148,20 @@ describe('project data modules', async () => {
     const siblingPrefixPath = resolve(viteServer.config.root, 'src/components-sibling/UnknownComponent.vue')
     const outOfRootPath = resolve(viteServer.config.root, 'src/App.vue')
 
-    expect((await server.get('/__compodium__/modules/meta?t=1752500000000')).status).not.toBe(200)
-    expect((await server.get('/__compodium__/modules/meta').query({ component: traversalPath, t: 1752500000000 })).status).not.toBe(200)
-    expect((await server.get('/__compodium__/modules/meta').query({ component: outOfRootPath, t: 1752500000000 })).status).not.toBe(200)
-    expect((await server.get('/__compodium__/modules/meta').query({ component: siblingPrefixPath, t: 1752500000000 })).status).not.toBe(200)
-    expect((await server.get('/__compodium__/modules/meta').query({ component: componentPath, macro: traversalPath, t: 1752500000000 })).status).not.toBe(200)
-    expect((await server.get('/__compodium__/modules/meta').query({ component: componentPath, macro: outOfRootPath, t: 1752500000000 })).status).not.toBe(200)
-    expect((await server.get('/__compodium__/modules/meta').query({ component: componentPath, macro: siblingPrefixPath, t: 1752500000000 })).status).not.toBe(200)
+    await expect(viteServer.pluginContainer.resolveId('virtual:compodium:meta?t=1752500000000'))
+      .rejects.toThrow('Compodium metadata module requires a component path')
+    await expect(viteServer.pluginContainer.resolveId(`virtual:compodium:meta?component=${encodeURIComponent(traversalPath)}`))
+      .rejects.toThrow(`Unknown Compodium component path: ${traversalPath}`)
+    await expect(viteServer.pluginContainer.resolveId(`virtual:compodium:meta?component=${encodeURIComponent(outOfRootPath)}`))
+      .rejects.toThrow(`Unknown Compodium component path: ${outOfRootPath}`)
+    await expect(viteServer.pluginContainer.resolveId(`virtual:compodium:meta?component=${encodeURIComponent(siblingPrefixPath)}`))
+      .rejects.toThrow(`Unknown Compodium component path: ${siblingPrefixPath}`)
+    await expect(viteServer.pluginContainer.resolveId(`virtual:compodium:meta?component=${encodeURIComponent(componentPath)}&macro=${encodeURIComponent(traversalPath)}`))
+      .rejects.toThrow(`Unknown Compodium macro path: ${traversalPath}`)
+    await expect(viteServer.pluginContainer.resolveId(`virtual:compodium:meta?component=${encodeURIComponent(componentPath)}&macro=${encodeURIComponent(outOfRootPath)}`))
+      .rejects.toThrow(`Unknown Compodium macro path: ${outOfRootPath}`)
+    await expect(viteServer.pluginContainer.resolveId(`virtual:compodium:meta?component=${encodeURIComponent(componentPath)}&macro=${encodeURIComponent(siblingPrefixPath)}`))
+      .rejects.toThrow(`Unknown Compodium macro path: ${siblingPrefixPath}`)
   })
 
   it('rejects missing, traversal, out-of-root, and unknown example paths', async () => {
@@ -141,11 +169,16 @@ describe('project data modules', async () => {
     const unknownPath = resolve(viteServer.config.root, 'src/App.vue')
     const siblingPrefixPath = resolve(viteServer.config.root, 'compodium/examples-sibling/UnknownExample.vue')
 
-    expect((await server.get('/__compodium__/modules/example?t=1752500000000')).status).not.toBe(200)
-    expect((await server.get('/__compodium__/modules/example').query({ path: traversalPath, t: 1752500000000 })).status).not.toBe(200)
-    expect((await server.get('/__compodium__/modules/example').query({ path: '/tmp/compodium-out-of-root.vue', t: 1752500000000 })).status).not.toBe(200)
-    expect((await server.get('/__compodium__/modules/example').query({ path: unknownPath, t: 1752500000000 })).status).not.toBe(200)
-    expect((await server.get('/__compodium__/modules/example').query({ path: siblingPrefixPath, t: 1752500000000 })).status).not.toBe(200)
+    await expect(viteServer.pluginContainer.resolveId('virtual:compodium:example?t=1752500000000'))
+      .rejects.toThrow('Compodium example module requires an example path')
+    await expect(viteServer.pluginContainer.resolveId(`virtual:compodium:example?path=${encodeURIComponent(traversalPath)}`))
+      .rejects.toThrow(`Unknown Compodium example path: ${traversalPath}`)
+    await expect(viteServer.pluginContainer.resolveId('virtual:compodium:example?path=%2Ftmp%2Fcompodium-out-of-root.vue'))
+      .rejects.toThrow('Unknown Compodium example path: /tmp/compodium-out-of-root.vue')
+    await expect(viteServer.pluginContainer.resolveId(`virtual:compodium:example?path=${encodeURIComponent(unknownPath)}`))
+      .rejects.toThrow(`Unknown Compodium example path: ${unknownPath}`)
+    await expect(viteServer.pluginContainer.resolveId(`virtual:compodium:example?path=${encodeURIComponent(siblingPrefixPath)}`))
+      .rejects.toThrow(`Unknown Compodium example path: ${siblingPrefixPath}`)
   })
 
   it('serves all browser aliases with a non-root Vite base', async () => {

@@ -24,7 +24,13 @@ describe('vue playground', async () => {
       }
     },
     server: {
-      middlewareMode: true
+      middlewareMode: true,
+      hmr: false,
+      ws: false
+    },
+    optimizeDeps: {
+      noDiscovery: true,
+      include: []
     }
   })
   afterAll(async () => {

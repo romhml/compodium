@@ -20,7 +20,12 @@ function isCollectionsModuleRequest(id: string): boolean {
   const moduleId = queryIndex === -1 ? id : id.slice(0, queryIndex)
   if (moduleId !== COLLECTIONS_MODULE_ID && moduleId !== COLLECTIONS_BROWSER_ALIAS) return false
 
-  return true
+  const query = queryIndex === -1 ? '' : id.slice(queryIndex + 1)
+  const entries = [...new URLSearchParams(query)]
+  if (entries.length === 0) return true
+  if (entries.length === 1 && entries[0]![0] === 't' && /^\d{13}$/.test(entries[0]![1])) return true
+
+  throw new Error(`Unsupported Compodium collections module query: ?${query}`)
 }
 
 export function resolveCollections(options: PluginOptions, viteConfig: any): Collection[] {
@@ -113,7 +118,6 @@ export async function assembleCollections(collections: Collection[]): Promise<Co
 
 export function collectionsPlugin(options: PluginOptions): VitePlugin {
   let collections: Collection[]
-  let viteBase = '/'
   let watchedPaths: string[] = []
   let removeWatcherListeners: (() => void) | undefined
 
@@ -124,7 +128,6 @@ export function collectionsPlugin(options: PluginOptions): VitePlugin {
 
     configResolved(viteConfig) {
       collections = resolveCollections(options, viteConfig)
-      viteBase = viteConfig.base
       watchedPaths = collections.flatMap(collection => [
         ...collection.dirs.map(dir => dir.path),
         collection.exampleDir.path
@@ -144,35 +147,6 @@ export function collectionsPlugin(options: PluginOptions): VitePlugin {
     },
 
     configureServer(server) {
-      server.middlewares.use(async (req, res, next) => {
-        if (!req.url) return next()
-
-        const [path = '', query = ''] = req.url.split(/(?=\?)/, 2)
-        if (!path.startsWith('/__compodium__/modules/')) return next()
-
-        const moduleName = path.slice('/__compodium__/modules/'.length)
-        if (!['collections', 'meta', 'example', 'colors'].includes(moduleName)) return next()
-
-        if (options._nuxt) {
-          try {
-            const result = await server.transformRequest(`virtual:compodium:${moduleName}${query}`)
-            if (!result) return next()
-            res.setHeader('Content-Type', 'text/javascript')
-            res.setHeader('Cache-Control', 'no-cache')
-            res.end(result.code)
-          } catch (error) {
-            next(error)
-          }
-          return
-        }
-
-        if (viteBase === '/') return next()
-
-        const base = viteBase.endsWith('/') ? viteBase.slice(0, -1) : viteBase
-        req.url = `${base}/@id/virtual:compodium:${moduleName}${query}`
-        next()
-      })
-
       removeWatcherListeners?.()
       server.watcher.add(watchedPaths)
 

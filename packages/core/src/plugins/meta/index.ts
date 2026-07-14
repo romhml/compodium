@@ -18,7 +18,17 @@ function getModuleSearchParams(id: string): URLSearchParams | undefined {
   const moduleId = queryIndex === -1 ? id : id.slice(0, queryIndex)
   if (moduleId !== META_MODULE_ID && moduleId !== META_BROWSER_ALIAS) return
 
-  return new URLSearchParams(queryIndex === -1 ? '' : id.slice(queryIndex + 1))
+  const query = queryIndex === -1 ? '' : id.slice(queryIndex + 1)
+  const searchParams = new URLSearchParams(query)
+  if ([...searchParams.keys()].some(key => !['component', 'macro', 't'].includes(key))) {
+    throw new Error(`Unsupported Compodium metadata module query: ?${query}`)
+  }
+  if (searchParams.getAll('component').length > 1 || searchParams.getAll('macro').length > 1 || searchParams.getAll('t').length > 1) {
+    throw new Error(`Duplicate Compodium metadata module query key: ?${query}`)
+  }
+  const timestamp = searchParams.get('t')
+  if (timestamp !== null && !/^\d{13}$/.test(timestamp)) throw new Error(`Invalid Compodium metadata module timestamp: ${timestamp}`)
+  return searchParams
 }
 
 function getResolvedMetadataPaths(id: string): { componentPath: string, macroPath: string } | undefined {

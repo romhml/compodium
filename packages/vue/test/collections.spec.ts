@@ -65,17 +65,27 @@ describe('collections module', async () => {
 
   it('canonicalizes collection revisions to the invalidated module identity', async () => {
     const queryless = await viteServer.pluginContainer.resolveId('virtual:compodium:collections')
-    const firstRevision = await viteServer.pluginContainer.resolveId('/__compodium__/modules/collections?t=1752500000000')
-    const secondRevision = await viteServer.pluginContainer.resolveId('/__compodium__/modules/collections?t=1752500000001')
+    const firstRevision = await viteServer.pluginContainer.resolveId('virtual:compodium:collections?t=1752500000000')
+    const secondRevision = await viteServer.pluginContainer.resolveId('virtual:compodium:collections?t=1752500000001')
 
     expect(firstRevision?.id).toBe(queryless?.id)
     expect(secondRevision?.id).toBe(queryless?.id)
 
-    await viteServer.transformRequest('/__compodium__/modules/collections?t=1752500000000')
+    await viteServer.transformRequest('virtual:compodium:collections?t=1752500000000')
     const canonicalModule = viteServer.moduleGraph.getModuleById(queryless!.id)
     expect(canonicalModule).toBeDefined()
     expect(viteServer.moduleGraph.getModuleById(firstRevision!.id)).toBe(canonicalModule)
     expect(viteServer.moduleGraph.getModuleById(secondRevision!.id)).toBe(canonicalModule)
+  })
+
+  it('strips Vite import transport markers without widening collection queries', async () => {
+    const imported = await server.get('/__compodium__/modules/collections?import')
+    const importedRevision = await server.get('/__compodium__/modules/collections?import&t=1752500000000')
+
+    expect(imported.status).toBe(200)
+    expect(importedRevision.status).toBe(200)
+    await expect(viteServer.pluginContainer.resolveId('virtual:compodium:collections?unknown=value'))
+      .rejects.toThrow('Unsupported Compodium collections module query: ?unknown=value')
   })
 
   it('serves the browser alias when Vite has a non-root base', async () => {
@@ -83,7 +93,7 @@ describe('collections module', async () => {
 
     try {
       const moduleResponse = await request(basedViteServer.middlewares)
-        .get('/__compodium__/modules/collections?t=1752500000000')
+        .get('/__compodium__/modules/collections?import&t=1752500000000')
 
       expect(moduleResponse.status).toBe(200)
       expect(moduleResponse.headers['content-type']).toMatch(/javascript/)

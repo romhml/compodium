@@ -5,13 +5,15 @@ import type { ComponentCollection, CompodiumMeta } from '@compodium/core'
 import { describe, expect, it } from 'vitest'
 import { joinURL } from 'ufo'
 import { loadNativeModule } from './native-module'
+import { createTestNuxtConfig } from './test-config'
 
 describe('nuxt playground', async () => {
   const rootDir = fileURLToPath(joinURL(dirname(import.meta.url), '../../../playgrounds/nuxt'))
 
   await setup({
     rootDir,
-    dev: true
+    dev: true,
+    nuxtConfig: createTestNuxtConfig()
   })
 
   describe('Nuxt UI component metadata', () => {

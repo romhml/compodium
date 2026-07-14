@@ -8,7 +8,9 @@ function getHookHandler<T>(hook: T | { handler: T } | undefined): T | undefined 
 }
 
 describe('compodium HMR ownership', async () => {
-  const server = await createViteDevServer('./fixtures/hmr')
+  const server = await createViteDevServer('./fixtures/hmr', {
+    server: { hmr: true, ws: false }
+  })
   const componentPath = resolve(server.config.root, 'src/components/HmrComponent.vue')
   const examplePath = resolve(server.config.root, 'compodium/examples/HmrComponentExampleVariant.vue')
   const componentRoot = resolve(server.config.root, 'src/components')
@@ -21,7 +23,7 @@ describe('compodium HMR ownership', async () => {
     'compodium:collections'
   ].includes(plugin.name))
 
-  await server.watcher.unwatch([componentRoot, exampleRoot])
+  server.watcher.unwatch([componentRoot, exampleRoot])
 
   async function closeCompodiumPlugins() {
     for (const plugin of compodiumPlugins) {
@@ -38,7 +40,7 @@ describe('compodium HMR ownership', async () => {
 
   it('owns structural notifications exactly once after invalidation', async () => {
     const collectionsId = (await server.pluginContainer.resolveId('virtual:compodium:collections'))!.id
-    await server.transformRequest('/__compodium__/modules/collections')
+    await server.transformRequest('virtual:compodium:collections')
     const collectionsModule = server.moduleGraph.getModuleById(collectionsId)!
     const invalidate = vi.spyOn(server.moduleGraph, 'invalidateModule')
     const send = vi.spyOn(server.ws, 'send')
@@ -67,9 +69,9 @@ describe('compodium HMR ownership', async () => {
     const metaId = (await server.pluginContainer.resolveId(metaRequest))!.id
     const exampleRequest = `virtual:compodium:example?path=${encodeURIComponent(examplePath)}`
     const exampleId = (await server.pluginContainer.resolveId(exampleRequest))!.id
-    await server.transformRequest('/__compodium__/modules/collections')
-    await server.transformRequest(`/__compodium__/modules/meta?component=${encodeURIComponent(componentPath)}&macro=${encodeURIComponent(examplePath)}`)
-    await server.transformRequest(`/__compodium__/modules/example?path=${encodeURIComponent(examplePath)}`)
+    await server.transformRequest('virtual:compodium:collections')
+    await server.transformRequest(metaRequest)
+    await server.transformRequest(exampleRequest)
     await server.transformRequest('/src/components/HmrComponent.vue')
     await server.watcher.unwatch([componentPath, examplePath])
 
@@ -85,7 +87,9 @@ describe('compodium HMR ownership', async () => {
       expect(invalidate).toHaveBeenCalledWith(collectionsModule)
       expect(invalidate).toHaveBeenCalledWith(metaModule)
     })
-    const refreshedMeta = await server.transformRequest(`/__compodium__/modules/meta?component=${encodeURIComponent(componentPath)}&macro=${encodeURIComponent(examplePath)}&t=${Date.now()}`)
+    const refreshedMetaRequest = `${metaRequest}&t=${Date.now()}`
+    await server.pluginContainer.resolveId(refreshedMetaRequest)
+    const refreshedMeta = await server.transformRequest(refreshedMetaRequest)
     expect(refreshedMeta?.code).toContain('"name":"title"')
     expect(server.moduleGraph.getModulesByFile(componentPath)?.size).toBeGreaterThan(0)
 
@@ -115,7 +119,9 @@ describe('compodium HMR ownership', async () => {
 
     const refreshedExample = await server.ssrLoadModule(`${exampleRequest}&t=${Date.now()}`)
     expect(refreshedExample.default).toContain('changed')
-    const refreshedExampleMeta = await server.transformRequest(`/__compodium__/modules/meta?component=${encodeURIComponent(componentPath)}&macro=${encodeURIComponent(examplePath)}&t=${Date.now() + 1}`)
+    const refreshedExampleMetaRequest = `${metaRequest}&t=${Date.now() + 1}`
+    await server.pluginContainer.resolveId(refreshedExampleMetaRequest)
+    const refreshedExampleMeta = await server.transformRequest(refreshedExampleMetaRequest)
     expect(refreshedExampleMeta?.code).toContain('"selected":true')
     invalidate.mockRestore()
     send.mockRestore()

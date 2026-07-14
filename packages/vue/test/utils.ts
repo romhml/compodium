@@ -17,20 +17,26 @@ export async function createViteServer(path: string, viteOptions?: Partial<ViteU
 
 export async function createViteDevServer(path: string, viteOptions?: Partial<ViteUserConfig>, options?: Partial<PluginOptions>) {
   const root = fileURLToPath(joinURL(dirname(import.meta.url), path))
-  const server = await createServer(defu({
+  const server = await createServer(defu(viteOptions, {
     root,
     plugins: [
       vue(),
       compodium({ rootDir: root, ...options })
     ],
     server: {
-      middlewareMode: true
+      middlewareMode: true,
+      hmr: false,
+      ws: false
+    },
+    optimizeDeps: {
+      noDiscovery: true,
+      include: []
     },
     resolve: {
       alias: {
         '@': fileURLToPath(joinURL(dirname(import.meta.url), joinURL(path, './src')))
       }
     }
-  } as any, viteOptions))
+  } as any) as any)
   return server
 }
