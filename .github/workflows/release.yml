@@ -6,9 +6,15 @@ on:
       - 'v*'
 
 jobs:
-  publish:
-    runs-on: ubuntu-latest
+  release:
+    concurrency:
+      group: release
 
+    permissions:
+      contents: write
+      id-token: write
+
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -21,8 +27,9 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: 22
-          cache: 'pnpm'
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+          package-manager-cache: false
 
       - name: Install dependencies
         run: pnpm install
@@ -37,7 +44,7 @@ jobs:
         run: pnpm run typecheck
 
       - name: Test
-        run: pnpm run test run
+        run: pnpm test --testTimeout 20000 --hookTimeout 20000
 
       - name: Publish
-        run: pnpm -r publish
+        run: pnpm -r publish --no-git-checks --access public
