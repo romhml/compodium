@@ -1,11 +1,16 @@
-import { describe, expect, it } from 'vitest'
+import { afterAll, describe, expect, it } from 'vitest'
+import request from 'supertest'
 
-import { createViteServer } from './utils'
+import { createViteDevServer } from './utils'
 
-describe('collections api', async () => {
-  const server = await createViteServer('./fixtures/basic')
-  const resp = await server.get('/__compodium__/api/collections')
-  const collections = resp.body
+describe('collections module', async () => {
+  const viteServer = await createViteDevServer('./fixtures/basic')
+  const server = request(viteServer.middlewares)
+  const collections = (await viteServer.ssrLoadModule('virtual:compodium:collections')).default
+
+  afterAll(async () => {
+    await viteServer.close()
+  })
 
   it('works', async () => {
     expect(collections).toContainComponent({
@@ -41,5 +46,66 @@ describe('collections api', async () => {
         expect.objectContaining({ pascalName: 'TestComponentExampleWithFoo' })
       ]
     })
+  })
+
+  it('serves the browser module with the public module projection', async () => {
+    const moduleResponse = await server.get('/__compodium__/modules/collections')
+
+    expect(moduleResponse.headers['content-type']).toMatch(/javascript/)
+    const moduleUrl = `data:text/javascript;base64,${Buffer.from(moduleResponse.text).toString('base64')}`
+    const collectionsModule = await import(moduleUrl)
+    expect(collectionsModule.default).toEqual(collections)
+  })
+
+  it('loads the public virtual module id through Vite', async () => {
+    const collectionsModule = await viteServer.ssrLoadModule('virtual:compodium:collections')
+
+    expect(collectionsModule.default).toEqual(collections)
+  })
+
+  it('canonicalizes collection revisions to the invalidated module identity', async () => {
+    const queryless = await viteServer.pluginContainer.resolveId('virtual:compodium:collections')
+    const firstRevision = await viteServer.pluginContainer.resolveId('/__compodium__/modules/collections?t=1752500000000')
+    const secondRevision = await viteServer.pluginContainer.resolveId('/__compodium__/modules/collections?t=1752500000001')
+
+    expect(firstRevision?.id).toBe(queryless?.id)
+    expect(secondRevision?.id).toBe(queryless?.id)
+
+    await viteServer.transformRequest('/__compodium__/modules/collections?t=1752500000000')
+    const canonicalModule = viteServer.moduleGraph.getModuleById(queryless!.id)
+    expect(canonicalModule).toBeDefined()
+    expect(viteServer.moduleGraph.getModuleById(firstRevision!.id)).toBe(canonicalModule)
+    expect(viteServer.moduleGraph.getModuleById(secondRevision!.id)).toBe(canonicalModule)
+  })
+
+  it('rejects unsupported collection module queries', async () => {
+    await expect(viteServer.pluginContainer.resolveId('/__compodium__/modules/collections?revision=1')).rejects.toThrow('Unsupported Compodium collections module query')
+    await expect(viteServer.pluginContainer.resolveId('virtual:compodium:collections?t=123')).rejects.toThrow('Unsupported Compodium collections module query')
+    await expect(viteServer.pluginContainer.resolveId('virtual:compodium:collections?t=1752500000000&extra=1')).rejects.toThrow('Unsupported Compodium collections module query')
+  })
+
+  it('serves the browser alias when Vite has a non-root base', async () => {
+    const basedViteServer = await createViteDevServer('./fixtures/basic', { base: '/docs/' })
+
+    try {
+      const moduleResponse = await request(basedViteServer.middlewares)
+        .get('/__compodium__/modules/collections?t=1752500000000')
+
+      expect(moduleResponse.status).toBe(200)
+      expect(moduleResponse.headers['content-type']).toMatch(/javascript/)
+      const moduleUrl = `data:text/javascript;base64,${Buffer.from(moduleResponse.text).toString('base64')}`
+      const collectionsModule = await import(moduleUrl)
+      expect(collectionsModule.default).toEqual(collections)
+    } finally {
+      await basedViteServer.close()
+    }
+  })
+
+  it('closes the Vite server and plugin watchers cleanly', async () => {
+    const closingViteServer = await createViteDevServer('./fixtures/basic', {
+      server: { hmr: false }
+    })
+
+    await expect(closingViteServer.close()).resolves.toBeUndefined()
   })
 })

@@ -4,10 +4,7 @@ import { useDebounceFn, watchOnce } from '@vueuse/core'
 
 const modelValue = defineModel<string>()
 
-const { data: collections } = await useFetch<Record<string, IconifyInfo>>('/api/iconify', {
-  baseURL: '/__compodium__',
-  query: { q: '/collections' }
-})
+const { data: collections } = await useFetch<Record<string, IconifyInfo>>('https://api.iconify.design/collections')
 
 const collectionItems = computed(() => Object.entries(collections.value ?? {}).map(([key, value]) => ({ value: key, label: value.name })))
 const selectedCollection = ref()
@@ -22,17 +19,18 @@ const { data: icons, refresh: fetchIcons } = await useAsyncData<string[] | undef
   if (!selectedCollection.value) return
 
   if (searchTerm.value && searchTerm.value?.trim() !== '') {
-    const search = await $fetch<{ icons: string[] }>('/api/iconify', {
-      baseURL: '/__compodium__',
-      query: { q: `/search?prefix=${selectedCollection.value.value}&query=${searchTerm.value}` }
+    const search = await $fetch<{ icons: string[] }>('https://api.iconify.design/search', {
+      query: {
+        prefix: selectedCollection.value.value,
+        query: searchTerm.value
+      }
     })
 
     return search?.icons ?? []
   }
 
-  const collection = await $fetch<{ uncategorized: string[], categories: Record<string, string[]> }>('/api/iconify', {
-    baseURL: '/__compodium__',
-    query: { q: `/collection?prefix=${selectedCollection.value.value}` }
+  const collection = await $fetch<{ uncategorized: string[], categories: Record<string, string[]> }>('https://api.iconify.design/collection', {
+    query: { prefix: selectedCollection.value.value }
   })
 
   return [

@@ -1,9 +1,10 @@
 import { dirname } from 'pathe'
 import { fileURLToPath } from 'node:url'
-import { setup, $fetch } from '@nuxt/test-utils/e2e'
+import { setup } from '@nuxt/test-utils/e2e'
 import type { ComponentCollection, CompodiumMeta } from '@compodium/core'
 import { describe, expect, it } from 'vitest'
 import { joinURL } from 'ufo'
+import { loadNativeModule } from './native-module'
 
 describe('nuxt playground', async () => {
   const rootDir = fileURLToPath(joinURL(dirname(import.meta.url), '../../../playgrounds/nuxt'))
@@ -15,7 +16,7 @@ describe('nuxt playground', async () => {
 
   describe('Nuxt UI component metadata', () => {
     it('resolves UButton color prop literals from node_modules', async () => {
-      const collections = await $fetch<ComponentCollection[]>('/__compodium__/api/collections')
+      const collections = await loadNativeModule<ComponentCollection[]>('/__compodium__/modules/collections')
       const nuxtUiCollection = collections.find(collection => collection.name === 'Nuxt UI')
 
       if (!nuxtUiCollection) {
@@ -58,10 +59,8 @@ describe('nuxt playground', async () => {
       expect(buttonSourcePath).toContain('@nuxt/ui')
       expect(buttonSourcePath).not.toContain('/playgrounds/nuxt/app/components/')
 
-      const meta = await $fetch<CompodiumMeta>('/__compodium__/api/meta', {
-        query: {
-          component: buttonSourcePath
-        }
+      const meta = await loadNativeModule<CompodiumMeta>('/__compodium__/modules/meta', {
+        component: buttonSourcePath
       })
 
       const colorProp = meta.props.find(prop => prop.name === 'color')

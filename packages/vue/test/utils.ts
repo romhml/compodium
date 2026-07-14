@@ -11,6 +11,11 @@ import defu from 'defu'
 import type { ViteUserConfig } from 'vitest/config'
 
 export async function createViteServer(path: string, viteOptions?: Partial<ViteUserConfig>, options?: Partial<PluginOptions>) {
+  const server = await createViteDevServer(path, viteOptions, options)
+  return request(server.middlewares)
+}
+
+export async function createViteDevServer(path: string, viteOptions?: Partial<ViteUserConfig>, options?: Partial<PluginOptions>) {
   const root = fileURLToPath(joinURL(dirname(import.meta.url), path))
   const server = await createServer(defu({
     root,
@@ -27,5 +32,5 @@ export async function createViteServer(path: string, viteOptions?: Partial<ViteU
       }
     }
   } as any, viteOptions))
-  return request(server.middlewares)
+  return server
 }

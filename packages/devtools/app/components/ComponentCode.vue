@@ -5,10 +5,10 @@ import { generateComponentCode } from '@/utils/codegen'
 
 const props = defineProps<{ component?: Component & Partial<ComponentExample>, props?: Record<string, any>, defaultProps?: Record<string, any> }>()
 
-const fetch = $fetch.create({ baseURL: '/__compodium__/api' })
+const { loadExampleSource } = useCompodiumClient()
 const { data: exampleCode } = useAsyncData<string | null>('__compodium-component-example-code', async () => {
   if (props.component?.isExample) {
-    return await fetch<string>(`/__compodium__/api/example`, { query: { path: props.component.filePath } })
+    return await loadExampleSource(props.component.filePath)
   }
   return null
 }, { watch: [() => props.component?.pascalName] })

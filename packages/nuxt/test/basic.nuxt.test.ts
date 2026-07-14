@@ -4,6 +4,7 @@ import type { ComponentCollection, CompodiumMeta } from '@compodium/core'
 import { joinURL } from 'ufo'
 import { fileURLToPath } from 'node:url'
 import { dirname } from 'pathe'
+import { loadNativeModule } from './native-module'
 
 describe('basic', async () => {
   const rootDir = fileURLToPath(joinURL(dirname(import.meta.url), './fixtures/basic'))
@@ -28,16 +29,16 @@ describe('basic', async () => {
     })
   })
 
-  describe('collections api', () => {
+  describe('collections module', () => {
     it('works', async () => {
-      const collections = await $fetch<ComponentCollection[]>('/__compodium__/api/collections')
+      const collections = await loadNativeModule<ComponentCollection[]>('/__compodium__/modules/collections')
       expect(collections).toContainComponent({
         pascalName: 'BasicComponentExample'
       })
     })
 
     it('assigns component examples', async () => {
-      const collections = await $fetch<ComponentCollection[]>('/__compodium__/api/collections')
+      const collections = await loadNativeModule<ComponentCollection[]>('/__compodium__/modules/collections')
       expect(collections).toContainComponent({
         pascalName: 'BasicComponentExample',
         examples: expect.arrayContaining([
@@ -47,19 +48,17 @@ describe('basic', async () => {
     })
 
     it('ignores excluded components', async () => {
-      const collections = await $fetch<ComponentCollection[]>('/__compodium__/api/collections')
+      const collections = await loadNativeModule<ComponentCollection[]>('/__compodium__/modules/collections')
       expect(collections).not.toContainComponent({
         pascalName: 'ExcludedComponent'
       })
     })
   })
 
-  describe('examples api', () => {
+  describe('examples module', () => {
     it('works', async () => {
-      const example = await $fetch(`/__compodium__/api/example`, {
-        query: {
-          path: joinURL(rootDir, './compodium/examples/BasicComponentExample.vue')
-        }
+      const example = await loadNativeModule<string>('/__compodium__/modules/example', {
+        path: joinURL(rootDir, './compodium/examples/BasicComponentExample.vue')
       })
       expect(example).toMatchInlineSnapshot(`
         "<template>
@@ -70,12 +69,10 @@ describe('basic', async () => {
     })
   })
 
-  describe('meta api', () => {
+  describe('meta module', () => {
     it('works for basic component', async () => {
-      const component = await $fetch(`/__compodium__/api/meta`, {
-        query: {
-          component: joinURL(rootDir, '/app/components/BasicComponent.vue')
-        }
+      const component = await loadNativeModule<CompodiumMeta>('/__compodium__/modules/meta', {
+        component: joinURL(rootDir, '/app/components/BasicComponent.vue')
       })
 
       expect(component).toEqual(expect.objectContaining({
@@ -98,14 +95,27 @@ describe('basic', async () => {
         ]
       }))
     })
+
+    it('combines component checker metadata with selected example metadata', async () => {
+      const component = await loadNativeModule<CompodiumMeta>('/__compodium__/modules/meta', {
+        component: joinURL(rootDir, '/app/components/BasicComponent.vue'),
+        macro: joinURL(rootDir, '/compodium/examples/BasicComponentExampleWithSuffix.vue')
+      })
+
+      expect(component.props).toEqual(expect.arrayContaining([
+        expect.objectContaining({ name: 'foo' })
+      ]))
+      expect(component.compodium).toEqual({
+        defaultProps: { fromExample: true },
+        combo: ['foo']
+      })
+    })
   })
 
   describe.skip('compodium meta', async () => {
     it('works', async () => {
-      const component = await $fetch<CompodiumMeta>('/__compodium__/api/meta', {
-        query: {
-          component: joinURL(rootDir, '/app/components/ExtendMeta.vue')
-        }
+      const component = await loadNativeModule<CompodiumMeta>('/__compodium__/modules/meta', {
+        component: joinURL(rootDir, '/app/components/ExtendMeta.vue')
       })
       expect(component.compodium).toMatchObject({
         defaultProps: {
@@ -121,19 +131,15 @@ describe('basic', async () => {
     })
 
     it('filters variables', async () => {
-      const component = await $fetch<CompodiumMeta>('/__compodium__/api/meta', {
-        query: {
-          component: joinURL(rootDir, '/app/components/ExtendMetaWithVars.vue')
-        }
+      const component = await loadNativeModule<CompodiumMeta>('/__compodium__/modules/meta', {
+        component: joinURL(rootDir, '/app/components/ExtendMetaWithVars.vue')
       })
       expect(component.compodium).toEqual({ defaultProps: {} })
     })
 
     it('ignores if invalid param', async () => {
-      const component = await $fetch<CompodiumMeta>('/__compodium__/api/meta', {
-        query: {
-          component: joinURL(rootDir, '/app/components/ExtendMetaBad.vue')
-        }
+      const component = await loadNativeModule<CompodiumMeta>('/__compodium__/modules/meta', {
+        component: joinURL(rootDir, '/app/components/ExtendMetaBad.vue')
       })
       expect(component.compodium).toBeUndefined()
     })
@@ -143,10 +149,8 @@ describe('basic', async () => {
     let props: CompodiumMeta['props']
 
     beforeEach(async () => {
-      const component = await $fetch<CompodiumMeta>('/__compodium__/api/meta', {
-        query: {
-          component: joinURL(rootDir, '/app/components/ComplexComponent.vue')
-        }
+      const component = await loadNativeModule<CompodiumMeta>('/__compodium__/modules/meta', {
+        component: joinURL(rootDir, '/app/components/ComplexComponent.vue')
       })
       props = component.props
     })

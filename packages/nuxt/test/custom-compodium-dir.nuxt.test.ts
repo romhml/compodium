@@ -4,6 +4,7 @@ import { setup, $fetch } from '@nuxt/test-utils/e2e'
 import type { ComponentCollection } from '@compodium/core'
 import { fileURLToPath } from 'node:url'
 import { joinURL } from 'ufo'
+import { loadNativeModule } from './native-module'
 
 describe('custom compodium dir', async () => {
   const rootDir = fileURLToPath(joinURL(dirname(import.meta.url), './fixtures/custom-compodium-dir'))
@@ -22,7 +23,7 @@ describe('custom compodium dir', async () => {
   })
 
   it('resolves examples', async () => {
-    const collections = await $fetch<Record<string, ComponentCollection>>('/__compodium__/api/collections')
+    const collections = await loadNativeModule<Record<string, ComponentCollection>>('/__compodium__/modules/collections')
     expect(collections).toContainComponent({
       pascalName: 'BasicComponentExample'
     })

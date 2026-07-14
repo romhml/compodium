@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import type { Component, ComponentExample, CompodiumMeta, ComponentCollection, PropertyMeta } from '@compodium/core'
+import type { Component, ComponentExample, CompodiumMeta, PropertyMeta } from '@compodium/core'
 import { StorageSerializers, useColorMode, useDebounceFn, useStorage } from '@vueuse/core'
 import type { ComboItem } from '../components/ComboInput.vue'
 import { getEnumOptions } from '~/utils/enum'
 
-const { hooks } = useCompodiumClient()
+const { hooks, loadCollections, loadMeta } = useCompodiumClient()
 const rendererMounted = ref(false)
 
 const events = ref<{ name: string, data?: any }[]>([])
@@ -35,7 +35,7 @@ hooks.hook('renderer:mounted', () => {
 })
 
 const { data: collections, refresh: refreshCollections } = useAsyncData(async () => {
-  const collections = await $fetch<ComponentCollection[]>('/api/collections', { baseURL: '/__compodium__' })
+  const collections = await loadCollections()
 
   const isComponentFound = component.value && collections.some(col =>
     col.components.some(comp =>
@@ -86,10 +86,10 @@ function evalPropValue(meta: Partial<PropertyMeta>) {
 
 const { data: componentMeta, refresh: refreshMeta } = useAsyncData('__compodium-fetch-meta', async () => {
   if (!component.value) return
-  const meta = await $fetch<CompodiumMeta>('/api/meta', { baseURL: '/__compodium__', query: {
-    component: component.value?.componentPath ?? component.value?.filePath }
-  })
-  return { ...meta, compodium: { defaultProps: component.value?.defaultProps, combo: component.value?.combo } }
+  return await loadMeta(
+    component.value?.componentPath ?? component.value?.filePath,
+    component.value.filePath
+  )
 }, { watch: [component] })
 
 watch([componentMeta], async ([newComponentMeta]) => {

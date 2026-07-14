@@ -39,7 +39,7 @@ function evaluateNode(node: Node | ArrayExpressionElement): any {
   }
 }
 
-export async function parseCompodiumMeta(componentPath: string): Promise<CompodiumMeta | null> {
+export async function parseCompodiumMeta(componentPath: string): Promise<CompodiumMeta['compodium'] | null> {
   const code = (await readFile(componentPath)).toString()
   const filename = basename(componentPath)
 

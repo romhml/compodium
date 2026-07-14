@@ -2,7 +2,6 @@ import { afterAll, describe, expect, it } from 'vitest'
 import { createServer, type ViteDevServer } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import ui from '@nuxt/ui/vite'
-import request from 'supertest'
 import { dirname, resolve } from 'pathe'
 import { fileURLToPath } from 'node:url'
 import { joinURL } from 'ufo'
@@ -28,16 +27,13 @@ describe('vue playground', async () => {
       middlewareMode: true
     }
   })
-  const server = request(viteServer.middlewares)
-
   afterAll(async () => {
     await viteServer.close()
   })
 
   describe('Nuxt UI component metadata', () => {
     it('resolves UButton color prop literals from node_modules', async () => {
-      const collectionsResponse = await server.get('/__compodium__/api/collections')
-      const collections = collectionsResponse.body as ComponentCollection[]
+      const collections = (await viteServer.ssrLoadModule('virtual:compodium:collections')).default as ComponentCollection[]
       const nuxtUiCollection = collections.find(collection => collection.name === 'Nuxt UI')
 
       if (!nuxtUiCollection) {
@@ -80,10 +76,7 @@ describe('vue playground', async () => {
       expect(buttonSourcePath).toContain('@nuxt/ui')
       expect(buttonSourcePath).not.toContain('/playgrounds/vue/src/components/')
 
-      const metaResponse = await server
-        .get('/__compodium__/api/meta')
-        .query({ component: buttonSourcePath })
-      const meta = metaResponse.body as CompodiumMeta
+      const meta = (await viteServer.ssrLoadModule(`virtual:compodium:meta?component=${encodeURIComponent(buttonSourcePath)}`)).default as CompodiumMeta
       const colorProp = meta.props.find(prop => prop.name === 'color')
 
       if (!colorProp) {

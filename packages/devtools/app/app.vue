@@ -6,9 +6,10 @@ import { onKeyStroke } from '@vueuse/core'
 window.__NUXT_DEVTOOLS_DISABLE__ = true
 
 const appConfig = useAppConfig()
+const { loadColors } = useCompodiumClient()
 
 useAsyncData('__compodium-fetch-colors', async () => {
-  const colors = await $fetch('/api/colors', { baseURL: '/__compodium__' })
+  const colors = await loadColors()
   if (colors) appConfig.ui!.colors = { ...appConfig.ui!.colors, ...colors as any }
   return true
 })

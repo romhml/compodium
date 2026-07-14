@@ -5,7 +5,7 @@ defineProps<{
   exampleDefault?: boolean
 }>()
 
-extendCompodiumMeta({ defaultProps: { componentDefault: true } })
+extendCompodiumMeta({ defaultProps: { componentDefault: true }, combo: ['componentDefault'] })
 </script>
 
 <template>
