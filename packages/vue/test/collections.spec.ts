@@ -78,12 +78,6 @@ describe('collections module', async () => {
     expect(viteServer.moduleGraph.getModuleById(secondRevision!.id)).toBe(canonicalModule)
   })
 
-  it('rejects unsupported collection module queries', async () => {
-    await expect(viteServer.pluginContainer.resolveId('/__compodium__/modules/collections?revision=1')).rejects.toThrow('Unsupported Compodium collections module query')
-    await expect(viteServer.pluginContainer.resolveId('virtual:compodium:collections?t=123')).rejects.toThrow('Unsupported Compodium collections module query')
-    await expect(viteServer.pluginContainer.resolveId('virtual:compodium:collections?t=1752500000000&extra=1')).rejects.toThrow('Unsupported Compodium collections module query')
-  })
-
   it('serves the browser alias when Vite has a non-root base', async () => {
     const basedViteServer = await createViteDevServer('./fixtures/basic', { base: '/docs/' })
 

@@ -117,9 +117,6 @@ importers:
       '@vueuse/core':
         specifier: ^14.3.0
         version: 14.3.0(vue@3.5.39(typescript@6.0.3))
-      chokidar:
-        specifier: ^5.0.0
-        version: 5.0.0
       defu:
         specifier: ^6.1.7
         version: 6.1.7

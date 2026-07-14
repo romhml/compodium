@@ -1,6 +1,7 @@
 import { afterAll, describe, expect, it } from 'vitest'
 import request from 'supertest'
 import { resolve } from 'pathe'
+import { mkdir, rm, writeFile } from 'node:fs/promises'
 import { createViteDevServer } from './utils'
 
 async function importModuleResponse(source: string) {
@@ -15,6 +16,7 @@ describe('project data modules', async () => {
   const server = request(viteServer.middlewares)
   const componentPath = resolve(viteServer.config.root, 'src/components/BasicComponent.vue')
   const examplePath = resolve(viteServer.config.root, 'compodium/examples/BasicComponentExampleWithFoo.vue')
+  const macroFreeExamplePath = resolve(viteServer.config.root, 'compodium/examples/MacroFreeExample.vue')
 
   afterAll(async () => {
     await viteServer.close()
@@ -58,6 +60,25 @@ describe('project data modules', async () => {
       }
     }))
     expect((browserModule.default as { compodium: { defaultProps: Record<string, unknown> } }).compodium.defaultProps).not.toHaveProperty('componentDefault')
+  })
+
+  it('inherits component Compodium metadata when the selected example has no macro', async () => {
+    const moduleResponse = await server.get('/__compodium__/modules/meta').query({
+      component: componentPath,
+      macro: macroFreeExamplePath,
+      t: 1752500000000
+    })
+    const browserModule = await importModuleResponse(moduleResponse.text)
+
+    expect(moduleResponse.status).toBe(200)
+    expect(browserModule.default).toEqual(expect.objectContaining({
+      props: expect.arrayContaining([expect.objectContaining({ name: 'foo' })]),
+      events: expect.any(Array),
+      compodium: {
+        defaultProps: { componentDefault: true },
+        combo: ['componentDefault']
+      }
+    }))
   })
 
   it('serves transformed example source with alias and public ID parity', async () => {
@@ -148,6 +169,33 @@ describe('project data modules', async () => {
       }
     } finally {
       await basedViteServer.close()
+    }
+  })
+
+  it('accepts a configured component root created after server startup', async () => {
+    const lateRoot = resolve(viteServer.config.root, 'late-metadata-components')
+    const lateComponent = resolve(lateRoot, 'LateComponent.vue')
+    const outsideComponent = resolve(viteServer.config.root, 'src/App.vue')
+    await rm(lateRoot, { recursive: true, force: true })
+    const lateRootServer = await createViteDevServer('./fixtures/basic', undefined, {
+      componentDirs: [{ path: './late-metadata-components' }],
+      includeLibraryCollections: false
+    })
+
+    try {
+      await mkdir(lateRoot, { recursive: true })
+      await writeFile(lateComponent, '<script setup lang="ts">defineProps<{ late: string }>()</script>\n')
+      lateRootServer.watcher.emit('addDir', lateRoot)
+
+      const metadata = await lateRootServer.ssrLoadModule(`virtual:compodium:meta?component=${encodeURIComponent(lateComponent)}`)
+      expect(metadata.default.props).toEqual(expect.arrayContaining([
+        expect.objectContaining({ name: 'late' })
+      ]))
+      await expect(lateRootServer.pluginContainer.resolveId(`virtual:compodium:meta?component=${encodeURIComponent(outsideComponent)}`))
+        .rejects.toThrow('Unknown Compodium component path')
+    } finally {
+      await lateRootServer.close()
+      await rm(lateRoot, { recursive: true, force: true })
     }
   })
 })

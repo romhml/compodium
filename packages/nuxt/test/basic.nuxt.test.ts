@@ -110,6 +110,21 @@ describe('basic', async () => {
         combo: ['foo']
       })
     })
+
+    it('inherits component metadata for a macro-free selected example', async () => {
+      const component = await loadNativeModule<CompodiumMeta>('/__compodium__/modules/meta', {
+        component: joinURL(rootDir, '/app/components/BasicComponent.vue'),
+        macro: joinURL(rootDir, '/compodium/examples/BasicComponentExample.vue')
+      })
+
+      expect(component.props).toEqual(expect.arrayContaining([
+        expect.objectContaining({ name: 'foo' })
+      ]))
+      expect(component.compodium).toEqual({
+        defaultProps: { fromComponent: true },
+        combo: ['foo']
+      })
+    })
   })
 
   describe.skip('compodium meta', async () => {

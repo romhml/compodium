@@ -1,9 +1,8 @@
 import { libraryCollections as libraryCollectionsConfig } from '@compodium/examples'
 import type { PluginOptions, Collection, Component, ComponentCollection } from '../types'
 import { scanComponents } from './utils'
-import { watch } from 'chokidar'
 import type { VitePlugin } from 'unplugin'
-import { resolve } from 'pathe'
+import { isAbsolute, relative, resolve } from 'pathe'
 import { joinURL } from 'ufo'
 import { parseCompodiumMeta } from './meta/compodium-meta'
 
@@ -11,15 +10,15 @@ export const COLLECTIONS_MODULE_ID = 'virtual:compodium:collections'
 export const RESOLVED_COLLECTIONS_MODULE_ID = `\0${COLLECTIONS_MODULE_ID}`
 export const COLLECTIONS_BROWSER_ALIAS = '/__compodium__/modules/collections'
 
+function isPathInside(rootPath: string, filePath: string): boolean {
+  const relativePath = relative(rootPath, filePath)
+  return relativePath === '' || (!relativePath.startsWith('../') && relativePath !== '..' && !isAbsolute(relativePath))
+}
+
 function isCollectionsModuleRequest(id: string): boolean {
   const queryIndex = id.indexOf('?')
   const moduleId = queryIndex === -1 ? id : id.slice(0, queryIndex)
   if (moduleId !== COLLECTIONS_MODULE_ID && moduleId !== COLLECTIONS_BROWSER_ALIAS) return false
-
-  const query = queryIndex === -1 ? '' : id.slice(queryIndex)
-  if (query && !/^\?t=\d{13}$/.test(query)) {
-    throw new Error(`Unsupported Compodium collections module query: ${query}`)
-  }
 
   return true
 }
@@ -115,27 +114,8 @@ export async function assembleCollections(collections: Collection[]): Promise<Co
 export function collectionsPlugin(options: PluginOptions): VitePlugin {
   let collections: Collection[]
   let viteBase = '/'
-  let collectionWatcher: ReturnType<typeof watch> | undefined
-  let watcherClosePromise: Promise<void> | undefined
-
-  function closeCollectionWatcher(): Promise<void> {
-    if (watcherClosePromise) return watcherClosePromise
-
-    const watcher = collectionWatcher
-    if (!watcher) return Promise.resolve()
-
-    const closePromise = Promise.resolve()
-      .then(() => watcher.close())
-      .then(() => {
-        if (collectionWatcher === watcher) collectionWatcher = undefined
-      })
-      .finally(() => {
-        if (watcherClosePromise === closePromise) watcherClosePromise = undefined
-      })
-
-    watcherClosePromise = closePromise
-    return closePromise
-  }
+  let watchedPaths: string[] = []
+  let removeWatcherListeners: (() => void) | undefined
 
   return {
     name: 'compodium:collections',
@@ -145,6 +125,10 @@ export function collectionsPlugin(options: PluginOptions): VitePlugin {
     configResolved(viteConfig) {
       collections = resolveCollections(options, viteConfig)
       viteBase = viteConfig.base
+      watchedPaths = collections.flatMap(collection => [
+        ...collection.dirs.map(dir => dir.path),
+        collection.exampleDir.path
+      ])
     },
 
     resolveId(id) {
@@ -189,71 +173,47 @@ export function collectionsPlugin(options: PluginOptions): VitePlugin {
         next()
       })
 
-      const componentCollection = collections.find(c => c.name === 'Components') as Collection
+      removeWatcherListeners?.()
+      server.watcher.add(watchedPaths)
 
-      const watchedPaths = [
-        ...componentCollection.dirs,
-        componentCollection.exampleDir
-      ].map(d => d.path)
-
-      // Watch for changes in example directory
-      collectionWatcher = watch(watchedPaths, {
-        persistent: true,
-        awaitWriteFinish: {
-          stabilityThreshold: 200,
-          pollInterval: 100
-        }
-      })
-
-      const invalidateCollectionsModule = () => {
-        const module = server.moduleGraph.getModuleById(RESOLVED_COLLECTIONS_MODULE_ID)
-        if (module) server.moduleGraph.invalidateModule(module)
+      const isWatchedPath = (filePath: string) => watchedPaths.some(root => isPathInside(root, filePath))
+      const notifyStructuralChange = (event: 'component:added' | 'component:removed') => (filePath: string) => {
+        if (!isWatchedPath(filePath)) return
+        server.ws.send({
+          type: 'custom',
+          event: 'compodium:hmr',
+          data: { path: filePath, event }
+        })
       }
+      const handleAdd = notifyStructuralChange('component:added')
+      const handleRemove = notifyStructuralChange('component:removed')
 
-      collectionWatcher.on('add', (filePath: string) => {
-        if (watchedPaths.find(p => filePath.startsWith(p))) {
-          invalidateCollectionsModule()
-          server.ws.send({
-            type: 'custom',
-            event: 'compodium:hmr',
-            data: { path: filePath, event: 'component:added' }
-          })
-        }
-      })
+      server.watcher.on('add', handleAdd)
+      server.watcher.on('addDir', handleAdd)
+      server.watcher.on('unlink', handleRemove)
+      server.watcher.on('unlinkDir', handleRemove)
 
-      collectionWatcher.on('addDir', (filePath: string) => {
-        if (watchedPaths.find(p => filePath.startsWith(p))) {
-          invalidateCollectionsModule()
-          server.ws.send({
-            type: 'custom',
-            event: 'compodium:hmr',
-            data: { path: filePath, event: 'component:added' }
-          })
-        }
-      })
+      removeWatcherListeners = () => {
+        server.watcher.off('add', handleAdd)
+        server.watcher.off('addDir', handleAdd)
+        server.watcher.off('unlink', handleRemove)
+        server.watcher.off('unlinkDir', handleRemove)
+      }
+      server.httpServer?.once('close', removeWatcherListeners)
+    },
 
-      collectionWatcher.on('unlink', (filePath: string) => {
-        if (watchedPaths.find(p => filePath.startsWith(p))) {
-          invalidateCollectionsModule()
-          server.ws.send({
-            type: 'custom',
-            event: 'compodium:hmr',
-            data: { path: filePath, event: 'component:removed' }
-          })
-        }
-      })
-
-      collectionWatcher.on('change', (filePath: string) => {
-        if (watchedPaths.find(p => filePath.startsWith(p))) invalidateCollectionsModule()
-      })
-
-      server.httpServer?.once('close', () => {
-        closeCollectionWatcher().catch(error => server.config.logger.error('Failed to close Compodium collection watcher', { error }))
+    handleHotUpdate({ file, server }) {
+      if (!watchedPaths.some(root => isPathInside(root, file))) return
+      server.ws.send({
+        type: 'custom',
+        event: 'compodium:hmr',
+        data: { path: file, event: 'component:changed' }
       })
     },
 
-    async closeBundle() {
-      await closeCollectionWatcher()
+    closeBundle() {
+      removeWatcherListeners?.()
+      removeWatcherListeners = undefined
     }
   }
 }

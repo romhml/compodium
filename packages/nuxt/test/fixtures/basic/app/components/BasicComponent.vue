@@ -2,6 +2,7 @@
 import type { BasicComponentProps } from '#fixture-types'
 
 defineProps<BasicComponentProps>()
+extendCompodiumMeta({ defaultProps: { fromComponent: true }, combo: ['foo'] })
 </script>
 
 <template>

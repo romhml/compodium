@@ -1,5 +1,6 @@
 import fs from 'node:fs/promises'
 import type { VitePlugin } from 'unplugin'
+import type { ViteDevServer } from 'vite'
 import type { Collection, PluginOptions } from '../types'
 import { isAbsolute, relative } from 'pathe'
 import { resolveCollections } from './collections'
@@ -38,6 +39,8 @@ export function examplePlugin(options: PluginOptions): VitePlugin {
   let discoveredExamplePaths: Set<string> | undefined
   let discoveryPromise: Promise<Set<string>> | undefined
   let discoveryGeneration = 0
+  let exampleRoots: string[] = []
+  let removeWatcherListeners: (() => void) | undefined
 
   function clearDiscoveredExamplePaths() {
     discoveryGeneration++
@@ -92,12 +95,37 @@ export function examplePlugin(options: PluginOptions): VitePlugin {
     return result.replace(/<script[^>]*>\s*<\/script>/g, '')
   }
 
+  function getExampleModuleIdsForSource(sourcePath: string, server: ViteDevServer): string[] {
+    const knownModuleIds = new Set([...resolvedModuleIds, ...server.moduleGraph.idToModuleMap.keys()])
+    return [...knownModuleIds]
+      .filter(moduleId => getResolvedExamplePath(moduleId) === sourcePath)
+  }
+
+  function removeExampleRegistrations(filePath: string, directory: boolean, server: ViteDevServer) {
+    const sourcePaths = [...new Set([
+      ...moduleIdsByExamplePath.keys(),
+      ...server.moduleGraph.idToModuleMap.keys()
+        .map(moduleId => getResolvedExamplePath(moduleId))
+        .filter((path): path is string => Boolean(path))
+    ])]
+      .filter(sourcePath => sourcePath === filePath || (directory && isPathInside(filePath, sourcePath)))
+    for (const sourcePath of sourcePaths) {
+      for (const moduleId of getExampleModuleIdsForSource(sourcePath, server)) {
+        const module = server.moduleGraph.getModuleById(moduleId)
+        if (module) server.moduleGraph.invalidateModule(module)
+        resolvedModuleIds.delete(moduleId)
+      }
+      moduleIdsByExamplePath.delete(sourcePath)
+    }
+  }
+
   return {
     name: 'compodium:examples',
     apply: 'serve',
 
     configResolved(viteConfig) {
       collections = resolveCollections(options, viteConfig)
+      exampleRoots = collections.map(collection => collection.exampleDir.path)
     },
 
     async resolveId(id) {
@@ -127,26 +155,45 @@ export function examplePlugin(options: PluginOptions): VitePlugin {
     },
 
     configureServer(server) {
-      const exampleRoots = collections.map(collection => collection.exampleDir.path)
-      const handleStructuralChange = (path: string) => {
-        if (exampleRoots.some(root => isPathInside(root, path))) clearDiscoveredExamplePaths()
+      removeWatcherListeners?.()
+      server.watcher.add(exampleRoots)
+      const isWatchedPath = (path: string) => exampleRoots.some(root => isPathInside(root, path))
+      const handleAdd = (path: string) => {
+        if (isWatchedPath(path)) clearDiscoveredExamplePaths()
       }
+      const handleRemove = (directory: boolean) => (path: string) => {
+        if (!isWatchedPath(path)) return
+        clearDiscoveredExamplePaths()
+        removeExampleRegistrations(path, directory, server)
+      }
+      const handleUnlink = handleRemove(false)
+      const handleUnlinkDir = handleRemove(true)
 
-      server.watcher.on('add', handleStructuralChange)
-      server.watcher.on('addDir', handleStructuralChange)
-      server.watcher.on('unlink', handleStructuralChange)
-      server.watcher.on('unlinkDir', handleStructuralChange)
+      server.watcher.on('add', handleAdd)
+      server.watcher.on('addDir', handleAdd)
+      server.watcher.on('unlink', handleUnlink)
+      server.watcher.on('unlinkDir', handleUnlinkDir)
+
+      removeWatcherListeners = () => {
+        server.watcher.off('add', handleAdd)
+        server.watcher.off('addDir', handleAdd)
+        server.watcher.off('unlink', handleUnlink)
+        server.watcher.off('unlinkDir', handleUnlinkDir)
+      }
+      server.httpServer?.once('close', removeWatcherListeners)
     },
 
     async handleHotUpdate({ file, server }) {
       const changedRealPath = await fs.realpath(file).catch(() => file)
-      for (const moduleId of moduleIdsByExamplePath.get(changedRealPath) ?? []) {
+      for (const moduleId of getExampleModuleIdsForSource(changedRealPath, server)) {
         const module = server.moduleGraph.getModuleById(moduleId)
         if (module) server.moduleGraph.invalidateModule(module)
       }
     },
 
     closeBundle() {
+      removeWatcherListeners?.()
+      removeWatcherListeners = undefined
       clearDiscoveredExamplePaths()
     }
   }
