@@ -127,6 +127,7 @@ export type Component = {
   shortPath: string
   mode?: 'client' | 'server' | 'all'
   priority?: number
+  /** @deprecated Use `filePath` instead. */
   realPath: string
   wrapperComponent?: string
   docUrl?: string

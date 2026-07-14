@@ -111,11 +111,12 @@ export async function scanComponents(dirs: ComponentsDir[]): Promise<Component[]
       resolvedNames.set(pascalName + suffix, filePath)
 
       const kebabName = kebabCase(componentNameSegments)
+      const canonicalFilePath = await realpath(filePath)
 
       const component: Partial<Component> = {
         mode,
-        filePath,
-        realPath: await realpath(filePath),
+        filePath: canonicalFilePath,
+        realPath: canonicalFilePath,
         pascalName,
         kebabName
       }
