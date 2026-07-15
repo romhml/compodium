@@ -127,7 +127,6 @@ export type Component = {
   shortPath: string
   mode?: 'client' | 'server' | 'all'
   priority?: number
-  realPath: string
   wrapperComponent?: string
   docUrl?: string
   examples?: ComponentExample[]

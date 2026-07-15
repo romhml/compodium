@@ -114,8 +114,7 @@ export async function scanComponents(dirs: ComponentsDir[]): Promise<Component[]
 
       const component: Partial<Component> = {
         mode,
-        filePath,
-        realPath: await realpath(filePath),
+        filePath: await realpath(filePath),
         pascalName,
         kebabName
       }

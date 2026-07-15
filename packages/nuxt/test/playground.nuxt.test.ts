@@ -48,7 +48,7 @@ describe('nuxt playground', async () => {
         ? button.componentPath
         : undefined
 
-      const buttonSourcePath = [button.filePath, button.realPath, componentPath]
+      const buttonSourcePath = [button.filePath, componentPath]
         .find(path => path?.includes('@nuxt/ui'))
 
       if (!buttonSourcePath) {
