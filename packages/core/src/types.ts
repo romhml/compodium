@@ -68,10 +68,10 @@ export type PropInputType = 'array' | 'object' | 'stringEnum' | 'primitiveArray'
 
 type StringLiteral<T> = T extends string ? (string extends T ? never : T) : never
 type FilterStringLiteral<T> = {
-  [K in keyof T]: T[K] extends StringLiteral<T[K]> ? K : never;
+  [K in keyof T]-?: NonNullable<T[K]> extends StringLiteral<NonNullable<T[K]>> ? K : never
 }[keyof T]
 
-type ComboItem<T> = keyof FilterStringLiteral<T> | undefined
+type ComboItem<T> = FilterStringLiteral<T> | undefined
 type Combo<T> = [ComboItem<T>, ComboItem<T>] | [ComboItem<T>]
 
 export type ComponentsDir = {

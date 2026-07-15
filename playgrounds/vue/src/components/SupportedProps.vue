@@ -5,6 +5,8 @@ const _props = defineProps<{
   number?: number
   boolean?: boolean
   primitiveUnion?: string | number | boolean
+  requiredStringLiteral: 'primary' | 'secondary'
+  optionalStringLiteral?: 'small' | 'large'
 
   // Arrays
   stringArray?: string[]
@@ -33,6 +35,7 @@ const _props = defineProps<{
 }>()
 
 extendCompodiumMeta<typeof _props>({
+  combo: ['requiredStringLiteral', 'optionalStringLiteral'],
   defaultProps: {
     string: 'hello',
     primitiveUnion: 42,
