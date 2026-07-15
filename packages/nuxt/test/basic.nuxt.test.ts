@@ -81,7 +81,7 @@ describe('basic', async () => {
       expect(component).toEqual(expect.objectContaining({
         props: [
           {
-            description: '',
+            description: 'Configures the **primary** label.\n\n- Supports `inline code`\n- See [the guide](https://example.com/docs).',
             global: false,
             name: 'foo',
             required: true,

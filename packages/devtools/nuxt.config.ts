@@ -1,7 +1,7 @@
 import { resolve } from 'pathe'
 
 export default defineNuxtConfig({
-  modules: ['@nuxt/ui'],
+  modules: ['@comark/nuxt', '@nuxt/ui'],
   ssr: false,
 
   components: {
