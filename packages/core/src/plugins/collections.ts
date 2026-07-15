@@ -3,11 +3,11 @@ import type { PluginOptions, Collection } from '../types'
 import { scanComponents } from './utils'
 import { watch } from 'chokidar'
 import type { VitePlugin } from 'unplugin'
-import { resolve } from 'pathe'
+import { dirname, resolve } from 'pathe'
 import { joinURL } from 'ufo'
 import type { Component } from 'vue'
 import { parseCompodiumMeta } from './meta/compodium-meta'
-import { existsSync, realpathSync } from 'node:fs'
+import { fileURLToPath } from 'node:url'
 
 export function resolveCollections(options: PluginOptions, viteConfig: any): Collection[] {
   const rootDir = options.rootDir ?? viteConfig.root
@@ -34,26 +34,28 @@ export function resolveCollections(options: PluginOptions, viteConfig: any): Col
   }
 
   const libraryCollections = options.includeLibraryCollections
-    ? libraryCollectionsConfig.map((collection) => {
-        const examplePath = existsSync(collection.exampleDir) ? realpathSync(collection.exampleDir) : collection.exampleDir
+    ? libraryCollectionsConfig.flatMap((collection) => {
+        let pkgPath
+        try {
+          pkgPath = dirname(fileURLToPath(import.meta.resolve(collection.package)))
+        } catch {
+          return []
+        }
 
-        const libPath = resolve(rootDir, collection.path)
-        const realLibPath = existsSync(libPath) ? realpathSync(libPath) : libPath
-
-        return {
+        return [{
           ...collection,
           exampleDir: {
-            path: examplePath,
+            path: resolve(collection.exampleDir),
             pattern: '**/*.{vue,tsx}',
             prefix: collection.prefix
           },
           dirs: [{
-            path: realLibPath,
+            path: resolve(pkgPath, collection.path),
             pattern: '**/*.{vue,tsx}',
             ignore: collection.ignore,
             prefix: collection.prefix
           }]
-        }
+        }]
       })
     : []
 

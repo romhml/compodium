@@ -24,7 +24,7 @@ export const libraryCollections = [
     package: '@nuxt/ui',
     icon: 'lineicons:nuxt',
     exampleDir: resolve('./examples/ui'),
-    path: 'node_modules/@nuxt/ui/dist/runtime/components',
+    path: './runtime/components',
     ignore: ['App.vue', 'Toast.vue', '*Provider.vue', '*Base.vue', '*Content.vue'],
     prefix: 'U',
     wrapperComponent: resolve('./examples/ui.vue'),
