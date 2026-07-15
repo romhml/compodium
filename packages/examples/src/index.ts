@@ -8,7 +8,7 @@ export type LibraryCollection = {
   icon: string
   prefix?: string
   ignore?: string[]
-  exampleDir: string
+  exampleDirs: string[]
   wrapperComponent?: string
   path: string
   getDocUrl?: (componentName: string) => string
@@ -23,7 +23,7 @@ export const libraryCollections = [
     name: 'Nuxt UI',
     package: '@nuxt/ui',
     icon: 'lineicons:nuxt',
-    exampleDir: resolve('./examples/ui'),
+    exampleDirs: [resolve('./examples/ui')],
     path: './runtime/components',
     ignore: ['App.vue', 'Toast.vue', '*Provider.vue', '*Base.vue', '*Content.vue'],
     prefix: 'U',

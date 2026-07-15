@@ -11,11 +11,11 @@ import { fileURLToPath } from 'node:url'
 
 export function resolveCollections(options: PluginOptions, viteConfig: any): Collection[] {
   const rootDir = options.rootDir ?? viteConfig.root
-
-  const exampleDir = {
-    path: joinURL(rootDir, options.dir, 'examples'),
+  const rootDirs = options._rootDirs ?? [rootDir]
+  const exampleDirs = rootDirs.map(root => ({
+    path: joinURL(root, options.dir, 'examples'),
     pattern: '**/*.{vue,tsx}'
-  }
+  }))
 
   const componentDirs = options?.componentDirs.map((dir) => {
     const componentDir = typeof dir === 'string' ? { path: dir } : dir
@@ -29,7 +29,7 @@ export function resolveCollections(options: PluginOptions, viteConfig: any): Col
 
   const componentCollection: Collection = {
     name: 'Components',
-    exampleDir,
+    exampleDirs,
     dirs: componentDirs
   }
 
@@ -44,11 +44,11 @@ export function resolveCollections(options: PluginOptions, viteConfig: any): Col
 
         return [{
           ...collection,
-          exampleDir: {
-            path: resolve(collection.exampleDir),
+          exampleDirs: collection.exampleDirs.map(exampleDir => ({
+            path: resolve(exampleDir),
             pattern: '**/*.{vue,tsx}',
             prefix: collection.prefix
-          },
+          })),
           dirs: [{
             path: resolve(pkgPath, collection.path),
             pattern: '**/*.{vue,tsx}',
@@ -82,7 +82,7 @@ export function collectionsPlugin(options: PluginOptions): VitePlugin {
         try {
           const result = await Promise.all(collections.map(async (col) => {
             const components = await scanComponents(col.dirs)
-            const examples = await scanComponents([col.exampleDir])
+            const examples = await scanComponents(col.exampleDirs)
 
             const collectionComponents: Component[] = []
 
@@ -132,7 +132,7 @@ export function collectionsPlugin(options: PluginOptions): VitePlugin {
 
       const watchedPaths = [
         ...componentCollection.dirs,
-        componentCollection.exampleDir
+        ...componentCollection.exampleDirs
       ].map(d => d.path)
 
       // Watch for changes in example directory

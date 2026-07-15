@@ -56,6 +56,9 @@ export type PluginOptions = {
   /* Internal */
   _nuxt?: boolean
 
+  /* Internal: ordered application and inherited layer roots */
+  _rootDirs?: string[]
+
   /* Internal */
   tsconfigPath?: string
 }
@@ -147,7 +150,7 @@ export type Collection = {
   prefix?: string
   ignore?: string[]
   dirs: ComponentsDir[]
-  exampleDir: ComponentsDir
+  exampleDirs: ComponentsDir[]
   wrapperComponent?: string
   getDocUrl?: (componentName: string) => string
 }
