@@ -2,6 +2,7 @@ import fs from 'node:fs/promises'
 import type { VitePlugin } from 'unplugin'
 import type { Collection, PluginOptions } from '../types'
 import { resolveCollections } from './collections'
+import { getRealPath, isPathInside } from './utils'
 
 export function examplePlugin(options: PluginOptions): VitePlugin {
   let collections: Collection[]
@@ -14,26 +15,29 @@ export function examplePlugin(options: PluginOptions): VitePlugin {
       collections = resolveCollections(options, viteConfig)
     },
 
-    configureServer(server) {
-      const allowedPaths = collections.map(c => c.exampleDir.path)
+    async configureServer(server) {
+      const allowedRoots = await Promise.all(
+        collections.flatMap(c => c.exampleDirs.map(dir => getRealPath(dir.path)))
+      )
       server.middlewares.use('/__compodium__/api/example', async (req, res) => {
         try {
           const url = new URL(req.url!, `http://${req.headers.host}`)
-          const path = url.searchParams.get('path')
+          const requestedPath = url.searchParams.get('path')
 
-          if (!path) {
+          if (!requestedPath) {
             res.statusCode = 400
             res.end(JSON.stringify({ error: 'Example path is required' }))
             return
           }
 
-          if (!allowedPaths.find(p => path.startsWith(p))) {
+          const canonicalPath = await getRealPath(requestedPath)
+          if (!allowedRoots.some(root => isPathInside(canonicalPath, root))) {
             res.statusCode = 403
-            res.end(JSON.stringify({ error: 'Forbidden', message: `${allowedPaths}\n ${path}` }))
+            res.end(JSON.stringify({ error: 'Forbidden' }))
             return
           }
 
-          const exampleCode = await fs.readFile(path)
+          const exampleCode = await fs.readFile(canonicalPath)
 
           let result = exampleCode.toString()
             .replace(/extendCompodiumMeta\s*\([\s\S]*?\)\s*;?/g, '')

@@ -41,7 +41,7 @@ export function metaPlugin(options: PluginOptions): VitePlugin {
     configureServer(server) {
       const checkerDirs = collections.flatMap(c => [
         ...c.dirs,
-        c.exampleDir
+        ...c.exampleDirs
       ])
       const checker = createChecker(checkerDirs, rootDir, options.tsconfigPath)
 
@@ -76,7 +76,7 @@ export function metaPlugin(options: PluginOptions): VitePlugin {
 
       const watchedPaths = [
         ...componentCollection.dirs,
-        componentCollection.exampleDir
+        ...componentCollection.exampleDirs
       ].map(d => d.path)
 
       // Watch for changes in example directory

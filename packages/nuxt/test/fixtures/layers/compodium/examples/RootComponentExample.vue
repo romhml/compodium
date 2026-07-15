@@ -1,0 +1,3 @@
+<template>
+  <RootComponent />
+</template>
