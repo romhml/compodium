@@ -186,6 +186,9 @@ export interface CompodiumHooks {
 
   // Toggle the renderer grid
   'renderer:grid': (payload: { enabled: boolean, gap: number }) => void
+
+  // Scale the rendered component without scaling the devtools UI
+  'renderer:zoom': (scale: number) => void
 }
 
 declare global {
