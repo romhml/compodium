@@ -7,6 +7,7 @@ import { resolve } from 'pathe'
 import { joinURL } from 'ufo'
 import type { Component } from 'vue'
 import { parseCompodiumMeta } from './meta/compodium-meta'
+import { existsSync, realpathSync } from 'node:fs'
 
 export function resolveCollections(options: PluginOptions, viteConfig: any): Collection[] {
   const rootDir = options.rootDir ?? viteConfig.root
@@ -33,20 +34,27 @@ export function resolveCollections(options: PluginOptions, viteConfig: any): Col
   }
 
   const libraryCollections = options.includeLibraryCollections
-    ? libraryCollectionsConfig.map(collection => ({
-        ...collection,
-        exampleDir: {
-          path: collection.exampleDir,
-          pattern: '**/*.{vue,tsx}',
-          prefix: collection.prefix
-        },
-        dirs: [{
-          path: resolve(rootDir, collection.path),
-          pattern: '**/*.{vue,tsx}',
-          ignore: collection.ignore,
-          prefix: collection.prefix
-        }]
-      }))
+    ? libraryCollectionsConfig.map((collection) => {
+        const examplePath = existsSync(collection.exampleDir) ? realpathSync(collection.exampleDir) : collection.exampleDir
+
+        const libPath = resolve(rootDir, collection.path)
+        const realLibPath = existsSync(libPath) ? realpathSync(libPath) : libPath
+
+        return {
+          ...collection,
+          exampleDir: {
+            path: examplePath,
+            pattern: '**/*.{vue,tsx}',
+            prefix: collection.prefix
+          },
+          dirs: [{
+            path: realLibPath,
+            pattern: '**/*.{vue,tsx}',
+            ignore: collection.ignore,
+            prefix: collection.prefix
+          }]
+        }
+      })
     : []
 
   return [
