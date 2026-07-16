@@ -7,7 +7,7 @@ import { version } from '../package.json'
 import { defu } from 'defu'
 import type { PluginOptions } from '@compodium/core'
 
-export type ModuleOptions = Omit<PluginOptions, 'mainPath' | 'componentDirs' | 'rootDir' | '_nuxt' | 'baseUrl' | 'tsconfigPath'>
+export type ModuleOptions = Omit<PluginOptions, 'mainPath' | 'componentDirs' | 'rootDir' | '_nuxt' | '_rootDirs' | 'baseUrl' | 'tsconfigPath'>
 
 export default defineNuxtModule<ModuleOptions>({
   meta: {
@@ -53,12 +53,13 @@ export default defineNuxtModule<ModuleOptions>({
 
     nuxt.hooks.hookOnce('components:dirs', async (dirs) => {
       addVitePlugin(compodium({
+        ...options,
         componentDirs: dirs,
         rootDir: nuxt.options.rootDir,
+        _rootDirs: nuxt.options._layers.map(layer => layer.config.rootDir),
         tsconfigPath: resolvePath(nuxt.options.rootDir, nuxt.options.buildDir, 'tsconfig.app.json'),
         baseUrl: nuxt.options.app.baseURL,
-        _nuxt: true,
-        ...options
+        _nuxt: true
       }) as Parameters<typeof addVitePlugin>[0])
     })
 

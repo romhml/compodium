@@ -2,9 +2,10 @@ import { libraryCollections as libraryCollectionsConfig } from '@compodium/examp
 import type { PluginOptions, Collection, Component, ComponentCollection } from '../types'
 import { scanComponents } from './utils'
 import type { VitePlugin } from 'unplugin'
-import { isAbsolute, relative, resolve } from 'pathe'
+import { dirname, isAbsolute, relative, resolve } from 'pathe'
 import { joinURL } from 'ufo'
 import { parseCompodiumMeta } from './meta/compodium-meta'
+import { fileURLToPath } from 'node:url'
 
 export const COLLECTIONS_MODULE_ID = 'virtual:compodium:collections'
 export const RESOLVED_COLLECTIONS_MODULE_ID = `\0${COLLECTIONS_MODULE_ID}`
@@ -30,11 +31,11 @@ function isCollectionsModuleRequest(id: string): boolean {
 
 export function resolveCollections(options: PluginOptions, viteConfig: any): Collection[] {
   const rootDir = options.rootDir ?? viteConfig.root
-
-  const exampleDir = {
-    path: joinURL(rootDir, options.dir, 'examples'),
+  const rootDirs = options._rootDirs ?? [rootDir]
+  const exampleDirs = rootDirs.map(root => ({
+    path: joinURL(root, options.dir, 'examples'),
     pattern: '**/*.{vue,tsx}'
-  }
+  }))
 
   const componentDirs = options?.componentDirs.map((dir) => {
     const componentDir = typeof dir === 'string' ? { path: dir } : dir
@@ -48,25 +49,34 @@ export function resolveCollections(options: PluginOptions, viteConfig: any): Col
 
   const componentCollection: Collection = {
     name: 'Components',
-    exampleDir,
+    exampleDirs,
     dirs: componentDirs
   }
 
   const libraryCollections = options.includeLibraryCollections
-    ? libraryCollectionsConfig.map(collection => ({
-        ...collection,
-        exampleDir: {
-          path: collection.exampleDir,
-          pattern: '**/*.{vue,tsx}',
-          prefix: collection.prefix
-        },
-        dirs: [{
-          path: resolve(rootDir, collection.path),
-          pattern: '**/*.{vue,tsx}',
-          ignore: collection.ignore,
-          prefix: collection.prefix
+    ? libraryCollectionsConfig.flatMap((collection) => {
+        let pkgPath
+        try {
+          pkgPath = dirname(fileURLToPath(import.meta.resolve(collection.package)))
+        } catch {
+          return []
+        }
+
+        return [{
+          ...collection,
+          exampleDirs: collection.exampleDirs.map(examplePath => ({
+            path: resolve(examplePath),
+            pattern: '**/*.{vue,tsx}',
+            prefix: collection.prefix
+          })),
+          dirs: [{
+            path: resolve(pkgPath, collection.path),
+            pattern: '**/*.{vue,tsx}',
+            ignore: collection.ignore,
+            prefix: collection.prefix
+          }]
         }]
-      }))
+      })
     : []
 
   return [
@@ -78,7 +88,7 @@ export function resolveCollections(options: PluginOptions, viteConfig: any): Col
 export async function assembleCollections(collections: Collection[]): Promise<ComponentCollection[]> {
   return await Promise.all(collections.map(async (col) => {
     const components = await scanComponents(col.dirs)
-    const examples = await scanComponents([col.exampleDir])
+    const examples = await scanComponents(col.exampleDirs)
 
     const collectionComponents: Component[] = []
 
@@ -130,7 +140,7 @@ export function collectionsPlugin(options: PluginOptions): VitePlugin {
       collections = resolveCollections(options, viteConfig)
       watchedPaths = collections.flatMap(collection => [
         ...collection.dirs.map(dir => dir.path),
-        collection.exampleDir.path
+        ...collection.exampleDirs.map(dir => dir.path)
       ])
     },
 

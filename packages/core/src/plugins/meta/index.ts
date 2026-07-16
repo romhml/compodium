@@ -149,7 +149,7 @@ export function metaPlugin(options: PluginOptions): VitePlugin {
       collections = resolveCollections(options, viteConfig)
       configuredRoots = collections.flatMap(collection => [
         ...collection.dirs.map(dir => dir.path),
-        collection.exampleDir.path
+        ...collection.exampleDirs.map(dir => dir.path)
       ])
       refreshConfiguredRootPaths()
       watchedPaths = configuredRoots
@@ -185,7 +185,7 @@ export function metaPlugin(options: PluginOptions): VitePlugin {
     configureServer(server) {
       const checkerDirs = collections.flatMap(c => [
         ...c.dirs,
-        c.exampleDir
+        ...c.exampleDirs
       ])
       checker = createChecker(checkerDirs, rootDir, options.tsconfigPath)
 

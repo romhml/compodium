@@ -1,3 +1,4 @@
+import { isAbsolute, resolve, sep } from 'node:path'
 import { basename, dirname, extname, join, relative } from 'pathe'
 import { glob } from 'tinyglobby'
 import { kebabCase, pascalCase, splitByCase } from 'scule'
@@ -114,8 +115,7 @@ export async function scanComponents(dirs: ComponentsDir[]): Promise<Component[]
 
       const component: Partial<Component> = {
         mode,
-        filePath,
-        realPath: await realpath(filePath),
+        filePath: await realpath(filePath),
         pascalName,
         kebabName
       }
@@ -157,4 +157,14 @@ function warnAboutDuplicateComponent(componentName: string, filePath: string, du
     + `\n - ${filePath}`
     + `\n - ${duplicatePath}`
   )
+}
+
+export async function getRealPath(path: string) {
+  const normalizedPath = resolve(path)
+  return realpath(normalizedPath).catch(() => normalizedPath)
+}
+
+export function isPathInside(path: string, root: string) {
+  const relativePath = relative(root, path)
+  return relativePath === '' || (relativePath !== '..' && !relativePath.startsWith(`..${sep}`) && !isAbsolute(relativePath))
 }

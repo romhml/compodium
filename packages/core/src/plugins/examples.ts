@@ -114,7 +114,8 @@ export function examplePlugin(options: PluginOptions): VitePlugin {
     apply: 'serve',
 
     configResolved(viteConfig) {
-      exampleRoots = resolveCollections(options, viteConfig).map(collection => collection.exampleDir.path)
+      exampleRoots = resolveCollections(options, viteConfig)
+        .flatMap(collection => collection.exampleDirs.map(dir => dir.path))
       refreshCanonicalExampleRoots()
     },
 

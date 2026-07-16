@@ -117,7 +117,7 @@ async function updateComponent() {
   if (!component.value) return
 
   await hooks.callHook('renderer:update-component', {
-    path: component.value.realPath,
+    path: component.value.filePath,
     props: props.value,
     wrapper: component.value?.wrapperComponent,
     events: componentMeta.value?.events

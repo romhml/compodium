@@ -24,7 +24,7 @@ function appTsconfigPlugin(options: PluginOptions) {
   }
 }
 
-export const compodium = /* #__PURE__ */ (opts?: Partial<Omit<PluginOptions, '_nuxt' | 'rootDir' | 'baseUrl'>>) => {
+export const compodium = /* #__PURE__ */ (opts?: Partial<Omit<PluginOptions, '_nuxt' | '_rootDirs' | 'rootDir' | 'baseUrl'>>) => {
   const options = defu(opts, {
     dir: './compodium',
     includeLibraryCollections: true

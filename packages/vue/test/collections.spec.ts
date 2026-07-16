@@ -124,7 +124,7 @@ describe('collections module', async () => {
     const collection: Collection = {
       name: 'Components',
       dirs: [{ path: resolve(root, 'src/components'), pattern: '**/*.vue' }],
-      exampleDir: { path: resolve(root, 'compodium/examples'), pattern: '**/*.vue' }
+      exampleDirs: [{ path: resolve(root, 'compodium/examples'), pattern: '**/*.vue' }]
     }
 
     await applicationServer.close()

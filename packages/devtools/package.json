@@ -9,6 +9,7 @@
     "generate": "nuxt generate"
   },
   "dependencies": {
+    "@comark/nuxt": "0.5.1",
     "@nuxt/ui": "catalog:",
     "@vueuse/core": "^14.3.0",
     "@vueuse/integrations": "^14.3.0",

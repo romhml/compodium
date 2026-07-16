@@ -1,5 +1,5 @@
 <script setup lang="ts">
-defineOgImageComponent('Docs', {
+defineOgImage('Docs', {
   title: 'Compodium',
   description: 'Build Vue components faster.'
 })

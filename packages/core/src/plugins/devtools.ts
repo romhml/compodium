@@ -8,14 +8,15 @@ import { joinURL } from 'ufo'
 import { resolvePathSync } from 'mlly'
 
 export function devtoolsPlugin(options: PluginOptions): VitePlugin {
-  let userPreview: string
+  let userPreviews: string[]
 
   return {
     name: 'compodium:devtools',
     apply: 'serve',
 
     configResolved(viteConfig) {
-      userPreview = resolve(joinURL(options.rootDir ?? viteConfig.root, options.dir, 'preview.vue'))
+      const rootDirs = options._rootDirs ?? [options.rootDir ?? viteConfig.root]
+      userPreviews = rootDirs.map(rootDir => resolve(joinURL(rootDir, options.dir, 'preview.vue')))
     },
     config(config) {
       if (process.env.COMPODIUM_DEVTOOLS_URL) {
@@ -42,7 +43,8 @@ export function devtoolsPlugin(options: PluginOptions): VitePlugin {
 
     resolveId(id) {
       if (id === 'virtual:compodium:preview') {
-        if (existsSync(userPreview)) {
+        const userPreview = userPreviews.find(preview => existsSync(preview))
+        if (userPreview) {
           return userPreview
         }
         return resolvePathSync('../runtime/preview.vue', { extensions: ['.vue'], url: import.meta.url })

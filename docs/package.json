@@ -17,6 +17,8 @@
     "@nuxt/content": "^3.15.0",
     "@nuxt/image": "^2.0.0",
     "@nuxthub/core": "0.10.7",
+    "@takumi-rs/core": "2.0.0-rc.16",
+    "@takumi-rs/wasm": "2.0.0-rc.16",
     "better-sqlite3": "^12.11.1",
     "nuxt": "catalog:",
     "nuxt-llms": "0.2.0",

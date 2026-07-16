@@ -11,7 +11,8 @@
     "typescript",
     "vue-tsc",
     "tailwindcss",
-    "@tailwindcss/vite"
+    "@tailwindcss/vite",
+    "vite"
   ],
   "postUpdateOptions": ["pnpmDedupe"],
   "packageRules": [

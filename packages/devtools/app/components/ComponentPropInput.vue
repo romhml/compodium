@@ -10,6 +10,7 @@ import PrimitiveArrayInput from '../components/inputs/PrimitiveArrayInput.vue'
 import DateInput from '../components/inputs/DateInput.vue'
 import IconInput from '../components/inputs/IconInput.vue'
 import { createReusableTemplate } from '@vueuse/core'
+import security from '@comark/nuxt/plugins/security'
 
 const inputTypes: Record<PropInputType, Component> = {
   icon: IconInput,
@@ -61,10 +62,6 @@ function inferDefaultInput(value?: any, types?: PropSchema[]): PropSchema | unde
 function clearValue() {
   modelValue.value = undefined
 }
-
-const description = computed(() => {
-  return props.description?.replace(/`([^`]+)`/g, '<code class="text-xs font-medium bg-elevated px-1 py-0.5 rounded">$1</code>')
-})
 
 const isArray = computed(() => currentInput.value?.inputType === 'array')
 
@@ -123,11 +120,12 @@ const [DefineDescription, ReuseDescription] = createReusableTemplate()
       <span v-else />
     </DefineLabel>
     <DefineDescription>
-      <!-- eslint-disable vue/no-v-html -->
-      <p
+      <Comark
         v-if="description"
-        class="text-muted text-sm"
-        v-html="description"
+        class="description-markdown text-muted text-sm min-w-0"
+        :markdown="description"
+        :options="{ html: false }"
+        :plugins="[security()]"
       />
     </DefineDescription>
 
@@ -179,3 +177,30 @@ const [DefineDescription, ReuseDescription] = createReusableTemplate()
     </template>
   </div>
 </template>
+
+<style scoped>
+.description-markdown :deep(> :first-child) {
+  margin-top: 0;
+}
+
+.description-markdown :deep(> :last-child) {
+  margin-bottom: 0;
+}
+
+.description-markdown :deep(p),
+.description-markdown :deep(ul),
+.description-markdown :deep(ol),
+.description-markdown :deep(pre),
+.description-markdown :deep(blockquote) {
+  margin-block: 0.375rem;
+}
+
+.description-markdown :deep(ul),
+.description-markdown :deep(ol) {
+  padding-inline-start: 1.25rem;
+}
+
+.description-markdown :deep(li + li) {
+  margin-top: 0.125rem;
+}
+</style>
