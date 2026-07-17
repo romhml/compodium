@@ -1,19 +1,18 @@
-import { isAbsolute, resolve, sep } from 'node:path'
-import { basename, dirname, extname, join, relative } from 'pathe'
+import { realpath } from 'node:fs/promises'
+import { basename, dirname, extname, isAbsolute, join, relative, resolve } from 'pathe'
 import { glob } from 'tinyglobby'
 import { kebabCase, pascalCase, splitByCase } from 'scule'
 import { withTrailingSlash } from 'ufo'
 import type { Component, ComponentsDir } from '../types'
-import { realpath } from 'node:fs/promises'
 
 /* Nuxt internal functions used to scan example components without adding them to the application */
 
 const ISLAND_RE = /\.island(?:\.global)?$/
 const COMPONENT_MODE_RE = /(?<=\.)(client|server)(\.global|\.island)*$/
 const MODE_REPLACEMENT_RE = /(\.(client|server))?(\.global|\.island)*$/
-export const QUOTE_RE = /["']/g
+const QUOTE_RE = /["']/g
 
-export function resolveComponentNameSegments(fileName: string, prefixParts: string[]) {
+function resolveComponentNameSegments(fileName: string, prefixParts: string[]) {
   /**
    * Array of fileName parts split by case, / or -
    * @example third-component -> ['third', 'component']
@@ -159,12 +158,30 @@ function warnAboutDuplicateComponent(componentName: string, filePath: string, du
   )
 }
 
-export async function getRealPath(path: string) {
-  const normalizedPath = resolve(path)
-  return realpath(normalizedPath).catch(() => normalizedPath)
+export function isPathInside(rootPath: string, filePath: string): boolean {
+  const relativePath = relative(rootPath, filePath)
+  return relativePath === '' || (relativePath !== '..' && !relativePath.startsWith('../') && !isAbsolute(relativePath))
 }
 
-export function isPathInside(path: string, root: string) {
-  const relativePath = relative(root, path)
-  return relativePath === '' || (relativePath !== '..' && !relativePath.startsWith(`..${sep}`) && !isAbsolute(relativePath))
+export async function canonicalizeConfiguredRoot(rootPath: string): Promise<string> {
+  const missingSegments: string[] = []
+  let ancestorPath = resolve(rootPath)
+
+  while (true) {
+    const canonicalAncestor = await realpath(ancestorPath).catch(() => undefined)
+    if (canonicalAncestor) return resolve(canonicalAncestor, ...missingSegments)
+
+    const parentPath = dirname(ancestorPath)
+    if (parentPath === ancestorPath) throw new Error(`Unable to canonicalize configured root: ${rootPath}`)
+    missingSegments.unshift(basename(ancestorPath))
+    ancestorPath = parentPath
+  }
+}
+
+export async function resolvePathWithinRoots(requestedPath: string, canonicalRoots: string[]): Promise<string | undefined> {
+  if (requestedPath.split(/[\\/]/).includes('..')) return
+
+  const canonicalPath = await realpath(requestedPath).catch(() => undefined)
+  if (!canonicalPath) return
+  if (canonicalRoots.some(rootPath => isPathInside(rootPath, canonicalPath))) return canonicalPath
 }

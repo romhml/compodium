@@ -89,6 +89,10 @@ describe('collections module', async () => {
     expect(importedRevision.status).toBe(200)
     await expect(viteServer.pluginContainer.resolveId('virtual:compodium:collections?unknown=value'))
       .rejects.toThrow('Unsupported Compodium collections module query: ?unknown=value')
+    await expect(viteServer.pluginContainer.resolveId('virtual:compodium:collections?t=1752500000000&t=1752500000001'))
+      .rejects.toThrow('Unsupported Compodium collections module query')
+    await expect(viteServer.pluginContainer.resolveId('virtual:compodium:collections?t=invalid'))
+      .rejects.toThrow('Unsupported Compodium collections module query')
   })
 
   it('serves the browser alias when Vite has a non-root base', async () => {

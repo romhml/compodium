@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/triple-slash-reference */
+/// <reference path="./virtual-modules.d.ts" preserve="true" />
+/* eslint-enable @typescript-eslint/triple-slash-reference */
+
 import { collectionsPlugin } from './plugins/collections'
 import { extendMetaPlugin, metaPlugin } from './plugins/meta'
 import { examplePlugin } from './plugins/examples'

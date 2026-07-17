@@ -1,25 +1,19 @@
 import { libraryCollections as libraryCollectionsConfig } from '@compodium/examples'
 import type { PluginOptions, Collection, Component, ComponentCollection } from '../types'
-import { scanComponents } from './utils'
+import { isPathInside, scanComponents } from './utils'
 import type { VitePlugin } from 'unplugin'
-import { dirname, isAbsolute, relative, resolve } from 'pathe'
+import { dirname, resolve } from 'pathe'
 import { joinURL } from 'ufo'
 import { parseCompodiumMeta } from './meta/compodium-meta'
 import { fileURLToPath } from 'node:url'
 
 export const COLLECTIONS_MODULE_ID = 'virtual:compodium:collections'
 export const RESOLVED_COLLECTIONS_MODULE_ID = `\0${COLLECTIONS_MODULE_ID}`
-export const COLLECTIONS_BROWSER_ALIAS = '/__compodium__/modules/collections'
-
-function isPathInside(rootPath: string, filePath: string): boolean {
-  const relativePath = relative(rootPath, filePath)
-  return relativePath === '' || (!relativePath.startsWith('../') && relativePath !== '..' && !isAbsolute(relativePath))
-}
 
 function isCollectionsModuleRequest(id: string): boolean {
   const queryIndex = id.indexOf('?')
   const moduleId = queryIndex === -1 ? id : id.slice(0, queryIndex)
-  if (moduleId !== COLLECTIONS_MODULE_ID && moduleId !== COLLECTIONS_BROWSER_ALIAS) return false
+  if (moduleId !== COLLECTIONS_MODULE_ID) return false
 
   const query = queryIndex === -1 ? '' : id.slice(queryIndex + 1)
   const entries = [...new URLSearchParams(query)]
@@ -129,7 +123,6 @@ export async function assembleCollections(collections: Collection[]): Promise<Co
 export function collectionsPlugin(options: PluginOptions): VitePlugin {
   let collections: Collection[]
   let watchedPaths: string[] = []
-  let removeWatcherListeners: (() => void) | undefined
 
   return {
     name: 'compodium:collections',
@@ -157,7 +150,6 @@ export function collectionsPlugin(options: PluginOptions): VitePlugin {
     },
 
     configureServer(server) {
-      removeWatcherListeners?.()
       server.watcher.add(watchedPaths)
 
       const isWatchedPath = (filePath: string) => watchedPaths.some(root => isPathInside(root, filePath))
@@ -176,14 +168,6 @@ export function collectionsPlugin(options: PluginOptions): VitePlugin {
       server.watcher.on('addDir', handleAdd)
       server.watcher.on('unlink', handleRemove)
       server.watcher.on('unlinkDir', handleRemove)
-
-      removeWatcherListeners = () => {
-        server.watcher.off('add', handleAdd)
-        server.watcher.off('addDir', handleAdd)
-        server.watcher.off('unlink', handleRemove)
-        server.watcher.off('unlinkDir', handleRemove)
-      }
-      server.httpServer?.once('close', removeWatcherListeners)
     },
 
     handleHotUpdate({ file, server }) {
@@ -193,11 +177,6 @@ export function collectionsPlugin(options: PluginOptions): VitePlugin {
         event: 'compodium:hmr',
         data: { path: file, event: 'component:changed' }
       })
-    },
-
-    closeBundle() {
-      removeWatcherListeners?.()
-      removeWatcherListeners = undefined
     }
   }
 }

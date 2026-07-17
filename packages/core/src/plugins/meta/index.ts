@@ -3,20 +3,19 @@ import type { Collection, CompodiumMeta, PluginOptions } from '../../types'
 import { createChecker } from './checker'
 import type { VitePlugin } from 'unplugin'
 import type { ViteDevServer } from 'vite'
-import { basename, dirname, isAbsolute, relative, resolve } from 'pathe'
 
 import AST from 'unplugin-ast/vite'
 import { RESOLVED_COLLECTIONS_MODULE_ID, resolveCollections } from '../collections'
+import { canonicalizeConfiguredRoot, isPathInside, resolvePathWithinRoots } from '../utils'
 import { parseCompodiumMeta } from './compodium-meta'
 
-const META_MODULE_ID = 'virtual:compodium:meta'
+export const META_MODULE_ID = 'virtual:compodium:meta'
 const RESOLVED_META_MODULE_ID = `\0${META_MODULE_ID}`
-const META_BROWSER_ALIAS = '/__compodium__/modules/meta'
 
 function getModuleSearchParams(id: string): URLSearchParams | undefined {
   const queryIndex = id.indexOf('?')
   const moduleId = queryIndex === -1 ? id : id.slice(0, queryIndex)
-  if (moduleId !== META_MODULE_ID && moduleId !== META_BROWSER_ALIAS) return
+  if (moduleId !== META_MODULE_ID) return
 
   const query = queryIndex === -1 ? '' : id.slice(queryIndex + 1)
   const searchParams = new URLSearchParams(query)
@@ -38,15 +37,6 @@ function getResolvedMetadataPaths(id: string): { componentPath: string, macroPat
   const macroPath = searchParams.get('macro')
   if (!componentPath || !macroPath) return
   return { componentPath, macroPath }
-}
-
-function hasTraversal(path: string): boolean {
-  return path.split(/[\\/]/).includes('..')
-}
-
-function isPathInside(rootPath: string, filePath: string): boolean {
-  const relativePath = relative(rootPath, filePath)
-  return relativePath === '' || (!relativePath.startsWith('../') && relativePath !== '..' && !isAbsolute(relativePath))
 }
 
 export function extendMetaPlugin(_options: PluginOptions): VitePlugin {
@@ -71,9 +61,6 @@ export function metaPlugin(options: PluginOptions): VitePlugin {
   let rootDir: string
   let checker: ReturnType<typeof createChecker>
   let configuredRoots: string[] = []
-  let configuredRootPaths: Promise<string[]>
-  let watchedPaths: string[] = []
-  let removeWatcherListeners: (() => void) | undefined
   const resolvedModuleIds = new Set<string>()
 
   function getMetadataModuleIdsForSource(sourcePath: string, server: ViteDevServer, directory = false): string[] {
@@ -97,34 +84,6 @@ export function metaPlugin(options: PluginOptions): VitePlugin {
   function invalidateCollectionsModule(server: ViteDevServer) {
     const module = server.moduleGraph.getModuleById(RESOLVED_COLLECTIONS_MODULE_ID)
     if (module) server.moduleGraph.invalidateModule(module)
-  }
-
-  async function canonicalizeConfiguredRoot(rootPath: string): Promise<string> {
-    const missingSegments: string[] = []
-    let ancestorPath = rootPath
-
-    while (true) {
-      const ancestorRealPath = await realpath(ancestorPath).catch(() => undefined)
-      if (ancestorRealPath) return resolve(ancestorRealPath, ...missingSegments)
-
-      const parentPath = dirname(ancestorPath)
-      if (parentPath === ancestorPath) throw new Error(`Unable to canonicalize Compodium root: ${rootPath}`)
-      missingSegments.unshift(basename(ancestorPath))
-      ancestorPath = parentPath
-    }
-  }
-
-  function refreshConfiguredRootPaths(): Promise<string[]> {
-    configuredRootPaths = Promise.all(configuredRoots.map(canonicalizeConfiguredRoot))
-    return configuredRootPaths
-  }
-
-  async function resolveAllowedComponentPath(requestedPath: string): Promise<string | undefined> {
-    if (hasTraversal(requestedPath)) return
-
-    const requestedRealPath = await realpath(requestedPath).catch(() => undefined)
-    if (!requestedRealPath) return
-    if ((await configuredRootPaths).some(root => isPathInside(root, requestedRealPath))) return requestedRealPath
   }
 
   async function loadMetadata(componentPath: string, macroPath: string): Promise<CompodiumMeta> {
@@ -151,8 +110,6 @@ export function metaPlugin(options: PluginOptions): VitePlugin {
         ...collection.dirs.map(dir => dir.path),
         ...collection.exampleDirs.map(dir => dir.path)
       ])
-      refreshConfiguredRootPaths()
-      watchedPaths = configuredRoots
     },
 
     async resolveId(id) {
@@ -163,10 +120,10 @@ export function metaPlugin(options: PluginOptions): VitePlugin {
       if (!componentPath) throw new Error('Compodium metadata module requires a component path')
       const macroPath = searchParams.get('macro') ?? componentPath
 
-      await refreshConfiguredRootPaths()
-      const canonicalComponentPath = await resolveAllowedComponentPath(componentPath)
+      const canonicalRoots = await Promise.all(configuredRoots.map(canonicalizeConfiguredRoot))
+      const canonicalComponentPath = await resolvePathWithinRoots(componentPath, canonicalRoots)
       if (!canonicalComponentPath) throw new Error(`Unknown Compodium component path: ${componentPath}`)
-      const canonicalMacroPath = await resolveAllowedComponentPath(macroPath)
+      const canonicalMacroPath = await resolvePathWithinRoots(macroPath, canonicalRoots)
       if (!canonicalMacroPath) throw new Error(`Unknown Compodium macro path: ${macroPath}`)
 
       const canonicalId = `${RESOLVED_META_MODULE_ID}?component=${encodeURIComponent(canonicalComponentPath)}&macro=${encodeURIComponent(canonicalMacroPath)}`
@@ -189,9 +146,8 @@ export function metaPlugin(options: PluginOptions): VitePlugin {
       ])
       checker = createChecker(checkerDirs, rootDir, options.tsconfigPath)
 
-      removeWatcherListeners?.()
-      server.watcher.add(watchedPaths)
-      const isWatchedPath = (filePath: string) => watchedPaths.some(root => isPathInside(root, filePath))
+      server.watcher.add(configuredRoots)
+      const isWatchedPath = (filePath: string) => configuredRoots.some(root => isPathInside(root, filePath))
       const handleAdd = (filePath: string) => {
         if (!isWatchedPath(filePath)) return
         invalidateCollectionsModule(server)
@@ -210,18 +166,10 @@ export function metaPlugin(options: PluginOptions): VitePlugin {
       server.watcher.on('addDir', handleAdd)
       server.watcher.on('unlink', handleUnlink)
       server.watcher.on('unlinkDir', handleUnlinkDir)
-
-      removeWatcherListeners = () => {
-        server.watcher.off('add', handleAdd)
-        server.watcher.off('addDir', handleAdd)
-        server.watcher.off('unlink', handleUnlink)
-        server.watcher.off('unlinkDir', handleUnlinkDir)
-      }
-      server.httpServer?.once('close', removeWatcherListeners)
     },
 
     async handleHotUpdate({ file, server }) {
-      if (!watchedPaths.some(root => isPathInside(root, file))) return
+      if (!configuredRoots.some(root => isPathInside(root, file))) return
 
       const code = await readFile(file, 'utf-8')
       checker.updateFile(file, code)
@@ -231,11 +179,6 @@ export function metaPlugin(options: PluginOptions): VitePlugin {
         const module = server.moduleGraph.getModuleById(moduleId)
         if (module) server.moduleGraph.invalidateModule(module)
       }
-    },
-
-    closeBundle() {
-      removeWatcherListeners?.()
-      removeWatcherListeners = undefined
     }
   }
 }

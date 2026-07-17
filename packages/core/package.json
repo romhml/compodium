@@ -22,7 +22,7 @@
   "publishConfig": {
     "exports": {
       ".": {
-        "types": "./dist/index.d.ts",
+        "types": "./dist/public.d.ts",
         "import": "./dist/index.mjs"
       },
       "./*": "./dist/*"
@@ -30,7 +30,7 @@
   },
   "main": "dist/index.mjs",
   "module": "dist/index.mjs",
-  "types": "dist/index.d.ts",
+  "types": "dist/public.d.ts",
   "files": [
     "dist"
   ],

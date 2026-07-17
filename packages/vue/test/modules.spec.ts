@@ -1,7 +1,7 @@
 import { afterAll, describe, expect, it } from 'vitest'
 import request from 'supertest'
 import { resolve } from 'pathe'
-import { mkdir, rm, writeFile } from 'node:fs/promises'
+import { mkdir, rm, symlink, writeFile } from 'node:fs/promises'
 import { createViteDevServer } from './utils'
 
 async function importModuleResponse(source: string) {
@@ -164,6 +164,22 @@ describe('project data modules', async () => {
       .rejects.toThrow(`Unknown Compodium macro path: ${siblingPrefixPath}`)
   })
 
+  it('rejects metadata symlinks that escape configured roots', async () => {
+    const outsidePath = resolve(viteServer.config.root, 'MetadataSymlinkTarget.vue')
+    const symlinkPath = resolve(viteServer.config.root, 'src/components/MetadataSymlink.vue')
+
+    try {
+      await writeFile(outsidePath, '<script setup lang="ts">defineProps<{ escaped: string }>()</script>\n')
+      await symlink(outsidePath, symlinkPath)
+
+      await expect(viteServer.pluginContainer.resolveId(`virtual:compodium:meta?component=${encodeURIComponent(symlinkPath)}`))
+        .rejects.toThrow(`Unknown Compodium component path: ${symlinkPath}`)
+    } finally {
+      await rm(symlinkPath, { force: true })
+      await rm(outsidePath, { force: true })
+    }
+  })
+
   it('rejects malformed queries and unauthorized example paths', async () => {
     const traversalPath = resolve(viteServer.config.root, 'compodium/examples') + '/../examples/BasicComponentExampleWithFoo.vue'
     const unknownPath = resolve(viteServer.config.root, 'src/App.vue')
@@ -183,6 +199,33 @@ describe('project data modules', async () => {
       .rejects.toThrow(`Unknown Compodium example path: ${unknownPath}`)
     await expect(viteServer.pluginContainer.resolveId(`virtual:compodium:example?path=${encodeURIComponent(siblingPrefixPath)}`))
       .rejects.toThrow(`Unknown Compodium example path: ${siblingPrefixPath}`)
+  })
+
+  it('rejects example symlinks that escape configured roots', async () => {
+    const outsidePath = resolve(viteServer.config.root, 'ExampleSymlinkTarget.vue')
+    const symlinkPath = resolve(viteServer.config.root, 'compodium/examples/ExampleSymlink.vue')
+
+    try {
+      await writeFile(outsidePath, '<template><div>escaped</div></template>\n')
+      await symlink(outsidePath, symlinkPath)
+
+      await expect(viteServer.pluginContainer.resolveId(`virtual:compodium:example?path=${encodeURIComponent(symlinkPath)}`))
+        .rejects.toThrow(`Unknown Compodium example path: ${symlinkPath}`)
+    } finally {
+      await rm(symlinkPath, { force: true })
+      await rm(outsidePath, { force: true })
+    }
+  })
+
+  it('rejects duplicate and invalid metadata and colors timestamps', async () => {
+    await expect(viteServer.pluginContainer.resolveId(`virtual:compodium:meta?component=${encodeURIComponent(componentPath)}&t=1752500000000&t=1752500000001`))
+      .rejects.toThrow('Duplicate Compodium metadata module query key')
+    await expect(viteServer.pluginContainer.resolveId(`virtual:compodium:meta?component=${encodeURIComponent(componentPath)}&t=invalid`))
+      .rejects.toThrow('Invalid Compodium metadata module timestamp: invalid')
+    await expect(viteServer.pluginContainer.resolveId('virtual:compodium:colors?t=1752500000000&t=1752500000001'))
+      .rejects.toThrow('Unsupported Compodium colors module query')
+    await expect(viteServer.pluginContainer.resolveId('virtual:compodium:colors?t=invalid'))
+      .rejects.toThrow('Unsupported Compodium colors module query')
   })
 
   it('serves all browser aliases with a non-root Vite base', async () => {

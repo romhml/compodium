@@ -1,8 +1,10 @@
 import type { VitePlugin } from 'unplugin'
 import type { PluginOptions } from '../types'
 
-const MODULE_PREFIX = '/__compodium__/modules/'
-const MODULE_NAMES = new Set(['collections', 'meta', 'example', 'colors'])
+import { COLLECTIONS_MODULE_ID } from './collections'
+import { COLORS_MODULE_ID } from './colors'
+import { EXAMPLE_MODULE_ID } from './examples'
+import { META_MODULE_ID } from './meta'
 
 function normalizeTransportQuery(searchParams: URLSearchParams): string {
   const semanticParams = new URLSearchParams()
@@ -31,30 +33,43 @@ export function moduleProxyPlugin(options: PluginOptions): VitePlugin {
         if (!req.url) return next()
 
         const requestUrl = new URL(req.url, 'http://compodium.local')
-        if (!requestUrl.pathname.startsWith(MODULE_PREFIX)) return next()
-
-        const moduleName = requestUrl.pathname.slice(MODULE_PREFIX.length)
-        if (!MODULE_NAMES.has(moduleName)) return next()
+        let moduleId: string
+        switch (requestUrl.pathname) {
+          case '/__compodium__/modules/collections':
+            moduleId = COLLECTIONS_MODULE_ID
+            break
+          case '/__compodium__/modules/meta':
+            moduleId = META_MODULE_ID
+            break
+          case '/__compodium__/modules/example':
+            moduleId = EXAMPLE_MODULE_ID
+            break
+          case '/__compodium__/modules/colors':
+            moduleId = COLORS_MODULE_ID
+            break
+          default:
+            return next()
+        }
 
         const query = normalizeTransportQuery(requestUrl.searchParams)
         if (options._nuxt) {
           try {
-            const result = await server.transformRequest(`virtual:compodium:${moduleName}${query}`)
+            const result = await server.transformRequest(`${moduleId}${query}`)
             if (!result) return next()
             res.setHeader('Content-Type', 'text/javascript')
             res.setHeader('Cache-Control', 'no-cache')
             res.end(result.code)
           } catch (error) {
-            next(error)
+            res.statusCode = 500
+            res.setHeader('Content-Type', 'text/plain; charset=utf-8')
+            res.setHeader('Cache-Control', 'no-cache')
+            res.end(error instanceof Error ? error.message : String(error))
           }
           return
         }
 
-        req.url = `${requestUrl.pathname}${query}`
-        if (viteBase === '/') return next()
-
-        const base = viteBase.endsWith('/') ? viteBase.slice(0, -1) : viteBase
-        req.url = `${base}/@id/virtual:compodium:${moduleName}${query}`
+        const base = viteBase === '/' ? '' : viteBase.replace(/\/$/, '')
+        req.url = `${base}/@id/${moduleId}${query}`
         next()
       })
     }

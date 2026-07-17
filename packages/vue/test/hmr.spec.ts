@@ -3,10 +3,6 @@ import { mkdir, readFile, rm, symlink, writeFile } from 'node:fs/promises'
 import { resolve } from 'pathe'
 import { createViteDevServer } from './utils'
 
-function getHookHandler<T>(hook: T | { handler: T } | undefined): T | undefined {
-  return typeof hook === 'object' && hook && 'handler' in hook ? hook.handler : hook
-}
-
 describe('compodium HMR ownership', async () => {
   const server = await createViteDevServer('./fixtures/hmr', {
     server: { hmr: true, ws: false }
@@ -17,20 +13,8 @@ describe('compodium HMR ownership', async () => {
   const exampleRoot = resolve(server.config.root, 'compodium/examples')
   const originalComponent = await readFile(componentPath, 'utf8')
   const originalExample = await readFile(examplePath, 'utf8')
-  const compodiumPlugins = server.config.plugins.filter(plugin => [
-    'compodium:meta',
-    'compodium:examples',
-    'compodium:collections'
-  ].includes(plugin.name))
 
   server.watcher.unwatch([componentRoot, exampleRoot])
-
-  async function closeCompodiumPlugins() {
-    for (const plugin of compodiumPlugins) {
-      const handler = getHookHandler(plugin.closeBundle)
-      if (handler) await handler.call({} as never)
-    }
-  }
 
   afterAll(async () => {
     await writeFile(componentPath, originalComponent)
@@ -216,18 +200,5 @@ describe('compodium HMR ownership', async () => {
       await rm(lexicalCompodiumDir, { recursive: true, force: true })
       await rm(physicalRoot, { recursive: true, force: true })
     }
-  })
-
-  it('removes only Compodium listeners during teardown', async () => {
-    const watcher = server.watcher
-    const close = vi.spyOn(watcher, 'close')
-    const listenerCounts = ['add', 'addDir', 'unlink', 'unlinkDir'].map(event => watcher.listenerCount(event))
-
-    await closeCompodiumPlugins()
-
-    expect(['add', 'addDir', 'unlink', 'unlinkDir'].map(event => watcher.listenerCount(event)))
-      .toEqual(listenerCounts.map((count, index) => count - (index < 2 ? 2 : 3)))
-    expect(close).not.toHaveBeenCalled()
-    close.mockRestore()
   })
 })
