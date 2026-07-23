@@ -11,17 +11,17 @@
     "typecheck": "nuxt typecheck"
   },
   "dependencies": {
-    "@iconify-json/lucide": "^1.2.116",
-    "@iconify-json/simple-icons": "^1.2.89",
-    "@iconify-json/vscode-icons": "^1.2.66",
-    "@nuxt/content": "^3.15.0",
+    "@iconify-json/lucide": "^1.2.118",
+    "@iconify-json/simple-icons": "^1.2.91",
+    "@iconify-json/vscode-icons": "^1.2.67",
+    "@nuxt/content": "^3.15.2",
     "@nuxt/image": "^2.0.0",
-    "@nuxthub/core": "0.10.7",
-    "@takumi-rs/core": "2.0.0-rc.16",
-    "@takumi-rs/wasm": "2.0.0-rc.16",
+    "@nuxthub/core": "0.10.8",
+    "@takumi-rs/core": "2.4.1",
+    "@takumi-rs/wasm": "2.4.1",
     "better-sqlite3": "^12.11.1",
     "nuxt": "catalog:",
     "nuxt-llms": "0.2.0",
-    "nuxt-og-image": "^6.7.2"
+    "nuxt-og-image": "^6.7.4"
   }
 }

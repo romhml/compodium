@@ -28,14 +28,14 @@
   },
   "dependencies": {
     "@compodium/core": "workspace:^",
-    "@nuxt/devtools-kit": "4.0.0-alpha.7",
+    "@nuxt/devtools-kit": "4.0.0-alpha.8",
     "consola": "^3.4.2",
     "defu": "^6.1.7",
     "pathe": "^2.0.3",
     "ufo": "^1.6.4"
   },
   "devDependencies": {
-    "@nuxt/module-builder": "^1.0.2",
+    "@nuxt/module-builder": "^1.0.3",
     "@nuxt/schema": "catalog:",
     "nuxt": "catalog: "
   },
