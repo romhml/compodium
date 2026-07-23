@@ -20,7 +20,7 @@
     "@nuxt/eslint-config": "^1.16.0",
     "@nuxt/test-utils": "^4.0.3",
     "@types/node": "^25.9.5",
-    "@types/supertest": "^7.2.0",
+    "@types/supertest": "^7.2.1",
     "changelogen": "^0.6.2",
     "eslint": "^10.7.0",
     "happy-dom": "^20.9.0",
@@ -29,7 +29,7 @@
     "unbuild": "^3.6.1",
     "vite": "8.0.16",
     "vitest": "^4.1.10",
-    "wrangler": "^4.110.0"
+    "wrangler": "^4.113.0"
   },
   "resolutions": {
     "@compodium/core": "workspace:^",

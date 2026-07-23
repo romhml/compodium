@@ -13,13 +13,13 @@
     "@compodium/vue": "workspace:^",
     "@nuxt/ui": "catalog:",
     "tailwindcss": "^4.1.17",
-    "vue-router": "^5.1.0",
+    "vue-router": "^5.2.0",
     "vue": "catalog:"
   },
   "devDependencies": {
     "@tsconfig/node24": "^24.0.4",
     "@types/node": "^26.1.1",
-    "@vitejs/plugin-vue": "^6.0.7",
+    "@vitejs/plugin-vue": "^6.0.8",
     "@vue/tsconfig": "^0.9.1",
     "vite": "8.0.16",
     "vite-plugin-vue-devtools": "^8.1.5",
