@@ -1,11 +1,57 @@
+import { NodeTypes, parse, type ElementNode, type RootNode, type TemplateChildNode } from '@vue/compiler-dom'
 import { camelCase, kebabCase, pascalCase } from 'scule'
 import { escapeString } from 'knitwork'
 import deepEqual from 'deep-eql'
 
-// TODO: Might want to use vue/language-tools to refactor this and get rid of horrible RegExp.
+interface TextEdit {
+  start: number
+  end: number
+  content?: string
+}
+
+function applyTextEdits(source: string, edits: TextEdit[]) {
+  return edits
+    .toSorted((a, b) => b.start - a.start || b.end - a.end)
+    .reduce((result, edit) => `${result.slice(0, edit.start)}${edit.content ?? ''}${result.slice(edit.end)}`, source)
+}
+
+function parseComponentSource(code: string) {
+  let hasError = false
+  const root = parse(code, {
+    onError: () => {
+      hasError = true
+    }
+  })
+  return hasError ? undefined : root
+}
+
+function findComponent(root: RootNode | ElementNode, names: Set<string>): ElementNode | undefined {
+  for (const child of root.children as TemplateChildNode[]) {
+    if (child.type !== NodeTypes.ELEMENT) continue
+    if (names.has(child.tag)) return child
+    const match = findComponent(child, names)
+    if (match) return match
+  }
+}
+
+function isWhitespace(char: string | undefined) {
+  return char === ' ' || char === '\n' || char === '\r' || char === '\t'
+}
+
+function getPropName(prop: ElementNode['props'][number]) {
+  if (prop.type === NodeTypes.ATTRIBUTE) return prop.name
+  if (prop.name !== 'bind' || !prop.arg || prop.arg.type !== NodeTypes.SIMPLE_EXPRESSION || !prop.arg.isStatic) return
+  return prop.arg.content
+}
+
+function getPropValue(prop: ElementNode['props'][number]) {
+  if (prop.type === NodeTypes.ATTRIBUTE) return prop.value?.content ?? true
+  return prop.exp?.type === NodeTypes.SIMPLE_EXPRESSION ? prop.exp.content : true
+}
+
 export function genPropValue(value: any): string {
   if (typeof value === 'string') {
-    return `'${escapeString(value).replace(/'/g, '&apos;').replace(/"/g, '&quot;')}'`
+    return `'${escapeString(value).replaceAll('\'', '&apos;').replaceAll('"', '&quot;')}'`
   }
   if (value instanceof Date) {
     const year = value.getFullYear()
@@ -45,39 +91,50 @@ export function generateComponentCode(componentName: string, props?: Record<stri
 }
 
 export function parseExistingProps(componentName: string, code: string) {
-  const propRegex = new RegExp(`<${pascalCase(componentName)}\\s+([^>]*[^/])/?>|<${kebabCase(componentName)}\\s+([^>]*[^/])/?>`, 's')
-  const match = code.match(propRegex)
-  if (!match) return {}
+  const root = parseComponentSource(code)
+  if (!root) return {}
+  const component = findComponent(root, new Set([pascalCase(componentName), kebabCase(componentName)]))
+  if (!component) return {}
 
-  const propString = match[1] ?? match[2]
-  if (!propString) return {}
-  const propEntries = propString.split(/\s(?=(?:[^"]*"[^"]*")*[^"]*$)/g)
-  const parsedProps = propEntries.flatMap((prop: any) => {
-    const match = prop.match(/:?(\S+)="([^"]*)"/)
-    if (match) {
-      return [[match[1], match[2]]]
-    }
-    if (prop.trim()?.length) {
-      return [[prop, true]]
-    }
-    return []
-  })
-  return Object.fromEntries(parsedProps)
+  return Object.fromEntries(component.props.flatMap((prop) => {
+    const name = getPropName(prop)
+    return name ? [[name, getPropValue(prop)]] : []
+  }))
 }
 
 export function updateComponentCode(componentName: string, code: string, props?: Record<string, any>, defaultProps?: Record<string, any>) {
   const propsTemplate = generatePropsTemplate(props, defaultProps)
+  const root = parseComponentSource(code)
+  if (!root) return code
+  const component = findComponent(root, new Set([pascalCase(componentName), kebabCase(componentName)]))
+  if (!component) return code
 
-  const existingProps = parseExistingProps(componentName, code)
-  const propsToRemove = Object.keys(existingProps).filter(key => !props || props?.[camelCase(key)] !== undefined)
-  const removePropsRegex = propsToRemove?.length ? new RegExp(`\\s+:?(${propsToRemove.join('|')})(?:="[^"]*")?`, 'g') : ''
+  const existingProps = Object.fromEntries(component.props.flatMap((prop) => {
+    const name = getPropName(prop)
+    return name ? [[name, getPropValue(prop)]] : []
+  }))
+  const propsToRemove = new Set(Object.keys(existingProps).filter(key => !props || props[camelCase(key)] !== undefined))
+  const tagNameEnd = component.loc.start.offset + component.tag.length + 1
+  const edits: TextEdit[] = [{
+    start: tagNameEnd,
+    end: tagNameEnd,
+    content: ` ${propsTemplate}`
+  }]
 
-  const pascalComponentRegexp = new RegExp(`<${pascalCase(componentName)}(\\s|\\r|>)`)
-  const kebabComponentRegexp = new RegExp(`<${kebabCase(componentName)}(\\s|\\r|>)`)
+  for (const prop of component.props) {
+    const name = getPropName(prop)
+    const isAttrsBinding = prop.type === NodeTypes.DIRECTIVE
+      && prop.name === 'bind'
+      && !prop.arg
+      && prop.exp?.type === NodeTypes.SIMPLE_EXPRESSION
+      && prop.exp.content === '$attrs'
 
-  return code
-    .replace(removePropsRegex, '')
-    .replace(pascalComponentRegexp, `<${pascalCase(componentName)} ${propsTemplate}$1`)
-    .replace(kebabComponentRegexp, `<${kebabCase(componentName)} ${propsTemplate}$1`)
-    .replace('v-bind="$attrs"', '')
+    if (!isAttrsBinding && (!name || !propsToRemove.has(name))) continue
+
+    let start = prop.loc.start.offset
+    while (start > tagNameEnd && isWhitespace(code[start - 1])) start--
+    edits.push({ start, end: prop.loc.end.offset })
+  }
+
+  return applyTextEdits(code, edits)
 }

@@ -183,6 +183,9 @@ importers:
       '@nuxt/ui':
         specifier: 'catalog:'
         version: 4.9.0(e78c506334925a3ee357dadc00409e75)
+      '@vue/compiler-dom':
+        specifier: ^3.5.39
+        version: 3.5.39
       '@vueuse/core':
         specifier: ^14.3.0
         version: 14.3.0(vue@3.5.39(typescript@6.0.3))
@@ -302,6 +305,9 @@ importers:
       '@compodium/examples':
         specifier: workspace:^
         version: link:../examples
+      '@vue/compiler-dom':
+        specifier: ^3.5.39
+        version: 3.5.39
       '@vue/devtools-kit':
         specifier: ^8.1.5
         version: 8.1.5
@@ -314,6 +320,9 @@ importers:
       mlly:
         specifier: ^1.8.2
         version: 1.8.2
+      oxc-parser:
+        specifier: ^0.139.0
+        version: 0.139.0
       pathe:
         specifier: ^2.0.3
         version: 2.0.3

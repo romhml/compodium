@@ -1,5 +1,5 @@
 import { it, describe, expect } from 'vitest'
-import { generateComponentCode, generatePropsTemplate, genPropValue, updateComponentCode } from '../app/utils/codegen'
+import { generateComponentCode, generatePropsTemplate, genPropValue, parseExistingProps, updateComponentCode } from '../app/utils/codegen'
 
 describe('codegen', () => {
   describe('genPropValue', () => {
@@ -23,6 +23,21 @@ describe('codegen', () => {
     it('omits default props', () => expect(
       generateComponentCode('Button', { foo: 'bar', baz: true, bax: 123 }, { baz: true, bax: 123 })
     ).toEqual(`<Button foo='bar' />`))
+  })
+
+  describe('parseExistingProps', () => {
+    it('parses Vue attributes and static bindings', () => {
+      expect(parseExistingProps('BaseButton', `<BaseButton single='hello' unquoted=world :count="foo > 1" bool v-bind="$attrs" />`)).toEqual({
+        single: 'hello',
+        unquoted: 'world',
+        count: 'foo > 1',
+        bool: true
+      })
+    })
+
+    it('ignores component-looking text in scripts', () => {
+      expect(parseExistingProps('BaseButton', `<script>const source = '<BaseButton label="wrong" />'</script>\n<BaseButton label="right" />`)).toEqual({ label: 'right' })
+    })
   })
 
   describe('updateComponentCode', () => {
@@ -59,6 +74,23 @@ describe('codegen', () => {
     it('omits default props', () => {
       const code = `<BaseButton label="Click me!"> </BaseButton>`
       expect(updateComponentCode('BaseButton', code, { label: 'foo' }, { label: 'foo' })).toMatch(`<BaseButton > </BaseButton>`)
+    })
+
+    it('changes only the first target component and its attributes', () => {
+      const code = `<div label="keep" v-bind="$attrs">
+  <BaseButton label='old' :count="old" bool v-bind='$attrs' />
+  <BaseButton label="second" />
+</div>`
+      const result = updateComponentCode('BaseButton', code, { label: 'new', count: 2 })
+
+      expect(result).toContain('<div label="keep" v-bind="$attrs">')
+      expect(result).toContain(`<BaseButton label='new'\n:count="2" bool />`)
+      expect(result).toContain('<BaseButton label="second" />')
+    })
+
+    it('returns source unchanged when the component is absent', () => {
+      const code = '<OtherComponent label="keep" />'
+      expect(updateComponentCode('BaseButton', code, { label: 'new' })).toBe(code)
     })
   })
 })
