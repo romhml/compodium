@@ -18,7 +18,7 @@
   },
   "devDependencies": {
     "@nuxt/eslint-config": "^1.16.0",
-    "@nuxt/test-utils": "^4.0.3",
+    "@nuxt/test-utils": "^4.1.0",
     "@types/node": "^25.9.5",
     "@types/supertest": "^7.2.1",
     "changelogen": "^0.6.2",
