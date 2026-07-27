@@ -42,7 +42,7 @@
   "dependencies": {
     "@compodium/core": "workspace:^",
     "@compodium/examples": "workspace:^",
-    "@vue/devtools-kit": "^8.1.5",
+    "@vue/devtools-kit": "^8.2.1",
     "consola": "^3.4.2",
     "defu": "^6.1.7",
     "mlly": "^1.8.2",
