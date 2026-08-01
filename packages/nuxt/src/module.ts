@@ -44,7 +44,8 @@ export default defineNuxtModule<ModuleOptions>({
 
     // Injects a placeholder page for the renderer to silence warnings if the router integration is enabled.
     nuxt.hooks.hookOnce('pages:extend', (pages) => {
-      if (pages.length) pages.push({ path: '/__compodium__/renderer', file: resolve('./runtime/renderer-placeholder.vue') })
+      // `meta.i18n: false` opts the route out of `@nuxtjs/i18n` localization, otherwise prefix strategies would remove the unprefixed path and 404 the renderer. Inert without i18n.
+      if (pages.length) pages.push({ path: '/__compodium__/renderer', file: resolve('./runtime/renderer-placeholder.vue'), meta: { i18n: false } })
     })
 
     if (nuxt.options.experimental?.typedPages) {

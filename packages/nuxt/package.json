@@ -37,6 +37,7 @@
   "devDependencies": {
     "@nuxt/module-builder": "^1.0.3",
     "@nuxt/schema": "catalog:",
+    "@nuxtjs/i18n": "^10.6.0",
     "nuxt": "catalog: "
   },
   "keywords": [
