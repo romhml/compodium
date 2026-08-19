@@ -39,7 +39,7 @@
     "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
-    "typescript": ">=5.8",
+    "typescript": ">=5.8 <7",
     "vite": ">=7",
     "vue": ">=3"
   },
