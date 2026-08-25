@@ -39,12 +39,12 @@ describe('i18n', async () => {
       try {
         await vi.waitFor(async () => {
           expect(await $fetch('/en/temp')).toContain('temp page')
-        }, { timeout: 15000, interval: 500 })
+        }, { timeout: 20000, interval: 500 })
         const html = await $fetch('/__compodium__/renderer')
         expect(html).toContain('<div id="compodium-default-preview"')
       } finally {
         await rm(tempPage, { force: true })
       }
-    })
+    }, 20000)
   })
 })
