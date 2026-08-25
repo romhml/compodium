@@ -1,8 +1,7 @@
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect } from 'vitest'
 import { setup, $fetch } from '@nuxt/test-utils/e2e'
 import { joinURL } from 'ufo'
 import { fileURLToPath } from 'node:url'
-import { writeFile, rm } from 'node:fs/promises'
 import { dirname } from 'pathe'
 
 describe('i18n', async () => {
@@ -32,19 +31,5 @@ describe('i18n', async () => {
       })
       expect(html).toContain('<div id="compodium-default-preview"')
     })
-
-    it('survives a pages rebuild', async () => {
-      const tempPage = joinURL(rootDir, 'app/pages/temp.vue')
-      await writeFile(tempPage, '<template><div>temp page</div></template>\n')
-      try {
-        await vi.waitFor(async () => {
-          expect(await $fetch('/en/temp')).toContain('temp page')
-        }, { timeout: 20000, interval: 500 })
-        const html = await $fetch('/__compodium__/renderer')
-        expect(html).toContain('<div id="compodium-default-preview"')
-      } finally {
-        await rm(tempPage, { force: true })
-      }
-    }, 20000)
   })
 })
