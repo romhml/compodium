@@ -2,6 +2,10 @@
   "extends": [
     "github>nuxt/renovate-config-nuxt"
   ],
+  "stabilityDays": 2,
+  "schedule": [
+    "on Monday"
+  ],
   "lockFileMaintenance": {
     "enabled": true,
     "automerge": true
