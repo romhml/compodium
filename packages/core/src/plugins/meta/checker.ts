@@ -23,7 +23,10 @@ export function createChecker(dirs: ComponentsDir[], rootDir = process.cwd(), ts
 
   const checker = {
     ...metaChecker,
-    getComponentMeta: (componentPath: string): CompodiumMeta => {
+    getComponentMeta: (componentPath: string): CompodiumMeta | undefined => {
+      // A component that is not on disk becomes an unresolved import inside the virtual meta entry
+      if (!existsSync(componentPath)) return undefined
+
       const meta = getComponentMeta(metaChecker, componentPath)
       return {
         props: meta.props
