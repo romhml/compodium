@@ -38,12 +38,23 @@ export function metaPlugin(options: PluginOptions): VitePlugin {
       collections = resolveCollections(options, viteConfig)
     },
 
-    configureServer(server) {
+    async configureServer(server) {
       const checkerDirs = collections.flatMap(c => [
         ...c.dirs,
         ...c.exampleDirs
       ])
-      const checker = createChecker(checkerDirs, rootDir, options.tsconfigPath)
+      let checker: Awaited<ReturnType<typeof createChecker>>
+
+      try {
+        checker = await createChecker(checkerDirs, rootDir, options.tsconfigPath)
+      } catch {
+        server.config.logger.warn('[Compodium] Unable to parse component props. TypeScript 7 is not supported; use TypeScript 6 instead.')
+        server.middlewares.use('/__compodium__/api/meta', (_req, res) => {
+          res.statusCode = 500
+          res.end(JSON.stringify({ error: 'Metadata unavailable' }))
+        })
+        return
+      }
 
       server.middlewares.use('/__compodium__/api/meta', async (req, res) => {
         try {
@@ -68,7 +79,7 @@ export function metaPlugin(options: PluginOptions): VitePlugin {
           res.end(JSON.stringify(meta))
         } catch {
           res.statusCode = 500
-          res.end(JSON.stringify({ error: 'Failed to fetch metadata' }))
+          res.end(JSON.stringify({ error: 'Metadata unavailable' }))
         }
       })
 
@@ -88,7 +99,7 @@ export function metaPlugin(options: PluginOptions): VitePlugin {
         }
       })
 
-      watcher.on('add', async () => {
+      watcher.on('add', () => {
         checker.reload()
       })
 
