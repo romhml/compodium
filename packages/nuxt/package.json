@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "@compodium/core": "workspace:^",
-    "@nuxt/devtools-kit": "4.0.0-alpha.9",
+    "@nuxt/devtools-kit": "^3.4.2",
     "consola": "^3.4.2",
     "defu": "^6.1.7",
     "pathe": "^2.0.3",
