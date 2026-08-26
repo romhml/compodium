@@ -1,10 +1,10 @@
 import { existsSync } from 'node:fs'
 import { basename } from 'node:path'
-import { createCheckerByJson } from 'vue-component-meta'
 import type { CompodiumMeta, ComponentsDir } from '../../types'
 import { inferPropTypes } from './infer'
 
-type MetaChecker = ReturnType<typeof createCheckerByJson>
+type CreateMetaChecker = (typeof import('vue-component-meta'))['createCheckerByJson']
+type MetaChecker = ReturnType<CreateMetaChecker>
 
 const checkerOptions = {
   forceUseTs: true,
@@ -18,8 +18,9 @@ const checkerOptions = {
   }
 }
 
-export function createChecker(dirs: ComponentsDir[], rootDir = process.cwd(), tsconfigPath?: string) {
-  const metaChecker = createMetaChecker(dirs, rootDir, tsconfigPath)
+export async function createChecker(dirs: ComponentsDir[], rootDir = process.cwd(), tsconfigPath?: string) {
+  const { createCheckerByJson } = await import('vue-component-meta')
+  const metaChecker = createMetaChecker(createCheckerByJson, dirs, rootDir, tsconfigPath)
 
   const checker = {
     ...metaChecker,
@@ -40,7 +41,7 @@ export function createChecker(dirs: ComponentsDir[], rootDir = process.cwd(), ts
   return checker
 }
 
-function createMetaChecker(dirs: ComponentsDir[], rootDir: string, tsconfigPath?: string): MetaChecker {
+function createMetaChecker(createCheckerByJson: CreateMetaChecker, dirs: ComponentsDir[], rootDir: string, tsconfigPath?: string): MetaChecker {
   const tsconfig = `${rootDir}/tsconfig.json`
   const tsconfigToExtend = tsconfigPath && existsSync(tsconfigPath) ? tsconfigPath : tsconfig
 
