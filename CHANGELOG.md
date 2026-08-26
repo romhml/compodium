@@ -1,5 +1,44 @@
 # Changelog
 
+## v0.1.0-beta.14
+
+[compare changes](https://github.com/romhml/compodium/compare/v0.1.0-beta.13...v0.1.0-beta.14)
+
+### 🚀 Enhancements
+
+- **devtools:** Render prop description as markdown ([#198](https://github.com/romhml/compodium/pull/198))
+- **nuxt:** Add layer support ([#199](https://github.com/romhml/compodium/pull/199))
+
+### 🩹 Fixes
+
+- **docs:** Migrate to nuxt-og-image v6 ([7f9a6be](https://github.com/romhml/compodium/commit/7f9a6be))
+- **core:** Symlinked library collection resolution ([#195](https://github.com/romhml/compodium/pull/195))
+- **core:** Combo type error ([#197](https://github.com/romhml/compodium/pull/197))
+- **nuxt:** Opt renderer route out of i18n localization ([#208](https://github.com/romhml/compodium/pull/208))
+- **core:** Constraint typescript to <7 ([db10aad](https://github.com/romhml/compodium/commit/db10aad))
+- **core:** Lazily load metadata checker for TypeScript 7 compatibility ([#213](https://github.com/romhml/compodium/pull/213))
+- **meta:** Handle unresolved imports in getComponentMeta function ([#215](https://github.com/romhml/compodium/pull/215))
+- **nuxt:** Revert @nuxt/devtools-kit alpha upgrade ([2ae1072](https://github.com/romhml/compodium/commit/2ae1072))
+
+### 🏡 Chore
+
+- Update readme badges ([d33e0d4](https://github.com/romhml/compodium/commit/d33e0d4))
+- Update changelog ([ba2effd](https://github.com/romhml/compodium/commit/ba2effd))
+- Remove deprecated pnpm options in package.json ([f2e56bd](https://github.com/romhml/compodium/commit/f2e56bd))
+- Update renovate config ([4cd8814](https://github.com/romhml/compodium/commit/4cd8814))
+
+### ✅ Tests
+
+- **nuxt:** Fix flaky i18n test - #214 ([#214](https://github.com/romhml/compodium/issues/214))
+- **nuxt:** Remove flaky i18n test ([0d136bd](https://github.com/romhml/compodium/commit/0d136bd))
+
+### ❤️ Contributors
+
+- Romain Hamel <romain@rohm.dev>
+- Sandro Circi ([@sandros94](https://github.com/sandros94))
+- Rohm <romain@rohm.dev>
+- Norbiros ([@Norbiros](https://github.com/Norbiros))
+
 ## v0.1.0-beta.13
 
 [compare changes](https://github.com/romhml/compodium/compare/v0.1.0-beta.12...v0.1.0-beta.13)
