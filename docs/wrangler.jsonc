@@ -1,0 +1,11 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "compodium-docs",
+  "main": "./.output/server/index.mjs",
+  "assets": {
+    "directory": "./.output/public",
+    "binding": "ASSETS"
+  },
+  "compatibility_date": "2025-09-01",
+  "compatibility_flags": ["nodejs_compat"]
+}
