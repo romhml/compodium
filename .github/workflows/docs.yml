@@ -2,19 +2,22 @@ name: Deploy Docs
 
 on:
   push:
+    branches:
+      - main
     tags:
-      - v*
+      - "v*"
 
 jobs:
   deploy:
     name: "Deploy Docs"
     runs-on: ubuntu-latest
     environment:
-      name: ${{ github.ref == 'refs/heads/main' && 'production' || 'preview' }}
+      name: production
       url: ${{ steps.deploy.outputs.deployment-url }}
+
     permissions:
       contents: read
-      id-token: write
+
     defaults:
       run:
         working-directory: docs
@@ -31,13 +34,18 @@ jobs:
         uses: actions/setup-node@v7
         with:
           node-version: 24.19.0
-          cache: 'pnpm'
+          cache: "pnpm"
 
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
 
-      - name: Build & Deploy to NuxtHub
-        uses: nuxt-hub/action@v2
+      - name: Build docs
+        run: pnpm build
+
+      - name: Deploy docs to Cloudflare
+        id: deploy
+        uses: cloudflare/wrangler-action@v3
         with:
-          project-key: compodium-yt6s
-          directory: docs/
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: docs
