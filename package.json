@@ -38,5 +38,5 @@
     "@compodium/vue": "workspace:^",
     "vite": "8.0.16"
   },
-  "packageManager": "pnpm@10.34.5"
+  "packageManager": "pnpm@11.25.0"
 }
