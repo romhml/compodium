@@ -28,7 +28,7 @@
     "typescript": "^6.0.3",
     "unbuild": "^3.6.1",
     "vite": "8.0.16",
-    "vitest": "^4.1.11",
+    "vitest": "^5.0.0",
     "wrangler": "^4.127.1"
   },
   "resolutions": {
