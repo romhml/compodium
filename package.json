@@ -18,18 +18,18 @@
   },
   "devDependencies": {
     "@nuxt/eslint-config": "^1.17.0",
-    "@nuxt/test-utils": "^4.2.0",
-    "@types/node": "^25.9.5",
+    "@nuxt/test-utils": "^4.3.2",
+    "@types/node": "^25.9.6",
     "@types/supertest": "^7.2.1",
     "changelogen": "^0.6.2",
-    "eslint": "^10.9.1",
+    "eslint": "^10.10.0",
     "happy-dom": "^20.9.0",
     "supertest": "^7.2.2",
     "typescript": "^6.0.3",
     "unbuild": "^3.6.1",
     "vite": "8.0.16",
     "vitest": "^4.1.11",
-    "wrangler": "^4.127.1"
+    "wrangler": "^4.131.0"
   },
   "resolutions": {
     "@compodium/core": "workspace:^",
