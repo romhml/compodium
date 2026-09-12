@@ -9,7 +9,7 @@
     "generate": "nuxt generate"
   },
   "dependencies": {
-    "@comark/nuxt": "0.6.2",
+    "@comark/nuxt": "0.7.0",
     "@nuxt/ui": "catalog:",
     "@vueuse/core": "^14.4.0",
     "@vueuse/integrations": "^14.4.0",
@@ -29,7 +29,7 @@
   "devDependencies": {
     "@compodium/core": "workspace:^",
     "@iconify-json/lineicons": "^1.2.6",
-    "@iconify-json/lucide": "^1.2.127",
+    "@iconify-json/lucide": "^1.2.131",
     "@iconify/types": "^2.0.0",
     "@types/deep-eql": "^4.0.2"
   }
