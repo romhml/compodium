@@ -11,8 +11,8 @@
   "dependencies": {
     "@comark/nuxt": "0.6.2",
     "@nuxt/ui": "catalog:",
-    "@vueuse/core": "^14.4.0",
-    "@vueuse/integrations": "^14.4.0",
+    "@vueuse/core": "^15.0.0",
+    "@vueuse/integrations": "^15.0.0",
     "deep-eql": "^5.0.2",
     "defu": "^6.1.7",
     "fuse.js": "^7.5.0",
