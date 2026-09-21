@@ -52,7 +52,7 @@
     "@compodium/examples": "workspace:^",
     "@vue/compiler-sfc": "^3.5.42",
     "@vue/language-core": "^3.3.11",
-    "@vueuse/core": "^14.4.0",
+    "@vueuse/core": "^15.0.0",
     "chokidar": "^5.0.0",
     "defu": "^6.1.7",
     "hookable": "^6.1.1",
