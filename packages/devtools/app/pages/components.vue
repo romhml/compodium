@@ -6,6 +6,15 @@ import { getEnumOptions } from '~/utils/enum'
 
 const { hooks } = useCompodiumClient()
 const rendererMounted = ref(false)
+const zoom = ref(1)
+const zoomMin = 0.25
+const zoomMax = 4
+const zoomStep = 0.25
+
+function updateZoom(value: number) {
+  zoom.value = Math.min(zoomMax, Math.max(zoomMin, value))
+  hooks.callHook('renderer:zoom', zoom.value)
+}
 
 const events = ref<{ name: string, data?: any }[]>([])
 
@@ -32,6 +41,7 @@ hooks.hook('renderer:mounted', () => {
   })
 
   updateComponent()
+  updateZoom(zoom.value)
 })
 
 const { data: collections, refresh: refreshCollections } = useAsyncData(async () => {
@@ -224,6 +234,25 @@ const tabs = computed(() => {
         </div>
 
         <div class="flex gap-2 justify-end">
+          <UInputNumber
+            v-model="zoom"
+            :min="zoomMin"
+            :max="zoomMax"
+            :step="zoomStep"
+            :format-options="{ style: 'percent' }"
+            :disabled="!rendererMounted"
+            color="neutral"
+            variant="none"
+            size="sm"
+            aria-label="Component zoom"
+            class="w-28"
+            :ui="{
+              root: 'rounded-full border border-default bg-default',
+              base: 'rounded-full tabular-nums'
+            }"
+            @update:model-value="updateZoom"
+          />
+
           <UTooltip
             text="Open docs"
             :content="{ side: 'left' }"
