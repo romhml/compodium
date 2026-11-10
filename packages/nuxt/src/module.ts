@@ -8,7 +8,13 @@ import { defu } from 'defu'
 import { compodium } from '@compodium/core'
 import type { PluginOptions } from '@compodium/core'
 
-export type ModuleOptions = Omit<PluginOptions, 'mainPath' | 'componentDirs' | 'rootDir' | '_nuxt' | '_rootDirs' | 'baseUrl' | 'tsconfigPath'>
+export type ModuleOptions = Omit<PluginOptions, 'mainPath' | 'componentDirs' | 'rootDir' | '_nuxt' | '_rootDirs' | 'baseUrl' | 'tsconfigPath'> & {
+  /**
+   * Enable the module
+   * @default true
+   */
+  enabled: boolean
+}
 
 export default defineNuxtModule<ModuleOptions>({
   meta: {
@@ -16,11 +22,14 @@ export default defineNuxtModule<ModuleOptions>({
     configKey: 'compodium'
   },
   defaults: {
+    enabled: true,
     dir: 'compodium/',
     includeLibraryCollections: true
   },
 
   async setup(options, nuxt) {
+    if (!options.enabled) return
+
     const { resolve, resolvePath: resolveModulePath } = createResolver(import.meta.url)
 
     const coreTypesEntry = await resolveModulePath('@compodium/core')
