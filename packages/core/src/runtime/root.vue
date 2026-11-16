@@ -55,6 +55,7 @@ if (import.meta.hot) {
 
 const showGrid = ref(false)
 const gridGap = ref(8)
+const zoom = ref(1)
 
 const colorMode = useColorMode()
 const hooks = shallowRef<Hookable<CompodiumHooks>>()
@@ -70,6 +71,7 @@ onMounted(() => {
     showGrid.value = payload.enabled
     gridGap.value = payload.gap
   })
+  hooks.value.hook('renderer:zoom', scale => zoom.value = scale)
 
   hooks.value.hook('renderer:set-color', color => colorMode.value = color)
   hooks.value.callHook('renderer:mounted')
@@ -90,22 +92,24 @@ onMounted(() => {
       id="__compodium-root"
       :style="{ position: 'relative', minWidth: '100vw', minHeight: '100vh' }"
     >
-      <PreviewComponent>
-        <RendererWrapper :wrapper="wrapper">
-          <RendererCombo
-            :combo="combo"
-            :props
-            #="{ props: comboProps }"
-          >
-            <component
-              :is="component"
-              v-if="component"
-              v-bind="comboProps"
-              v-on="eventHandlers"
-            />
-          </RendererCombo>
-        </RendererWrapper>
-      </PreviewComponent>
+      <div :style="{ transform: `scale(${zoom})`, transformOrigin: 'center' }">
+        <PreviewComponent>
+          <RendererWrapper :wrapper="wrapper">
+            <RendererCombo
+              :combo="combo"
+              :props
+              #="{ props: comboProps }"
+            >
+              <component
+                :is="component"
+                v-if="component"
+                v-bind="comboProps"
+                v-on="eventHandlers"
+              />
+            </RendererCombo>
+          </RendererWrapper>
+        </PreviewComponent>
+      </div>
 
       <RendererGrid
         v-if="showGrid"
